@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<swg_mimetype_icons_file_v1 xmlns="urn:de.direct-netware.xmlns:swg.mimetype_icons.v1">
+
+<icon mimetype='application/pdf' image='mimetype_document.png' />
+<icon mimetype='application/msword' image='mimetype_document.png' />
+<icon mimetype='application/vnd.oasis.opendocument.text' image='mimetype_document.png' />
+<icon mimetype='application/vnd.sun.xml.writer' image='mimetype_document.png' />
+<icon mimetype='application/x-bzip2' image='mimetype_archive.png' />
+<icon mimetype='application/x-gzip' image='mimetype_archive.png' />
+<icon mimetype='application/x-ipk' image='mimetype_archive.png' />
+<icon mimetype='application/xhtml+xml' image='mimetype_document.png' />
+<icon mimetype='application/zip' image='mimetype_archive.png' />
+<icon mimetype='audio' image='mimetype_audio.png' />
+<icon mimetype='image' image='mimetype_image.png' />
+<icon mimetype='text/directory' image='mimetype_directory.png' />
+<icon mimetype='text/html' image='mimetype_document.png' />
+<icon mimetype='text/plain' image='mimetype_text.png' />
+<icon mimetype='text/x-ddb-link' image='mimetype_remote_resource.png' />
+<icon mimetype='text/x-directory-home' image='mimetype_directory.png' />
+<icon mimetype='video' image='mimetype_video.png' />
+
+</swg_mimetype_icons_file_v1>

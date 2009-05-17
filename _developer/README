@@ -1,0 +1,110 @@
+----------------------------------------------------------------------------
+secured WebGine
+net-based application engine
+----------------------------------------------------------------------------
+(C) direct Netware Group - All rights reserved
+http://www.direct-netware.de/redirect.php?swg
+----------------------------------------------------------------------------
+sWG_core/_developer/README
+----------------------------------------------------------------------------
+
+Document Contents
+
+1. Preparation and Requirements
+2. How to use the Stage Builders
+
+***
+
+1. Preparation and Requirements
+
+Dear fellow developer,
+
+Thank you for your interest in the secured WebGine (sWG) development
+process. There are three Bazaar modules available:
+
+- sWG_core:
+The "sWG_core" package is intended for developers only. It provides required
+core components of the sWG under the W3C (R) Software License. They are
+needed to develop your own software based on the robust sWG architecture.
+
+- sWG_basic:
+"sWG_basic" provides all important and basic components like user and
+session management as well as the cron and validation modules. This package
+is (in connection with "sWG_core") intended for developers and is licensed
+under the W3C (R) Software License.
+
+- sWG_complete:
+This module contains different modules, function files and classes needed
+for specific purposes. Installing "sWG_core", "sWG_basic" and modules from
+"sWG_complete" will provide a system usable for end users and developers.
+
+Please note that prepackaged archives and the installation manager are
+recommended possibilities for end users to use the sWG.
+
+Before using the Stage Builders you will have to download a "sWG_core"
+package from http://www.direct-netware.de/redirect.php?swg or do a checkout
+from Bazaar.
+
+Furthermore you have to add the "_developer" directory and copy this
+"README" file to this location. Now the Stage Builders should accept your
+build requests.
+
+You need a web server running on an operating system of our choice and PHP.
+We recommend the latest PHP 5.x release.
+
+Corresponding to the planned usage you will additionally need one of the
+following database management systems:
+- MySQL 4.x or newer
+- SQLite 2.x or newer
+
+***
+
+2. How to use the Stage Builders
+
+WARNING! Do not install your development environment in a public accessible
+location.
+
+There are three Stage Builders:
+
+- swg_build_stage1.php:
+Used to create a new build of the "sWG_core" components.
+
+Console command: php swg.php i_m=developer i_s=build_stage1
+Web Browser address: http://localhost/swg.php?m=developer&s=build_stage1
+
+- swg_build_stage2.php:
+Used to create a new build of the "sWG_basic" components.
+
+Console command: php swg.php i_m=developer i_s=build_stage2
+Web Browser address: http://localhost/swg.php?m=developer&s=build_stage2
+
+- swg_build_stage3.php:
+Used to create a new build of a module from "sWG_complete".
+
+Console command: php swg.php i_m=developer i_s=build_stage3 i_dsd=tmodule+XX
+Web Browser address:
+http://localhost/swg.php?m=developer&s=build_stage3&dsd=tmodule+XX
+
+(XX needs to be replaced by the module name in swg_build_targets.php)
+
+Format for data/settings/swg_build_targets.php:
+
+<?xml version='1.0' encoding='UTF-8' ?>
+<swg_build_file_v1>
+<phpexit><![CDATA[<?php exit (); ?>]]></phpexit>
+<stage1 swgversion="PUBLIC VERSION" swgiversion="INTERNAL VERSION">
+<target development="0" path="TARGET PATH" phpversion="PHP ID" />
+</stage1>
+<stage2 source="PATH TO sWG_basic" swgversion="PUBLIC VERSION" swgiversion="INTERNAL VERSION">
+<target development="0" path="TARGET PATH" phpversion="PHP ID" />
+</stage2>
+<stage3>
+<kernel_group source="PATH TO sWG_complete/kernel_group" pdescriptor="kernel_group" pname="swg_kernel_group" swgversion="PUBLIC VERSION" swgiversion="INTERNAL VERSION">
+<target development="0" path="TARGET PATH" phpversion="PHP ID" />
+</kernel_group>
+</stage3>
+</swg_build_file_v1>
+
+This file is needed to run Stage Builders.
+
+----------------------------------------------------------------------------

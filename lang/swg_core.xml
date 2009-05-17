@@ -1,0 +1,278 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<swg_lang_file_v1 xmlns="urn:de.direct-netware.xmlns:swg.lang.v1">
+
+ <core>
+  <access><rights><insufficient><input input="string" /></insufficient></rights></access>
+
+  <automated><redirection>
+   <input input="string" />
+   <unsupported><input input="string" /></unsupported>
+  </redirection></automated>
+
+  <apply><input input="string" /></apply>
+  <back><input input="string" /></back>
+  <cancel><input input="string" /></cancel>
+  <continue><input input="string" /></continue>
+  <close><input input="string" /></close>
+
+  <datasub>
+   <allowed><input input="string" /></allowed>
+
+   <error>
+    <digitstart__1><input input="string" /></digitstart__1>
+    <digitstart__2><input input="string" /></digitstart__2>
+    <digitstart__3><input input="string" /></digitstart__3>
+   </error>
+
+   <hide><input input="string" /></hide>
+
+   <last><entry>
+    <digitstart__0>
+     <digitstart__1><input input="string" /></digitstart__1>
+     <digitstart__2><input input="string" /></digitstart__2>
+    </digitstart__0>
+
+    <digitstart__1>
+     <digitstart__1><input input="string" /></digitstart__1>
+     <digitstart__2><input input="string" /></digitstart__2>
+     <digitstart__3><input input="string" /></digitstart__3>
+    </digitstart__1>
+   </entry></last>
+
+   <loading><input input="string" /></loading>
+
+   <new>
+    <input input="string" />
+    <allowed><input input="string" /></allowed>
+    <entry><input input="string" /></entry>
+   </new>
+
+   <no><access>
+    <input input="string" />
+    <title><input input="string" /></title>
+   </access></no>
+
+   <request><content><input input="string" /></content></request>
+
+   <title>
+    <attachments><input input="string" /></attachments>
+    <default><input input="string" /></default>
+    <downloads><input input="string" /></downloads>
+
+    <link>
+     <attachments><input input="string" /></attachments>
+     <default><input input="string" /></default>
+     <downloads><input input="string" /></downloads>
+     <links><input input="string" /></links>
+    </link>
+
+    <links><input input="string" /></links>
+   </title>
+
+   <type><input input="string" /></type>
+  </datasub>
+
+  <detailed><information>
+   <input input="string" />
+   <hide><input input="string" /></hide>
+   <show><input input="string" /></show>
+  </information></detailed>
+
+  <done><input input="string" /></done>
+
+  <error>
+   <input input="string" />
+   <fatal><input input="string" /></fatal>
+  </error>
+
+  <filter>
+   <input input="string" />
+   <search><input input="string" /></search>
+  </filter>
+
+  <forgotten><password><input input="string" /></password></forgotten>
+  <guest><input input="string" /></guest>
+
+  <helper>
+   <password>
+    <digitstart__1><input input="string" /></digitstart__1>
+    <digitstart__2><input input="string" /></digitstart__2>
+   </password>
+
+   <username>
+    <digitstart__1><input input="string" /></digitstart__1>
+    <digitstart__2><input input="string" /></digitstart__2>
+   </username>
+  </helper>
+
+  <lastvisit><reset><input input="string" /></reset></lastvisit>
+  <level><up><input input="string" /></up></level>
+
+  <loading>
+   <input input="string" />
+   <ajax><input input="string" /></ajax>
+  </loading>
+
+  <login>
+   <input input="string" />
+   <with><authorized><account><input input="string" /></account></authorized></with>
+  </login>
+
+  <logout><input input="string" /></logout>
+  <menu><empty><input input="string" /></empty></menu>
+
+  <message>
+   <input input="string" />
+   <by><administration><input input="string" /></administration></by>
+   <by><request><input input="string" /></request></by>
+   <by><user><input input="string" /></user></by>
+   <from><input input="string" /></from>
+   <to><input input="string" /></to>
+  </message>
+
+  <no><input input="string" /></no>
+  <one><line><link><input input="string" /></link></line></one>
+  <options><input input="string" /></options>
+  <pages><input input="string" /></pages>
+  <password><input input="string" /></password>
+  <preview><input input="string" /></preview>
+  <rate><input input="string" /></rate>
+  <rating><input input="string" /></rating>
+
+  <redirect>
+   <input input="string" />
+   <url><input input="string" /></url>
+  </redirect>
+
+  <registration><input input="string" /></registration>
+  <save><input input="string" /></save>
+  <search><input input="string" /></search>
+
+  <security><information>
+   <input input="string" />
+   <ip><changed><input input="string" /></changed></ip>
+   <proxy><input input="string" /></proxy>
+  </information></security>
+
+  <service><list>
+   <input input="string" />
+   <empty><input input="string" /></empty>
+  </list></service>
+
+  <system><message><input input="string" /></message></system>
+  <text><input input="string" /></text>
+  <time><input input="string" /></time>
+  <timezone><gmt><input input="string" /></gmt></timezone>
+  <title><input input="string" /></title>
+  <title><validation><required><input input="string" /></required></validation></title>
+  <try><again><input input="string" /></again></try>
+  <unlimited><input input="string" /></unlimited>
+
+  <userbox>
+   <guest>
+    <digitstart__1>
+     <digitstart__1><input input="string" /></digitstart__1>
+     <digitstart__2><input input="string" /></digitstart__2>
+     <digitstart__3><input input="string" /></digitstart__3>
+     <digitstart__4><input input="string" /></digitstart__4>
+     <digitstart__5><input input="string" /></digitstart__5>
+    </digitstart__1>
+
+    <digitstart__2>
+     <digitstart__1><input input="string" /></digitstart__1>
+     <digitstart__2><input input="string" /></digitstart__2>
+     <digitstart__3><input input="string" /></digitstart__3>
+    </digitstart__2>
+   </guest>
+
+   <member>
+    <digitstart__1><input input="string" /></digitstart__1>
+    <digitstart__2><input input="string" /></digitstart__2>
+   </member>
+
+   <unread><pms>
+    <digitstart__0><input input="string" /></digitstart__0>
+
+    <digitstart__1>
+     <digitstart__1><input input="string" /></digitstart__1>
+     <digitstart__2><input input="string" /></digitstart__2>
+     <digitstart__3><input input="string" /></digitstart__3>
+    </digitstart__1>
+
+    <digitstart__2>
+     <digitstart__1><input input="string" /></digitstart__1>
+     <digitstart__2><input input="string" /></digitstart__2>
+    </digitstart__2>
+   </pms></unread>
+  </userbox>
+
+  <user><current><input input="string" /></current></user>
+  <username><input input="string" /></username>
+
+  <usertype>
+   <input input="string" />
+   <administrator><input input="string" /></administrator>
+   <banned><input input="string" /></banned>
+   <deleted><input input="string" /></deleted>
+   <external><input input="string" /></external>
+   <locked><input input="string" /></locked>
+   <main><moderator><input input="string" /></moderator></main>
+
+   <member>
+    <input input="string" />
+    <special><input input="string" /></special>
+   </member>
+
+   <moderator><input input="string" /></moderator>
+  </usertype>
+
+  <unable><to><proceed><input input="string" /></proceed></to></unable>
+  <unknown><input input="string" /></unknown>
+  <validation><required><input input="string" /></required></validation>
+  <yes><input input="string" /></yes>
+ </core>
+
+ <datetime>
+  <dtconnect><input input="string" /></dtconnect>
+
+  <longdate>
+   <digitstart__1><input input="string" /></digitstart__1>
+   <digitstart__2><input input="string" /></digitstart__2>
+
+   <month>
+    <digitstart__1><input input="string" /></digitstart__1>
+    <digitstart__2><input input="string" /></digitstart__2>
+    <digitstart__3><input input="string" /></digitstart__3>
+    <digitstart__4><input input="string" /></digitstart__4>
+    <digitstart__5><input input="string" /></digitstart__5>
+    <digitstart__6><input input="string" /></digitstart__6>
+    <digitstart__7><input input="string" /></digitstart__7>
+    <digitstart__8><input input="string" /></digitstart__8>
+    <digitstart__9><input input="string" /></digitstart__9>
+    <digitstart__10><input input="string" /></digitstart__10>
+    <digitstart__11><input input="string" /></digitstart__11>
+    <digitstart__12><input input="string" /></digitstart__12>
+   </month>
+  </longdate>
+
+  <mode input="number" />
+  <shortdate><input input="string" /></shortdate>
+  <time><input input="string" /></time>
+ </datetime>
+
+ <errors><core>
+  <access><denied><input input="string" /></denied></access>
+  <credits><insufficient><input input="string" /></insufficient></credits>
+  <database><error><input input="string" /></error></database>
+  <datasub><eid><invalid><input input="string" /></invalid></eid></datasub>
+  <required><object><not><found><input input="string" /></found></not></object></required>
+  <service><inactive><input input="string" /></inactive></service>
+  <tid><invalid><input input="string" /></invalid></tid>
+  <unconfigured><input input="string" /></unconfigured>
+  <unsupported><command><input input="string" /></command></unsupported>
+  <unknown><error><input input="string" /></error></unknown>
+  <username><unknown><input input="string" /></unknown></username>
+ </core></errors>
+
+ <lang><charset input="string" /></lang>
+</swg_lang_file_v1>

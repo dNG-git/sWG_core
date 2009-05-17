@@ -1,0 +1,8 @@
+.pagehelperbg { margin:2px 14px 5px 5px;padding:6px 4px 6px 4px;border:1px solid #204B87;border-radius:3px 3px;background-color:#FFFFFF }
+.pagehelpericon { position:absolute;top:-12px;right:-8px }
+.pagehelpercontent { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;color:#000000 }
+.pagehelpercontent a, .pagehelpercontent a:link, .pagehelpercontent a:visited { color:#000000;text-decoration:none }
+.pagehelpercontent a:active, .pagehelpercontent a:hover, .pagehelpercontent a:focus { color:#204B87;text-decoration:none }
+.pagehelpercontentlink { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:10px;color:#000000 }
+.pagehelpercontentlink a, .pagehelpercontentlink a:link, .pagehelpercontentlink a:visited { color:#000000;text-decoration:none }
+.pagehelpercontentlink a:active, .pagehelpercontentlink a:hover, .pagehelpercontentlink a:focus { color:#000000;text-decoration:underline }
