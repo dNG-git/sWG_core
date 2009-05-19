@@ -54,6 +54,7 @@ Direct calls will be honored with an "exit ()"
 if (!defined ("direct_product_iversion")) { exit (); }
 
 //j// Functions and classes
+/*#ifdef(PHP4):
 
 if (!@function_exists ("array_map"))
 {
@@ -67,7 +68,7 @@ if (!@function_exists ("array_map"))
 	*
 	* @return array Result array
 	* @since  v0.1.08
-*/
+*\/
 	function array_map ()
 	{
 		$f_args_array = func_get_args ();
@@ -110,7 +111,7 @@ if (!@function_exists ("call_user_func"))
 	*
 	* @return mixed Returned value from the function
 	* @since  v0.1.05
-*/
+*\/
 	function call_user_func ()
 	{
 		global $direct_settings;
@@ -151,7 +152,7 @@ if (!@function_exists ("call_user_func"))
 		return $f_return;
 	}
 }
-
+:#*/
 if (!@function_exists ("mb_internal_encoding"))
 {
 	//f// mb_internal_encoding ($f_encoding = "")
@@ -204,6 +205,7 @@ if (!@function_exists ("mb_substr"))
 		else { return substr ($f_data,$f_offset,$f_length); }
 	}
 }
+/*#ifdef(PHP4):
 
 if (!@function_exists ("md5_file"))
 {
@@ -221,7 +223,7 @@ if (!@function_exists ("md5_file"))
 	* @param  string $f_fileaddr The filename
 	* @return mixed Returns a string on success, FALSE otherwise.
 	* @since  v0.1.01
-*/
+*\/
 	function md5_file ($f_fileaddr)
 	{
 		$f_return = direct_getfile ("b",$f_fileaddr);
@@ -249,7 +251,7 @@ if (!@function_exists ("scandir"))
 	*         order.
 	* @return mixed Returns an array of filenames on success, or FALSE on failure.
 	* @since  v0.1.03
-*/
+*\/
 	function scandir ($f_dir,$f_sorting_reverse = 0)
 	{
 		$f_return = false;
@@ -286,7 +288,7 @@ if (!@function_exists ("mysql_real_escape_string"))
 	*         this parameter.
 	* @return mixed Returns the escaped string, or FALSE on error.
 	* @since  v0.1.03
-*/
+*\/
 	function mysql_real_escape_string ($f_data,$f_rp = "unused") { return mysql_escape_string ($f_data); }
 }
 
@@ -311,7 +313,7 @@ if (!@function_exists ("stream_set_blocking"))
 	*         available on the stream.
 	* @return boolean Returns TRUE on success or FALSE on failure.
 	* @since  v0.1.01
-*/
+*\/
 	function stream_set_blocking ($f_rp,$f_mode)
 	{
 		if (function_exists ("socket_set_blocking")) { return socket_set_blocking ($f_rp,$f_mode); }
@@ -335,12 +337,12 @@ if (!@function_exists ("stream_set_timeout"))
 	* @param  integer $f_msec Microseconds until a timeout occurs.
 	* @return boolean Returns TRUE on success or FALSE on failure.
 	* @since  v0.1.01
-*/
+*\/
 	function stream_set_timeout ($f_rp,$f_sec,$f_msec = 0)
 	{
 		if (function_exists ("socket_set_timeout")) { return socket_set_timeout ($f_rp,$f_sec,$f_msec); }
 	}
 }
-
+:#*/
 //j// EOF
 ?>
