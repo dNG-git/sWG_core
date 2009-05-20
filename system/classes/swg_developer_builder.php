@@ -212,14 +212,14 @@ $f_package_array = array (
 				if (file_exists ($this->output_array[$this->output_position]['path']."data/settings/swg_packages_installed.php")) { $f_file_data = direct_file_get ("s0",$this->output_array[$this->output_position]['path']."data/settings/swg_packages_installed.php"); }
 				else { $f_file_data = NULL; }
 
-				if (($f_file_data)&&($f_return))
+				if ($f_return)
 				{
-					$f_return->xml2array ($f_file_data,true,false);
+					if (isset ($f_file_data)) { $f_return->xml2array ($f_file_data,true,false); }
 
 					if ($f_return->node_cache_pointer ("swg_packages_file_v1 packages ".$this->output_package)) { $f_return->node_change_attributes ("swg_packages_file_v1 packages ".$this->output_package,$f_package_array); }
 					else
 					{
-						if (!$f_continue_check)
+						if (!isset ($f_file_data))
 						{
 							$f_return->node_add ("swg_packages_file_v1","",(array ("xmlns" => "urn:de.direct-netware.xmlns:swg.packages.v1")));
 							$f_return->node_add ("swg_packages_file_v1 phpexit","<?php exit (); ?>");
@@ -291,9 +291,12 @@ $f_package_array = array (
 		if (empty ($this->file_array)) { trigger_error ("sWG/#echo(__FILEPATH__)# -developer_builder_class->make_all ()- (#echo(__LINE__)#) reports: No valid files found for parsing",E_USER_ERROR); }
 		else
 		{
+			$f_strip_prefix = preg_quote ($this->output_strip_prefix);
+
 			foreach ($this->file_array as $f_file_md5 => $f_file)
 			{
-				echo "\n>> Parsing $f_file ...";
+				$f_file_stripped = preg_replace ("#^$f_strip_prefix#","",$f_file);
+				echo "\n>> Parsing $f_file_stripped ...";
 				$this->output_position = 0;
 
 				while (isset ($this->output_array[$this->output_position]))
@@ -303,7 +306,7 @@ $f_package_array = array (
 					if ($f_xml_object)
 					{
 						$f_continue_check = true;
-						$f_target_file = $this->output_array[$this->output_position]['path'].$f_file;
+						$f_target_file = $this->output_array[$this->output_position]['path'].$f_file_stripped;
 
 						if (file_exists ($f_target_file))
 						{
@@ -323,7 +326,7 @@ $f_package_array = array (
 							{
 								if ($f_parsed_file_md5 != $f_target_node_array['value']) { $f_xml_object->node_change_value ("swg_packages_file_v1 packages ".$this->output_package." ".$f_file_md5,$f_parsed_file_md5); }
 							}
-							else { $f_xml_object->node_add ("swg_packages_file_v1 packages ".$this->output_package." ".$f_file_md5,$f_parsed_file_md5,(array ("path" => $f_file))); }
+							else { $f_xml_object->node_add ("swg_packages_file_v1 packages ".$this->output_package." ".$f_file_md5,$f_parsed_file_md5,(array ("path" => $f_file_stripped))); }
 						}
 						elseif ($f_continue_check) { echo "\n!>> Failed to write the output file ... ".$this->output_array[$this->output_position]['path']; }
 						else { echo "\n!>> File has been modified ... ".$this->output_array[$this->output_position]['path']; }
