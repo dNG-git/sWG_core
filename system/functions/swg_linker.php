@@ -71,7 +71,7 @@ if (!defined ("direct_product_iversion")) { exit (); }
 * @param  boolean $f_withuuid True to add the current uuID string to the query
 * @uses   direct_debug()
 * @uses   direct_html_encode_special()
-* @uses   direct_kernel_system::dvirtual_uuid_check_usage()
+* @uses   direct_kernel_system::v_uuid_check_usage()
 * @uses   direct_linker_dynamic()
 * @uses   direct_linker_shadow()
 * @uses   USE_debug_reporting
@@ -118,7 +118,7 @@ Automatically add language, theme and uuid fields to the form
 
 		if (($direct_settings['uuid'])&&($f_withuuid))
 		{
-			if ((!$direct_classes['kernel']->dvirtual_uuid_is_cookied ())&&($direct_classes['kernel']->dvirtual_uuid_check_usage ())) { $f_return .= "<input type='hidden' name='uuid' value='$direct_settings[uuid]' />"; }
+			if ((!$direct_classes['kernel']->v_uuid_is_cookied ())&&($direct_classes['kernel']->v_uuid_check_usage ())) { $f_return .= "<input type='hidden' name='uuid' value='$direct_settings[uuid]' />"; }
 		}
 	}
 	elseif ($f_type == "optical")
@@ -286,7 +286,7 @@ not. If shadowed, they may be look like http://localhost/swg_base64data.htm
 *         (Needed for (X)HTML)
 * @param  boolean $f_withuuid True to add the current uuID string to the query
 * @uses   direct_debug()
-* @uses   direct_kernel_system::dvirtual_uuid_check_usage()
+* @uses   direct_kernel_system::v_uuid_check_usage()
 * @uses   USE_debug_reporting
 * @return string Ready to use URL
 * @since  v0.1.02
@@ -321,7 +321,7 @@ function direct_linker_dynamic ($f_type,$f_data,$f_ampconvert = true,$f_withuuid
 
 	if (($direct_settings['uuid'])&&($f_withuuid))
 	{
-		if ((!$direct_classes['kernel']->dvirtual_uuid_is_cookied ())&&($direct_classes['kernel']->dvirtual_uuid_check_usage ()))
+		if ((!$direct_classes['kernel']->v_uuid_is_cookied ())&&($direct_classes['kernel']->v_uuid_check_usage ()))
 		{
 			if ($f_data) { $f_data .= "&"; }
 			$f_data .= "uuid=".$direct_settings['uuid'];
@@ -364,7 +364,7 @@ of & seperators
 * @param  string $f_data Query string
 * @param  boolean $f_withuuid True to add the current uuID string to the query
 * @uses   direct_debug()
-* @uses   direct_kernel_system::dvirtual_uuid_check_usage()
+* @uses   direct_kernel_system::v_uuid_check_usage()
 * @uses   USE_debug_reporting
 * @return string Ready to use URL
 * @since  v0.1.02
@@ -400,7 +400,7 @@ function direct_linker_shadow ($f_type,$f_data,$f_withuuid = true)
 
 	if (($direct_settings['uuid'])&&($f_withuuid))
 	{
-		if ((!$direct_classes['kernel']->dvirtual_uuid_is_cookied ())&&($direct_classes['kernel']->dvirtual_uuid_check_usage ()))
+		if ((!$direct_classes['kernel']->v_uuid_is_cookied ())&&($direct_classes['kernel']->v_uuid_check_usage ()))
 		{
 			if ($f_data) { $f_data .= "&"; }
 			$f_data .= "uuid=".$direct_settings['uuid'];

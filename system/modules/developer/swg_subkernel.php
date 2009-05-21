@@ -133,7 +133,7 @@ define ("CLASS_direct_subkernel_developer",true);
 //j// Script specific commands
 
 direct_class_init ("subkernel_developer");
-$direct_classes['kernel']->dvirtual_call_set ("dvirtual_subkernel_init",$direct_classes['subkernel_developer'],"subkernel_init");
+$direct_classes['kernel']->v_call_set ("v_subkernel_init",$direct_classes['subkernel_developer'],"subkernel_init");
 }
 
 //j// EOF

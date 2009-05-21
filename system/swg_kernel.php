@@ -114,32 +114,32 @@ Informing the system about available functions
 		$this->functions['service_init_rboolean'] = true;
 		$this->functions['service_load'] = true;
 		$this->functions['subkernel_load'] = true;
-		$this->functions['dvirtual_group_init'] = array ();
-		$this->functions['dvirtual_group_right_check'] = array ();
-		$this->functions['dvirtual_group_right_write'] = array ();
-		$this->functions['dvirtual_group_rights_get'] = array ();
-		$this->functions['dvirtual_group_user_add_group'] = array ();
-		$this->functions['dvirtual_group_user_del_group'] = array ();
-		$this->functions['dvirtual_group_user_get_groups'] = array ();
-		$this->functions['dvirtual_group_user_get_rights'] = array ();
-		$this->functions['dvirtual_group_user_check_group'] = array ();
-		$this->functions['dvirtual_group_user_check_right'] = array ();
-		$this->functions['dvirtual_subkernel_init'] = array ();
-		$this->functions['dvirtual_user_check'] = array ();
-		$this->functions['dvirtual_user_get'] = array ();
-		$this->functions['dvirtual_user_init'] = array ();
-		$this->functions['dvirtual_user_insert'] = array ();
-		$this->functions['dvirtual_user_parse'] = array ();
-		$this->functions['dvirtual_user_update'] = array ();
-		$this->functions['dvirtual_user_write_kernel'] = array ();
-		$this->functions['dvirtual_usertype_get_int'] = array ();
-		$this->functions['dvirtual_uuid_check_usage'] = array ();
-		$this->functions['dvirtual_uuid_cookie_load'] = array ();
-		$this->functions['dvirtual_uuid_cookie_save'] = array ();
-		$this->functions['dvirtual_uuid_get'] = array ();
-		$this->functions['dvirtual_uuid_init'] = array ();
-		$this->functions['dvirtual_uuid_is_cookied'] = array ();
-		$this->functions['dvirtual_uuid_write'] = array ();
+		$this->functions['v_group_init'] = array ();
+		$this->functions['v_group_right_check'] = array ();
+		$this->functions['v_group_right_write'] = array ();
+		$this->functions['v_group_rights_get'] = array ();
+		$this->functions['v_group_user_add_group'] = array ();
+		$this->functions['v_group_user_del_group'] = array ();
+		$this->functions['v_group_user_get_groups'] = array ();
+		$this->functions['v_group_user_get_rights'] = array ();
+		$this->functions['v_group_user_check_group'] = array ();
+		$this->functions['v_group_user_check_right'] = array ();
+		$this->functions['v_subkernel_init'] = array ();
+		$this->functions['v_user_check'] = array ();
+		$this->functions['v_user_get'] = array ();
+		$this->functions['v_user_init'] = array ();
+		$this->functions['v_user_insert'] = array ();
+		$this->functions['v_user_parse'] = array ();
+		$this->functions['v_user_update'] = array ();
+		$this->functions['v_user_write_kernel'] = array ();
+		$this->functions['v_usertype_get_int'] = array ();
+		$this->functions['v_uuid_check_usage'] = array ();
+		$this->functions['v_uuid_cookie_load'] = array ();
+		$this->functions['v_uuid_cookie_save'] = array ();
+		$this->functions['v_uuid_get'] = array ();
+		$this->functions['v_uuid_init'] = array ();
+		$this->functions['v_uuid_is_cookied'] = array ();
+		$this->functions['v_uuid_write'] = array ();
 
 /* -------------------------------------------------------------------------
 Set up kernel variables
@@ -445,7 +445,7 @@ The standard result: One IP is enough
 	* @param  string $f_threshold_id This parameter is used to determine if
 	*         a request to write data is below the threshold (timeout). Multiple
 	*         thresholds may exist.
-	* @uses   direct_kernel_system::dvirtual_subkernel_init()
+	* @uses   direct_kernel_system::v_subkernel_init()
 	* @uses   direct_debug()
 	* @uses   USE_debug_reporting
 	* @return array Empty array on success
@@ -456,7 +456,7 @@ The standard result: One IP is enough
 		global $direct_cachedata,$direct_settings;
 		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -kernel_class->service_init ($f_threshold_id)- (#echo(__LINE__)#)"); }
 
-		$f_return = $this->dvirtual_subkernel_init ($f_threshold_id);
+		$f_return = $this->v_subkernel_init ($f_threshold_id);
 
 		if (direct_class_init ("error_functions"))
 		{
@@ -633,26 +633,26 @@ The standard result: One IP is enough
 		}
 	}
 
-	//f// direct_kernel_system->dvirtual_group_init ()
+	//f// direct_kernel_system->v_group_init ()
 /**
 	* "Virtual Binding" for "group_init ()"
 	*
 	* @uses   direct_debug()
-	* @uses   direct_virtual_class::dvirtual_call_get()
+	* @uses   direct_virtual_class::v_call_get()
 	* @uses   USE_debug_reporting
 	* @return boolean False on error
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function dvirtual_group_init ()
+	/*#ifndef(PHP4) */public /* #*/function v_group_init ()
 	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->dvirtual_group_init ()- (#echo(__LINE__)#)"); }
-		$f_call = $this->dvirtual_call_get ("dvirtual_group_init");
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_group_init ()- (#echo(__LINE__)#)"); }
+		$f_call = $this->v_call_get ("v_group_init");
 
 		if ($f_call) { return $f_call[0]->{$f_call[1]} (); }
 		else { return false; }
 	}
 
-	//f// direct_kernel_system->dvirtual_group_right_check ($f_gid,$f_rights,$f_explicit = false)
+	//f// direct_kernel_system->v_group_right_check ($f_gid,$f_rights,$f_explicit = false)
 /**
 	* "Virtual Binding" for "group_right_check ()"
 	*
@@ -660,21 +660,21 @@ The standard result: One IP is enough
 	* @param  mixed $f_rights One (string) or more (array) right name(s)
 	* @param  boolean $f_explicit True if all defined rights must be true
 	* @uses   direct_debug()
-	* @uses   direct_virtual_class::dvirtual_call_get()
+	* @uses   direct_virtual_class::v_call_get()
 	* @uses   USE_debug_reporting
 	* @return boolean True if the check was successful
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function dvirtual_group_right_check ($f_gid,$f_rights,$f_explicit = false)
+	/*#ifndef(PHP4) */public /* #*/function v_group_right_check ($f_gid,$f_rights,$f_explicit = false)
 	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->dvirtual_group_right_check ($f_gid,+f_rights,+f_explicit)- (#echo(__LINE__)#)"); }
-		$f_call = $this->dvirtual_call_get ("dvirtual_group_right_check");
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_group_right_check ($f_gid,+f_rights,+f_explicit)- (#echo(__LINE__)#)"); }
+		$f_call = $this->v_call_get ("v_group_right_check");
 
 		if ($f_call) { return $f_call[0]->{$f_call[1]} ($f_gid,$f_rights,$f_explicit); }
 		else { return false; }
 	}
 
-	//f// direct_kernel_system->dvirtual_group_right_write ($f_objid,$f_rid,$f_right,$f_setup)
+	//f// direct_kernel_system->v_group_right_write ($f_objid,$f_rid,$f_right,$f_setup)
 /**
 	* "Virtual Binding" for "group_right_write ()"
 	*
@@ -683,121 +683,121 @@ The standard result: One IP is enough
 	* @param  string $f_right Right name
 	* @param  boolean $f_setup True to grant the right
 	* @uses   direct_debug()
-	* @uses   direct_virtual_class::dvirtual_call_get()
+	* @uses   direct_virtual_class::v_call_get()
 	* @uses   USE_debug_reporting
 	* @return boolean False on error
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function dvirtual_group_right_write ($f_objid,$f_rid,$f_right,$f_setup)
+	/*#ifndef(PHP4) */public /* #*/function v_group_right_write ($f_objid,$f_rid,$f_right,$f_setup)
 	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->dvirtual_group_right_write ($f_objid,$f_rid,$f_right,+f_setup)- (#echo(__LINE__)#)"); }
-		$f_call = $this->dvirtual_call_get ("dvirtual_group_right_write");
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_group_right_write ($f_objid,$f_rid,$f_right,+f_setup)- (#echo(__LINE__)#)"); }
+		$f_call = $this->v_call_get ("v_group_right_write");
 
 		if ($f_call) { return $f_call[0]->{$f_call[1]} ($f_objid,$f_rid,$f_right,$f_setup); }
 		else { return false; }
 	}
 
-	//f// direct_kernel_system->dvirtual_group_rights_get ($f_gid)
+	//f// direct_kernel_system->v_group_rights_get ($f_gid)
 /**
 	* "Virtual Binding" for "group_rights_get ()"
 	*
 	* @param  string $f_gid Group ID
 	* @uses   direct_debug()
-	* @uses   direct_virtual_class::dvirtual_call_get()
+	* @uses   direct_virtual_class::v_call_get()
 	* @uses   USE_debug_reporting
 	* @return array Rights for the given group
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function dvirtual_group_rights_get ($f_gid)
+	/*#ifndef(PHP4) */public /* #*/function v_group_rights_get ($f_gid)
 	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->dvirtual_group_rights_get ($f_gid)- (#echo(__LINE__)#)"); }
-		$f_call = $this->dvirtual_call_get ("dvirtual_group_rights_get");
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_group_rights_get ($f_gid)- (#echo(__LINE__)#)"); }
+		$f_call = $this->v_call_get ("v_group_rights_get");
 
 		if ($f_call) { return $f_call[0]->{$f_call[1]} ($f_gid); }
 		else { return array (); }
 	}
 
-	//f// direct_kernel_system->dvirtual_group_user_check_group ($f_gid,$f_all = false)
+	//f// direct_kernel_system->v_group_user_check_group ($f_gid,$f_all = false)
 /**
 	* "Virtual Binding" for "group_user_check_group ()"
 	*
 	* @param  mixed $f_gid One (string) or more (array) group ID(s)
 	* @param  boolean $f_all True if the user has to be in all given groups
 	* @uses   direct_debug()
-	* @uses   direct_virtual_class::dvirtual_call_get()
+	* @uses   direct_virtual_class::v_call_get()
 	* @uses   USE_debug_reporting
 	* @return boolean True if the user is in the defined group(s)
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function dvirtual_group_user_check_group ($f_gid,$f_all = false)
+	/*#ifndef(PHP4) */public /* #*/function v_group_user_check_group ($f_gid,$f_all = false)
 	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->dvirtual_group_user_check_group (+f_gid,+f_all)- (#echo(__LINE__)#)"); }
-		$f_call = $this->dvirtual_call_get ("dvirtual_group_user_check_group");
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_group_user_check_group (+f_gid,+f_all)- (#echo(__LINE__)#)"); }
+		$f_call = $this->v_call_get ("v_group_user_check_group");
 
 		if ($f_call) { return $f_call[0]->{$f_call[1]} ($f_gid,$f_all); }
 		else { return false; }
 	}
 
-	//f// direct_kernel_system->dvirtual_group_user_check_right ($f_rights,$f_explicit = false)
+	//f// direct_kernel_system->v_group_user_check_right ($f_rights,$f_explicit = false)
 /**
 	* "Virtual Binding" for "group_user_check_right ()"
 	*
 	* @param  mixed $f_rights One (string) or more (array) right IDs
 	* @param  boolean $f_explicit True if all defined rights must be true
 	* @uses   direct_debug()
-	* @uses   direct_virtual_class::dvirtual_call_get()
+	* @uses   direct_virtual_class::v_call_get()
 	* @uses   USE_debug_reporting
 	* @return boolean True if the check was successful
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function dvirtual_group_user_check_right ($f_rights,$f_explicit = false)
+	/*#ifndef(PHP4) */public /* #*/function v_group_user_check_right ($f_rights,$f_explicit = false)
 	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->dvirtual_group_user_check_right (+f_rights,+f_explicit)- (#echo(__LINE__)#)"); }
-		$f_call = $this->dvirtual_call_get ("dvirtual_group_user_check_right");
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_group_user_check_right (+f_rights,+f_explicit)- (#echo(__LINE__)#)"); }
+		$f_call = $this->v_call_get ("v_group_user_check_right");
 
 		if ($f_call) { return $f_call[0]->{$f_call[1]} ($f_rights,$f_explicit); }
 		else { return false; }
 	}
 
-	//f// direct_kernel_system->dvirtual_group_user_get_groups ()
+	//f// direct_kernel_system->v_group_user_get_groups ()
 /**
 	* "Virtual Binding" for "group_user_get_groups ()"
 	*
 	* @uses   direct_debug()
-	* @uses   direct_virtual_class::dvirtual_call_get()
+	* @uses   direct_virtual_class::v_call_get()
 	* @uses   USE_debug_reporting
 	* @return array Group IDs for $direct_settings['user']['id']
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function dvirtual_group_user_get_groups ()
+	/*#ifndef(PHP4) */public /* #*/function v_group_user_get_groups ()
 	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->dvirtual_group_user_get_groups ()- (#echo(__LINE__)#)"); }
-		$f_call = $this->dvirtual_call_get ("dvirtual_group_user_get_groups");
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_group_user_get_groups ()- (#echo(__LINE__)#)"); }
+		$f_call = $this->v_call_get ("v_group_user_get_groups");
 
 		if ($f_call) { return $f_call[0]->{$f_call[1]} (); }
 		else { return array (); }
 	}
 
-	//f// direct_kernel_system->dvirtual_group_user_get_rights ()
+	//f// direct_kernel_system->v_group_user_get_rights ()
 /**
 	* "Virtual Binding" for "group_user_get_rights ()"
 	*
 	* @uses   direct_debug()
-	* @uses   direct_virtual_class::dvirtual_call_get()
+	* @uses   direct_virtual_class::v_call_get()
 	* @uses   USE_debug_reporting
 	* @return array Rights for $direct_settings['user']['id']
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function dvirtual_group_user_get_rights ()
+	/*#ifndef(PHP4) */public /* #*/function v_group_user_get_rights ()
 	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->dvirtual_group_user_get_rights ()- (#echo(__LINE__)#)"); }
-		$f_call = $this->dvirtual_call_get ("dvirtual_group_user_get_rights");
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_group_user_get_rights ()- (#echo(__LINE__)#)"); }
+		$f_call = $this->v_call_get ("v_group_user_get_rights");
 
 		if ($f_call) { return $f_call[0]->{$f_call[1]} (); }
 		else { return array (); }
 	}
 
-	//f// direct_kernel_system->dvirtual_subkernel_init ($f_threshold_id = "")
+	//f// direct_kernel_system->v_subkernel_init ($f_threshold_id = "")
 /**
 	* "Virtual Binding" for "subkernel_init ()"
 	*
@@ -805,17 +805,17 @@ The standard result: One IP is enough
 	*         a request to write data is below the threshold (timeout). Multiple
 	*         thresholds may exist.
 	* @uses   direct_debug()
-	* @uses   direct_virtual_class::dvirtual_call_get()
+	* @uses   direct_virtual_class::v_call_get()
 	* @uses   USE_debug_reporting
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function dvirtual_subkernel_init ($f_threshold_id = "")
+	/*#ifndef(PHP4) */public /* #*/function v_subkernel_init ($f_threshold_id = "")
 	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->dvirtual_subkernel_init ($f_threshold_id)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_subkernel_init ($f_threshold_id)- (#echo(__LINE__)#)"); }
 
 		if (!$this->subkernel_initialized)
 		{
-			$f_call = $this->dvirtual_call_get ("dvirtual_subkernel_init");
+			$f_call = $this->v_call_get ("v_subkernel_init");
 			$this->subkernel_initialized = true;
 
 			if ($f_call) { $this->prekernel_error = $f_call[0]->{$f_call[1]} ($f_threshold_id); }
@@ -823,7 +823,7 @@ The standard result: One IP is enough
 		}
 	}
 
-	//f// direct_kernel_system->dvirtual_user_check ($f_userid,$f_username = "",$f_all = false)
+	//f// direct_kernel_system->v_user_check ($f_userid,$f_username = "",$f_all = false)
 /**
 	* "Virtual Binding" for "user_check ()"
 	*
@@ -831,21 +831,21 @@ The standard result: One IP is enough
 	* @param  string $f_username Username
 	* @param  boolean $f_all Include banned and locked account if true
 	* @uses   direct_debug()
-	* @uses   direct_virtual_class::dvirtual_call_get()
+	* @uses   direct_virtual_class::v_call_get()
 	* @uses   USE_debug_reporting
 	* @return boolean True if the user exists and no error occurred
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function dvirtual_user_check ($f_userid,$f_username = "",$f_all = false)
+	/*#ifndef(PHP4) */public /* #*/function v_user_check ($f_userid,$f_username = "",$f_all = false)
 	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->dvirtual_user_check ($f_userid,$f_username,+f_all)- (#echo(__LINE__)#)"); }
-		$f_call = $this->dvirtual_call_get ("dvirtual_user_check");
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_user_check ($f_userid,$f_username,+f_all)- (#echo(__LINE__)#)"); }
+		$f_call = $this->v_call_get ("v_user_check");
 
 		if ($f_call) { return $f_call[0]->{$f_call[1]} ($f_userid,$f_username,$f_all); }
 		else { return false; }
 	}
 
-	//f// direct_kernel_system->dvirtual_user_get ($f_userid,$f_username = "",$f_all = false,$f_overwrite = false)
+	//f// direct_kernel_system->v_user_get ($f_userid,$f_username = "",$f_all = false,$f_overwrite = false)
 /**
 	* "Virtual Binding" for "user_get ()"
 	*
@@ -854,21 +854,21 @@ The standard result: One IP is enough
 	* @param  boolean $f_all Include banned and locked account if true
 	* @param  boolean $f_overwrite Overwrite already read data
 	* @uses   direct_debug()
-	* @uses   direct_virtual_class::dvirtual_call_get()
+	* @uses   direct_virtual_class::v_call_get()
 	* @uses   USE_debug_reporting
 	* @return mixed User data array on success; False on error
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function dvirtual_user_get ($f_userid,$f_username = "",$f_all = false,$f_overwrite = false)
+	/*#ifndef(PHP4) */public /* #*/function v_user_get ($f_userid,$f_username = "",$f_all = false,$f_overwrite = false)
 	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->dvirtual_user_get ($f_userid,$f_username,+f_all,+f_overwrite)- (#echo(__LINE__)#)"); }
-		$f_call = $this->dvirtual_call_get ("dvirtual_user_get");
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_user_get ($f_userid,$f_username,+f_all,+f_overwrite)- (#echo(__LINE__)#)"); }
+		$f_call = $this->v_call_get ("v_user_get");
 
 		if ($f_call) { return $f_call[0]->{$f_call[1]} ($f_userid,$f_username,$f_all,$f_overwrite); }
 		else { return false; }
 	}
 
-	//f// direct_kernel_system->dvirtual_user_init ($f_threshold_id = "")
+	//f// direct_kernel_system->v_user_init ($f_threshold_id = "")
 /**
 	* "Virtual Binding" for "user_init ()"
 	*
@@ -876,21 +876,21 @@ The standard result: One IP is enough
 	*         a request to write data is below the threshold (timeout). Multiple
 	*         thresholds may exist.
 	* @uses   direct_debug()
-	* @uses   direct_virtual_class::dvirtual_call_get()
+	* @uses   direct_virtual_class::v_call_get()
 	* @uses   USE_debug_reporting
 	* @return boolean True on success
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function dvirtual_user_init ($f_threshold_id = "")
+	/*#ifndef(PHP4) */public /* #*/function v_user_init ($f_threshold_id = "")
 	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->dvirtual_user_init ()- (#echo(__LINE__)#)"); }
-		$f_call = $this->dvirtual_call_get ("dvirtual_user_init");
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_user_init ()- (#echo(__LINE__)#)"); }
+		$f_call = $this->v_call_get ("v_user_init");
 
 		if ($f_call) { return $f_call[0]->{$f_call[1]} ($f_threshold_id); }
 		else { return false; }
 	}
 
-	//f// direct_kernel_system->dvirtual_user_parse ($f_userid = "",$f_data = "",$f_prefix = "")
+	//f// direct_kernel_system->v_user_parse ($f_userid = "",$f_data = "",$f_prefix = "")
 /**
 	* "Virtual Binding" for "user_parse ()"
 	*
@@ -898,21 +898,21 @@ The standard result: One IP is enough
 	* @param  mixed $f_data Array containing user data or empty string
 	* @param  string $f_prefix Key prefix
 	* @uses   direct_debug()
-	* @uses   direct_virtual_class::dvirtual_call_get()
+	* @uses   direct_virtual_class::v_call_get()
 	* @uses   USE_debug_reporting
 	* @return mixed Parsed (X)HTML data array; False on error
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function dvirtual_user_parse ($f_userid = "",$f_data = "",$f_prefix = "")
+	/*#ifndef(PHP4) */public /* #*/function v_user_parse ($f_userid = "",$f_data = "",$f_prefix = "")
 	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->dvirtual_user_parse ($f_userid,+f_data,$f_prefix)- (#echo(__LINE__)#)"); }
-		$f_call = $this->dvirtual_call_get ("dvirtual_user_parse");
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_user_parse ($f_userid,+f_data,$f_prefix)- (#echo(__LINE__)#)"); }
+		$f_call = $this->v_call_get ("v_user_parse");
 
 		if ($f_call) { return $f_call[0]->{$f_call[1]} ($f_userid,$f_data,$f_prefix); }
 		else { return false; }
 	}
 
-	//f// direct_kernel_system->dvirtual_user_insert ($f_userid = "",$f_data = "",$f_use_current_data = true)
+	//f// direct_kernel_system->v_user_insert ($f_userid = "",$f_data = "",$f_use_current_data = true)
 /**
 	* "Virtual Binding" for "user_insert ()"
 	*
@@ -921,21 +921,21 @@ The standard result: One IP is enough
 	* @param  boolean $f_use_current_data True to set user settings to current
 	*         ones (time, theme, ...)
 	* @uses   direct_debug()
-	* @uses   direct_virtual_class::dvirtual_call_get()
+	* @uses   direct_virtual_class::v_call_get()
 	* @uses   USE_debug_reporting
 	* @return boolean True on success
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function dvirtual_user_insert ($f_userid = "",$f_data = "",$f_use_current_data = true)
+	/*#ifndef(PHP4) */public /* #*/function v_user_insert ($f_userid = "",$f_data = "",$f_use_current_data = true)
 	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->dvirtual_user_insert ($f_userid,+f_data,+f_use_current_data)- (#echo(__LINE__)#)"); }
-		$f_call = $this->dvirtual_call_get ("dvirtual_user_insert");
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_user_insert ($f_userid,+f_data,+f_use_current_data)- (#echo(__LINE__)#)"); }
+		$f_call = $this->v_call_get ("v_user_insert");
 
 		if ($f_call) { return $f_call[0]->{$f_call[1]} ($f_userid,$f_data,$f_use_current_data); }
 		else { return false; }
 	}
 
-	//f// direct_kernel_system->dvirtual_user_update ($f_userid = "",$f_data = "",$f_use_current_data = true)
+	//f// direct_kernel_system->v_user_update ($f_userid = "",$f_data = "",$f_use_current_data = true)
 /**
 	* "Virtual Binding" for "user_update ()"
 	*
@@ -944,118 +944,118 @@ The standard result: One IP is enough
 	* @param  boolean $f_use_current_data True to set user settings to current
 	*         ones (time, theme, ...)
 	* @uses   direct_debug()
-	* @uses   direct_virtual_class::dvirtual_call_get()
+	* @uses   direct_virtual_class::v_call_get()
 	* @uses   USE_debug_reporting
 	* @return boolean True on success
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function dvirtual_user_update ($f_userid = "",$f_data = "",$f_use_current_data = true)
+	/*#ifndef(PHP4) */public /* #*/function v_user_update ($f_userid = "",$f_data = "",$f_use_current_data = true)
 	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->dvirtual_user_update ($f_userid,+f_data,+f_use_current_data)- (#echo(__LINE__)#)"); }
-		$f_call = $this->dvirtual_call_get ("dvirtual_user_update");
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_user_update ($f_userid,+f_data,+f_use_current_data)- (#echo(__LINE__)#)"); }
+		$f_call = $this->v_call_get ("v_user_update");
 
 		if ($f_call) { return $f_call[0]->{$f_call[1]} ($f_userid,$f_data,$f_use_current_data); }
 		else { return false; }
 	}
 
-	//f// direct_kernel_system->dvirtual_user_write_kernel ($f_userid)
+	//f// direct_kernel_system->v_user_write_kernel ($f_userid)
 /**
 	* "Virtual Binding" for "user_write_kernel ()"
 	*
 	* @param  string $f_userid User ID
 	* @uses   direct_debug()
-	* @uses   direct_virtual_class::dvirtual_call_get()
+	* @uses   direct_virtual_class::v_call_get()
 	* @uses   USE_debug_reporting
 	* @return boolean True on success
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function dvirtual_user_write_kernel ($f_userid)
+	/*#ifndef(PHP4) */public /* #*/function v_user_write_kernel ($f_userid)
 	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->dvirtual_user_write_kernel ($f_userid)- (#echo(__LINE__)#)"); }
-		$f_call = $this->dvirtual_call_get ("dvirtual_user_write_kernel");
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_user_write_kernel ($f_userid)- (#echo(__LINE__)#)"); }
+		$f_call = $this->v_call_get ("v_user_write_kernel");
 
 		if ($f_call) { return $f_call[0]->{$f_call[1]} ($f_userid); }
 		else { return false; }
 	}
 
-	//f// direct_kernel_system->dvirtual_usertype_get_int ($f_data = 0)
+	//f// direct_kernel_system->v_usertype_get_int ($f_data = 0)
 /**
 	* "Virtual Binding" for "usertype_get_int ()"
 	*
 	* @param  string $f_data String value for a group type
 	* @uses   direct_debug()
-	* @uses   direct_virtual_class::dvirtual_call_get()
+	* @uses   direct_virtual_class::v_call_get()
 	* @uses   USE_debug_reporting
 	* @return integer Integer value for a group type
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function dvirtual_usertype_get_int ($f_data)
+	/*#ifndef(PHP4) */public /* #*/function v_usertype_get_int ($f_data)
 	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->dvirtual_usertype_get_int ($f_data)- (#echo(__LINE__)#)"); }
-		$f_call = $this->dvirtual_call_get ("dvirtual_usertype_get_int");
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_usertype_get_int ($f_data)- (#echo(__LINE__)#)"); }
+		$f_call = $this->v_call_get ("v_usertype_get_int");
 
 		if ($f_call) { return $f_call[0]->{$f_call[1]} ($f_data); }
 		else { return 0; }
 	}
 
-	//f// direct_kernel_system->dvirtual_uuid_check_usage ()
+	//f// direct_kernel_system->v_uuid_check_usage ()
 /**
 	* "Virtual Binding" for "uuid_check_usage ()"
 	*
 	* @uses   direct_debug()
-	* @uses   direct_virtual_class::dvirtual_call_get()
+	* @uses   direct_virtual_class::v_call_get()
 	* @uses   USE_debug_reporting
 	* @return boolean True if uuID is valid and used
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function dvirtual_uuid_check_usage ()
+	/*#ifndef(PHP4) */public /* #*/function v_uuid_check_usage ()
 	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->dvirtual_uuid_check_usage ()- (#echo(__LINE__)#)"); }
-		$f_call = $this->dvirtual_call_get ("dvirtual_uuid_check_usage");
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_uuid_check_usage ()- (#echo(__LINE__)#)"); }
+		$f_call = $this->v_call_get ("v_uuid_check_usage");
 
 		if ($f_call) { return $f_call[0]->{$f_call[1]} (); }
 		else { return false; }
 	}
 
-	//f// direct_kernel_system->dvirtual_uuid_cookie_load ()
+	//f// direct_kernel_system->v_uuid_cookie_load ()
 /**
 	* "Virtual Binding" for "uuid_cookie_load ()"
 	*
 	* @uses   direct_debug()
-	* @uses   direct_virtual_class::dvirtual_call_get()
+	* @uses   direct_virtual_class::v_call_get()
 	* @uses   USE_debug_reporting
 	* @return boolean True on success
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function dvirtual_uuid_cookie_load ()
+	/*#ifndef(PHP4) */public /* #*/function v_uuid_cookie_load ()
 	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->dvirtual_uuid_cookie_load ()- (#echo(__LINE__)#)"); }
-		$f_call = $this->dvirtual_call_get ("dvirtual_uuid_cookie_load");
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_uuid_cookie_load ()- (#echo(__LINE__)#)"); }
+		$f_call = $this->v_call_get ("v_uuid_cookie_load");
 
 		if ($f_call) { return $f_call[0]->{$f_call[1]} (); }
 		else { return false; }
 	}
 
-	//f// direct_kernel_system->dvirtual_uuid_cookie_save ()
+	//f// direct_kernel_system->v_uuid_cookie_save ()
 /**
 	* "Virtual Binding" for "uuid_cookie_save ()"
 	*
 	* @uses   direct_debug()
-	* @uses   direct_virtual_class::dvirtual_call_get()
+	* @uses   direct_virtual_class::v_call_get()
 	* @uses   USE_debug_reporting
 	* @return boolean True on success
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function dvirtual_uuid_cookie_save ()
+	/*#ifndef(PHP4) */public /* #*/function v_uuid_cookie_save ()
 	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->dvirtual_uuid_cookie_save ()- (#echo(__LINE__)#)"); }
-		$f_call = $this->dvirtual_call_get ("dvirtual_uuid_cookie_save");
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_uuid_cookie_save ()- (#echo(__LINE__)#)"); }
+		$f_call = $this->v_call_get ("v_uuid_cookie_save");
 
 		if ($f_call) { return $f_call[0]->{$f_call[1]} (); }
 		else { return false; }
 	}
 
-	//f// direct_kernel_system->dvirtual_uuid_get ($f_type,$f_cookie_mode = false)
+	//f// direct_kernel_system->v_uuid_get ($f_type,$f_cookie_mode = false)
 /**
 	* "Virtual Binding" for "uuid_get ()"
 	*
@@ -1063,60 +1063,60 @@ The standard result: One IP is enough
 	* @param  mixed $f_cookie_mode Boolean for (de)activation - empty string to
 	*         use system setting
 	* @uses   direct_debug()
-	* @uses   direct_virtual_class::dvirtual_call_get()
+	* @uses   direct_virtual_class::v_call_get()
 	* @uses   USE_debug_reporting
 	* @return mixed Array or string on success; False on error
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function dvirtual_uuid_get ($f_type,$f_cookie_mode = false)
+	/*#ifndef(PHP4) */public /* #*/function v_uuid_get ($f_type,$f_cookie_mode = false)
 	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->dvirtual_uuid_get ($f_type,+f_cookie_mode)- (#echo(__LINE__)#)"); }
-		$f_call = $this->dvirtual_call_get ("dvirtual_uuid_get");
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_uuid_get ($f_type,+f_cookie_mode)- (#echo(__LINE__)#)"); }
+		$f_call = $this->v_call_get ("v_uuid_get");
 
 		if ($f_call) { return $f_call[0]->{$f_call[1]} ($f_type,$f_cookie_mode); }
 		else { return false; }
 	}
 
-	//f// direct_kernel_system->dvirtual_uuid_init (&$f_uuid)
+	//f// direct_kernel_system->v_uuid_init (&$f_uuid)
 /**
 	* "Virtual Binding" for "uuid_init ()"
 	*
 	* @param  string &$f_uuid uuID of the current session
 	* @uses   direct_debug()
-	* @uses   direct_virtual_class::dvirtual_call_get()
+	* @uses   direct_virtual_class::v_call_get()
 	* @uses   USE_debug_reporting
 	* @return boolean True on success
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function dvirtual_uuid_init (&$f_uuid)
+	/*#ifndef(PHP4) */public /* #*/function v_uuid_init (&$f_uuid)
 	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->dvirtual_uuid_init ($f_uuid)- (#echo(__LINE__)#)"); }
-		$f_call = $this->dvirtual_call_get ("dvirtual_uuid_init");
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_uuid_init ($f_uuid)- (#echo(__LINE__)#)"); }
+		$f_call = $this->v_call_get ("v_uuid_init");
 
 		if ($f_call) { return $f_call[0]->{$f_call[1]} ($f_uuid); }
 		else { return false; }
 	}
 
-	//f// direct_kernel_system->dvirtual_uuid_is_cookied ()
+	//f// direct_kernel_system->v_uuid_is_cookied ()
 /**
 	* "Virtual Binding" for "uuid_is_cookied ()"
 	*
 	* @uses   direct_debug()
-	* @uses   direct_virtual_class::dvirtual_call_get()
+	* @uses   direct_virtual_class::v_call_get()
 	* @uses   USE_debug_reporting
 	* @return boolean True on success
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function dvirtual_uuid_is_cookied ()
+	/*#ifndef(PHP4) */public /* #*/function v_uuid_is_cookied ()
 	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->dvirtual_uuid_is_cookied ()- (#echo(__LINE__)#)"); }
-		$f_call = $this->dvirtual_call_get ("dvirtual_uuid_is_cookied");
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_uuid_is_cookied ()- (#echo(__LINE__)#)"); }
+		$f_call = $this->v_call_get ("v_uuid_is_cookied");
 
 		if ($f_call) { return $f_call[0]->{$f_call[1]} (); }
 		else { return false; }
 	}
 
-	//f// direct_kernel_system->dvirtual_uuid_write ($f_data,$f_cookie_mode = "")
+	//f// direct_kernel_system->v_uuid_write ($f_data,$f_cookie_mode = "")
 /**
 	* "Virtual Binding" for "uuid_write ()"
 	*
@@ -1124,15 +1124,15 @@ The standard result: One IP is enough
 	* @param  mixed $f_cookie_mode Boolean for (de)activation - empty string to
 	*         use system setting
 	* @uses   direct_debug()
-	* @uses   direct_virtual_class::dvirtual_call_get()
+	* @uses   direct_virtual_class::v_call_get()
 	* @uses   USE_debug_reporting
 	* @return boolean True on success
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function dvirtual_uuid_write ($f_data,$f_cookie_mode = "")
+	/*#ifndef(PHP4) */public /* #*/function v_uuid_write ($f_data,$f_cookie_mode = "")
 	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->dvirtual_group_init (+f_data,+f_cookie_mode)- (#echo(__LINE__)#)"); }
-		$f_call = $this->dvirtual_call_get ("dvirtual_uuid_write");
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_group_init (+f_data,+f_cookie_mode)- (#echo(__LINE__)#)"); }
+		$f_call = $this->v_call_get ("v_uuid_write");
 
 		if ($f_call) { return $f_call[0]->{$f_call[1]} ($f_data,$f_cookie_mode); }
 		else { return false; }

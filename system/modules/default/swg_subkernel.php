@@ -130,8 +130,8 @@ Informing the system about the available function
 		if ($direct_classes['basic_functions']->include_file ($direct_settings['path_system']."/classes/swg_output.php",1)) { $f_return = array (); }
 		else { $f_return = array ("errors_core_required_object_not_found","FATAL ERROR:<br />&quot;$direct_settings[path_system]/classes/swg_output.php&quot; was not found<br /><br />sWG/#echo(__FILEPATH__)# -kernel_class->subkernel_init ()- (#echo(__LINE__)#)"); }
 
-		$direct_classes['kernel']->dvirtual_user_init ($f_threshold_id);
-		$direct_classes['kernel']->dvirtual_group_init ();
+		$direct_classes['kernel']->v_user_init ($f_threshold_id);
+		$direct_classes['kernel']->v_group_init ();
 
 		if (defined ("CLASS_direct_output_control")) { direct_output_theme ($direct_settings['theme']); }
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -kernel_class->subkernel_init ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
@@ -148,7 +148,7 @@ define ("CLASS_direct_subkernel_default",true);
 //j// Script specific commands
 
 direct_class_init ("subkernel_default");
-$direct_classes['kernel']->dvirtual_call_set ("dvirtual_subkernel_init",$direct_classes['subkernel_default'],"subkernel_init");
+$direct_classes['kernel']->v_call_set ("v_subkernel_init",$direct_classes['subkernel_default'],"subkernel_init");
 }
 
 //j// EOF

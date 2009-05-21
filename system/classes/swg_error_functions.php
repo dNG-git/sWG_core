@@ -198,7 +198,7 @@ Informing the system about available functions
 	* @uses   direct_debug()
 	* @uses   direct_error_functions::backtrace_get()
 	* @uses   direct_kernel_system::service_init()
-	* @uses   direct_kernel_system::dvirtual_usertype_get_int()
+	* @uses   direct_kernel_system::v_usertype_get_int()
 	* @uses   direct_linker()
 	* @uses   direct_local_get()
 	* @uses   direct_output_inline::header()
@@ -258,9 +258,9 @@ Informing the system about available functions
 
 			if ($f_type == "fatal") { $f_return = $direct_classes['output']->oset ("default".$f_subtype,"error_fatal"); }
 			elseif ($f_type == "critical") { $f_return = $direct_classes['output']->oset ("default".$f_subtype,"error_critical"); }
-			elseif (($f_type == "login")&&(direct_class_function_check ($direct_classes['kernel'],"dvirtual_usertype_get_int")))
+			elseif (($f_type == "login")&&(direct_class_function_check ($direct_classes['kernel'],"v_usertype_get_int")))
 			{
-				if ($direct_classes['kernel']->dvirtual_usertype_get_int ($direct_settings['user']['type'])) { $direct_cachedata['output_current_user'] = $direct_settings['user']['name_html']; }
+				if ($direct_classes['kernel']->v_usertype_get_int ($direct_settings['user']['type'])) { $direct_cachedata['output_current_user'] = $direct_settings['user']['name_html']; }
 				else { $direct_cachedata['output_current_user'] = direct_local_get ("core_guest"); }
 
 				if (@$direct_cachedata['page_this']) { $direct_cachedata['output_link_login'] = direct_linker ("url0","m=account&s=status&a=login&dsd=source+".(urlencode (base64_encode ($direct_cachedata['page_this'])))); }

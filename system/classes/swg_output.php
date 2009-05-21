@@ -693,19 +693,19 @@ file of the default OSet
 
 					if ($f_menu_array[$f_menu_id."_members"])
 					{
-						if (($f_menu_array[$f_menu_id."_members"]['value'])&&(direct_class_function_check ($direct_classes['kernel'],"dvirtual_usertype_get_int")))
+						if (($f_menu_array[$f_menu_id."_members"]['value'])&&(direct_class_function_check ($direct_classes['kernel'],"v_usertype_get_int")))
 						{
-							if ($direct_classes['kernel']->dvirtual_usertype_get_int ($direct_settings['user']['type'])) { $f_right_check = true; }
+							if ($direct_classes['kernel']->v_usertype_get_int ($direct_settings['user']['type'])) { $f_right_check = true; }
 						}
 					}
 
 					if ((!$f_right_check)&&($f_menu_array[$f_menu_id."_group_right"]))
 					{
-						if (direct_class_function_check ($direct_classes['kernel'],"dvirtual_group_user_check_right"))
+						if (direct_class_function_check ($direct_classes['kernel'],"v_group_user_check_right"))
 						{
 							if (isset ($f_menu_array[$f_menu_id."_group_right"]['value']))
 							{
-								if ($f_menu_array[$f_menu_id."_group_right"]['value']) { $f_right_check = $direct_classes['kernel']->dvirtual_group_user_check_right ($f_menu_array[$f_menu_id."_group_right"]['value']); }
+								if ($f_menu_array[$f_menu_id."_group_right"]['value']) { $f_right_check = $direct_classes['kernel']->v_group_user_check_right ($f_menu_array[$f_menu_id."_group_right"]['value']); }
 							}
 							elseif (is_array ($f_menu_array[$f_menu_id."_group_right"]))
 							{
@@ -716,7 +716,7 @@ file of the default OSet
 									if (strlen ($f_group_right_array['value'])) { $f_group_rights_array[] = $f_group_right_array['value']; }
 								}
 
-								$f_right_check = $direct_classes['kernel']->dvirtual_group_user_check_right ($f_group_rights_array);
+								$f_right_check = $direct_classes['kernel']->v_group_user_check_right ($f_group_rights_array);
 							}
 						}
 					}

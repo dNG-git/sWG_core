@@ -431,11 +431,11 @@ Informing the system about available functions
 
 		$this->functions['debug'] = true;
 		$this->functions['debug_walker'] = true;
-		$this->functions['dvirtual_call'] = true;
-		$this->functions['dvirtual_call_check'] = true;
-		$this->functions['dvirtual_call_get'] = true;
-		$this->functions['dvirtual_call_rref'] = true;
-		$this->functions['dvirtual_call_set'] = true;
+		$this->functions['v_call'] = true;
+		$this->functions['v_call_check'] = true;
+		$this->functions['v_call_get'] = true;
+		$this->functions['v_call_rref'] = true;
+		$this->functions['v_call_set'] = true;
 	}
 /*#ifdef(PHP4):
 /**
@@ -529,24 +529,24 @@ $direct_cachedata['core_debug'][] = ("sWG/#echo(__FILEPATH__)# -virtual_class->d
 		return /*#ifdef(DEBUG):direct_debug (9,"sWG/#echo(__FILEPATH__)# -virtual_class->debug_walker ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_virtual_class->dvirtual_call ()
+	//f// direct_virtual_class->v_call ()
 /**
 	* The sWG provides a method called "Virtual Binding" to add non class methods
 	* or functions virtually to the object. This method is used to call these
 	* virtual methods (or real ones if not applicable). Normally we use
 	* "call_user_func" to support "Virtual Binding". This is about 4 times slower
 	* than dynamic function calls ($example->$callme ()). We strongly recommend
-	* to use and support dvirtual_ function calls if possible.
+	* to use and support v_ function calls if possible.
 	*
 	* @uses   direct_debug()
-	* @uses   direct_virtual_class::dvirtual_call_check()
+	* @uses   direct_virtual_class::v_call_check()
 	* @uses   USE_debug_reporting
 	* @return mixed Returned data from method (NULL on error)
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function dvirtual_call ()
+	/*#ifndef(PHP4) */public /* #*/function v_call ()
 	{
-		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -virtual_class->dvirtual_call (...)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -virtual_class->v_call (...)- (#echo(__LINE__)#)"); }
 
 		$f_data = func_get_args ();
 		$f_return = NULL;
@@ -556,7 +556,7 @@ $direct_cachedata['core_debug'][] = ("sWG/#echo(__FILEPATH__)# -virtual_class->d
 			$f_function = $f_data[0];
 			unset ($f_data[0]);
 
-			if ($this->dvirtual_call_check ($f_function))
+			if ($this->v_call_check ($f_function))
 			{
 				if (is_array ($this->functions[$f_function]))
 				{
@@ -571,10 +571,10 @@ $direct_cachedata['core_debug'][] = ("sWG/#echo(__FILEPATH__)# -virtual_class->d
 			}
 		}
 
-		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -virtual_class->dvirtual_call ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
+		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -virtual_class->v_call ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_virtual_class->dvirtual_call_check ($f_function,$f_virtual_type = false)
+	//f// direct_virtual_class->v_call_check ($f_function,$f_virtual_type = false)
 /**
 	* Check if a method exists.
 	*
@@ -585,9 +585,9 @@ $direct_cachedata['core_debug'][] = ("sWG/#echo(__FILEPATH__)# -virtual_class->d
 	* @return boolean True if the method is available
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function dvirtual_call_check ($f_function,$f_virtual_type = false)
+	/*#ifndef(PHP4) */public /* #*/function v_call_check ($f_function,$f_virtual_type = false)
 	{
-		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -virtual_class->dvirtual_call_check ($f_function,+f_virtual_type)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -virtual_class->v_call_check ($f_function,+f_virtual_type)- (#echo(__LINE__)#)"); }
 
 		$f_data = func_get_args ();
 		$f_return = false;
@@ -601,44 +601,44 @@ $direct_cachedata['core_debug'][] = ("sWG/#echo(__FILEPATH__)# -virtual_class->d
 			}
 		}
 
-		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -virtual_class->dvirtual_call_check ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
+		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -virtual_class->v_call_check ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_virtual_class->dvirtual_call_get ($f_function)
+	//f// direct_virtual_class->v_call_get ($f_function)
 /**
 	* Returns the callable array or false if it is either a invalid function name
 	* or not allowed to be a "Virtual Binding".
 	*
 	* @param  string $f_function Function name
 	* @uses   direct_debug()
-	* @uses   direct_virtual_class::dvirtual_call_check()
+	* @uses   direct_virtual_class::v_call_check()
 	* @uses   USE_debug_reporting
 	* @return mixed Callable array or false on error
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */protected /* #*/function dvirtual_call_get ($f_function)
+	/*#ifndef(PHP4) */protected /* #*/function v_call_get ($f_function)
 	{
-		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -virtual_class->dvirtual_call_get ($f_function)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -virtual_class->v_call_get ($f_function)- (#echo(__LINE__)#)"); }
 
-		if ($this->dvirtual_call_check ($f_function,true)) { return $this->functions[$f_function]; }
+		if ($this->v_call_check ($f_function,true)) { return $this->functions[$f_function]; }
 		else { return false; }
 	}
 
-	//f// direct_virtual_class->dvirtual_call_rref ()
+	//f// direct_virtual_class->v_call_rref ()
 /**
-	* This method is similar to dvirtual_call but will return a reference to the
+	* This method is similar to v_call but will return a reference to the
 	* resulting object.
 	*
 	* @param  string $f_function Function name
 	* @uses   direct_debug()
-	* @uses   direct_virtual_class::dvirtual_call_check()
+	* @uses   direct_virtual_class::v_call_check()
 	* @uses   USE_debug_reporting
 	* @return mixed Returned data from method (NULL on error)
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function &dvirtual_call_rref ()
+	/*#ifndef(PHP4) */public /* #*/function &v_call_rref ()
 	{
-		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -virtual_class->dvirtual_call_rref (...)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -virtual_class->v_call_rref (...)- (#echo(__LINE__)#)"); }
 
 		$f_data = func_get_args ();
 		$f_return = NULL;
@@ -648,7 +648,7 @@ $direct_cachedata['core_debug'][] = ("sWG/#echo(__FILEPATH__)# -virtual_class->d
 			$f_function = $f_data[0];
 			unset ($f_data[0]);
 
-			if ($this->dvirtual_call_check ($f_function))
+			if ($this->v_call_check ($f_function))
 			{
 				if (is_array ($this->functions[$f_function]))
 				{
@@ -666,7 +666,7 @@ $direct_cachedata['core_debug'][] = ("sWG/#echo(__FILEPATH__)# -virtual_class->d
 		return $f_return;
 	}
 
-	//f// direct_virtual_class->dvirtual_call_set ($f_function_virtual,&$f_object,$f_function)
+	//f// direct_virtual_class->v_call_set ($f_function_virtual,&$f_object,$f_function)
 /**
 	* Sets and overwrites a "Virtual Binding".
 	*
@@ -676,9 +676,9 @@ $direct_cachedata['core_debug'][] = ("sWG/#echo(__FILEPATH__)# -virtual_class->d
 	* @return mixed Callable array or false on error
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function dvirtual_call_set ($f_function_virtual,&$f_object,$f_function)
+	/*#ifndef(PHP4) */public /* #*/function v_call_set ($f_function_virtual,&$f_object,$f_function)
 	{
-		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -virtual_class->dvirtual_call_set ($f_function_virtual,+f_object,$f_function)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -virtual_class->v_call_set ($f_function_virtual,+f_object,$f_function)- (#echo(__LINE__)#)"); }
 		$f_return = false;
 
 		if ((is_string ($f_function_virtual))&&(!empty ($f_function_virtual)))
@@ -693,7 +693,7 @@ $direct_cachedata['core_debug'][] = ("sWG/#echo(__FILEPATH__)# -virtual_class->d
 			}
 		}
 
-		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -virtual_class->dvirtual_call_set ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
+		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -virtual_class->v_call_set ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 }
 
@@ -1273,7 +1273,7 @@ Search for the requested class ...
 *
 * @param  string $f_class Object where the function should exist
 * @param  string $f_function Name of the function
-* @uses   direct_virtual_class::dvirtual_call_check()
+* @uses   direct_virtual_class::v_call_check()
 * @uses   direct_debug()
 * @uses   USE_debug_reporting
 * @return boolean True if the function exists
@@ -1287,7 +1287,7 @@ function direct_class_function_check (&$f_class,$f_function)
 
 	if ((is_object ($f_class))&&($f_class != NULL))
 	{
-		if (is_subclass_of ($f_class,"direct_virtual_class")) { $f_return = $f_class->dvirtual_call_check ($f_function); }
+		if (is_subclass_of ($f_class,"direct_virtual_class")) { $f_return = $f_class->v_call_check ($f_function); }
 		else { $f_return = method_exists ($f_class,$f_function); }
 	}
 
