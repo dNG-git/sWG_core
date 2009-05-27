@@ -1259,7 +1259,7 @@ Search for the requested class ...
 			} 
 		}
 
-		if ((!$f_include_check)&&(direct_class_function_check ($direct_classes['basic_functions'],"include")))
+		if ((!$f_include_check)&&(direct_class_function_check ($direct_classes['basic_functions'],"include_file")))
 		{
 			$f_include_check = $direct_classes['basic_functions']->include_file ($direct_settings['path_system']."/classes/dhandler/swg_$f_class.php");
 			if (!$f_include_check) { $direct_classes['basic_functions']->include_file ($direct_settings['path_system']."/classes/swg_$f_class.php"); }
