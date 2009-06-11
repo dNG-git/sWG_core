@@ -554,7 +554,7 @@ The standard result: One IP is enough
 		{
 			if (!isset ($direct_classes['basic_functions'])) { direct_class_init ("basic_functions"); }
 
-			if (($direct_settings["swg_service_lang_$direct_settings[lang]_module"])||($direct_settings["swg_service_lang_$direct_settings[lang]_service"])||($direct_settings["swg_service_lang_$direct_settings[lang]_action"]))
+			if (isset ($direct_settings["swg_service_lang_{$direct_settings['lang']}_module"]/*#ifndef(PHP4) */,/* #*//*#ifdef(PHP4):) && isset (:#*/$direct_settings["swg_service_lang_{$direct_settings['lang']}_service"]/*#ifndef(PHP4) */,/* #*//*#ifdef(PHP4):) && isset (:#*/$direct_settings["swg_service_lang_{$direct_settings['lang']}_action"]))
 			{
 				if (isset ($direct_settings["swg_service_lang_$direct_settings[lang]_dsd"])) { $f_redirect_dsds = $direct_settings["swg_service_lang_$direct_settings[lang]_dsd"]; }
 				$direct_settings['a'] = $direct_settings["swg_service_lang_$direct_settings[lang]_action"];
@@ -562,7 +562,7 @@ The standard result: One IP is enough
 				$direct_settings['m'] = $direct_settings["swg_service_lang_$direct_settings[lang]_module"];
 				$f_redirected = true;
 			}
-			elseif (($direct_settings['swg_service_module'])||($direct_settings['swg_service_service'])||($direct_settings['swg_service_action']))
+			elseif (isset ($direct_settings['swg_service_module']/*#ifndef(PHP4) */,/* #*//*#ifdef(PHP4):) && isset (:#*/$direct_settings['swg_service_service']/*#ifndef(PHP4) */,/* #*//*#ifdef(PHP4):) && isset (:#*/$direct_settings['swg_service_action']))
 			{
 				if (isset ($direct_settings['swg_service_dsd'])) { $f_redirect_dsds = $direct_settings['swg_service_dsd']; }
 				$direct_settings['a'] = $direct_settings['swg_service_action'];
