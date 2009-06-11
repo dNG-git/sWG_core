@@ -232,6 +232,41 @@ if (!@function_exists ("md5_file"))
 		return $f_return;
 	}
 }
+:#*/
+if (!@function_exists ("property_exists"))
+{
+	//f// property_exists ($f_class,$f_property)
+/**
+	* "property_exists ()" has been added (the first time) to PHP 5.1.0.
+	*
+	* php.net: Checks if the object or class has a property.
+	*
+	* bool property_exists ( mixed $class , string $property )
+	*
+	* @param  mixed $f_class The class name or an object of the class to test
+	*         for.
+	* @param  mixed $f_property The name of the property.
+	* @return mixed Returns TRUE if the property exists, FALSE if it doesn't
+	*         exist or NULL in case of an error.
+	* @since  v0.1.08
+*/
+	function property_exists ($f_class,$f_property)
+	{
+		$f_return = NULL;
+
+		if ((is_string ($f_class))&&(class_exists ($f_class,/*#ifndef(PHP4) */false/* #*/))) { $f_return = array_key_exists ($f_property,(get_class_vars  ($f_class))); }
+		elseif (is_object ($f_class))
+		{
+			if ((isset ($f_class->$f_property))||(is_null ($f_class->$f_property))) { $f_return = true; }
+			else { $f_return = false; }
+		}
+
+		return $f_return;
+	}
+}
+/*#ifdef(PHP4):
+
+property_exists  ( mixed $class  , string $property  )
 
 if (!@function_exists ("scandir"))
 {
