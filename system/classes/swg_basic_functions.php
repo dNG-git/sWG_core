@@ -317,7 +317,7 @@ Set up the caching variables
 				{
 					if ((strlen ($f_dot_part) > 1)&&($f_dot_part[(strlen ($f_dot_part) - 1)] == "\""))
 					{
-						if ($f_dot_part[(strlen ($f_dot_part) - 2)] == "\\") { $f_data_part .= $f_dot_part; }
+						if ((preg_match ("#([\\\\]+)\"$#",$f_dot_part,$f_result_array))&&(strlen ($f_result_array) % 2 == 1)) { $f_data_part .= $f_dot_part; }
 						else
 						{
 							$f_data_part .= $f_dot_part;
@@ -370,7 +370,7 @@ Set up the caching variables
 				{
 					if ((strlen ($f_dot_part) > 1)&&($f_dot_part[(strlen ($f_dot_part) - 1)] == "]"))
 					{
-						if ($f_dot_part[(strlen ($f_dot_part) - 2)] == "\\") { $f_data_part .= $f_dot_part; }
+						if ((preg_match ("#([\\\\]+)\]$#",$f_dot_part,$f_result_array))&&(strlen ($f_result_array) % 2 == 1)) { $f_data_part .= $f_dot_part; }
 						else
 						{
 							$f_data_part .= $f_dot_part;
@@ -799,7 +799,7 @@ Set up the caching variables
 		else
 		{
 			trigger_error ("sWG/#echo(__FILEPATH__)# -basic_functions_class->require_file ()- (#echo(__LINE__)#) reporting: Requested file $f_file not found",E_USER_ERROR);
-			if ((class_exists ("direct_error_functions"))&&(!isset ($direct_classes['error_functions']))) { direct_class_init ("error_functions"); }
+			if ((class_exists ("direct_error_functions",/*#ifndef(PHP4) */false/* #*/))&&(!isset ($direct_classes['error_functions']))) { direct_class_init ("error_functions"); }
 
 			if (direct_class_function_check ($direct_classes['error_functions'],"error_page")) { $direct_classes['error_functions']->error_page ("critical","core_required_object_not_found","FATAL ERROR:<br />&quot;$f_file&quot; was not found<br />sWG/#echo(__FILEPATH__)# -basic_functions_class->require_file ()- (#echo(__LINE__)#)"); }
 			elseif  ($direct_local['lang_charset']) { $direct_classes['basic_functions']->emergency_mode (direct_local_get ("errors_core_required_object_not_found")."<br /><br />FATAL ERROR:<br />&quot;$f_file&quot; was not found<br /><br />sWG/#echo(__FILEPATH__)# -basic_functions_class->require_file ()- (#echo(__LINE__)#)"); }
@@ -874,7 +874,7 @@ Set up the caching variables
 				}
 				elseif ($f_required)
 				{
-					if ((class_exists ("direct_error_functions"))&&(!isset ($direct_classes['error_functions']))) { direct_class_init ("error_functions"); }
+					if ((class_exists ("direct_error_functions",/*#ifndef(PHP4) */false/* #*/))&&(!isset ($direct_classes['error_functions']))) { direct_class_init ("error_functions"); }
 
 					if (direct_class_function_check ($direct_classes['error_functions'],"error_page")) { $direct_classes['error_functions']->error_page ("critical","core_required_object_not_found","FATAL ERROR:<br />&quot;$f_file&quot; was not found<br />sWG/#echo(__FILEPATH__)# -basic_functions_class->settings_get ()- (#echo(__LINE__)#)"); }
 					elseif  ($direct_local['lang_charset']) { $direct_classes['basic_functions']->emergency_mode (direct_local_get ("errors_core_required_object_not_found")."<br /><br />FATAL ERROR:<br />&quot;$f_file&quot; was not found<br /><br />sWG/#echo(__FILEPATH__)# -basic_functions_class->settings_get ()- (#echo(__LINE__)#)"); }
@@ -905,7 +905,7 @@ Set up the caching variables
 */
 	/*#ifndef(PHP4) */public /* #*/function settings_write ($f_settings,$f_file)
 	{
-		global $direct_classes,$direct_local,$direct_settings;
+		global $direct_classes,$direct_settings;
 		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -basic_functions_class->settings_write (+f_settings,$f_file)- (#echo(__LINE__)#)"); }
 
 		$f_continue_check = $this->include_file ($direct_settings['path_system']."/classes/swg_xml.php");
@@ -1005,7 +1005,7 @@ it together to our result.
 */
 	/*#ifndef(PHP4) */public /* #*/function varfilter ($f_data,$f_type = "output")
 	{
-		global $direct_cachedata,$direct_local,$direct_settings;
+		global $direct_cachedata,$direct_settings;
 		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -basic_functions_class->varfilter (+f_data,$f_type)- (#echo(__LINE__)#)"); }
 
 		if (preg_match_all ("#\{var:(\w+)\}#i",$f_data,$f_result_array,PREG_SET_ORDER))
