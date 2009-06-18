@@ -50,29 +50,6 @@ if (djs_swgDOM)
 
 if (typeof (djs_var['lang_charset']) == 'undefined') { djs_var['lang_charset'] = 'UTF-8'; }
 
-function djs_swgDOM_create_js_node ()
-{
-	var f_return = false;
-
-	if (djs_swgDOM_elements_editable)
-	{
-		if (djs_swgDOM_head_node == null)
-		{
-			djs_swgDOM_head_node = top.document.getElementsByTagName ('head');
-			if (djs_swgDOM_head_node != null) { djs_swgDOM_head_node = djs_swgDOM_head_node[0]; }
-		}
-
-		if (djs_swgDOM_head_node != null)
-		{
-			f_return = top.document.createElement ("script");
-			f_return.setAttribute ("language","JavaScript1.5");
-			f_return.setAttribute ("type","text/javascript");
-		}
-	}
-
-	return f_return;
-}
-
 function djs_swgDOM_css_change_px (f_id,f_css_element,f_css_value)
 {
 	if (djs_swgDOM)
@@ -152,33 +129,44 @@ function djs_swgDOM_insert (f_data,f_doc_root_id)
 	return f_return;
 }
 
-function djs_swgDOM_insert_js (f_data)
+function djs_swgDOM_js_insert_url (f_url)
 {
 	var f_return = false;
-	var f_js_root = djs_swgDOM_create_js_node ();
 
-	if (f_js_root)
+	if (djs_swgDOM_elements_editable)
 	{
-		try { f_js_root.appendChild (top.document.createTextNode (f_data)); }
-		catch (f_handled_exception) { f_js_root.text += f_data; }
+		try
+		{
+			var f_js_id = encodeURIComponent(f_url).replace (/%/g,"");
+			var f_js_root = self.document.getElementById ("swgJS_" + f_js_id);
 
-		djs_swgDOM_head_node.appendChild (f_js_root);
-		f_return = true;
-	}
+			if (typeof (f_js_root) == "object") { f_js_root = djs_swgDOM_structure_delete (f_js_root); }
 
-	return f_return;
-}
+			if (typeof (f_js_root) != "object")
+			{
+				if (djs_swgDOM_head_node == null)
+				{
+					djs_swgDOM_head_node = self.document.getElementsByTagName ('head');
+					if (djs_swgDOM_head_node != null) { djs_swgDOM_head_node = djs_swgDOM_head_node[0]; }
+				}
 
-function djs_swgDOM_insert_js_url (f_url)
-{
-	var f_return = false;
-	var f_js_root = djs_swgDOM_create_js_node ();
+				if (djs_swgDOM_head_node != null)
+				{
+					f_js_root = self.document.createElement ("script");
+					f_js_root.setAttribute ("language","JavaScript1.5");
+					f_js_root.setAttribute ("type","text/javascript");
+				}
+			}
 
-	if (f_js_root)
-	{
-		f_js_root.setAttribute ("src",f_url);
-		djs_swgDOM_head_node.appendChild (f_js_root);
-		f_return = true;
+			if (typeof (f_js_root) == "object")
+			{
+				f_js_root.setAttribute ("id","swgJS_" + f_js_id);
+				f_js_root.setAttribute ("src",f_url);
+				djs_swgDOM_head_node.appendChild (f_js_root);
+				f_return = true;
+			}
+		}
+		catch (f_unhandled_exception) { }
 	}
 
 	return f_return;
