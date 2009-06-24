@@ -148,7 +148,7 @@ completion.
 
 		$g_builder_object->add_filetype_ascii ("css");
 		$g_builder_object->set_exclude_dirs ("_developer,_extras");
-		$g_builder_object->set_exclude_files ("INSTALL,CHANGELOG,NEWS,FAQ,LICENSE");
+		$g_builder_object->set_exclude_files ("INSTALL,CHANGELOG,NEWS,FAQ,LICENSE,data/settings/nim/swg_nim_runonce.xml");
 		$g_builder_object->set_strip_prefix ($g_source_path);
 		$g_builder_object->set_target_metadata ("basic","swg_basic",2,$g_swg_version,$g_swg_iversion);
 
