@@ -206,7 +206,16 @@
    </pms></unread>
   </userbox>
 
-  <user><current><input input="string" /></current></user>
+  <user>
+   <current><input input="string" /></current>
+
+   <warning>
+    <input input="string" />
+    <ip><input input="string" /></ip>
+    <proxy><input input="string" /></proxy>
+   </warning>
+  </user>
+
   <username><input input="string" /></username>
 
   <usertype>

@@ -131,6 +131,7 @@ Informing the system about available functions
 		$this->functions['oset'] = true;
 		$this->functions['redirect'] = true;
 		$this->functions['servicemenu'] = true;
+		$this->functions['warning'] = true;
 
 /* -------------------------------------------------------------------------
 Set up some variables
@@ -1218,6 +1219,26 @@ function direct_output_theme_subtype ($f_subtype)
 	}
 
 	return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -direct_output_theme_subtype ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
+}
+
+//f// direct_output_warning ($f_title,$f_text)
+/**
+* Use this function to generate a warning to be displayed later on.
+*
+* @param  string $f_title Title
+* @param  string $f_text Short description
+* @uses   direct_debug()
+* @uses   direct_html_encode_special()
+* @uses   USE_debug_reporting
+* @since  v0.1.08
+*/
+function direct_output_warning ($f_title,$f_text)
+{
+	global $direct_cachedata;
+	if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -direct_output_warning ($f_title,+f_text)- (#echo(__LINE__)#)"); }
+
+	$f_text = direct_html_encode_special (preg_replace ("#\[url:(.+?)\](.+?)[/url]#i","<a href=\"\\1\" target='_self'>\\2</a>",$f_text));
+	$direct_cachedata['output_warning'][] = array ("title" => direct_html_encode_special ($f_title),"text" => $f_text);
 }
 
 /* -------------------------------------------------------------------------

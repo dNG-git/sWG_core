@@ -292,7 +292,11 @@ Looks like the user is using a visible proxy - save whole IP information
 				$f_proxy_ip = str_replace (",",": ",(str_replace (" ","",$f_proxy_ip)));
 				$direct_settings['user_ip'] = $f_proxy_ip.": ".$direct_settings['user_ip'];
 
-				$direct_settings['user_proxywarn'] = true;
+				if ((!isset ($_SERVER['HTTPS']))||(!$_SERVER['HTTPS']))
+				{
+					direct_output_warning (direct_local_get ("core_user_warning"),(direct_local_get ("core_user_warning_proxy")));
+					$direct_settings['user_proxywarn'] = true;
+				}
 			}
 			else
 			{
@@ -390,7 +394,7 @@ The standard result: One IP is enough
 
 		$f_return = false;
 
-		if ((!$f_https_required)||(($f_https_required)&&($_SERVER['HTTPS']))) { $f_return = true; }
+		if ((!$f_https_required)||(($f_https_required)&&(isset ($_SERVER['HTTPS']))&&($_SERVER['HTTPS']))) { $f_return = true; }
 		else
 		{
 			if ($direct_settings['dsd']['https_redirect'])

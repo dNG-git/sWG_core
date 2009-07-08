@@ -156,6 +156,7 @@ $direct_cachedata['core_debug'] = array ();
 $direct_cachedata['core_error'] = array ();
 $direct_cachedata['core_service_activated'] = false;
 $direct_cachedata['core_time'] = time ();
+$direct_cachedata['output_warning'] = array ();
 
 /* -------------------------------------------------------------------------
 Let's get a list of up-to-date class names
@@ -492,12 +493,9 @@ behavior
 		}
 		else
 		{
-$direct_cachedata['core_debug'][] = ("sWG/#echo(__FILEPATH__)# -virtual_class->debug (+f_exit,+f_data)- (#echo(__LINE__)#)
-***
-".($this->debug_walker ($f_data))."
+$direct_cachedata['output_warning'][] = array ("title" => direct_html_encode_special ("sWG/#echo(__FILEPATH__)# -virtual_class->debug (+f_exit,+f_data)- (#echo(__LINE__)#)"),"text" => ($this->debug_walker ($f_data))."
 
-".($this->debug_walker ($direct_cachedata['core_error']))."
-***");
+".($this->debug_walker ($direct_cachedata['core_error'])));
 		}
 	}
 
@@ -1043,6 +1041,19 @@ Encode the output for smaller bandwidth connections
 				}
 				else { $f_title = direct_html_encode_special ($direct_settings['swg_title_txt']); }
 
+				if (isset ($direct_settings['dsd']['debug_inline']))
+				{
+					if ((USE_debug_reporting)&&(is_array ($direct_cachedata['core_debug']))&&(!empty ($direct_cachedata['core_debug'])))
+					{
+						foreach ($direct_cachedata['core_debug'] as $f_line_data) { $direct_cachedata['output_warning'][] = array ("title" => "Debug","text" => direct_html_encode_special($f_line_data)); }
+					}
+
+					if ((is_array ($direct_cachedata['core_error']))&&(!empty ($direct_cachedata['core_error'])))
+					{
+						foreach ($direct_cachedata['core_error'] as $f_line_data) { $direct_cachedata['output_warning'][] = array ("title" => "Error","text" => direct_html_encode_special($f_line_data)); }
+					}
+				}
+
 				$direct_classes['output_theme']->theme_page ($f_title);
 
 				if (isset ($direct_settings['theme_xhtml_type']))
@@ -1199,7 +1210,14 @@ internal sWG page theme
 <p class='designtitlecontent' style='width:100%;height:58px;text-align:right'><span style='font-size:24px'>$direct_settings[product_lcode_html]</span><br />
 $direct_settings[product_lcode_subtitle_html]</p></td>
 </tr><tr style='height:100%'>
-<td valign='middle' align='left' class='pagebg' style='padding:0px 12px'>".$direct_classes['output']->page_content."</td>
+<td valign='middle' align='left' class='pagebg' style='padding:0px 12px'>");
+
+		if ((is_array ($direct_cachedata['output_warning']))&&(!empty ($direct_cachedata['output_warning'])))
+		{
+			foreach ($direct_cachedata['output_warning'] as $f_warning_array) { $this->page .= "<p class='pagehighlightborder2'><span class='pageextracontent'><span style='font-weight:bold'>{$f_warning_array['title']}</span><br />\n{$f_warning_array['text']}</span></p>"; }
+		}
+
+$this->page .= ($direct_classes['output']->page_content."</td>
 </tr><tr style='height:50px'>
 <td valign='middle' align='center' class='designcopyrightbg'><span class='designcopyrightcontent'>Powered by: $direct_settings[product_lcode_html] $direct_settings[product_version]<br />
 &#xA9; <a href='http://www.direct-netware.de/redirect.php?$direct_settings[product_icode]' target='_blank'><span style='font-style:italic'>direct</span> Netware Group</a> - All rights reserved</span></td>
