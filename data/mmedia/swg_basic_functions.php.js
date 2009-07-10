@@ -34,9 +34,7 @@ function djs_run_onload ()
 		for (var f_i = 0;f_i < djs_var['core_run_onload'].length;f_i++) { eval (djs_var['core_run_onload'][f_i] + ';'); }
 	}
 }
-<?php } ?>
 
-<?php if ($g_function == "") { ?>
 function djs_iblock_init (f_iblock_id,f_mode)
 {
 	if (djs_swgDOM)
