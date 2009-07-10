@@ -171,6 +171,7 @@ Set up additional variables
 		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -developer_builder_class->file_write (+f_file_content,$f_file_path,$f_file_mode)- (#echo(__LINE__)#)"); }
 
 		if ($this->get_variable ("DEBUG") == NULL) { $f_file_content = preg_replace (array ("#\/\* ---(.*?)--- \*\/\n\n#si","#\n\/\*\*\n(.*?)\n\*\/\n#si"),(array ("","\n")),$f_file_content); }
+		if (preg_match ("#.js$#",$f_file_path)) { $f_file_content = trim (preg_replace (array ("#\/\*(.*?)\*\/#s","#^(.*?)//(.*?)$#m","#(\t|\r|\n|\r\n)+#"),(array ("","\\1"," ")),$f_file_content)); }
 
 		if ((isset ($this->output_array[$this->output_position]))&&(parent::file_write ($f_file_content,($this->output_array[$this->output_position]['path'].$f_file_path),$f_file_mode))) { return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -developer_builder_class->file_write ()- (#echo(__LINE__)#)",(:#*/md5 ($f_file_content)/*#ifdef(DEBUG):),true):#*/; }
 		else { return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -developer_builder_class->file_write ()- (#echo(__LINE__)#)",:#*/false/*#ifdef(DEBUG):,true):#*/; }
