@@ -189,8 +189,8 @@ var djs_swgAJAX = false;
 if (typeof (djs_var) == 'undefined') { var djs_var = new Array (); }
 ]]></script>");
 
-		$this->header_elements ("<script language='JavaScript1.5' src='".(direct_linker_dynamic ("url0","s=cache&dsd=dfile+$direct_settings[path_mmedia]/swg_DOM.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'><!-- // Document Object Model check and functions // --></script>");
-		$this->header_elements ("<script language='JavaScript1.5' src='".(direct_linker_dynamic ("url0","s=cache&dsd=dfile+$direct_settings[path_mmedia]/swg_AJAX.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'><!-- // Asynchronous JavaScript and XML // --></script>");
+		$this->header_elements ("<script language='JavaScript1.5' src='".(direct_linker_dynamic ("url0","s=cache&dsd=dfile+$direct_settings[path_mmedia]/swg_DOM.php.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'><!-- // Document Object Model check and functions // --></script>");
+		$this->header_elements ("<script language='JavaScript1.5' src='".(direct_linker_dynamic ("url0","s=cache&dsd=dfile+$direct_settings[path_mmedia]/swg_AJAX.php.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'><!-- // Asynchronous JavaScript and XML // --></script>");
 		$this->header_elements ("<script language='JavaScript' src='".(direct_linker_dynamic ("url0","s=cache&dsd=dfile+$direct_settings[path_mmedia]/swg_basic_functions.php.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'><!-- // These are basic javascript functions // --></script>");
 	}
 
@@ -224,6 +224,7 @@ $f_return = ("<div class='pagehelperbg' style='position:relative;width:75%;text-
 $f_text</div></div></div><script language='JavaScript' type='text/javascript'><![CDATA[
 if (djs_swgDOM_elements_editable) { djs_diblock_init ('$f_js_helper_id',$f_js_helper_open); }
 else { djs_var['core_run_onload'].push (\"djs_diblock_init ('$f_js_helper_id',$f_js_helper_open)\"); }
+djs_load_functions ('swg_basic_functions.php.js','djs_diblock_switch');
 ]]></script>");
 
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -output_class->js_helper ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;

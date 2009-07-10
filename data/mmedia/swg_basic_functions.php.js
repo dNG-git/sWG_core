@@ -20,6 +20,12 @@ sWG/#echo(__FILEPATH__)#
 ----------------------------------------------------------------------------
 NOTE_END //n*/
 
+<?php
+$g_function = (isset ($direct_settings['dsd']['dfunction']) ? $direct_settings['dsd']['dfunction'] : "");
+if ($g_function == "") {
+?>
+function djs_load_functions (f_module,f_function) { return djs_swgDOM_js_insert_url ("<?php echo direct_linker_dynamic ("url0","s=cache&dsd=dfile+$direct_settings[path_mmedia]/[module]++dfunction+[function]++dbid+".$direct_settings['product_buildid'],false,false); ?>".replace(/\[module\]/g,f_module).replace (/\[function\]/g,f_function)); }
+
 djs_var['core_run_onload'] = new Array ();
 
 function djs_run_onload ()
@@ -29,34 +35,9 @@ function djs_run_onload ()
 		for (var f_i = 0;f_i < djs_var['core_run_onload'].length;f_i++) { eval (djs_var['core_run_onload'][f_i] + ';'); }
 	}
 }
+<?php } ?>
 
-djs_var['core_swgAJAX_loading_position'] = '';
-
-function djs_swgAJAX_loading_writeln (f_position)
-{
-	if (djs_swgAJAX)
-	{
-	// Only continue if the basic test had been completed successfully
-	djs_var['core_swgAJAX_loading_position'] = f_position;
-
-djs_swgDOM_replace ("<div id='swgAJAX_loading' onclick='javascript:djs_swgAJAX_loading_hide();' style='position:absolute;display:none;width:250px;height:125px;top:0px;left:0px;z-index:256'><div style='position:fixed;cursor:wait'><table cellspacing='0' summary='' style='width:250px;height:125px;table-layout:fixed'>\n" +
-"<tbody>\n" +
-"<tr style='height:110px'>\n" +
-"<td style='width:15px;line-height:0px'><img src='<?php echo direct_linker_dynamic ("url0","s=cache&dsd=dfile+$direct_settings[path_mmedia]/swg_output_ajaxloading_01.png",true,false); ?>' width='15' height='110' alt='' title='' /></td>\n" +
-"<td valign='middle' align='center' style='width:220px;background-image:url(<?php echo direct_linker_dynamic ("url0","s=cache&dsd=dfile+$direct_settings[path_mmedia]/swg_output_ajaxloading_02.png",true,false); ?>);background-color:#E0E0E0'><p class='pageajaxloadingcontent' style='font-weight:bold'><?php echo direct_local_get ("core_loading","text"); ?></p>\n" +
-"<p class='pageajaxloadingcontent'><?php echo direct_local_get ("core_loading_ajax","text"); ?></p></td>\n" +
-"<td style='width:15px;line-height:0px'><img src='<?php echo direct_linker_dynamic ("url0","s=cache&dsd=dfile+$direct_settings[path_mmedia]/swg_output_ajaxloading_03.png",true,false); ?>' width='15' height='110' alt='' title='' /></td>\n" +
-"</tr>\n" +
-"<tr style='height:15px'>\n" +
-"<td style='width:15px;line-height:0px'><img src='<?php echo direct_linker_dynamic ("url0","s=cache&dsd=dfile+$direct_settings[path_mmedia]/swg_output_ajaxloading_04.png",true,false); ?>' width='15' height='15' alt='' title='' /></td>\n" +
-"<td style='width:220px;line-height:0px'><img src='<?php echo direct_linker_dynamic ("url0","s=cache&dsd=dfile+$direct_settings[path_mmedia]/swg_output_ajaxloading_05.png",true,false); ?>' width='220' height='15' alt='' title='' /></td>\n" +
-"<td style='width:15px;line-height:0px'><img src='<?php echo direct_linker_dynamic ("url0","s=cache&dsd=dfile+$direct_settings[path_mmedia]/swg_output_ajaxloading_06.png",true,false); ?>' width='15' height='15' alt='' title='' /></td>\n" +
-"</tr>\n" +
-"</tbody>\n" +
-"</table></div></div>",'swgAJAX_loading_point');
-	}
-}
-
+<?php if ($g_function == "") { ?>
 function djs_iblock_init (f_iblock_id,f_mode)
 {
 	if (djs_swgDOM)
@@ -93,7 +74,9 @@ function djs_diblock_init (f_diblock_id,f_mode)
 	}
 	}
 }
+<?php } ?>
 
+<?php if ($g_function == "djs_iblock_fade_in") { ?>
 function djs_iblock_fade_in (f_iblock_id,f_percentage)
 {
 	if (djs_swgDOM)
@@ -114,7 +97,9 @@ function djs_iblock_fade_in (f_iblock_id,f_percentage)
 	}
 	}
 }
+<?php } ?>
 
+<?php if ($g_function == "djs_iblock_fade_out") { ?>
 function djs_iblock_fade_out (f_iblock_id,f_percentage)
 {
 	if (djs_swgDOM)
@@ -139,7 +124,9 @@ function djs_iblock_fade_out (f_iblock_id,f_percentage)
 	}
 	}
 }
+<?php } ?>
 
+<?php if ($g_function == "djs_iblock_switch_hide") { ?>
 function djs_iblock_switch_hide (f_iblock_id)
 {
 	if (djs_swgDOM)
@@ -160,6 +147,10 @@ function djs_iblock_switch_hide (f_iblock_id)
 	}
 }
 
+djs_load_functions ('swg_basic_functions.php.js','djs_iblock_fade_out');
+<?php } ?>
+
+<?php if ($g_function == "djs_iblock_switch_show") { ?>
 function djs_iblock_switch_show (f_iblock_id)
 {
 	if (djs_swgDOM)
@@ -182,6 +173,10 @@ function djs_iblock_switch_show (f_iblock_id)
 	}
 }
 
+djs_load_functions ('swg_basic_functions.php.js','djs_iblock_fade_in');
+<?php } ?>
+
+<?php if ($g_function == "djs_iblock_switch") { ?>
 function djs_iblock_switch (f_iblock_id)
 {
 	if (djs_swgDOM)
@@ -195,6 +190,11 @@ function djs_iblock_switch (f_iblock_id)
 	}
 }
 
+djs_load_functions ('swg_basic_functions.php.js','djs_iblock_switch_hide');
+djs_load_functions ('swg_basic_functions.php.js','djs_iblock_switch_show');
+<?php } ?>
+
+<?php if ($g_function == "djs_diblock_switch") { ?>
 function djs_diblock_switch (f_diblock_id)
 {
 	if (djs_swgDOM)
@@ -215,5 +215,9 @@ function djs_diblock_switch (f_diblock_id)
 	}
 	}
 }
+
+djs_load_functions ('swg_basic_functions.php.js','djs_iblock_switch_hide');
+djs_load_functions ('swg_basic_functions.php.js','djs_iblock_switch_show');
+<?php } ?>
 
 //j// EOF

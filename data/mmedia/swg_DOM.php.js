@@ -20,6 +20,10 @@ sWG/#echo(__FILEPATH__)#
 ----------------------------------------------------------------------------
 NOTE_END //n*/
 
+<?php
+$g_function = (isset ($direct_settings['dsd']['dfunction']) ? $direct_settings['dsd']['dfunction'] : "");
+if ($g_function == "") {
+?>
 var djs_swgDOM_elements_editable = false;
 var djs_swgDOM_content_editable = false;
 var djs_swgDOM_head_node = null;
@@ -48,8 +52,10 @@ if (djs_swgDOM)
 	if (typeof (self.document.getElementsByTagName('head')[0].firstChild.nodeValue) != 'undefined') { djs_swgDOM_content_editable = true; }
 }
 
-if (typeof (djs_var['lang_charset']) == 'undefined') { djs_var['lang_charset'] = 'UTF-8'; }
+if (typeof (djs_var['lang_charset']) == 'undefined') { djs_var['lang_charset'] = '<?php global $direct_local; echo $direct_local['lang_charset']; ?>'; }
+<?php } ?>
 
+<?php if ($g_function == "djs_swgDOM_css_change_px") { ?>
 function djs_swgDOM_css_change_px (f_id,f_css_element,f_css_value)
 {
 	if (djs_swgDOM)
@@ -92,7 +98,9 @@ function djs_swgDOM_css_change_px (f_id,f_css_element,f_css_value)
 	}
 	}
 }
+<?php } ?>
 
+<?php if ($g_function == "") { ?>
 function djs_swgDOM_get (f_doc_root_id)
 {
 	var f_return = null;
@@ -140,9 +148,7 @@ function djs_swgDOM_js_insert_url (f_url)
 			var f_js_id = encodeURIComponent(f_url).replace (/%/g,"");
 			var f_js_root = self.document.getElementById ("swgJS_" + f_js_id);
 
-			if (typeof (f_js_root) == "object") { f_js_root = djs_swgDOM_structure_delete (f_js_root); }
-
-			if (typeof (f_js_root) != "object")
+			if (f_js_root == null)
 			{
 				if (djs_swgDOM_head_node == null)
 				{
@@ -156,6 +162,11 @@ function djs_swgDOM_js_insert_url (f_url)
 					f_js_root.setAttribute ("language","JavaScript1.5");
 					f_js_root.setAttribute ("type","text/javascript");
 				}
+			}
+			else
+			{
+				f_js_root = null;
+				f_return = true;
 			}
 
 			if (typeof (f_js_root) == "object")
@@ -489,50 +500,47 @@ if ((djs_swgDOM_content_editable)&&(djs_swgDOM_elements_editable))
 
 	function djs_swgDOM_style_parse_css (f_return,f_css_style)
 	{
-		if (djs_swgDOM_structure_check (f_return))
+		f_return.setAttribute ('style',f_css_style);
+
+		if ((typeof (f_return.style) == 'object')&&(f_css_style.length > 2))
 		{
-			f_return.setAttribute ('style',f_css_style);
+			var f_css_style_elements = f_css_style.split (";");
+			var f_css_style_element;
+			var f_css_style_charPos;
+			var f_css_style_element_new;
 
-			if ((typeof (f_return.style) == 'object')&&(f_css_style.length > 2))
+			for (var f_i = 0;f_i < f_css_style_elements.length;f_i++)
 			{
-				var f_css_style_elements = f_css_style.split (";");
-				var f_css_style_element;
-				var f_css_style_charPos;
-				var f_css_style_element_new;
+				f_css_style_element = f_css_style_elements[f_i].split (":",2);
 
-				for (var f_i = 0;f_i < f_css_style_elements.length;f_i++)
+				if (f_css_style_element.length == 2)
 				{
-					f_css_style_element = f_css_style_elements[f_i].split (":",2);
+					f_css_style_element[0] = f_css_style_element[0].replace ("/(;|\s)/","");
+					f_css_style_charPos = f_css_style_element[0].indexOf ('-');
 
-					if (f_css_style_element.length == 2)
+					while (f_css_style_charPos > -1)
 					{
-						f_css_style_element[0] = f_css_style_element[0].replace ("/(;|\s)/","");
-						f_css_style_charPos = f_css_style_element[0].indexOf ('-');
-
-						while (f_css_style_charPos > -1)
+						if ((f_css_style_charPos > 0)&&(f_css_style_charPos < (2 + f_css_style_charPos)))
 						{
-							if ((f_css_style_charPos > 0)&&(f_css_style_charPos < (2 + f_css_style_charPos)))
-							{
-								f_css_style_element_new = f_css_style_element[0].substring (0,f_css_style_charPos);
-								f_css_style_element_new += (f_css_style_element[0].substring ((1 + f_css_style_charPos),(2 + f_css_style_charPos))).toUpperCase ();
-								f_css_style_element_new += f_css_style_element[0].substring (2 + f_css_style_charPos);
+							f_css_style_element_new = f_css_style_element[0].substring (0,f_css_style_charPos);
+							f_css_style_element_new += (f_css_style_element[0].substring ((1 + f_css_style_charPos),(2 + f_css_style_charPos))).toUpperCase ();
+							f_css_style_element_new += f_css_style_element[0].substring (2 + f_css_style_charPos);
 
-								f_css_style_element[0] = f_css_style_element_new;
-								f_css_style_charPos = f_css_style_element[0].indexOf ('-');
-							}
-							else { f_css_style_charPos = -1; }
+							f_css_style_element[0] = f_css_style_element_new;
+							f_css_style_charPos = f_css_style_element[0].indexOf ('-');
 						}
-
-						f_css_style_element[1] = f_css_style_element[1].replace ("/'/","\"");
-						f_css_style_element[1] = f_css_style_element[1].replace ("/\\/","");
-
-						try
-						{
-							f_css_style_element[0] = f_css_style_element[0].replace (/\W+/g,"");
-							f_return.style[f_css_style_element[0]] = f_css_style_element[1];
-						}
-						catch (f_unhandled_exception) { }
+						else { f_css_style_charPos = -1; }
 					}
+
+					f_css_style_element[1] = f_css_style_element[1].replace ("/'/","\"");
+					f_css_style_element[1] = f_css_style_element[1].replace ("/\\/","");
+
+					try
+					{
+						f_css_style_element[0] = f_css_style_element[0].replace (/\W+/g,"");
+						f_return.style[f_css_style_element[0]] = f_css_style_element[1];
+					}
+					catch (f_unhandled_exception) { }
 				}
 			}
 		}
@@ -540,5 +548,6 @@ if ((djs_swgDOM_content_editable)&&(djs_swgDOM_elements_editable))
 		return f_return;
 	}
 }
+<?php } ?>
 
 //j// EOF
