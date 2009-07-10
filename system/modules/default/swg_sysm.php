@@ -15,7 +15,6 @@ for a particular purpose.
 ----------------------------------------------------------------------------
 http://www.direct-netware.de/redirect.php?licenses;w3c
 ----------------------------------------------------------------------------
-$Id: swg_sysm.php,v 1.4 2007/07/28 15:04:28 s4u Exp $
 sWGcoreVersion
 sWG/system/modules/default/swg_sysm.php
 ----------------------------------------------------------------------------
