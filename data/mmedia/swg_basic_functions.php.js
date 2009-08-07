@@ -71,9 +71,7 @@ function djs_diblock_init (f_diblock_id,f_mode)
 	}
 	}
 }
-<?php } ?>
 
-<?php if ($g_function == "djs_iblock_fade_in") { ?>
 function djs_iblock_fade_in (f_iblock_id,f_percentage)
 {
 	if (djs_swgDOM)
@@ -94,9 +92,7 @@ function djs_iblock_fade_in (f_iblock_id,f_percentage)
 	}
 	}
 }
-<?php } ?>
 
-<?php if ($g_function == "djs_iblock_fade_out") { ?>
 function djs_iblock_fade_out (f_iblock_id,f_percentage)
 {
 	if (djs_swgDOM)
@@ -143,8 +139,6 @@ function djs_iblock_switch_hide (f_iblock_id)
 	}
 	}
 }
-
-djs_load_functions ('swg_basic_functions.php.js','djs_iblock_fade_out');
 <?php } ?>
 
 <?php if ($g_function == "djs_iblock_switch_show") { ?>
@@ -169,8 +163,6 @@ function djs_iblock_switch_show (f_iblock_id)
 	}
 	}
 }
-
-djs_load_functions ('swg_basic_functions.php.js','djs_iblock_fade_in');
 <?php } ?>
 
 <?php if ($g_function == "djs_iblock_switch") { ?>

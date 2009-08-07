@@ -112,7 +112,35 @@ function djs_swgDOM_get (f_doc_root_id)
 
 	return f_return;
 }
+<?php } ?>
 
+<?php if ($g_function == "djs_swgDOM_get_position") { ?>
+function djs_swgDOM_get_position (f_data)
+{
+	var f_return = null;
+
+	if (djs_swgDOM)
+	{
+		if (typeof (f_data) == "string") { f_data = self.document.getElementById (f_data); }
+
+		if (djs_swgDOM_structure_check (f_data))
+		{
+			f_return = new Array (0,0);
+
+			while ((typeof (f_data.offsetParent) != "undefined")&&(f_data.offsetParent != null)&&(typeof (f_data.offsetLeft) != "undefined")&&(typeof (f_data.offsetTop) != "undefined"))
+			{
+				f_return[0] += f_data.offsetLeft;
+				f_return[1] += f_data.offsetTop;
+				f_data = f_data.offsetParent;
+			}
+		}
+	}
+
+	return f_return;
+}
+<?php } ?>
+
+<?php if ($g_function == "") { ?>
 function djs_swgDOM_insert (f_data,f_doc_root_id)
 {
 	var f_return = false;

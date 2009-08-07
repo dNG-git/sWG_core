@@ -43,7 +43,8 @@ function djs_swgAJAX_call (f_identifier,f_handler,f_request_mode,f_request_data,
 				djs_var[f_identifier].open (f_request_mode,f_request_data,true);
 				djs_var[f_identifier].send (null);
 				djs_swgAJAX_loading_event (f_identifier,'view',f_swgAJAX_loading_timeout);
-			} catch (e) {}
+			}
+			catch (f_unhandled_exception) { }
 		}
 	}
 }
@@ -222,7 +223,7 @@ function djs_swgAJAX_response (f_identifier,f_target_id,f_target_url)
 			f_result_code = djs_var[f_identifier].status;
 
 			if ((f_result_code == 200)&&(f_target_id != '')) { djs_swgDOM_structure_replace_xml (f_target_id,djs_var[f_identifier].responseXML); }
-			if ((f_result_code == 205)&&(f_target_url != '')) { self.document.location.replace (f_target_url); }
+			if ((f_result_code == 205)&&(f_target_url != '')) { self.location.replace (f_target_url); }
 		}
 	}
 
@@ -253,7 +254,7 @@ function djs_swgAJAX_response_ripoint (f_identifier,f_target_id,f_target_url)
 				djs_swgDOM_structure_replace_xml (f_target_id,f_xml_data);
 			}
 
-			if ((f_result_code == 205)&&(f_target_url != '')) { self.document.location.replace (f_target_url); }
+			if ((f_result_code == 205)&&(f_target_url != '')) { self.location.replace (f_target_url); }
 		}
 	}
 
