@@ -213,11 +213,8 @@ if (typeof (djs_var) == 'undefined') { var djs_var = new Array (); }
 
 		$f_js_helper_id = ("swghelp".$this->js_helper_element);
 		$this->js_helper_element++;
-
+		$f_js_helper_open = ($f_close_onload ? 0 : 1);
 		if (strlen ($f_url)) { $f_text = "<a href=\"$f_url\" target='_blank'>$f_text</a>"; }
-
-		if ($f_close_onload) { $f_js_helper_open = 0; }
-		else { $f_js_helper_open = 1; }
 
 $f_return = ("<div class='pagehelperbg' style='position:relative;width:75%;text-align:center'><div class='pagehelpericon'><a href=\"javascript:djs_diblock_switch('$f_js_helper_id');\"><img src='".(direct_linker_dynamic ("url0","s=cache&dsd=dfile+$direct_settings[path_mmedia]/swg_output_helper.png",true,false))."' width='32' height='32' alt=\"".(direct_local_get ("core_detailed_information"))."\" title=\"".(direct_local_get ("core_detailed_information"))."\" /></a></div><span class='pagehelpercontentlink'><a href=\"javascript:djs_diblock_switch('$f_js_helper_id');\" id='{$f_js_helper_id}_title'>".(direct_local_get ("core_detailed_information"))."</a></span><div id='$f_js_helper_id'><div class='pagehelpercontent' style='text-align:justify'><br />
 $f_text</div></div></div><script language='JavaScript' type='text/javascript'><![CDATA[
@@ -281,9 +278,7 @@ djs_load_functions ('swg_basic_functions.php.js','djs_diblock_switch');
 	/*#ifndef(PHP4) */public /* #*/function options_check ($f_menu)
 	{
 		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -output_class->options_check ($f_menu)- (#echo(__LINE__)#)"); }
-
-		if (isset ($this->menus[$f_menu])) { return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -output_class->options_check ()- (#echo(__LINE__)#)",:#*/true/*#ifdef(DEBUG):,true):#*/; }
-		else { return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -output_class->options_check ()- (#echo(__LINE__)#)",:#*/false/*#ifdef(DEBUG):,true):#*/; }
+		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -output_class->options_check ()- (#echo(__LINE__)#)",(:#*/isset ($this->menus[$f_menu])/*#ifdef(DEBUG):),true):#*/;
 	}
 
 	//f// direct_output_control->options_flush ($f_all = false)
@@ -359,11 +354,8 @@ djs_load_functions ('swg_basic_functions.php.js','djs_diblock_switch');
 		{
 			if (!isset ($this->menus[$f_menu])) { $this->menus[$f_menu] = array (); }
 			if (!isset ($this->menus[$f_menu][$f_level])) { $this->menus[$f_menu][$f_level] = array (); }
-
+			$f_image = ((($f_image)&&($direct_settings['swg_options_image'])) ? direct_linker_dynamic ("url0","s=cache&dsd=dfile+$direct_settings[path_themes]/$direct_settings[theme]/".$f_image,true,false) : "");
 			if ($f_urlmode != "asis") { $f_url = direct_linker ($f_urlmode,$f_url); }
-
-			if (($f_image)&&($direct_settings['swg_options_image'])) { $f_image = direct_linker_dynamic ("url0","s=cache&dsd=dfile+$direct_settings[path_themes]/$direct_settings[theme]/".$f_image,true,false); }
-			else { $f_image = ""; }
 
 $this->menus[$f_menu][$f_level][] = array (
 "url" => $f_url,
@@ -414,22 +406,12 @@ $this->menus[$f_menu][$f_level][] = array (
 					{
 						if ($f_menu_item_array['title'])
 						{
-							if ($f_return)
-							{
-								if ($f_seperator) { $f_return .= $f_seperator; }
-								else { $f_return .= "<span class='pagehide'><br /></span>\n"; }
-							}
-
+							if ($f_return) { $f_return .= ($f_seperator ? $f_seperator : "<span class='pagehide'><br /></span>\n"); }
 							$f_return .= $f_menu_item_array['image']."<a href=\"{$f_menu_item_array['url']}\">".$f_menu_item_array['title']."</a>";
 						}
 						else
 						{
-							if ($f_return)
-							{
-								if ($f_seperator) { $f_return .= $f_seperator; }
-								else { $f_return .= "<br />\n"; }
-							}
-
+							if ($f_return) { $f_return .= ($f_seperator ? $f_seperator : "<br />\n"); }
 							$f_return .= "<a href=\"{$f_menu_item_array['url']}\">{$f_menu_item_array['image']}</a>";
 						}
 					}
@@ -437,33 +419,20 @@ $this->menus[$f_menu][$f_level][] = array (
 					{
 						if ($f_menu_item_array['title'])
 						{
-							if ($f_return)
-							{
-								if ($f_seperator) { $f_return .= $f_seperator; }
-								else { $f_return .= ", "; }
-							}
-
+							if ($f_return) { $f_return .= ($f_seperator ? $f_seperator : ", "); }
 							$f_return .= $f_menu_item_array['image']."<a href=\"{$f_menu_item_array['url']}\">".$f_menu_item_array['title']."</a>";
 						}
 						else
 						{
-							if ($f_return)
-							{
-								if ($f_seperator) { $f_return .= $f_seperator; }
-								else { $f_return .= " "; }
-							}
-
+							if ($f_return) { $f_return .= ($f_seperator ? $f_seperator : " "); }
 							$f_return .= "<a href=\"{$f_menu_item_array['url']}\">{$f_menu_item_array['image']}</a>";
 						}
 					}
 				}
 			}
 		}
-		else
-		{
-			if ($f_type == "v") { $f_return = direct_local_get ("core_menu_empty"); }
-			elseif ($f_type == "h") { $f_return = direct_local_get ("core_menu_empty"); }
-		}
+		elseif ($f_type == "v") { $f_return = direct_local_get ("core_menu_empty"); }
+		elseif ($f_type == "h") { $f_return = direct_local_get ("core_menu_empty"); }
 
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -output_class->options_generator ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
@@ -497,11 +466,9 @@ Check and activate light mode if required.
 
 		if (!$direct_settings['swg_force_notheme'])
 		{
-			if ($direct_settings['theme_subtype']) { $f_subtype = $direct_settings['theme_subtype']."_light"; }
-			else { $f_subtype = "light"; }
-
 			if (($direct_cachedata['core_time'] + $direct_settings['timeout_lightmode']) < (time ()))
 			{
+				$f_subtype = ($direct_settings['theme_subtype'] ? $direct_settings['theme_subtype']."_light" : "light");
 				if (direct_output_theme_subtype ($f_subtype)) { direct_class_init ("output_theme",true); }
 			}
 
@@ -594,11 +561,7 @@ file of the default OSet
 		}
 
 		$f_oset = "direct_output_oset_{$f_module}_".$f_obj;
-
-		if (function_exists ($f_oset)) { $f_return = $f_oset (); }
-		else { $f_return = ""; }
-
-		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -output_class->oset_content ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
+		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -output_class->oset_content ()- (#echo(__LINE__)#)",:#*/(function_exists ($f_oset) ? $f_oset () : "")/*#ifdef(DEBUG):,true):#*/;
 	}
 
 	//f// direct_output_control->redirect ($f_url,$f_use_current_url = false)
@@ -619,10 +582,8 @@ file of the default OSet
 		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -output_class->redirect ($f_url,+f_use_current_url)- (#echo(__LINE__)#)"); }
 
 		$direct_cachedata['output_pagetarget'] = str_replace ("&","&amp;",$f_url);
+		$direct_cachedata['output_redirect'] = (function_exists ("direct_linker") ? direct_linker ("optical",$direct_cachedata['output_scripttarget']) : direct_html_encode_special ($direct_cachedata['output_scripttarget']));
 		$direct_cachedata['output_scripttarget'] = $f_url;
-
-		if (function_exists ("direct_linker")) { $direct_cachedata['output_redirect'] = direct_linker ("optical",$direct_cachedata['output_scripttarget']); }
-		else { $direct_cachedata['output_redirect'] = direct_html_encode_special ($direct_cachedata['output_scripttarget']); }
 
 		$this->oset ("default","redirect");
 		header ("HTTP/1.1 302 Found",true);
@@ -653,9 +614,7 @@ file of the default OSet
 		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -output_class->servicemenu ($f_menu,$f_level)- (#echo(__LINE__)#)"); }
 
 		$f_return = false;
-
-		if (file_exists ($direct_settings['path_data']."/settings/swg_{$f_menu}.servicemenu.xml")) { $f_menu_array = $direct_classes['basic_functions']->memcache_get_file_merged_xml ($direct_settings['path_data']."/settings/swg_{$f_menu}.servicemenu.xml"); }
-		else { $f_menu_array = array (); }
+		$f_menu_array = (file_exists ($direct_settings['path_data']."/settings/swg_{$f_menu}.servicemenu.xml") ? $direct_classes['basic_functions']->memcache_get_file_merged_xml ($direct_settings['path_data']."/settings/swg_{$f_menu}.servicemenu.xml") : array ());
 
 		if ((is_array ($f_menu_array))&&(!empty ($f_menu_array)))
 		{
@@ -673,15 +632,12 @@ file of the default OSet
 					if ($f_menu_array[$f_menu_id."_title"]) { $f_menu_item_array['value'] = $f_menu_array[$f_menu_id."_title"]['value']; }
 					else { $f_continue_check = false; }
 
-					if (isset ($f_menu_array[$f_menu_id."_image"])) { $f_menu_item_array['attributes']['image'] = $f_menu_array[$f_menu_id."_image"]['value']; }
-					else { $f_menu_array['attributes']['image'] = ""; }
+					$f_menu_item_array['attributes']['image'] = (isset ($f_menu_array[$f_menu_id."_image"]) ? $f_menu_array[$f_menu_id."_image"]['value'] : "");
 
 					if ($f_menu_array[$f_menu_id."_link"])
 					{
 						$f_menu_item_array['attributes']['link'] = $f_menu_array[$f_menu_id."_link"];
-
-						if (isset ($f_menu_array[$f_menu_id."_link"]['attributes']['type'])) { $f_menu_item_array['attributes']['link']['type'] = $f_menu_array[$f_menu_id."_link"]['attributes']['type']; }
-						else { $f_menu_array['attributes']['link']['type'] = ""; }
+						$f_menu_item_array['attributes']['link']['type'] = (isset ($f_menu_array[$f_menu_id."_link"]['attributes']['type']) ? $f_menu_array[$f_menu_id."_link"]['attributes']['type'] : "");
 					}
 					else { $f_continue_check = false; }
 
@@ -789,13 +745,11 @@ function direct_output_pages_generator ($f_uri,$f_pages,$f_cpage = "",$f_with_la
 				else { $f_return .= "<a href=\"".(direct_linker ($f_uri_type,$f_uri."page+".$f_i))."\">$f_i</a>"; }
 			}
 
-			if ($f_uri_type == "asis") { $f_return .= ", ... (<a href=\"".(str_replace ("[page]",$f_pages,$f_uri))."\">$f_pages</a>)"; }
-			else { $f_return .= ", ... (<a href=\"".(direct_linker ($f_uri_type,$f_uri."page+$f_pages"))."\">$f_pages</a>)"; }
+			$f_return .= (($f_uri_type == "asis") ? ", ... (<a href=\"".(str_replace ("[page]",$f_pages,$f_uri))."\">$f_pages</a>)" : ", ... (<a href=\"".(direct_linker ($f_uri_type,$f_uri."page+$f_pages"))."\">$f_pages</a>)");
 		}
 		elseif ((($f_cpage + $direct_settings['swg_pages_per_list']) - 3) > $f_pages)
 		{
-			if ($f_uri_type == "asis") { $f_return .= "<a href=\"".(str_replace ("[page]",1,$f_uri))."\">1</a>, ..."; }
-			else { $f_return .= "<a href=\"".(direct_linker ($f_uri_type,$f_uri."page+1"))."\">1</a>, ..."; }
+			$f_return .= (($f_uri_type == "asis") ? "<a href=\"".(str_replace ("[page]",1,$f_uri))."\">1</a>, ..." : "<a href=\"".(direct_linker ($f_uri_type,$f_uri."page+1"))."\">1</a>, ...");
 
 			$f_page_first = (($f_pages - $direct_settings['swg_pages_per_list']) + 3);
 
@@ -810,9 +764,7 @@ function direct_output_pages_generator ($f_uri,$f_pages,$f_cpage = "",$f_with_la
 		{
 			$f_page_first = ($f_pages - ($f_pages - $f_cpage) - (floor ($direct_settings['swg_pages_per_list'] / 2)) + 2);
 			$f_page_last = ($f_page_first + ($direct_settings['swg_pages_per_list'] - 4));
-
-			if ($f_uri_type == "asis") { $f_return .= "<a href=\"".(str_replace ("[page]",1,$f_uri))."\">1</a>, ..."; }
-			else { $f_return .= "<a href=\"".(direct_linker ($f_uri_type,$f_uri."page+1"))."\">1</a>, ..."; }
+			$f_return .= (($f_uri_type == "asis") ? "<a href=\"".(str_replace ("[page]",1,$f_uri))."\">1</a>, ..." : "<a href=\"".(direct_linker ($f_uri_type,$f_uri."page+1"))."\">1</a>, ...");
 
 			for ($f_i = $f_page_first;$f_i <= $f_page_last;$f_i++)
 			{
@@ -821,27 +773,13 @@ function direct_output_pages_generator ($f_uri,$f_pages,$f_cpage = "",$f_with_la
 				else { $f_return .= ", <a href=\"".(direct_linker ($f_uri_type,$f_uri."page+".$f_i))."\">$f_i</a>"; }
 			}
 
-			if ($f_page_last < $f_pages)
-			{
-				if ($f_uri_type == "asis") { $f_return .= ", ... (<a href=\"".(str_replace ("[page]",$f_pages,$f_uri))."\">$f_pages</a>)"; }
-				else { $f_return .= ", ... (<a href=\"".(direct_linker ($f_uri_type,$f_uri."page+$f_pages"))."\">$f_pages</a>)"; }
-			}
+			if ($f_page_last < $f_pages) { $f_return .= (($f_uri_type == "asis") ? ", ... (<a href=\"".(str_replace ("[page]",$f_pages,$f_uri))."\">$f_pages</a>)" : ", ... (<a href=\"".(direct_linker ($f_uri_type,$f_uri."page+$f_pages"))."\">$f_pages</a>)"); }
 		}
 
 		if ($f_return != "")
 		{
-			if (($f_with_lastnext_keys)&&($f_cpage > 1))
-			{
-				if ($f_uri_type == "asis") { $f_return = "<a href=\"".(str_replace ("[page]",($f_cpage - 1),$f_uri))."\">$direct_settings[swg_pages_key_last]</a> ".$f_return; }
-				else { $f_return = "<a href=\"".(direct_linker ($f_uri_type,$f_uri."page+".($f_cpage - 1)))."\">$direct_settings[swg_pages_key_last]</a> ".$f_return; }
-			}
-
-			if (($f_with_lastnext_keys)&&($f_pages > 1)&&($f_cpage != $f_pages))
-			{
-				if ($f_uri_type == "asis") { $f_return .= " <a href=\"".(str_replace ("[page]",($f_cpage + 1),$f_uri))."\">$direct_settings[swg_pages_key_next]</a>"; }
-				else { $f_return .= " <a href=\"".(direct_linker ($f_uri_type,$f_uri."page+".($f_cpage + 1)))."\">$direct_settings[swg_pages_key_next]</a>"; }
-			}
-
+			if (($f_with_lastnext_keys)&&($f_cpage > 1)) { $f_return = (($f_uri_type == "asis") ? "<a href=\"".(str_replace ("[page]",($f_cpage - 1),$f_uri))."\">$direct_settings[swg_pages_key_last]</a> ".$f_return : "<a href=\"".(direct_linker ($f_uri_type,$f_uri."page+".($f_cpage - 1)))."\">$direct_settings[swg_pages_key_last]</a> ".$f_return); }
+			if (($f_with_lastnext_keys)&&($f_pages > 1)&&($f_cpage != $f_pages)) { $f_return .= (($f_uri_type == "asis") ? " <a href=\"".(str_replace ("[page]",($f_cpage + 1),$f_uri))."\">$direct_settings[swg_pages_key_next]</a>" : " <a href=\"".(direct_linker ($f_uri_type,$f_uri."page+".($f_cpage + 1)))."\">$direct_settings[swg_pages_key_next]</a>"); }
 			$f_return = "<span style='font-weight:bold'>".(direct_local_get ("core_pages")).":</span> ".$f_return;
 		}
 	}
@@ -933,8 +871,7 @@ function direct_output_related_manager ($f_rid,$f_exec_mode = "post_module_servi
 
 		if (!empty ($f_related_tree_array))
 		{
-			if ($f_exec_mode == "post_module_service_action") { $f_default_check = true; }
-			else { $f_default_check = false; }
+			$f_default_check = (($f_exec_mode == "post_module_service_action") ? true : false);
 
 			foreach ($f_related_tree_array as $f_related_array)
 			{
@@ -1002,9 +939,7 @@ function direct_output_smiley_cleanup ($f_data)
 
 	if (!isset ($direct_cachedata['output_smilies_data']))
 	{
-		if (file_exists ($direct_settings['path_data']."/settings/swg_smilies.xml")) { $f_data_array = $direct_classes['basic_functions']->memcache_get_file_merged_xml ($direct_settings['path_data']."/settings/swg_smilies.xml"); }
-		else { $f_data_array = NULL; }
-
+		$f_data_array = (file_exists ($direct_settings['path_data']."/settings/swg_smilies.xml") ? $direct_classes['basic_functions']->memcache_get_file_merged_xml ($direct_settings['path_data']."/settings/swg_smilies.xml") : NULL);
 		if ($f_data_array) { $f_data_array = direct_output_smiley_parse_xmltree ($f_data_array); }
 		if ($f_data_array) { $direct_cachedata['output_smilies_data'] = $f_data_array; }
 	}
@@ -1039,9 +974,7 @@ function direct_output_smiley_decode ($f_data)
 
 	if (!isset ($direct_cachedata['output_smilies_data']))
 	{
-		if (file_exists ($direct_settings['path_data']."/settings/swg_smilies.xml")) { $f_data_array = $direct_classes['basic_functions']->memcache_get_file_merged_xml ($direct_settings['path_data']."/settings/swg_smilies.xml"); }
-		else { $f_data_array = NULL; }
-
+		$f_data_array = (file_exists ($direct_settings['path_data']."/settings/swg_smilies.xml") ? $direct_classes['basic_functions']->memcache_get_file_merged_xml ($direct_settings['path_data']."/settings/swg_smilies.xml") : NULL);
 		if ($f_data_array) { $f_data_array = direct_output_smiley_parse_xmltree ($f_data_array); }
 		if ($f_data_array) { $direct_cachedata['output_smilies_data'] = $f_data_array; }
 	}
@@ -1082,9 +1015,7 @@ function direct_output_smiley_encode ($f_data)
 
 	if (!isset ($direct_cachedata['output_smilies_data']))
 	{
-		if (file_exists ($direct_settings['path_data']."/settings/swg_smilies.xml")) { $f_data_array = $direct_classes['basic_functions']->memcache_get_file_merged_xml ($direct_settings['path_data']."/settings/swg_smilies.xml"); }
-		else { $f_data_array = NULL; }
-
+		$f_data_array = (file_exists ($direct_settings['path_data']."/settings/swg_smilies.xml") ? $direct_classes['basic_functions']->memcache_get_file_merged_xml ($direct_settings['path_data']."/settings/swg_smilies.xml") : NULL);
 		if ($f_data_array) { $f_data_array = direct_output_smiley_parse_xmltree ($f_data_array); }
 		if ($f_data_array) { $direct_cachedata['output_smilies_data'] = $f_data_array; }
 	}
