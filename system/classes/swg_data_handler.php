@@ -128,9 +128,7 @@ Informing the system about available functions
 	/*#ifndef(PHP4) */public /* #*/function get ()
 	{
 		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -data_handler->get ()- (#echo(__LINE__)#)"); }
-
-		if (isset ($this->data)) { return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -data_handler->get ()- (#echo(__LINE__)#)",:#*/$this->data/*#ifdef(DEBUG):,true):#*/; }
-		else { return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -data_handler->get ()- (#echo(__LINE__)#)",:#*/false/*#ifdef(DEBUG):,true):#*/; }
+		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -data_handler->get ()- (#echo(__LINE__)#)",:#*/(isset ($this->data) ? $this->data : false)/*#ifdef(DEBUG):,true):#*/;
 	}
 
 	//f// direct_data_handler->get ()

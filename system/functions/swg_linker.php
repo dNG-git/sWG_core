@@ -249,26 +249,20 @@ The next two lines will check the size of the filename and remove parts of
 it if required
 ------------------------------------------------------------------------- */
 
-				if (strlen ($f_pathinfo['basename']) < (3 + $f_length_available)) { $f_return .= $f_pathinfo['basename']; }
-				else { $f_return .= " ... ".(substr ($f_pathinfo['basename'],(-1 * $f_length_available))); }
+				$f_return .= ((strlen ($f_pathinfo['basename']) < (3 + $f_length_available)) ? $f_pathinfo['basename'] : " ... ".(substr ($f_pathinfo['basename'],(-1 * $f_length_available))));
 			}
 		}
 		else { $f_return = $f_data; }
 
-		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -direct_linker ()- (#echo(__LINE__)#)",(:#*/direct_html_encode_special ($f_return)/*#ifdef(DEBUG):),true):#*/;
+		$f_return = direct_html_encode_special ($f_return);
 	}
-	else
-	{
+	else { $f_return = ($direct_settings['swg_shadow_url'] ? direct_linker_shadow ($f_type,$f_data,$f_withuuid) : direct_linker_dynamic ($f_type,$f_data,$f_ampconvert,$f_withuuid)); }
 /* -------------------------------------------------------------------------
 There are two possibilities for creating normal links - shadowing them or
 not. If shadowed, they may be look like http://localhost/swg_base64data.htm
 ------------------------------------------------------------------------- */
 
-		if ($direct_settings['swg_shadow_url']) { $f_return = direct_linker_shadow ($f_type,$f_data,$f_withuuid); }
-		else { $f_return = direct_linker_dynamic ($f_type,$f_data,$f_ampconvert,$f_withuuid); }
-	}
-
-	return $f_return;
+	return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -direct_linker ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 }
 
 //f// direct_linker_dynamic ($f_type,$f_data,$f_ampconvert = true,$f_withuuid = true)

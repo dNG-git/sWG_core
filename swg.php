@@ -167,12 +167,7 @@ $direct_classes['@names'] = array ();
 Reveive "action" if appropriate
 ------------------------------------------------------------------------- */
 
-if (isset ($i_a))
-{
-	$direct_settings['a'] = urldecode ($i_a);
-	$direct_settings['a'] = preg_replace ("#[;\/\\\?:@\=\&\. \+]#i","",$i_a);
-}
-else { $direct_settings['a'] = ""; }
+$direct_settings['a'] = (isset ($i_a) ? preg_replace ("#[;\/\\\?:@\=\&\. \+]#i","",(urldecode ($i_a))) : "");
 
 /* -------------------------------------------------------------------------
 DSD stands for dynamic service data and should be used for transfering IDs
@@ -208,16 +203,12 @@ else { $direct_settings['dsd'] = array (); }
 Reveive "language" if appropriate
 ------------------------------------------------------------------------- */
 
-if (isset ($i_lang)) { $direct_settings['lang'] = preg_replace ("#\W#","",$i_lang); }
-else { $direct_settings['lang'] = ""; }
-
+$direct_settings['lang'] = (isset ($i_lang) ? preg_replace ("#\W#","",$i_lang) : "");
 /* -------------------------------------------------------------------------
 Which module is requested?
 ------------------------------------------------------------------------- */
 
-if (isset ($i_m)) { $direct_settings['m'] = preg_replace ("#[;\/\\\?:@\=\&\. \+]#i","",$i_m); }
-else { $direct_settings['m'] = ""; }
-
+$direct_settings['m'] = (isset ($i_m) ? preg_replace ("#[;\/\\\?:@\=\&\. \+]#i","",$i_m) : "");
 /* -------------------------------------------------------------------------
 Reveive "service" if appropriate
 ------------------------------------------------------------------------- */
@@ -234,16 +225,13 @@ else { $direct_settings['s'] = ""; }
 Reveive "theme" if appropriate
 ------------------------------------------------------------------------- */
 
-if (isset ($i_theme)) { $direct_settings['theme'] = preg_replace ("#\s#i","",$i_theme); }
-else { $direct_settings['theme'] = ""; }
-
+$direct_settings['theme'] = (isset ($i_theme) ? preg_replace ("#\s#","",$i_theme) : "");
 /* -------------------------------------------------------------------------
  Reveive "uuid" if appropriate (required for the unique user Identification
  Service = uuIDS)
  ------------------------------------------------------------------------- */
 
-if (isset ($i_uuid)) { $direct_settings['uuid'] = preg_replace ("#\s#i","",$i_uuid); }
-else { $direct_settings['uuid'] = ""; }
+$direct_settings['uuid'] = (isset ($i_uuid) ? preg_replace ("#\s#","",$i_uuid) : "");
 
 /* -------------------------------------------------------------------------
 Set up variables that can be changed with an integration script.
@@ -264,8 +252,7 @@ $g_variables = array (
 foreach ($g_variables as $g_variable => $g_data)
 {
 	if ((isset ($_COOKIE[$g_variable]))||(isset ($_GET[$g_variable]))||(isset ($_POST[$g_variable]))) { $g_data[0] = ""; }
-	if (empty ($g_data[0])) { $direct_settings[$g_data[1]] = $g_data[2]; }
-	else { $direct_settings[$g_data[1]] = $g_data[0]; }
+	$direct_settings[$g_data[1]] = (empty ($g_data[0]) ? $g_data[2] : $g_data[0]);
 }
 
 $g_variable = $g_data = NULL;
@@ -274,18 +261,11 @@ unset ($g_variables);
 //j// Basic data
 
 /* -------------------------------------------------------------------------
-You are a guest - until we know more about you ...
-------------------------------------------------------------------------- */
-
-$direct_settings['user'] = array ("id" => "","type" => "gt","timezone" => 0);
-
-/* -------------------------------------------------------------------------
 The iscript var contains the current sWG file name. Our first step is to
 make sure that the query key gets removed.
 ------------------------------------------------------------------------- */
 
-if (defined ("OW_PHP_SELF")) { $direct_settings['iscript'] = OW_PHP_SELF; }
-else { $direct_settings['iscript'] = basename (str_replace ("?".$_SERVER['QUERY_STRING'],"",$_SERVER['PHP_SELF'])); }
+$direct_settings['iscript'] = (defined ("OW_PHP_SELF") ? OW_PHP_SELF : basename (str_replace ("?".$_SERVER['QUERY_STRING'],"",$_SERVER['PHP_SELF'])));
 
 /* -------------------------------------------------------------------------
 Let's play around with iscript. Our idea is to allow a perfect integration.
@@ -319,15 +299,18 @@ if (empty ($direct_settings['swg_server']))
 		if ((isset ($_SERVER['HTTPS']))&&($_SERVER['HTTPS'])&&($_SERVER['SERVER_PORT'] != "443")) { $g_swg_path = ":{$_SERVER['SERVER_PORT']}".$g_swg_path; }
 		elseif ($_SERVER['SERVER_PORT'] != "80") { $g_swg_path = ":{$_SERVER['SERVER_PORT']}".$g_swg_path; }
 
-		if (strpos ($_SERVER['SERVER_NAME'],":") === false) { $direct_settings['swg_server'] = $_SERVER['SERVER_NAME'].$g_swg_path; }
-		else { $direct_settings['swg_server'] = "[{$_SERVER['SERVER_NAME']}]".$g_swg_path; }
+		$direct_settings['swg_server'] = ((strpos ($_SERVER['SERVER_NAME'],":") === false) ? $_SERVER['SERVER_NAME'].$g_swg_path : "[{$_SERVER['SERVER_NAME']}]".$g_swg_path);
 	}
 
 	unset ($g_swg_path);
 }
 
-if ((isset ($_SERVER['HTTPS']))&&($_SERVER['HTTPS'])) { $direct_settings['iscript_req'] = "https://".$direct_settings['swg_server']; }
-else { $direct_settings['iscript_req'] = "http://".$direct_settings['swg_server']; }
+$direct_settings['iscript_req'] = (((isset ($_SERVER['HTTPS']))&&($_SERVER['HTTPS'])) ? "https://".$direct_settings['swg_server'] : "http://".$direct_settings['swg_server']);
+/* -------------------------------------------------------------------------
+You are a guest - until we know more about you ...
+------------------------------------------------------------------------- */
+
+$direct_settings['user'] = array ("id" => "","type" => "gt","timezone" => 0);
 
 /* -------------------------------------------------------------------------
 Every page has a unique ID through md5 - it should be used for advertisments
@@ -368,8 +351,7 @@ Evalute the available timeout (not getting a timeout error)
 if (USE_set_time_limit_0) { $direct_settings['timeout'] = 3600; }
 else
 {
-	if (OW_set_time_limit_custom) { $direct_settings['timeout'] = OW_set_time_limit_custom; }
-	else { $direct_settings['timeout'] = get_cfg_var ("max_execution_time"); }
+	$direct_settings['timeout'] = (OW_set_time_limit_custom ? OW_set_time_limit_custom : get_cfg_var ("max_execution_time"));
 
 	if ($direct_settings['timeout'])
 	{
@@ -555,16 +537,8 @@ $direct_cachedata['output_warning'][] = array ("title" => direct_html_encode_spe
 
 			if ($this->v_call_check ($f_function))
 			{
-				if (is_array ($this->functions[$f_function]))
-				{
-					if (empty ($f_data)) { $f_return = $this->functions[$f_function][0]->{$this->functions[$f_function][1]} (); }
-					else { $f_return = call_user_func_array ($this->functions[$f_function],$f_data); }
-				}
-				else
-				{
-					if (empty ($f_data)) { $f_return = $this->{$f_function} (); }
-					else { $f_return = call_user_func_array ((array (&$this,$f_function)),$f_data); }
-				}
+				if (is_array ($this->functions[$f_function])) { $f_return = (empty ($f_data) ? $this->functions[$f_function][0]->{$this->functions[$f_function][1]} () : call_user_func_array ($this->functions[$f_function],$f_data)); }
+				else { $f_return = (empty ($f_data) ? $this->{$f_function} () : call_user_func_array ((array (&$this,$f_function)),$f_data)); }
 			}
 		}
 
@@ -593,7 +567,7 @@ $direct_cachedata['output_warning'][] = array ("title" => direct_html_encode_spe
 		{
 			if (isset ($this->functions[$f_function]))
 			{
-				if (($f_virtual_type)&&(isset ($this->functions[$f_function]))&(!empty ($this->functions[$f_function]))) { $f_return = true; }
+				if (($f_virtual_type)&&(isset ($this->functions[$f_function]))&&(!empty ($this->functions[$f_function]))) { $f_return = true; }
 				elseif ((!$f_virtual_type)&&($this->functions[$f_function])) { $f_return = true; }
 			}
 		}
@@ -616,9 +590,7 @@ $direct_cachedata['output_warning'][] = array ("title" => direct_html_encode_spe
 	/*#ifndef(PHP4) */protected /* #*/function v_call_get ($f_function)
 	{
 		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -virtual_class->v_call_get ($f_function)- (#echo(__LINE__)#)"); }
-
-		if ($this->v_call_check ($f_function,true)) { return $this->functions[$f_function]; }
-		else { return false; }
+		return ($this->v_call_check ($f_function,true) ? $this->functions[$f_function] : false);
 	}
 
 	//f// direct_virtual_class->v_call_rref ()
@@ -916,11 +888,7 @@ Set "last modified" time to "0".
 		}
 
 		header ("Expires: $f_expires GMT");
-
-		if (($f_withenc)&&(extension_loaded ("zlib")))
-		{
-			if (USE_outputenc) { ob_start ("ob_gzhandler"); }
-		}
+		if (($f_withenc)&&(USE_outputenc)&&(extension_loaded ("zlib"))) { ob_start ("ob_gzhandler"); }
 
 		if ($this->last_modified) { $f_last_modified = gmdate ("D, d M Y H:i:s",$this->last_modified); }
 		header ("Last-Modified: $f_last_modified GMT");
@@ -939,8 +907,7 @@ Encode the output for smaller bandwidth connections
 
 		if (($f_p3purl.$f_p3pcp) != "")
 		{
-			if ($f_p3purl == "") { $f_p3pdata = "policyref=\"$f_p3purl\""; }
-			else { $f_p3pdata = ""; }
+			$f_p3pdata = (($f_p3purl == "") ? "policyref=\"$f_p3purl\"" : "");
 
 			if ($f_p3pcp != "")
 			{
@@ -1300,15 +1267,8 @@ function direct_class_function_check (&$f_class,$f_function)
 {
 	if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_class_function_check (+f_class,$f_function)- (#echo(__LINE__)#)"); }
 
-	$f_return = false;
-
-	if ((is_object ($f_class))&&($f_class != NULL))
-	{
-		if (is_subclass_of ($f_class,"direct_virtual_class")) { $f_return = $f_class->v_call_check ($f_function); }
-		else { $f_return = method_exists ($f_class,$f_function); }
-	}
-
-	return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -direct_class_function_check ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
+	if ((is_object ($f_class))&&($f_class != NULL)) { return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -direct_class_function_check ()- (#echo(__LINE__)#)",:#*/(is_subclass_of ($f_class,"direct_virtual_class") ? $f_class->v_call_check ($f_function) : method_exists ($f_class,$f_function))/*#ifdef(DEBUG):,true):#*/; }
+	else { return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -direct_class_function_check ()- (#echo(__LINE__)#)",:#*/false/*#ifdef(DEBUG):,true):#*/; }
 }
 
 //f// direct_class_init ($f_class,$f_force_reinit = false)
@@ -1375,15 +1335,9 @@ function direct_debug ($f_debuglevel,$f_description,$f_value = "",$f_value_parsi
 			if (USE_debug_reporting_timing)
 			{
 				$f_debug_time = (/*#ifndef(PHP4) */microtime (true)/* #*//*#ifdef(PHP4):time ():#*/ - $direct_cachedata['core_debug_starttime']);
-
-				if ($f_value_parsing) { $direct_cachedata['core_debug'][] = ($f_description." returns: ".(direct_debug_value ($f_value)))." [{$f_debug_time}]"; }
-				else { $direct_cachedata['core_debug'][] = $f_description." [{$f_debug_time}]"; }
+				$direct_cachedata['core_debug'][] = ($f_value_parsing ? ($f_description." returns: ".(direct_debug_value ($f_value)))." [{$f_debug_time}]" : $f_description." [{$f_debug_time}]");
 			}
-			else
-			{
-				if ($f_value_parsing) { $direct_cachedata['core_debug'][] = ($f_description." returns: ".(direct_debug_value ($f_value))); }
-				else { $direct_cachedata['core_debug'][] = $f_description; }
-			}
+			else { $direct_cachedata['core_debug'][] = ($f_value_parsing ? ($f_description." returns: ".(direct_debug_value ($f_value))) : $f_description); }
 		}
 	}
 
@@ -1608,20 +1562,16 @@ Show me the basic settings
 ------------------------------------------------------------------------- */
 
 		$direct_classes['output']->page_content .= "<p class='pagecontent' style='text-align:center;font-size:10px'>Error reporting is ";
-		if (OW_error_reporting) { $direct_classes['output']->page_content .= "off"; }
-		else { $direct_classes['output']->page_content .= "on"; }
+		$direct_classes['output']->page_content .= (OW_error_reporting ? "off" : "on");
 
 		$direct_classes['output']->page_content .= "<br />\nMagic_Quotes_Runtime overwriting is ";
-		if (OW_magic_quotes_runtime) { $direct_classes['output']->page_content .= "on"; }
-		else { $direct_classes['output']->page_content .= "off"; }
+		$direct_classes['output']->page_content .= (OW_magic_quotes_runtime ? "on" : "off");
 
 		$direct_classes['output']->page_content .= "<br />\nCompression for output (if available) is ";
-		if ((USE_outputenc)&&(extension_loaded ("zlib"))) { $direct_classes['output']->page_content .= "on"; }
-		else { $direct_classes['output']->page_content .= "off"; }
+		$direct_classes['output']->page_content .= (((USE_outputenc)&&(extension_loaded ("zlib"))) ? "on" : "off");
 
 		$direct_classes['output']->page_content .= "<br />\nUsing SOCKET functions is ";
-		if (USE_socket) { $direct_classes['output']->page_content .= "on"; }
-		else { $direct_classes['output']->page_content .= "off"; }
+		$direct_classes['output']->page_content .= (USE_socket ? "on" : "off");
 
 $direct_classes['output']->page_content .= ("<br />
 Timeout value is $direct_settings[timeout] (core: +$direct_settings[timeout_core])<br />

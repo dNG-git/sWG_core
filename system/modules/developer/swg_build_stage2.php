@@ -127,9 +127,7 @@ Include all required files for later use
 
 	if (!$direct_classes['basic_functions']->include_file ($direct_settings['path_system']."/functions/swg_dir_functions.php")) { $g_continue_check = false; }
 	if (!$direct_classes['basic_functions']->include_file ($direct_settings['path_system']."/classes/swg_developer_builder.php")) { $g_continue_check = false; }
-
-	if (($g_continue_check)&&($g_source_path)) { $g_builder_object = new direct_developer_builder (); }
-	else { $g_builder_object = NULL; }
+	$g_builder_object = ((($g_continue_check)&&($g_source_path)) ? new direct_developer_builder () : NULL);
 
 /* -------------------------------------------------------------------------
 Scans the target definitions and checks for writable directories.

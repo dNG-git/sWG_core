@@ -52,9 +52,69 @@ if (!defined ("direct_product_iversion")) { exit (); }
 
 //j// Functions and classes
 
-//f// direct_output_oset_ajax_aphandler ()
+//f// direct_output_oset_default_embedded_done ()
 /**
-* direct_output_oset_ajax_aphandler ()
+* direct_output_oset_default_embedded_done ()
+*
+* @uses   direct_debug()
+* @uses   USE_debug_reporting
+* @return string Valid XHTML code
+* @since  v0.1.08
+*/
+function direct_output_oset_default_embedded_done ()
+{
+	global $direct_cachedata,$direct_settings;
+	if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_output_oset_default_embedded_done ()- (#echo(__LINE__)#)"); }
+
+	$f_title = ($direct_cachedata['output_job'] ? (direct_local_get ("core_done")).": ".$direct_cachedata['output_job'] : direct_local_get ("core_done"));
+	$f_return = "<p class='pagecontenttitle'>$f_title</p>\n<p class='pagecontent'>{$direct_cachedata['output_job_desc']}</p>";
+
+	if (isset ($direct_cachedata['output_pagetarget']))
+	{
+		if ($direct_cachedata['output_jsjump'] > 0)
+		{
+$f_return .= ("\n<p id='swgjsjump_point' class='pagecontent' style='font-weight:bold;text-align:center'><span style='font-size:10px'>".(direct_local_get ("core_automated_redirection_unsupported"))."</span><br />
+<a href=\"{$direct_cachedata['output_pagetarget']}\" target='_self'>".(direct_local_get ("core_continue"))."</a></p><script language='JavaScript' type='text/javascript'><![CDATA[
+djs_swgDOM_replace (\"<p class='pagecontent' style='font-size:10px;text-align:center'>(".(direct_local_get ("core_automated_redirection","text")).")<br />\\n\" +
+\"<a href=\\\"{$direct_cachedata['output_pagetarget']}\\\" target='_self'>".(direct_local_get ("core_continue","text"))."</a></p>\",'swgjsjump_point');
+self.setTimeout (\"self.location.replace (\\\"{$direct_cachedata['output_scripttarget']}\\\")\",{$direct_cachedata['output_jsjump']});
+]]></script>");
+		}
+		else { $f_return .= "\n<p class='pagecontent' style='font-weight:bold;text-align:center'><a href=\"{$direct_cachedata['output_pagetarget']}\" target='_self'>".(direct_local_get ("core_continue"))."</a></p>"; }
+	}
+
+	return $f_return;
+}
+
+//f// direct_output_oset_default_embedded_done_extended ()
+/**
+* direct_output_oset_default_embedded_done_extended ()
+*
+* @uses   direct_debug()
+* @uses   USE_debug_reporting
+* @return string Valid XHTML code
+* @since  v0.1.08
+*/
+function direct_output_oset_default_embedded_done_extended ()
+{
+	global $direct_cachedata,$direct_settings;
+	if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_output_oset_default_embedded_done_extended ()- (#echo(__LINE__)#)"); }
+
+	$f_title = ($direct_cachedata['output_job'] ? (direct_local_get ("core_done")).": ".$direct_cachedata['output_job'] : direct_local_get ("core_done"));
+
+$f_return = ("<p class='pagecontenttitle'>$f_title</p>
+<p class='pagecontent'>{$direct_cachedata['output_job_desc']}</p>
+<p class='pagecontenttitle' style='font-size:10px'>".(direct_local_get ("core_detailed_information"))."</p>
+<p class='pagecontent' style='font-size:10px'>{$direct_cachedata['output_job_extension']}</p>");
+
+	if (isset ($direct_cachedata['output_pagetarget'])) { $f_return .= "\n<p class='pagecontent' style='font-weight:bold;text-align:center'><a href=\"{$direct_cachedata['output_pagetarget']}\" target='_self'>".(direct_local_get ("core_continue"))."</a></p>"; }
+
+	return $f_return;
+}
+
+//f// direct_output_oset_default_embedded_ajax_aphandler ()
+/**
+* direct_output_oset_default_embedded_ajax_aphandler ()
 *
 * @uses   direct_debug()
 * @uses   USE_debug_reporting
@@ -72,11 +132,8 @@ $f_return = ("<div id='swg_core_aphandler_point' style='text-align:center'><tabl
 </tr></thead><tbody><tr>
 <td colspan='3' align='center' class='pagebg' style='padding:$direct_settings[theme_td_padding]'><span class='pagecontent' style='text-align:center'>");
 
-	if (isset ($direct_cachedata['output_text'])) { $f_return .= $direct_cachedata['output_text']; }
-	else { $f_return .= direct_local_get ("aphandler_please_wait_a_second_js"); }
-
-$f_return .= ("</span></td>
-</tr>");
+	$f_return .= (isset ($direct_cachedata['output_text']) ? $direct_cachedata['output_text'] : direct_local_get ("aphandler_please_wait_a_second_js"));
+	$f_return .= "</span></td>\n</tr>";
 
 	if (!empty ($direct_cachedata['output_time_estimated']))
 	{
@@ -226,6 +283,122 @@ function direct_output_oset_default_embedded_error_standard ()
 	}
 
 	return $f_return;
+}
+
+if (isset ($direct_classes['@names']['output_formbuilder']))
+{
+	//f// direct_output_oset_default_embedded_form ()
+/**
+	* direct_output_oset_default_embedded_form ()
+	*
+	* @uses   direct_debug()
+	* @uses   USE_debug_reporting
+	* @return string Valid XHTML code
+	* @since  v0.1.08
+*/
+	function direct_output_oset_default_embedded_form ()
+	{
+		global $direct_cachedata,$direct_classes,$direct_settings;
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_output_oset_default_embedded_form ()- (#echo(__LINE__)#)"); }
+
+		if (!isset ($direct_classes['output_oset_formbuilder'])) { direct_class_init ("output_formbuilder"); }
+
+		$f_return = "<p class='pagecontenttitle'>{$direct_cachedata['output_formtitle']}</p>\n";
+		$f_form_id = uniqid ("swg");
+
+		if (($direct_cachedata['output_credits_information'])||($direct_cachedata['output_credits_payment_data']))
+		{
+			$f_return .= "<p class='pagehighlightborder2' style='text-align:left'>";
+			if ($direct_cachedata['output_credits_information']) { $f_return .= "<span class='pagecontent'>{$direct_cachedata['output_credits_information']}</span>"; }
+			if ($direct_cachedata['output_credits_payment_data']) { $f_return .= ($direct_cachedata['output_credits_information'] ? "<br />\n<span class='pagecontent' style='font-size:10px'>{$direct_cachedata['output_credits_payment_data']}</span>" : "<span class='pagecontent'>{$direct_cachedata['output_credits_payment_data']}</span>"); }
+			$f_return .= "</p>";
+		}
+
+$f_return .= ($direct_settings['iscript_form']." name='swgForm' id='swgForm' onsubmit=\"return djs_formbuilder_submit('swgForm');\">".(direct_linker ("form",$direct_cachedata['output_formtarget']))."<table cellspacing='1' summary='' class='pageborder1' style='width:100%;table-layout:auto'>
+<thead class='pagehide'><tr>
+<td valign='middle' align='center' class='pagetitlecellbg' style='padding:$direct_settings[theme_td_padding]'><span class='pagetitlecellcontent'>".(direct_local_get ("formbuilder_field"))."</span></td>
+<td valign='middle' align='center' class='pagetitlecellbg' style='padding:$direct_settings[theme_td_padding]'><span class='pagetitlecellcontent'>".(direct_local_get ("formbuilder_field_content"))."</span></td>
+</tr></thead><tbody>".($direct_classes['output_formbuilder']->form_get ($direct_cachedata['output_formelements']))."</tbody>
+</table>
+<p class='pagecontent' style='text-align:center'><input type='submit' id='$f_form_id' value=\"{$direct_cachedata['output_formbutton']}\" class='pagecontentinputbutton' onfocus=\"djs_formbuilder_focused('$f_form_id')\" /><script language='JavaScript1.5' type='text/javascript'><![CDATA[
+djs_formbuilder_tabindex ('$f_form_id');
+]]></script></p></form>");
+
+/*i// LICENSE_WARNING
+----------------------------------------------------------------------------
+The sWG DataLinker has been published under the General Public License.
+----------------------------------------------------------------------------
+LICENSE_WARNING_END //i*/
+
+		if ((isset ($direct_cachedata['output_formiview_id']))&&(isset ($direct_cachedata['output_formiview_url'])))
+		{
+			$direct_classes['basic_functions']->require_file ($direct_settings['path_system']."/osets/$direct_settings[theme_oset]/swgi_datalinker_iview.php");
+			if (isset ($direct_cachedata['output_formiview_title'])) { $f_return .= "\n<p class='pagecontenttitle'>{$direct_cachedata['output_formiview_title']}</p>"; }
+			$f_return .= "\n".(direct_datalinker_oset_iview_url ($direct_cachedata['output_formiview_url'],$direct_cachedata['output_formiview_id'],true));
+		}
+
+		return $f_return;
+	}
+
+	//f// direct_output_oset_default_embedded_form_preview ()
+/**
+	* direct_output_oset_default_embedded_form_preview ()
+	*
+	* @uses   direct_debug()
+	* @uses   USE_debug_reporting
+	* @return string Valid XHTML code
+	* @since  v0.1.08
+*/
+	function direct_output_oset_default_embedded_form_preview ()
+	{
+		global $direct_cachedata,$direct_classes,$direct_settings;
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_output_oset_default_embedded_form_preview ()- (#echo(__LINE__)#)"); }
+
+		if (!isset ($direct_classes['output_oset_formbuilder'])) { direct_class_init ("output_formbuilder"); }
+		$direct_classes['basic_functions']->require_file ($direct_settings['path_system']."/osets/$direct_settings[theme_oset]/$direct_cachedata[output_preview_function_file].php");
+		$f_form_id = uniqid ("swg");
+
+		if (function_exists ("direct_".$direct_cachedata['output_preview_function']))
+		{
+			$f_oset = "direct_".$direct_cachedata['output_preview_function'];
+
+			$f_return = $f_oset ();
+			$f_return .= "<p class='pagecontenttitle'>{$direct_cachedata['output_formtitle']}</p>";
+
+			if (($direct_cachedata['output_credits_information'])||($direct_cachedata['output_credits_payment_data']))
+			{
+				$f_return .= "<p class='pagehighlightborder2' style='text-align:left'>";
+				if ($direct_cachedata['output_credits_information']) { $f_return .= "<span class='pagecontent'>{$direct_cachedata['output_credits_information']}</span>"; }
+				if ($direct_cachedata['output_credits_payment_data']) { $f_return .= ($direct_cachedata['output_credits_information'] ? "<br />\n<span class='pagecontent' style='font-size:10px'>{$direct_cachedata['output_credits_payment_data']}</span>" : "<span class='pagecontent'>{$direct_cachedata['output_credits_payment_data']}</span>"); }
+				$f_return .= "</p>";
+			}
+
+$f_return .= ($direct_settings['iscript_form']." name='swgForm' id='swgForm' onsubmit=\"return djs_formbuilder_submit('swgForm');\">".(direct_linker ("form",$direct_cachedata['output_formtarget']))."<table cellspacing='1' summary='' class='pageborder1' style='width:100%;table-layout:auto'>
+<thead class='pagehide'><tr>
+<td valign='middle' align='center' class='pagetitlecellbg' style='padding:$direct_settings[theme_td_padding]'><span class='pagetitlecellcontent'>".(direct_local_get ("formbuilder_field"))."</span></td>
+<td valign='middle' align='center' class='pagetitlecellbg' style='padding:$direct_settings[theme_td_padding]'><span class='pagetitlecellcontent'>".(direct_local_get ("formbuilder_field_content"))."</span></td>
+</tr></thead><tbody>".($direct_classes['output_formbuilder']->form_get ($direct_cachedata['output_formelements']))."</tbody>
+</table>
+<p class='pagecontent' style='text-align:center'><input type='submit' id='$f_form_id' value=\"{$direct_cachedata['output_formbutton']}\" class='pagecontentinputbutton' onfocus=\"djs_formbuilder_focused('$f_form_id')\" /><script language='JavaScript1.5' type='text/javascript'><![CDATA[
+djs_formbuilder_tabindex ('$f_form_id');
+]]></script></p></form>");
+		}
+
+/*i// LICENSE_WARNING
+----------------------------------------------------------------------------
+The sWG DataLinker has been published under the General Public License.
+----------------------------------------------------------------------------
+LICENSE_WARNING_END //i*/
+
+		if ((isset ($direct_cachedata['output_formiview_id']))&&(isset ($direct_cachedata['output_formiview_url'])))
+		{
+			$direct_classes['basic_functions']->require_file ($direct_settings['path_system']."/osets/$direct_settings[theme_oset]/swgi_datalinker_iview.php");
+			if (isset ($direct_cachedata['output_formiview_title'])) { $f_return .= "\n<p class='pagecontenttitle'>{$direct_cachedata['output_formiview_title']}</p>"; }
+			$f_return .= "\n".(direct_datalinker_oset_iview_url ($direct_cachedata['output_formiview_url'],$direct_cachedata['output_formiview_id'],true));
+		}
+
+		return $f_return;
+	}
 }
 
 //j// Script specific commands

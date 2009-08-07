@@ -223,8 +223,7 @@ if (($g_continue_check)&&($g_modification_check))
 			{
 				do
 				{
-					if ($g_range_size > 4096) { $g_block_size = 4096; }
-					else { $g_block_size = $g_range_size; }
+					$g_block_size = (($g_range_size > 4096) ? 4096 : $g_range_size);
 
 					if ($g_binary_check) { echo $g_file_object->read ($g_block_size); }
 					else
@@ -238,8 +237,7 @@ if (($g_continue_check)&&($g_modification_check))
 				}
 				while (($g_range_size > 0)&&(!$g_file_object->eof_check ())&&($g_timeout_time > (time ())));
 
-				if ($g_range_size > 0) { $g_continue_check = false; }
-				else { $g_continue_check = true; }
+				$g_continue_check = (($g_range_size > 0) ? false : true);
 			}
 			else
 			{
@@ -254,8 +252,7 @@ if (($g_continue_check)&&($g_modification_check))
 					}
 				}
 
-				if ($g_file_object->eof_check ()) { $g_continue_check = true; }
-				else { $g_continue_check = false; }
+				$g_continue_check = $g_file_object->eof_check ();
 			}
 
 			if ($g_continue_check)

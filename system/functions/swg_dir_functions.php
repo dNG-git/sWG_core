@@ -84,9 +84,7 @@ function direct_dir_create ($f_dir_path,$f_recursive = true,$f_timeout = -1)
 	{
 		$f_continue_check = true;
 		$f_return = false;
-
-		if ($f_timeout < 0) { $f_timeout_time = ($direct_cachedata['core_time'] + $direct_settings['timeout']); }
-		else { $f_timeout_time = ($direct_cachedata['core_time'] + $f_timeout); }
+		$f_timeout_time = (($f_timeout < 0) ? ($direct_cachedata['core_time'] + $direct_settings['timeout']) : ($direct_cachedata['core_time'] + $f_timeout));
 
 		$f_dir_array = explode ("/",$f_dir_path);
 		$f_dir_count = count ($f_dir_array);
@@ -95,18 +93,14 @@ function direct_dir_create ($f_dir_path,$f_recursive = true,$f_timeout = -1)
 		{
 			array_pop ($f_dir_array);
 			$f_dir_basepath = implode ("/",$f_dir_array);
-
-			if ($f_recursive) { $f_continue_check = direct_dir_create ($f_dir_basepath); }
-			else { $f_continue_check = direct_dir_is_writable ($f_dir_basepath); }
+			$f_continue_check = ($f_recursive ? direct_dir_create ($f_dir_basepath) : direct_dir_is_writable ($f_dir_basepath));
 		}
 
 		if (($f_continue_check)&&($f_timeout_time > (time ())))
 		{
 			if ($direct_settings['swg_umask_change']) { umask (intval ($direct_settings['swg_umask_change'],8)); }
 
-			if (strlen ($direct_settings['swg_chmod_dirs_change'])) { $f_chmod = intval ($direct_settings['swg_chmod_dirs_change'],8); }
-			else { $f_chmod = 0750; }
-
+			$f_chmod = (strlen ($direct_settings['swg_chmod_dirs_change']) ? intval ($direct_settings['swg_chmod_dirs_change'],8) : 0750);
 			$f_continue_check = @mkdir ($f_dir_path,$f_chmod);
 			$f_dir_id = md5 ($f_dir_path);
 
@@ -262,10 +256,9 @@ function direct_dir_remove ($f_dir_path,$f_recursive = true,$f_timeout = -1)
 	elseif (!direct_dir_exists ($f_dir_path)) { $f_return = true; }
 	else
 	{
-		if ($f_timeout < 0) { $f_timeout_time = ($direct_cachedata['core_time'] + $direct_settings['timeout']); }
-		else { $f_timeout_time = ($direct_cachedata['core_time'] + $f_timeout); }
-
 		$f_dir_pointer = @opendir ($f_dir_path);
+		$f_return = false;
+		$f_timeout_time = (($f_timeout < 0) ? ($direct_cachedata['core_time'] + $direct_settings['timeout']) : ($direct_cachedata['core_time'] + $f_timeout));
 
 		if ($f_dir_pointer)
 		{
@@ -286,7 +279,6 @@ function direct_dir_remove ($f_dir_path,$f_recursive = true,$f_timeout = -1)
 			closedir ($f_dir_pointer);
 			if ($f_timeout_time <= (time ())) { $f_return = false; }
 		}
-		else { $f_return = false; }
 
 		if ($f_return)
 		{

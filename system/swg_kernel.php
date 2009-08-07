@@ -410,11 +410,7 @@ The standard result: One IP is enough
 				{
 					$direct_classes['basic_functions']->require_file ($direct_settings['path_system']."/functions/swg_linker.php");
 
-					if (/*#ifndef(PHP4) */stripos/* #*//*#ifdef(PHP4):stristr:#*/($f_url,"&dsd=") === false)
-					{
-						if (strpos ($f_url,"#") === false) { $f_url .= "&dsd=https_redirect+1"; }
-						else { $f_url = str_replace ("#","&dsd=https_redirect+1#",$f_url); }
-					}
+					if (/*#ifndef(PHP4) */stripos/* #*//*#ifdef(PHP4):stristr:#*/($f_url,"&dsd=") === false) { $f_url .= ((strpos ($f_url,"#") === false) ? "&dsd=https_redirect+1" : str_replace ("#","&dsd=https_redirect+1#",$f_url)); }
 					else { $f_url = str_replace ("&dsd=","&dsd=https_redirect+1++",$f_url); }
 
 					if (/*#ifndef(PHP4) */stripos/* #*//*#ifdef(PHP4):stristr:#*/($direct_settings['https_base_url'],"https://") === false)
@@ -525,10 +521,9 @@ The standard result: One IP is enough
 	/*#ifndef(PHP4) */public /* #*/function service_init_rboolean ($f_threshold_id = "")
 	{
 		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->service_init_rboolean ($f_threshold_id)- (#echo(__LINE__)#)"); }
-		$f_error_array = $this->service_init ($f_threshold_id);
 
-		if (empty ($f_error_array)) { return /*#ifdef(DEBUG):direct_debug (9,"sWG/#echo(__FILEPATH__)# -kernel_class->service_init_rboolean ()- (#echo(__LINE__)#)",:#*/true/*#ifdef(DEBUG):,true):#*/; }
-		else { return /*#ifdef(DEBUG):direct_debug (9,"sWG/#echo(__FILEPATH__)# -kernel_class->service_init_rboolean ()- (#echo(__LINE__)#)",:#*/false/*#ifdef(DEBUG):,true):#*/; }
+		$f_error_array = $this->service_init ($f_threshold_id);
+		return /*#ifdef(DEBUG):direct_debug (9,"sWG/#echo(__FILEPATH__)# -kernel_class->service_init_rboolean ()- (#echo(__LINE__)#)",:#*/(empty ($f_error_array) ? true : false)/*#ifdef(DEBUG):,true):#*/;
 	}
 
 	//f// direct_kernel_system->service_load ()
@@ -649,10 +644,9 @@ The standard result: One IP is enough
 	/*#ifndef(PHP4) */public /* #*/function v_group_init ()
 	{
 		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_group_init ()- (#echo(__LINE__)#)"); }
-		$f_call = $this->v_call_get ("v_group_init");
 
-		if ($f_call) { return $f_call[0]->{$f_call[1]} (); }
-		else { return false; }
+		$f_call = $this->v_call_get ("v_group_init");
+		return ($f_call ? $f_call[0]->{$f_call[1]} () : false);
 	}
 
 	//f// direct_kernel_system->v_group_right_check ($f_gid,$f_rights,$f_explicit = false)
@@ -671,10 +665,9 @@ The standard result: One IP is enough
 	/*#ifndef(PHP4) */public /* #*/function v_group_right_check ($f_gid,$f_rights,$f_explicit = false)
 	{
 		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_group_right_check ($f_gid,+f_rights,+f_explicit)- (#echo(__LINE__)#)"); }
-		$f_call = $this->v_call_get ("v_group_right_check");
 
-		if ($f_call) { return $f_call[0]->{$f_call[1]} ($f_gid,$f_rights,$f_explicit); }
-		else { return false; }
+		$f_call = $this->v_call_get ("v_group_right_check");
+		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_gid,$f_rights,$f_explicit) : false);
 	}
 
 	//f// direct_kernel_system->v_group_right_write ($f_objid,$f_rid,$f_right,$f_setup)
@@ -694,10 +687,9 @@ The standard result: One IP is enough
 	/*#ifndef(PHP4) */public /* #*/function v_group_right_write ($f_objid,$f_rid,$f_right,$f_setup)
 	{
 		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_group_right_write ($f_objid,$f_rid,$f_right,+f_setup)- (#echo(__LINE__)#)"); }
-		$f_call = $this->v_call_get ("v_group_right_write");
 
-		if ($f_call) { return $f_call[0]->{$f_call[1]} ($f_objid,$f_rid,$f_right,$f_setup); }
-		else { return false; }
+		$f_call = $this->v_call_get ("v_group_right_write");
+		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_objid,$f_rid,$f_right,$f_setup) : false);
 	}
 
 	//f// direct_kernel_system->v_group_rights_get ($f_gid)
@@ -714,10 +706,9 @@ The standard result: One IP is enough
 	/*#ifndef(PHP4) */public /* #*/function v_group_rights_get ($f_gid)
 	{
 		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_group_rights_get ($f_gid)- (#echo(__LINE__)#)"); }
-		$f_call = $this->v_call_get ("v_group_rights_get");
 
-		if ($f_call) { return $f_call[0]->{$f_call[1]} ($f_gid); }
-		else { return array (); }
+		$f_call = $this->v_call_get ("v_group_rights_get");
+		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_gid) : array ());
 	}
 
 	//f// direct_kernel_system->v_group_user_check_group ($f_gid,$f_all = false)
@@ -735,10 +726,9 @@ The standard result: One IP is enough
 	/*#ifndef(PHP4) */public /* #*/function v_group_user_check_group ($f_gid,$f_all = false)
 	{
 		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_group_user_check_group (+f_gid,+f_all)- (#echo(__LINE__)#)"); }
-		$f_call = $this->v_call_get ("v_group_user_check_group");
 
-		if ($f_call) { return $f_call[0]->{$f_call[1]} ($f_gid,$f_all); }
-		else { return false; }
+		$f_call = $this->v_call_get ("v_group_user_check_group");
+		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_gid,$f_all) : false);
 	}
 
 	//f// direct_kernel_system->v_group_user_check_right ($f_rights,$f_explicit = false)
@@ -756,10 +746,9 @@ The standard result: One IP is enough
 	/*#ifndef(PHP4) */public /* #*/function v_group_user_check_right ($f_rights,$f_explicit = false)
 	{
 		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_group_user_check_right (+f_rights,+f_explicit)- (#echo(__LINE__)#)"); }
-		$f_call = $this->v_call_get ("v_group_user_check_right");
 
-		if ($f_call) { return $f_call[0]->{$f_call[1]} ($f_rights,$f_explicit); }
-		else { return false; }
+		$f_call = $this->v_call_get ("v_group_user_check_right");
+		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_rights,$f_explicit) : false);
 	}
 
 	//f// direct_kernel_system->v_group_user_get_groups ()
@@ -775,10 +764,9 @@ The standard result: One IP is enough
 	/*#ifndef(PHP4) */public /* #*/function v_group_user_get_groups ()
 	{
 		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_group_user_get_groups ()- (#echo(__LINE__)#)"); }
-		$f_call = $this->v_call_get ("v_group_user_get_groups");
 
-		if ($f_call) { return $f_call[0]->{$f_call[1]} (); }
-		else { return array (); }
+		$f_call = $this->v_call_get ("v_group_user_get_groups");
+		return ($f_call ? $f_call[0]->{$f_call[1]} () : array ());
 	}
 
 	//f// direct_kernel_system->v_group_user_get_rights ()
@@ -794,10 +782,9 @@ The standard result: One IP is enough
 	/*#ifndef(PHP4) */public /* #*/function v_group_user_get_rights ()
 	{
 		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_group_user_get_rights ()- (#echo(__LINE__)#)"); }
-		$f_call = $this->v_call_get ("v_group_user_get_rights");
 
-		if ($f_call) { return $f_call[0]->{$f_call[1]} (); }
-		else { return array (); }
+		$f_call = $this->v_call_get ("v_group_user_get_rights");
+		return ($f_call ? $f_call[0]->{$f_call[1]} () : array ());
 	}
 
 	//f// direct_kernel_system->v_subkernel_init ($f_threshold_id = "")
@@ -842,10 +829,9 @@ The standard result: One IP is enough
 	/*#ifndef(PHP4) */public /* #*/function v_user_check ($f_userid,$f_username = "",$f_all = false)
 	{
 		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_user_check ($f_userid,$f_username,+f_all)- (#echo(__LINE__)#)"); }
-		$f_call = $this->v_call_get ("v_user_check");
 
-		if ($f_call) { return $f_call[0]->{$f_call[1]} ($f_userid,$f_username,$f_all); }
-		else { return false; }
+		$f_call = $this->v_call_get ("v_user_check");
+		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_userid,$f_username,$f_all) : false);
 	}
 
 	//f// direct_kernel_system->v_user_get ($f_userid,$f_username = "",$f_all = false,$f_overwrite = false)
@@ -865,10 +851,9 @@ The standard result: One IP is enough
 	/*#ifndef(PHP4) */public /* #*/function v_user_get ($f_userid,$f_username = "",$f_all = false,$f_overwrite = false)
 	{
 		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_user_get ($f_userid,$f_username,+f_all,+f_overwrite)- (#echo(__LINE__)#)"); }
-		$f_call = $this->v_call_get ("v_user_get");
 
-		if ($f_call) { return $f_call[0]->{$f_call[1]} ($f_userid,$f_username,$f_all,$f_overwrite); }
-		else { return false; }
+		$f_call = $this->v_call_get ("v_user_get");
+		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_userid,$f_username,$f_all,$f_overwrite) : false);
 	}
 
 	//f// direct_kernel_system->v_user_init ($f_threshold_id = "")
@@ -887,10 +872,9 @@ The standard result: One IP is enough
 	/*#ifndef(PHP4) */public /* #*/function v_user_init ($f_threshold_id = "")
 	{
 		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_user_init ()- (#echo(__LINE__)#)"); }
-		$f_call = $this->v_call_get ("v_user_init");
 
-		if ($f_call) { return $f_call[0]->{$f_call[1]} ($f_threshold_id); }
-		else { return false; }
+		$f_call = $this->v_call_get ("v_user_init");
+		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_threshold_id) : false);
 	}
 
 	//f// direct_kernel_system->v_user_parse ($f_userid = "",$f_data = "",$f_prefix = "")
@@ -909,10 +893,9 @@ The standard result: One IP is enough
 	/*#ifndef(PHP4) */public /* #*/function v_user_parse ($f_userid = "",$f_data = "",$f_prefix = "")
 	{
 		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_user_parse ($f_userid,+f_data,$f_prefix)- (#echo(__LINE__)#)"); }
-		$f_call = $this->v_call_get ("v_user_parse");
 
-		if ($f_call) { return $f_call[0]->{$f_call[1]} ($f_userid,$f_data,$f_prefix); }
-		else { return false; }
+		$f_call = $this->v_call_get ("v_user_parse");
+		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_userid,$f_data,$f_prefix) : false);
 	}
 
 	//f// direct_kernel_system->v_user_insert ($f_userid = "",$f_data = "",$f_use_current_data = true)
@@ -932,10 +915,9 @@ The standard result: One IP is enough
 	/*#ifndef(PHP4) */public /* #*/function v_user_insert ($f_userid = "",$f_data = "",$f_use_current_data = true)
 	{
 		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_user_insert ($f_userid,+f_data,+f_use_current_data)- (#echo(__LINE__)#)"); }
-		$f_call = $this->v_call_get ("v_user_insert");
 
-		if ($f_call) { return $f_call[0]->{$f_call[1]} ($f_userid,$f_data,$f_use_current_data); }
-		else { return false; }
+		$f_call = $this->v_call_get ("v_user_insert");
+		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_userid,$f_data,$f_use_current_data) : false);
 	}
 
 	//f// direct_kernel_system->v_user_update ($f_userid = "",$f_data = "",$f_use_current_data = true)
@@ -955,10 +937,9 @@ The standard result: One IP is enough
 	/*#ifndef(PHP4) */public /* #*/function v_user_update ($f_userid = "",$f_data = "",$f_use_current_data = true)
 	{
 		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_user_update ($f_userid,+f_data,+f_use_current_data)- (#echo(__LINE__)#)"); }
-		$f_call = $this->v_call_get ("v_user_update");
 
-		if ($f_call) { return $f_call[0]->{$f_call[1]} ($f_userid,$f_data,$f_use_current_data); }
-		else { return false; }
+		$f_call = $this->v_call_get ("v_user_update");
+		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_userid,$f_data,$f_use_current_data) : false);
 	}
 
 	//f// direct_kernel_system->v_user_write_kernel ($f_userid)
@@ -975,10 +956,9 @@ The standard result: One IP is enough
 	/*#ifndef(PHP4) */public /* #*/function v_user_write_kernel ($f_userid)
 	{
 		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_user_write_kernel ($f_userid)- (#echo(__LINE__)#)"); }
-		$f_call = $this->v_call_get ("v_user_write_kernel");
 
-		if ($f_call) { return $f_call[0]->{$f_call[1]} ($f_userid); }
-		else { return false; }
+		$f_call = $this->v_call_get ("v_user_write_kernel");
+		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_userid) : false);
 	}
 
 	//f// direct_kernel_system->v_usertype_get_int ($f_data = 0)
@@ -995,10 +975,9 @@ The standard result: One IP is enough
 	/*#ifndef(PHP4) */public /* #*/function v_usertype_get_int ($f_data)
 	{
 		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_usertype_get_int ($f_data)- (#echo(__LINE__)#)"); }
-		$f_call = $this->v_call_get ("v_usertype_get_int");
 
-		if ($f_call) { return $f_call[0]->{$f_call[1]} ($f_data); }
-		else { return 0; }
+		$f_call = $this->v_call_get ("v_usertype_get_int");
+		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_data) : 0);
 	}
 
 	//f// direct_kernel_system->v_uuid_check_usage ()
@@ -1014,10 +993,9 @@ The standard result: One IP is enough
 	/*#ifndef(PHP4) */public /* #*/function v_uuid_check_usage ()
 	{
 		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_uuid_check_usage ()- (#echo(__LINE__)#)"); }
-		$f_call = $this->v_call_get ("v_uuid_check_usage");
 
-		if ($f_call) { return $f_call[0]->{$f_call[1]} (); }
-		else { return false; }
+		$f_call = $this->v_call_get ("v_uuid_check_usage");
+		return ($f_call ? $f_call[0]->{$f_call[1]} () : false);
 	}
 
 	//f// direct_kernel_system->v_uuid_cookie_load ()
@@ -1033,10 +1011,9 @@ The standard result: One IP is enough
 	/*#ifndef(PHP4) */public /* #*/function v_uuid_cookie_load ()
 	{
 		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_uuid_cookie_load ()- (#echo(__LINE__)#)"); }
-		$f_call = $this->v_call_get ("v_uuid_cookie_load");
 
-		if ($f_call) { return $f_call[0]->{$f_call[1]} (); }
-		else { return false; }
+		$f_call = $this->v_call_get ("v_uuid_cookie_load");
+		return ($f_call ? $f_call[0]->{$f_call[1]} () : false);
 	}
 
 	//f// direct_kernel_system->v_uuid_cookie_save ()
@@ -1052,10 +1029,9 @@ The standard result: One IP is enough
 	/*#ifndef(PHP4) */public /* #*/function v_uuid_cookie_save ()
 	{
 		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_uuid_cookie_save ()- (#echo(__LINE__)#)"); }
-		$f_call = $this->v_call_get ("v_uuid_cookie_save");
 
-		if ($f_call) { return $f_call[0]->{$f_call[1]} (); }
-		else { return false; }
+		$f_call = $this->v_call_get ("v_uuid_cookie_save");
+		return ($f_call ? $f_call[0]->{$f_call[1]} () : false);
 	}
 
 	//f// direct_kernel_system->v_uuid_get ($f_type,$f_cookie_mode = false)
@@ -1074,10 +1050,9 @@ The standard result: One IP is enough
 	/*#ifndef(PHP4) */public /* #*/function v_uuid_get ($f_type,$f_cookie_mode = false)
 	{
 		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_uuid_get ($f_type,+f_cookie_mode)- (#echo(__LINE__)#)"); }
-		$f_call = $this->v_call_get ("v_uuid_get");
 
-		if ($f_call) { return $f_call[0]->{$f_call[1]} ($f_type,$f_cookie_mode); }
-		else { return false; }
+		$f_call = $this->v_call_get ("v_uuid_get");
+		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_type,$f_cookie_mode) : false);
 	}
 
 	//f// direct_kernel_system->v_uuid_init (&$f_uuid)
@@ -1094,10 +1069,9 @@ The standard result: One IP is enough
 	/*#ifndef(PHP4) */public /* #*/function v_uuid_init (&$f_uuid)
 	{
 		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_uuid_init ($f_uuid)- (#echo(__LINE__)#)"); }
-		$f_call = $this->v_call_get ("v_uuid_init");
 
-		if ($f_call) { return $f_call[0]->{$f_call[1]} ($f_uuid); }
-		else { return false; }
+		$f_call = $this->v_call_get ("v_uuid_init");
+		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_uuid) : false);
 	}
 
 	//f// direct_kernel_system->v_uuid_is_cookied ()
@@ -1113,10 +1087,9 @@ The standard result: One IP is enough
 	/*#ifndef(PHP4) */public /* #*/function v_uuid_is_cookied ()
 	{
 		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_uuid_is_cookied ()- (#echo(__LINE__)#)"); }
-		$f_call = $this->v_call_get ("v_uuid_is_cookied");
 
-		if ($f_call) { return $f_call[0]->{$f_call[1]} (); }
-		else { return false; }
+		$f_call = $this->v_call_get ("v_uuid_is_cookied");
+		return ($f_call ? $f_call[0]->{$f_call[1]} () : false);
 	}
 
 	//f// direct_kernel_system->v_uuid_write ($f_data,$f_cookie_mode = "")
@@ -1135,10 +1108,9 @@ The standard result: One IP is enough
 	/*#ifndef(PHP4) */public /* #*/function v_uuid_write ($f_data,$f_cookie_mode = "")
 	{
 		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_group_init (+f_data,+f_cookie_mode)- (#echo(__LINE__)#)"); }
-		$f_call = $this->v_call_get ("v_uuid_write");
 
-		if ($f_call) { return $f_call[0]->{$f_call[1]} ($f_data,$f_cookie_mode); }
-		else { return false; }
+		$f_call = $this->v_call_get ("v_uuid_write");
+		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_data,$f_cookie_mode) : false);
 	}
 }
 

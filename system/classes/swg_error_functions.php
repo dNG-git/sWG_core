@@ -167,13 +167,9 @@ Informing the system about available functions
 		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -error_functions_class->backtrace_get_text (+f_data,$f_handling)- (#echo(__LINE__)#)"); }
 
 		$f_backtrace_array = $this->backtrace_get ($f_data);
-		$f_return = "";
 
-		if (!empty ($f_backtrace_array))
-		{
-			if ($f_handling == "html") { $f_return = implode ("<br />\n",$f_backtrace_array); }
-			else { $f_return = implode ("\n",$f_backtrace_array); }
-		}
+		if (empty ($f_backtrace_array)) { $f_return = ""; }
+		else { $f_return = ($f_handling == "html" ? implode ("<br />\n",$f_backtrace_array) : implode ("\n",$f_backtrace_array)); }
 
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -error_functions_class->backtrace_get_text ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
@@ -234,19 +230,13 @@ Informing the system about available functions
 
 		if (!function_exists ("direct_linker")) { $direct_classes['basic_functions']->require_file ($direct_settings['path_system']."/functions/swg_linker.php"); }
 
-		if ((!preg_match ("#\W#i",$f_error))&&(function_exists ("direct_local_get"))) { $direct_cachedata['output_error'] = direct_local_get ("errors_".$f_error); }
-		else { $direct_cachedata['output_error'] = $f_error; }
-
-		if ($f_extra_data) { $direct_cachedata['output_error_extradata'] = preg_replace ("#(\/|\&amp;|\&|\?|,)(?!\>|(\w{2,4};))#"," \\1 \\2",$f_extra_data); }
-		else { $direct_cachedata['output_error_extradata'] = ""; }
+		$direct_cachedata['output_error'] = (((!preg_match ("#\W#i",$f_error))&&(function_exists ("direct_local_get"))) ? direct_local_get ("errors_".$f_error) : $f_error);
+		$direct_cachedata['output_error_extradata'] = ($f_extra_data ? preg_replace ("#(\/|\&amp;|\&|\?|,)(?!\>|(\w{2,4};))#"," \\1 \\2",$f_extra_data) : "");
 
 		if ((direct_class_function_check ($direct_classes['output'],"oset"))&&(direct_class_function_check ($direct_classes['output_theme'],"theme_page"))&&(function_exists ("direct_linker")))
 		{
-			if ((@$direct_cachedata['page_backlink'])&&($direct_cachedata['page_this'] != $direct_cachedata['page_backlink'])) { $direct_cachedata['output_link_back'] = direct_linker ("url0",$direct_cachedata['page_backlink']); }
-			else { $direct_cachedata['output_link_back'] = ""; }
-
-			if (@$direct_cachedata['page_this']) { $direct_cachedata['output_link_retry'] = direct_linker ("url0",$direct_cachedata['page_this']); }
-			else { $direct_cachedata['output_link_retry'] = ""; }
+			$direct_cachedata['output_link_back'] = (((@$direct_cachedata['page_backlink'])&&($direct_cachedata['page_this'] != $direct_cachedata['page_backlink'])) ? direct_linker ("url0",$direct_cachedata['page_backlink']) : "");
+			$direct_cachedata['output_link_retry'] = (@$direct_cachedata['page_this'] ? direct_linker ("url0",$direct_cachedata['page_this']) : "");
 
 			$f_subtype = "";
 

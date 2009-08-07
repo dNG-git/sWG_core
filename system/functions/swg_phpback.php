@@ -135,16 +135,8 @@ if (!@function_exists ("call_user_func"))
 
 			if ((count ($f_args_array) > 0)&&(strpos ($f_args_array[0],";") === false))
 			{
-				if (strlen ($f_args))
-				{
-					if (is_array ($f_args_array[0])) { return eval ("\$f_args_array[0][0]->{$f_args_array[0][1]} ($f_args);"); }
-					else { return eval ($f_args_array[0]." ($f_args);"); }
-				}
-				else
-				{
-					if (is_array ($f_args_array[0])) { return eval ("\$f_args_array[0][0]->{$f_args_array[0][1]} ();"); }
-					else { return eval ($f_args_array[0]." ();"); }
-				}
+				if (strlen ($f_args)) { return (is_array ($f_args_array[0]) ? eval ("\$f_args_array[0][0]->{$f_args_array[0][1]} ($f_args);") : eval ($f_args_array[0]." ($f_args);")); }
+				else { return (is_array ($f_args_array[0]) ? eval ("\$f_args_array[0][0]->{$f_args_array[0][1]} ();") : eval ($f_args_array[0]." ();")); }
 			}
 		}
 
@@ -170,11 +162,7 @@ if (!@function_exists ("mb_internal_encoding"))
 	*         empty or true (even if the setting has not been changed)
 	* @since  v0.1.08
 */
-	function mb_internal_encoding ($f_encoding = "")
-	{
-		if (strlen ($f_encoding)) { return "phpback"; }
-		else { return true; }
-	}
+	function mb_internal_encoding ($f_encoding = "") { return (strlen ($f_encoding) ? "phpback" : true); }
 }
 
 if (!@function_exists ("mb_substr"))
@@ -198,11 +186,7 @@ if (!@function_exists ("mb_substr"))
 	* @return string Returns the substring
 	* @since  v0.1.08
 */
-	function mb_substr ($f_data,$f_offset,$f_length = NULL,$f_encoding = "")
-	{
-		if ($f_length === NULL) { return substr ($f_data,$f_offset); }
-		else { return substr ($f_data,$f_offset,$f_length); }
-	}
+	function mb_substr ($f_data,$f_offset,$f_length = NULL,$f_encoding = "") { return (($f_length === NULL) ? substr ($f_data,$f_offset) : substr ($f_data,$f_offset,$f_length)); }
 }
 /*#ifdef(PHP4):
 
@@ -227,7 +211,6 @@ if (!@function_exists ("md5_file"))
 	{
 		$f_return = direct_getfile ("b",$f_fileaddr);
 		if ((is_string ($f_return))&&($f_return)) { $f_return = md5 ($f_return); }
-
 		return $f_return;
 	}
 }
@@ -251,14 +234,9 @@ if (!@function_exists ("property_exists"))
 */
 	function property_exists ($f_class,$f_property)
 	{
-		$f_return = NULL;
-
 		if ((is_string ($f_class))&&(class_exists ($f_class,/*#ifndef(PHP4) */false/* #*/))) { $f_return = array_key_exists ($f_property,(get_class_vars  ($f_class))); }
-		elseif (is_object ($f_class))
-		{
-			if ((isset ($f_class->$f_property))||(is_null ($f_class->$f_property))) { $f_return = true; }
-			else { $f_return = false; }
-		}
+		elseif (is_object ($f_class)) { $f_return = (((isset ($f_class->$f_property))||(is_null ($f_class->$f_property))) ? true : false); }
+		else { $f_return = NULL; }
 
 		return $f_return;
 	}
@@ -348,10 +326,7 @@ if (!@function_exists ("stream_set_blocking"))
 	* @return boolean Returns TRUE on success or FALSE on failure.
 	* @since  v0.1.01
 *\/
-	function stream_set_blocking ($f_rp,$f_mode)
-	{
-		if (function_exists ("socket_set_blocking")) { return socket_set_blocking ($f_rp,$f_mode); }
-	}
+	function stream_set_blocking ($f_rp,$f_mode) { return (function_exists ("socket_set_blocking") ? socket_set_blocking ($f_rp,$f_mode) : false); }
 }
 
 if (!@function_exists ("stream_set_timeout"))
@@ -372,10 +347,7 @@ if (!@function_exists ("stream_set_timeout"))
 	* @return boolean Returns TRUE on success or FALSE on failure.
 	* @since  v0.1.01
 *\/
-	function stream_set_timeout ($f_rp,$f_sec,$f_msec = 0)
-	{
-		if (function_exists ("socket_set_timeout")) { return socket_set_timeout ($f_rp,$f_sec,$f_msec); }
-	}
+	function stream_set_timeout ($f_rp,$f_sec,$f_msec = 0) { return (function_exists ("socket_set_timeout") ? socket_set_timeout ($f_rp,$f_sec,$f_msec) : false); }
 }
 :#*/
 //j// EOF

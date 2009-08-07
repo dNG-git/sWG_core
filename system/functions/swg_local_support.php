@@ -107,9 +107,7 @@ function direct_local_get ($f_string_id,$f_handling = "html")
 function direct_local_get_xml_translation (&$f_xml_node_array,$f_tag,$f_extract_string = false,$f_extract_language = "")
 {
 	if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -direct_local_get_xml_translation (+f_xml_node_array,$f_tag,+f_extract_string,$f_extract_language)- (#echo(__LINE__)#)"); }
-
-	if ($f_extract_string) { $f_return = ""; }
-	else { $f_return = array (); }
+	$f_return = ($f_extract_string ? "" : array ());
 
 	if ((is_array ($f_xml_node_array))&&(is_string ($f_tag)))
 	{
@@ -147,16 +145,8 @@ function direct_local_get_xml_translation (&$f_xml_node_array,$f_tag,$f_extract_
 
 			if (strlen ($f_extract_language))
 			{
-				if ($f_extract_string)
-				{
-					if (isset ($f_return[$f_extract_language])) { $f_return = $f_return[$f_extract_language]; }
-					elseif (isset ($f_return['@global'])) { $f_return = $f_return['@global']; }
-				}
-				else
-				{
-					if (isset ($f_return[$f_extract_language])) { $f_return = array ($f_extract_language => $f_return[$f_extract_language]); }
-					elseif (isset ($f_return['@global'])) { $f_return = array ($f_extract_language => $f_return['@global']); }
-				}
+				if ($f_extract_string) { $f_return = (isset ($f_return[$f_extract_language]) ? $f_return[$f_extract_language] : $f_return['@global']); }
+				else { $f_return = (isset ($f_return[$f_extract_language]) ? array ($f_extract_language => $f_return[$f_extract_language]) : array ($f_extract_language => $f_return['@global'])); }
 			}
 		}
 	}

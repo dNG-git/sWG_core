@@ -111,11 +111,7 @@ function direct_file_get ($f_type,$f_file_path)
 					}
 				}
 
-				if (($f_type == "a")||($f_type == "a0")||($f_type == "a1"))
-				{
-					if (!$f_file_content) { $f_return = array (); }
-					else { $f_return = explode ("\n",$f_file_content); }
-				}
+				if (($f_type == "a")||($f_type == "a0")||($f_type == "a1")) { $f_return = ($f_file_content ? explode ("\n",$f_file_content) : array ()); }
 				else { $f_return = $f_file_content; }
 			}
 		}
@@ -148,9 +144,7 @@ function direct_file_write ($f_data,$f_file_path,$f_type = "")
 {
 	if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -direct_file_write (+f_data,$f_file_path,$f_type)- (#echo(__LINE__)#)"); }
 
-	if (is_array ($f_data)) { $f_file_content = implode ("\n",$f_data); }
-	else { $f_file_content = $f_data; }
-
+	$f_file_content = (is_array ($f_data) ? implode ("\n",$f_data) : $f_data);
 	if (($f_type == "a")||($f_type == "r")||($f_type == "s")) { $f_file_content = trim ($f_file_content); }
 
 	$f_file = new direct_file_functions ();

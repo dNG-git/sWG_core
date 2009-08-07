@@ -98,9 +98,7 @@ $f_return .= ("<div id='swg_core_aphandler_point' style='text-align:center'><tab
 </tr></thead><tbody><tr>
 <td colspan='3' align='center' class='pagebg' style='padding:$direct_settings[theme_td_padding]'><span class='pagecontent' style='text-align:center'>");
 
-	if (isset ($direct_cachedata['output_text'])) { $f_return .= $direct_cachedata['output_text']; }
-	else { $f_return .= direct_local_get ("aphandler_please_wait_a_second_js"); }
-
+	$f_return .= (isset ($direct_cachedata['output_text']) ? $direct_cachedata['output_text'] : direct_local_get ("aphandler_please_wait_a_second_js"));
 	$f_return .= "</span></td>\n</tr>";
 
 	if (!empty ($direct_cachedata['output_time_estimated']))
@@ -143,8 +141,8 @@ $f_return .= ("<tr>
 djs_swgDOM_replace (\"<p class='pagecontent' style='font-size:10px;text-align:center'>(".(direct_local_get ("core_automated_redirection","text")).")<br />\\n\" +
 \"<a href=\\\"{$direct_cachedata['output_pagetarget']}\\\" target='_self'>".(direct_local_get ("core_continue","text"))."</a></p>\",'swgjsjump_point');\n");
 
-	if (($direct_cachedata['output_ajaxtarget'])&&($direct_cachedata['output_ajaxnexttarget'])) { $f_return .= "\nif (!djs_var['core_aphandler_ajax_mode']) { djs_var['core_run_onload'].push ('self.setTimeout (\"self.document.location.replace (\\'{$direct_cachedata['output_scripttarget']}\\')\",1000)'); }"; }
-	else { $f_return .= "\ndjs_var['core_run_onload'].push ('self.setTimeout (\"self.document.location.replace (\\'{$direct_cachedata['output_scripttarget']}\\')\",1000)');"; }
+	if (($direct_cachedata['output_ajaxtarget'])&&($direct_cachedata['output_ajaxnexttarget'])) { $f_return .= "\nif (!djs_var['core_aphandler_ajax_mode']) { djs_var['core_run_onload'].push ('self.setTimeout (\"self.location.replace (\\'{$direct_cachedata['output_scripttarget']}\\')\",1000)'); }"; }
+	else { $f_return .= "\ndjs_var['core_run_onload'].push ('self.setTimeout (\"self.location.replace (\\'{$direct_cachedata['output_scripttarget']}\\')\",1000)');"; }
 
 	return $f_return."\n]]></script>";
 }
@@ -163,9 +161,7 @@ function direct_output_oset_default_done ()
 	global $direct_cachedata,$direct_settings;
 	if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_output_oset_default_done ()- (#echo(__LINE__)#)"); }
 
-	if ($direct_cachedata['output_job']) { $f_title = (direct_local_get ("core_done")).": ".$direct_cachedata['output_job']; }
-	else { $f_title = direct_local_get ("core_done"); }
-
+	$f_title = ($direct_cachedata['output_job'] ? (direct_local_get ("core_done")).": ".$direct_cachedata['output_job'] : direct_local_get ("core_done"));
 	$f_return = "<p class='pagecontenttitle'>$f_title</p>\n<p class='pagecontent'>{$direct_cachedata['output_job_desc']}</p>";
 
 	if (isset ($direct_cachedata['output_pagetarget']))
@@ -176,7 +172,7 @@ $f_return .= ("\n<p id='swgjsjump_point' class='pagecontent' style='font-weight:
 <a href=\"{$direct_cachedata['output_pagetarget']}\" target='_self'>".(direct_local_get ("core_continue"))."</a></p><script language='JavaScript' type='text/javascript'><![CDATA[
 djs_swgDOM_replace (\"<p class='pagecontent' style='font-size:10px;text-align:center'>(".(direct_local_get ("core_automated_redirection","text")).")<br />\\n\" +
 \"<a href=\\\"{$direct_cachedata['output_pagetarget']}\\\" target='_self'>".(direct_local_get ("core_continue","text"))."</a></p>\",'swgjsjump_point');
-self.setTimeout (\"self.document.location.replace (\\\"{$direct_cachedata['output_scripttarget']}\\\")\",{$direct_cachedata['output_jsjump']});
+self.setTimeout (\"self.location.replace (\\\"{$direct_cachedata['output_scripttarget']}\\\")\",{$direct_cachedata['output_jsjump']});
 ]]></script>");
 		}
 		else { $f_return .= "\n<p class='pagecontent' style='font-weight:bold;text-align:center'><a href=\"{$direct_cachedata['output_pagetarget']}\" target='_self'>".(direct_local_get ("core_continue"))."</a></p>"; }
@@ -199,8 +195,7 @@ function direct_output_oset_default_done_extended ()
 	global $direct_cachedata,$direct_settings;
 	if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_output_oset_default_done_extended ()- (#echo(__LINE__)#)"); }
 
-	if ($direct_cachedata['output_job']) { $f_title = (direct_local_get ("core_done")).": ".$direct_cachedata['output_job']; }
-	else { $f_title = direct_local_get ("core_done"); }
+	$f_title = ($direct_cachedata['output_job'] ? (direct_local_get ("core_done")).": ".$direct_cachedata['output_job'] : direct_local_get ("core_done"));
 
 $f_return = ("<p class='pagecontenttitle'>$f_title</p>
 <p class='pagecontent'>{$direct_cachedata['output_job_desc']}</p>
@@ -378,13 +373,7 @@ if (isset ($direct_classes['@names']['output_formbuilder']))
 		{
 			$f_return .= "<p class='pagehighlightborder2' style='text-align:left'>";
 			if ($direct_cachedata['output_credits_information']) { $f_return .= "<span class='pagecontent'>{$direct_cachedata['output_credits_information']}</span>"; }
-
-			if ($direct_cachedata['output_credits_payment_data'])
-			{
-				if ($direct_cachedata['output_credits_information']) { $f_return .= "<br />\n<span class='pagecontent' style='font-size:10px'>{$direct_cachedata['output_credits_payment_data']}</span>"; }
-				else { $f_return .= "<span class='pagecontent'>{$direct_cachedata['output_credits_payment_data']}</span>"; }
-			}
-
+			if ($direct_cachedata['output_credits_payment_data']) { $f_return .= ($direct_cachedata['output_credits_information'] ? "<br />\n<span class='pagecontent' style='font-size:10px'>{$direct_cachedata['output_credits_payment_data']}</span>" : "<span class='pagecontent'>{$direct_cachedata['output_credits_payment_data']}</span>"); }
 			$f_return .= "</p>";
 		}
 
@@ -408,7 +397,7 @@ LICENSE_WARNING_END //i*/
 		{
 			$direct_classes['basic_functions']->require_file ($direct_settings['path_system']."/osets/$direct_settings[theme_oset]/swgi_datalinker_iview.php");
 			if (isset ($direct_cachedata['output_formiview_title'])) { $f_return .= "\n<p class='pagecontenttitle'>{$direct_cachedata['output_formiview_title']}</p>"; }
-			$f_return .= "\n".(direct_oset_datalinker_iview_url ($direct_cachedata['output_formiview_url'],$direct_cachedata['output_formiview_id'],true));
+			$f_return .= "\n".(direct_datalinker_oset_iview_url ($direct_cachedata['output_formiview_url'],$direct_cachedata['output_formiview_id'],true));
 		}
 
 		return $f_return;
@@ -443,13 +432,7 @@ LICENSE_WARNING_END //i*/
 			{
 				$f_return .= "<p class='pagehighlightborder2' style='text-align:left'>";
 				if ($direct_cachedata['output_credits_information']) { $f_return .= "<span class='pagecontent'>{$direct_cachedata['output_credits_information']}</span>"; }
-
-				if ($direct_cachedata['output_credits_payment_data'])
-				{
-					if ($direct_cachedata['output_credits_information']) { $f_return .= "<br />\n<span class='pagecontent' style='font-size:10px'>{$direct_cachedata['output_credits_payment_data']}</span>"; }
-					else { $f_return .= "<span class='pagecontent'>{$direct_cachedata['output_credits_payment_data']}</span>"; }
-				}
-
+				if ($direct_cachedata['output_credits_payment_data']) { $f_return .= ($direct_cachedata['output_credits_information'] ? "<br />\n<span class='pagecontent' style='font-size:10px'>{$direct_cachedata['output_credits_payment_data']}</span>" : "<span class='pagecontent'>{$direct_cachedata['output_credits_payment_data']}</span>"); }
 				$f_return .= "</p>";
 			}
 
@@ -474,7 +457,7 @@ LICENSE_WARNING_END //i*/
 		{
 			$direct_classes['basic_functions']->require_file ($direct_settings['path_system']."/osets/$direct_settings[theme_oset]/swgi_datalinker_iview.php");
 			if (isset ($direct_cachedata['output_formiview_title'])) { $f_return .= "\n<p class='pagecontenttitle'>{$direct_cachedata['output_formiview_title']}</p>"; }
-			$f_return .= "\n".(direct_oset_datalinker_iview_url ($direct_cachedata['output_formiview_url'],$direct_cachedata['output_formiview_id'],true));
+			$f_return .= "\n".(direct_datalinker_oset_iview_url ($direct_cachedata['output_formiview_url'],$direct_cachedata['output_formiview_id'],true));
 		}
 
 		return $f_return;
@@ -501,7 +484,7 @@ return ("<p class='pagecontenttitle'>".(direct_local_get ("core_redirect"))."</p
 <a href=\"{$direct_cachedata['output_pagetarget']}\" target='_self'>".(direct_local_get ("core_continue"))."</a></p><script language='JavaScript' type='text/javascript'><![CDATA[
 djs_swgDOM_replace (\"<p class='pagecontent' style='font-size:10px;text-align:center'>(".(direct_local_get ("core_automated_redirection","text")).")<br />\\n\" +
 \"<a href=\\\"{$direct_cachedata['output_pagetarget']}\\\" target='_self'>".(direct_local_get ("core_continue","text"))."</a></p>\",'swgjsjump_point');
-self.setTimeout (\"self.document.location.replace ('{$direct_cachedata['output_scripttarget']}')\",2000);
+self.setTimeout (\"self.location.replace ('{$direct_cachedata['output_scripttarget']}')\",2000);
 ]]></script>");
 }
 
@@ -521,9 +504,7 @@ function direct_output_oset_default_service_list ()
 
 	$f_filter_check = isset ($direct_cachedata['output_filter_tid']);
 	if ($f_filter_check) { $f_filter_check = $direct_classes['basic_functions']->include_file ($direct_settings['path_system']."/osets/$direct_settings[theme_oset]/swgi_default_filter.php"); }
-
-	if (isset ($direct_cachedata['output_services_title'])) { $f_page_title = $direct_cachedata['output_services_title']; }
-	else { $f_page_title = direct_local_get ("core_service_list"); }
+	$f_page_title = (isset ($direct_cachedata['output_services_title']) ? $direct_cachedata['output_services_title'] : direct_local_get ("core_service_list"));
 
 	if (empty ($direct_cachedata['output_services']))
 	{
@@ -536,7 +517,7 @@ if (djs_swgDOM)
 {
 ".(direct_output_oset_default_filter_table (true,"swg_default_service_list_filter_point",(direct_local_get ("core_filter_search","text")),"djs_default_service_list_filter_process ()",$direct_cachedata['output_filter_text']))."
 
-	function djs_default_service_list_filter_process () { self.document.location.replace ('".(direct_linker ("url1","m=dataport&s=swgap;default;filter&dsd=dtheme+1++dfid+{$direct_cachedata['output_filter_fid']}++dftext+[f_text]++tid+{$direct_cachedata['output_filter_tid']}++source+".$direct_cachedata['output_filter_source'],false))."'.replace (/\[f_text\]/g,(encodeURIComponent (self.document.getElementById('swg_default_service_list_filter_point_f').value)))); }
+	function djs_default_service_list_filter_process () { self.location.replace ('".(direct_linker ("url1","m=dataport&s=swgap;default;filter&dsd=dtheme+1++dfid+{$direct_cachedata['output_filter_fid']}++dftext+[f_text]++tid+{$direct_cachedata['output_filter_tid']}++source+".$direct_cachedata['output_filter_source'],false))."'.replace (/\[f_text\]/g,(encodeURIComponent (self.document.getElementById('swg_default_service_list_filter_point_f').value)))); }
 	djs_formbuilder_tabindex ('swg_default_service_list_filter_point_f');
 	djs_formbuilder_tabindex ('swg_default_service_list_filter_point_b');
 }
@@ -568,7 +549,7 @@ if (djs_swgDOM)
 	djs_var['swg_default_service_list_filter_point1_style_display'] = 'table-row';
 	djs_var['core_run_onload'].push ('djs_iblock_init (\"swg_default_service_list_filter_point1\",true)');
 
-	function djs_default_service_list_filter_process () { self.document.location.replace ('".(direct_linker ("url1","m=dataport&s=swgap;default;filter&dsd=dtheme+1++dfid+{$direct_cachedata['output_filter_fid']}++dftext+[f_text]++tid+{$direct_cachedata['output_filter_tid']}++source+".$direct_cachedata['output_filter_source'],false))."'.replace (/\[f_text\]/g,(encodeURIComponent (self.document.getElementById('swg_default_service_list_filter_point2_f').value)))); }
+	function djs_default_service_list_filter_process () { self.location.replace ('".(direct_linker ("url1","m=dataport&s=swgap;default;filter&dsd=dtheme+1++dfid+{$direct_cachedata['output_filter_fid']}++dftext+[f_text]++tid+{$direct_cachedata['output_filter_tid']}++source+".$direct_cachedata['output_filter_source'],false))."'.replace (/\[f_text\]/g,(encodeURIComponent (self.document.getElementById('swg_default_service_list_filter_point2_f').value)))); }
 	djs_formbuilder_tabindex ('swg_default_service_list_filter_point2_f');
 	djs_formbuilder_tabindex ('swg_default_service_list_filter_point2_b');
 }
@@ -603,9 +584,7 @@ $f_return .= ("<span class='pagecontent'>{$f_service_array[0]}<a href='{$f_servi
 <span style='font-size:10px'>{$f_service_array[3]}</span></span>");
 		}
 
-		if ($f_right_switch) { $f_return .= "</td>\n<td class='pagebg' style='width:50%'><span style='font-size:8px'>&#0160;</span></td>\n</tr></tbody>\n</table>"; }
-		else { $f_return .= "</td>\n</tr></tbody>\n</table>"; }
-
+		$f_return .= ($f_right_switch ? "</td>\n<td class='pagebg' style='width:50%'><span style='font-size:8px'>&#0160;</span></td>\n</tr></tbody>\n</table>" : "</td>\n</tr></tbody>\n</table>");
 		if ($direct_cachedata['output_pages'] > 1) { $f_return .= "\n<p class='pageborder2' style='text-align:center'><span class='pageextracontent' style='font-size:10px'>".(direct_output_pages_generator ($direct_cachedata['output_page_url'],$direct_cachedata['output_pages'],$direct_cachedata['output_page']))."</span></p>"; }
 	}
 

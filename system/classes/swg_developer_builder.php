@@ -209,8 +209,7 @@ $f_package_array = array (
 				$this->output_array[$this->output_position]['xml'] = new direct_xml ();
 				$f_return =& $this->output_array[$this->output_position]['xml'];
 
-				if (file_exists ($this->output_array[$this->output_position]['path']."data/settings/swg_packages_installed.php")) { $f_file_data = direct_file_get ("s0",$this->output_array[$this->output_position]['path']."data/settings/swg_packages_installed.php"); }
-				else { $f_file_data = NULL; }
+				$f_file_data = (file_exists ($this->output_array[$this->output_position]['path']."data/settings/swg_packages_installed.php") ? direct_file_get ("s0",$this->output_array[$this->output_position]['path']."data/settings/swg_packages_installed.php") : NULL);
 
 				if ($f_return)
 				{
@@ -317,8 +316,7 @@ $f_package_array = array (
 						}
 						else { $f_target_node_array = $f_xml_object->node_get ("swg_packages_file_v1 packages ".$this->output_package." ".$f_file_md5); }
 
-						if ($f_continue_check) { $f_parsed_file_md5 = $this->file_parse ($f_file); }
-						else { $f_parsed_file_md5 = false; }
+						$f_parsed_file_md5 = ($f_continue_check ? $this->file_parse ($f_file) : false);
 
 						if (is_string ($f_parsed_file_md5))
 						{
@@ -344,9 +342,7 @@ $f_package_array = array (
 				if ((isset ($f_output_array['xml']))&&($f_output_array['xml']))
 				{
 					$f_file_data = "<?xml version='1.0' encoding='UTF-8' ?>\n".($f_output_array['xml']->cache_export (true,false));
-
-					if (direct_file_write ($f_file_data,$f_output_array['path']."data/settings/swg_packages_installed.php","s0")) { echo "done"; }
-					else { echo "failed"; }
+					echo (direct_file_write ($f_file_data,$f_output_array['path']."data/settings/swg_packages_installed.php","s0") ? "done" : "failed");
 				}
 				else { echo "failed"; }
 			}
@@ -378,8 +374,7 @@ $f_package_array = array (
 			}
 		}
 
-		if ((count ($this->dir_array))||(count ($this->file_array))) { return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -developer_builder_class->set_include ()- (#echo(__LINE__)#)",:#*/true/*#ifdef(DEBUG):,true):#*/; }
-		else { return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -developer_builder_class->set_include ()- (#echo(__LINE__)#)",:#*/false/*#ifdef(DEBUG):,true):#*/; }
+		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -developer_builder_class->set_include ()- (#echo(__LINE__)#)",:#*/(((count ($this->dir_array))||(count ($this->file_array))) ? true : false)/*#ifdef(DEBUG):,true):#*/;
 	}
 
 	//f// direct_developer_builder->set_target_metadata ($f_package,$f_name,$f_level,$f_version,$f_iversion = NULL)
@@ -398,8 +393,7 @@ $f_package_array = array (
 	{
 		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -developer_builder_class->set_target_metadata ($f_package,$f_name,$f_level,$f_version,+f_iversion)- (#echo(__LINE__)#)"); }
 
-		if (preg_match ("#^swg_(.+?)$#i",$f_name)) { $f_version_tag = "sWG".(substr ($f_name,4))."Version"; }
-		else { $f_version_tag = $f_name."Version"; }
+		$f_version_tag = (preg_match ("#^swg_(.+?)$#i",$f_name) ? "sWG".(substr ($f_name,4))."Version" : $f_name."Version");
 
 		if (preg_match_all ("#_(\w)#",$f_version_tag,$f_result_array,PREG_PATTERN_ORDER))
 		{

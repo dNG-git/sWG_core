@@ -349,9 +349,7 @@ Set up the caching variables
 					}
 
 					if (preg_match ("#[\\x00-\\x20\\x22\\x28\\x29\\x2c\\x2e\\x3a-\\x3c\\x3e\\x40\\x5b-\\x5d\\x7f-\\xff]#",$f_data_part)) { $f_continue_check = false; }
-
-					if ($f_address_parsing) { $f_data_part = ""; }
-					else { $f_data_part = $f_at_array[1]; }
+					$f_data_part = ($f_address_parsing ? "" : $f_at_array[1]);
 				}
 			}
 		}
@@ -384,8 +382,7 @@ Set up the caching variables
 			}
 		}
 
-		if ($f_continue_check) { return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -basic_functions_class->inputfilter_email ()- (#echo(__LINE__)#)",:#*/$f_data/*#ifdef(DEBUG):,true):#*/; }
-		else { return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -basic_functions_class->inputfilter_email ()- (#echo(__LINE__)#)",:#*/""/*#ifdef(DEBUG):,true):#*/; }
+		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -basic_functions_class->inputfilter_email ()- (#echo(__LINE__)#)",:#*/($f_continue_check ? $f_data : "")/*#ifdef(DEBUG):,true):#*/;
 	}
 
 	//f// direct_basic_functions->inputfilter_filepath ($f_data,$f_uprefs_allowed)
@@ -477,11 +474,7 @@ Set up the caching variables
 					else { $f_data[$f_key] = stripslashes ($f_value); }
 				}
 			}
-			else
-			{
-				if (INFO_magic_quotes_sybase) { $f_data = str_replace ("''","'",$f_data); }
-				else { $f_data = stripslashes ($f_data); }
-			}
+			else { $f_data = (INFO_magic_quotes_sybase ? str_replace ("''","'",$f_data) : stripslashes ($f_data)); }
 		}
 	}
 
@@ -501,12 +494,7 @@ Set up the caching variables
 	/*#ifndef(PHP4) */public /* #*/function magic_quotes_input (&$f_data)
 	{
 		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -basic_functions_class->magic_quotes_input (+f_data)- (#echo(__LINE__)#)"); }
-
-		if ((INFO_magic_quotes_input)&&(!empty ($f_data)))
-		{
-			if (INFO_magic_quotes_sybase) { $f_data = str_replace ("''","'",$f_data); }
-			else { $f_data = stripslashes ($f_data); }
-		}
+		if ((INFO_magic_quotes_input)&&(!empty ($f_data))) { $f_data = (INFO_magic_quotes_sybase ? str_replace ("''","'",$f_data) : stripslashes ($f_data)); }
 	}
 
 	//f// direct_basic_functions->memcache_get_file ($f_file)
@@ -728,9 +716,7 @@ Set up the caching variables
 		if (!empty ($f_icons_array))
 		{
 			$f_mimetype_array = explode ("/",$f_mimetype,2);
-			
-			if (isset ($f_icons_array[$f_mimetype_array[0]."/".$f_mimetype_array[1]])) { $f_return = $f_icons_array[$f_mimetype_array[0]."/".$f_mimetype_array[1]]; }
-			elseif (isset ($f_icons_array[$f_mimetype_array[0]])) { $f_return = $f_icons_array[$f_mimetype_array[0]]; }
+			$f_return = (isset ($f_icons_array[$f_mimetype_array[0]."/".$f_mimetype_array[1]]) ? $f_icons_array[$f_mimetype_array[0]."/".$f_mimetype_array[1]] : $f_icons_array[$f_mimetype_array[0]]);
 		}
 
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -basic_functions_class->mimetype_icon ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
@@ -965,22 +951,19 @@ it together to our result.
 		if ($f_data_length)
 		{
 			$f_part = substr ($f_data,0,$f_part_length);
-			if ($f_bytemixing) { $f_return = md5 (str_pad ($f_part,$f_data_length,$f_bytemix_length,STR_PAD_LEFT)); }
-			else { $f_return = md5 (strrev ($f_part)); }
+			$f_return = ($f_bytemixing ? md5 (str_pad ($f_part,$f_data_length,$f_bytemix_length,STR_PAD_LEFT)) : md5 (strrev ($f_part)));
 
 			$f_data_remaining -= $f_part_length;
 			$f_return_length += $f_part_length;
 
 			$f_part = substr ($f_data,$f_return_length,$f_part_length);
-			if ($f_bytemixing) { $f_return .= md5 (str_pad ($f_part,$f_data_length,$f_bytemix_length,STR_PAD_RIGHT)); }
-			else { $f_return .= md5 (strrev ($f_part)); }
+			$f_return .= ($f_bytemixing ? md5 (str_pad ($f_part,$f_data_length,$f_bytemix_length,STR_PAD_RIGHT)) : md5 (strrev ($f_part)));
 
 			$f_data_remaining -= $f_part_length;
 			$f_return_length += $f_part_length;
 
 			$f_part = substr ($f_data,$f_return_length,$f_data_remaining);
-			if ($f_bytemixing) { $f_return .= md5 (str_pad ($f_part,$f_data_length,$f_bytemix_length,STR_PAD_LEFT)); }
-			else { $f_return .= md5 (strrev ($f_part)); }
+			$f_return .= ($f_bytemixing ? md5 (str_pad ($f_part,$f_data_length,$f_bytemix_length,STR_PAD_LEFT)) : md5 (strrev ($f_part)));
 		}
 		else { $f_return = ""; }
 
