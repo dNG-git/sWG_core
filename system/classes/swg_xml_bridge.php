@@ -51,8 +51,7 @@ all development packets)
 Testing for required classes
 ------------------------------------------------------------------------- */
 
-$g_continue_check = true;
-if (defined ("CLASS_direct_xml_bridge")) { $g_continue_check = false; }
+$g_continue_check = ((defined ("CLASS_direct_xml_bridge")) ? false : true);
 if (($g_continue_check)&&(!defined ("CLASS_direct_xml_reader"))) { $g_continue_check = $direct_classes['basic_functions']->include_file ($direct_settings['path_system']."/classes/ext_core/xml_reader.php",1); }
 
 if ($g_continue_check)

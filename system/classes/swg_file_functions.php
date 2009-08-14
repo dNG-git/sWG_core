@@ -48,8 +48,7 @@ all development packets)
 Testing for required classes
 ------------------------------------------------------------------------- */
 
-$g_continue_check = true;
-if (defined ("CLASS_direct_file_functions")) { $g_continue_check = false; }
+$g_continue_check = ((defined ("CLASS_direct_file_functions")) ? false : true);
 if (($g_continue_check)&&(!defined ("CLASS_direct_file"))) { $g_continue_check = $direct_classes['basic_functions']->include_file ($direct_settings['path_system']."/classes/ext_core/file.php",1); }
 
 if ($g_continue_check)

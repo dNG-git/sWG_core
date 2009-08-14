@@ -49,8 +49,7 @@ all development packets)
 Testing for required classes
 ------------------------------------------------------------------------- */
 
-$g_continue_check = true;
-if (defined ("CLASS_direct_output_control")) { $g_continue_check = false; }
+$g_continue_check = ((defined ("CLASS_direct_output_control")) ? false : true);
 if (!defined ("CLASS_direct_output_inline")) { $g_continue_check = false; }
 
 if ($g_continue_check)
