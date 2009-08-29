@@ -754,6 +754,7 @@ Set up the caching variables
 		{
 			$f_pathinfo = pathinfo ($f_file);
 			$f_pathinfo['basename'] = md5 ($f_pathinfo['dirname']).".".$f_pathinfo['basename'];
+			$f_memcache_check = true;
 
 			if (file_exists ($direct_settings['swg_memcache']."/".$direct_settings['swg_memcache_id'].".".$f_pathinfo['basename']))
 			{
