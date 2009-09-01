@@ -67,9 +67,10 @@ if (!defined ("direct_product_iversion")) { exit (); }
 */
 function direct_string_translation ($f_module,$f_string)
 {
+	global $direct_settings;
 	if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_string_translation ($f_module,+f_string)- (#echo(__LINE__)#)"); }
 
-	$f_return = direct_string_id_translation ($f_module,(md5 ($f_string)));
+	$f_return = (($direct_settings['lang'] == "en") ? $f_string : direct_string_id_translation ($f_module,(md5 ($f_string))));
 	if (!$f_return) { $f_return = $f_string; }
 
 	return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -direct_string_translation ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
