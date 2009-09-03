@@ -45,7 +45,15 @@ function djs_iblock_init (f_iblock_id,f_mode)
 		if ((typeof (self.document.getElementById(f_iblock_id).style.display) != 'undefined')&&(self.document.getElementById(f_iblock_id).style.display != 'none')) { djs_var[f_iblock_id + '_style_display'] = self.document.getElementById(f_iblock_id).style.display; }
 		else if (typeof (djs_var[f_iblock_id + '_style_display']) == 'undefined') { djs_var[f_iblock_id + '_style_display'] = 'block'; }
 
-		if (f_mode) { self.document.getElementById(f_iblock_id).style.display = djs_var[f_iblock_id + '_style_display']; }
+		if (f_mode)
+		{
+			try { self.document.getElementById(f_iblock_id).style.display = djs_var[f_iblock_id + '_style_display']; }
+			catch (f_handled_exception)
+			{
+				djs_var[f_iblock_id + '_style_display'] = 'block';
+				self.document.getElementById(f_iblock_id).style.display = djs_var[f_iblock_id + '_style_display'];
+			}
+		}
 		else { self.document.getElementById(f_iblock_id).style.display = 'none'; }
 	}
 	}
@@ -158,7 +166,13 @@ function djs_iblock_switch_show (f_iblock_id)
 			}
 
 			if (typeof (djs_var[f_iblock_id + '_style_display']) == 'undefined') { djs_var[f_iblock_id + '_style_display'] = 'block'; }
-			self.document.getElementById(f_iblock_id).style.display = djs_var[f_iblock_id + '_style_display'];
+
+			try { self.document.getElementById(f_iblock_id).style.display = djs_var[f_iblock_id + '_style_display']; }
+			catch (f_handled_exception)
+			{
+				djs_var[f_iblock_id + '_style_display'] = 'block';
+				self.document.getElementById(f_iblock_id).style.display = djs_var[f_iblock_id + '_style_display'];
+			}
 		}
 	}
 	}
