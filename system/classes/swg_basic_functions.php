@@ -277,8 +277,13 @@ Set up the caching variables
 	{
 		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -basic_functions_class->inputfilter_basic (+f_data)- (#echo(__LINE__)#)"); }
 
-		$f_data = preg_replace ("#[\\x00-\\x09]#","",$f_data);
-		if (INFO_magic_quotes_input) { $this->magic_quotes_input ($f_data); }
+		if (is_string ($f_data))
+		{
+			$f_data = preg_replace ("#[\\x00-\\x09]#","",$f_data);
+			if (INFO_magic_quotes_input) { $this->magic_quotes_input ($f_data); }
+		}
+		else { $f_data = ""; }
+
 		return $f_data;
 	}
 
@@ -303,7 +308,7 @@ Set up the caching variables
 		$f_continue_check = true;
 		$f_data_part = "";
 
-		$f_data = preg_replace ("#\r\n([\\x09\\x20])+#","\\1",$f_data);
+		if (is_string ($f_data)) { $f_data = preg_replace ("#\r\n([\\x09\\x20])+#","\\1",$f_data); }
 		$f_data = $this->inputfilter_basic ($f_data);
 		$f_dot_array = explode (".",$f_data);
 
@@ -432,11 +437,8 @@ Set up the caching variables
 	/*#ifndef(PHP4) */public /* #*/function inputfilter_number ($f_data)
 	{
 		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -basic_functions_class->inputfilter_filepath ($f_data)- (#echo(__LINE__)#)"); }
-		$f_return = "";
 
-		preg_match ("#^(-|- |)(\d+)$#i",$f_data,$f_result_array);
-		if (!empty ($f_result_array)) { $f_return = $f_result_array[0]; }
-
+		$f_return = (((is_numeric ($f_data))&&(preg_match ("#^(-|- |)(\d+)$#i",$f_data,$f_result_array))) ? $f_result_array[0] : "");
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -basic_functions_class->inputfilter_number ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
