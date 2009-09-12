@@ -13,7 +13,7 @@
 <bin value='application/octet-stream' />
 <bmp value='image/bmp' />
 <cdf value='application/x-netcdf' />
-<class value='application/octet-stream' />
+<class value='application/java-vm' />
 <cpio value='application/x-cpio' />
 <cpt value='application/mac-compactpro' />
 <csh value='application/x-csh' />
@@ -42,6 +42,8 @@
 <ief value='image/ief' />
 <iges value='model/iges' />
 <igs value='model/iges' />
+<jar value='application/java-archive' />
+<jnlp value='application/x-java-jnlp-file' />
 <ipk value='application/x-ipk' />
 <jpe value='image/jpeg' />
 <jpeg value='image/jpeg' />
