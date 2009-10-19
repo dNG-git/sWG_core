@@ -144,6 +144,7 @@
    <url><input input="string" /></url>
   </redirect>
 
+  <redirector><permalink><input input="string" /></permalink></redirector>
   <registration><input input="string" /></registration>
   <save><input input="string" /></save>
   <search><input input="string" /></search>
@@ -274,6 +275,7 @@
   <credits><insufficient><input input="string" /></insufficient></credits>
   <database><error><input input="string" /></error></database>
   <datasub><eid><invalid><input input="string" /></invalid></eid></datasub>
+  <redirector><link><not><found><input input="string" /></found></not></link></redirector>
   <required><object><not><found><input input="string" /></found></not></object></required>
   <service><inactive><input input="string" /></inactive></service>
   <tid><invalid><input input="string" /></invalid></tid>
@@ -283,5 +285,8 @@
   <username><unknown><input input="string" /></unknown></username>
  </core></errors>
 
- <lang><charset input="string" /></lang>
+ <lang>
+  <charset input="string" />
+  <iso><domain input="string" /></iso>
+ </lang>
 </swg_lang_file_v1>

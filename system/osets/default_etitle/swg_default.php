@@ -72,7 +72,7 @@ function direct_output_oset_default_aphandler ()
 
 	if (($direct_cachedata['output_ajaxtarget'])&&($direct_cachedata['output_ajaxnexttarget']))
 	{
-$f_return .= ("<script language='JavaScript' type='text/javascript'><![CDATA[
+$f_return .= ("<script type='text/javascript'><![CDATA[
 djs_var['core_aphandler_ajax_mode'] = false;
 
 if ((djs_swgAJAX)&&(djs_swgDOM))
@@ -94,11 +94,11 @@ if ((djs_swgAJAX)&&(djs_swgDOM))
 ]]></script>");
 	}
 
-$f_return .= ("<div id='swg_core_aphandler_point' style='text-align:center'><table cellspacing='1' summary='' class='pageborder1' style='table-layout:auto'>
+$f_return .= ("<div id='swg_core_aphandler_point' style='text-align:center'><table class='pageborder1' style='table-layout:auto'>
 <thead><tr>
-<td colspan='3' align='center' class='pageextrabg' style='padding:$direct_settings[theme_td_padding]'><span class='pageextracontent' style='font-size:10px;font-weight:bold;text-align:center'>{$direct_cachedata['output_title']}</span></td>
+<td colspan='3' class='pageextrabg' style='padding:$direct_settings[theme_td_padding];text-align:center'><span class='pageextracontent' style='font-size:10px;font-weight:bold;text-align:center'>{$direct_cachedata['output_title']}</span></td>
 </tr></thead><tbody><tr>
-<td colspan='3' align='center' class='pagebg' style='padding:$direct_settings[theme_td_padding]'><span class='pagecontent' style='text-align:center'>");
+<td colspan='3' class='pagebg' style='padding:$direct_settings[theme_td_padding];text-align:center'><span class='pagecontent' style='text-align:center'>");
 
 	$f_return .= (isset ($direct_cachedata['output_text']) ? $direct_cachedata['output_text'] : direct_local_get ("aphandler_please_wait_a_second_js"));
 	$f_return .= "</span></td>\n</tr>";
@@ -106,40 +106,40 @@ $f_return .= ("<div id='swg_core_aphandler_point' style='text-align:center'><tab
 	if (!empty ($direct_cachedata['output_time_estimated']))
 	{
 $f_return .= ("<tr>
-<td colspan='3' align='center' class='pageextrabg' style='padding:$direct_settings[theme_td_padding]'><span class='pageextracontent' style='font-size:10px;font-weight:bold'>".(direct_local_get ("aphandler_progress"))."</span></td>
+<td colspan='3' class='pageextrabg' style='padding:$direct_settings[theme_td_padding];text-align:center'><span class='pageextracontent' style='font-size:10px;font-weight:bold'>".(direct_local_get ("aphandler_progress"))."</span></td>
 </tr><tr>
-<td colspan='3' align='center' class='pagebg' style='padding:$direct_settings[theme_td_padding]'><span class='pagecontent'>{$direct_cachedata['output_percentage']}%</span></td>
+<td colspan='3' class='pagebg' style='padding:$direct_settings[theme_td_padding];text-align:center'><progress class='pagecontent'>{$direct_cachedata['output_percentage']}%</progress></td>
 </tr>");
 	}
 
 $f_return .= ("<tr>
-<td colspan='3' align='center' class='pageextrabg' style='padding:$direct_settings[theme_td_padding]'><span class='pageextracontent' style='font-size:10px;font-weight:bold'>".(direct_local_get ("aphandler_time_elapsed"))."</span></td>
+<td colspan='3' class='pageextrabg' style='padding:$direct_settings[theme_td_padding];text-align:center'><span class='pageextracontent' style='font-size:10px;font-weight:bold'>".(direct_local_get ("aphandler_time_elapsed"))."</span></td>
 </tr><tr>
-<td valign='middle' align='center' class='pagebg' style='width:33%;padding:$direct_settings[theme_td_padding]'><span class='pagecontent' style='font-size:10px'>{$direct_cachedata['output_time_elapsed'][0]}</span></td>
-<td valign='middle' align='center' class='pagebg' style='width:34%;padding:$direct_settings[theme_td_padding]'><span class='pagecontent' style='font-size:10px'>{$direct_cachedata['output_time_elapsed'][1]}</span></td>
-<td valign='middle' align='center' class='pagebg' style='width:33%;padding:$direct_settings[theme_td_padding]'><span class='pagecontent' style='font-size:10px'>{$direct_cachedata['output_time_elapsed'][2]}</span></td>
+<td class='pagebg' style='width:33%;padding:$direct_settings[theme_td_padding];text-align:center;vertical-align:middle'><span class='pagecontent' style='font-size:10px'>{$direct_cachedata['output_time_elapsed'][0]}</span></td>
+<td class='pagebg' style='width:34%;padding:$direct_settings[theme_td_padding];text-align:center;vertical-align:middle'><span class='pagecontent' style='font-size:10px'>{$direct_cachedata['output_time_elapsed'][1]}</span></td>
+<td class='pagebg' style='width:33%;padding:$direct_settings[theme_td_padding];text-align:center;vertical-align:middle'><span class='pagecontent' style='font-size:10px'>{$direct_cachedata['output_time_elapsed'][2]}</span></td>
 </tr>");
 
 	if (!empty ($direct_cachedata['output_time_estimated']))
 	{
 $f_return .= ("<tr>
-<td colspan='3' align='center' class='pageextrabg' style='padding:$direct_settings[theme_td_padding]'><span class='pageextracontent' style='font-size:10px;font-weight:bold'>".(direct_local_get ("aphandler_time_estimated"))."</span></td>
+<td colspan='3' class='pageextrabg' style='padding:$direct_settings[theme_td_padding];text-align:center'><span class='pageextracontent' style='font-size:10px;font-weight:bold'>".(direct_local_get ("aphandler_time_estimated"))."</span></td>
 </tr><tr>
-<td valign='middle' align='center' class='pagebg' style='width:33%;padding:$direct_settings[theme_td_padding]'><span class='pagecontent' style='font-size:10px'>{$direct_cachedata['output_time_estimated'][0]}</span></td>
-<td valign='middle' align='center' class='pagebg' style='width:34%;padding:$direct_settings[theme_td_padding]'><span class='pagecontent' style='font-size:10px'>{$direct_cachedata['output_time_estimated'][1]}</span></td>
-<td valign='middle' align='center' class='pagebg' style='width:33%;padding:$direct_settings[theme_td_padding]'><span class='pagecontent' style='font-size:10px'>{$direct_cachedata['output_time_estimated'][2]}</span></td>
+<td class='pagebg' style='width:33%;padding:$direct_settings[theme_td_padding];text-align:center;vertical-align:middle'><span class='pagecontent' style='font-size:10px'>{$direct_cachedata['output_time_estimated'][0]}</span></td>
+<td class='pagebg' style='width:34%;padding:$direct_settings[theme_td_padding];text-align:center;vertical-align:middle'><span class='pagecontent' style='font-size:10px'>{$direct_cachedata['output_time_estimated'][1]}</span></td>
+<td class='pagebg' style='width:33%;padding:$direct_settings[theme_td_padding];text-align:center;vertical-align:middle'><span class='pagecontent' style='font-size:10px'>{$direct_cachedata['output_time_estimated'][2]}</span></td>
 </tr>");
 	}
 
 $f_return .= ("<tr>
-<td valign='middle' align='center' class='pagebg' style='width:33%;padding:$direct_settings[theme_td_padding]'><span class='pagecontent' style='font-size:10px'>".(direct_local_get ("aphandler_hours"))."</span></td>
-<td valign='middle' align='center' class='pagebg' style='width:34%;padding:$direct_settings[theme_td_padding]'><span class='pagecontent' style='font-size:10px'>".(direct_local_get ("aphandler_minutes"))."</span></td>
-<td valign='middle' align='center' class='pagebg' style='width:33%;padding:$direct_settings[theme_td_padding]'><span class='pagecontent' style='font-size:10px'>".(direct_local_get ("aphandler_seconds"))."</span></td>
+<td class='pagebg' style='width:33%;padding:$direct_settings[theme_td_padding];text-align:center;vertical-align:middle'><span class='pagecontent' style='font-size:10px'>".(direct_local_get ("aphandler_hours"))."</span></td>
+<td class='pagebg' style='width:34%;padding:$direct_settings[theme_td_padding];text-align:center;vertical-align:middle'><span class='pagecontent' style='font-size:10px'>".(direct_local_get ("aphandler_minutes"))."</span></td>
+<td class='pagebg' style='width:33%;padding:$direct_settings[theme_td_padding];text-align:center;vertical-align:middle'><span class='pagecontent' style='font-size:10px'>".(direct_local_get ("aphandler_seconds"))."</span></td>
 </tr></tbody>
 </table></div>
 <p id='swgjsjump_point' class='pagecontent' style='text-align:center;font-weight:bold'>".(direct_local_get ("aphandler_please_wait_a_second_nojs"))."<br /><br />
 <span style='font-size:10px'>".(direct_local_get ("core_automated_redirection_unsupported"))."</span><br />
-<a href=\"{$direct_cachedata['output_pagetarget']}\" target='_self'>".(direct_local_get ("core_continue"))."</a></p><script language='JavaScript' type='text/javascript'><![CDATA[
+<a href=\"{$direct_cachedata['output_pagetarget']}\" target='_self'>".(direct_local_get ("core_continue"))."</a></p><script type='text/javascript'><![CDATA[
 djs_swgDOM_replace (\"<p class='pagecontent' style='font-size:10px;text-align:center'>(".(direct_local_get ("core_automated_redirection","text")).")<br />\\n\" +
 \"<a href=\\\"{$direct_cachedata['output_pagetarget']}\\\" target='_self'>".(direct_local_get ("core_continue","text"))."</a></p>\",'swgjsjump_point');\n");
 
@@ -171,7 +171,7 @@ function direct_output_oset_default_done ()
 		if ($direct_cachedata['output_jsjump'] > 0)
 		{
 $f_return .= ("\n<p id='swgjsjump_point' class='pagecontent' style='font-weight:bold;text-align:center'><span style='font-size:10px'>".(direct_local_get ("core_automated_redirection_unsupported"))."</span><br />
-<a href=\"{$direct_cachedata['output_pagetarget']}\" target='_self'>".(direct_local_get ("core_continue"))."</a></p><script language='JavaScript' type='text/javascript'><![CDATA[
+<a href=\"{$direct_cachedata['output_pagetarget']}\" target='_self'>".(direct_local_get ("core_continue"))."</a></p><script type='text/javascript'><![CDATA[
 djs_swgDOM_replace (\"<p class='pagecontent' style='font-size:10px;text-align:center'>(".(direct_local_get ("core_automated_redirection","text")).")<br />\\n\" +
 \"<a href=\\\"{$direct_cachedata['output_pagetarget']}\\\" target='_self'>".(direct_local_get ("core_continue","text"))."</a></p>\",'swgjsjump_point');
 self.setTimeout (\"self.location.replace (\\\"{$direct_cachedata['output_scripttarget']}\\\")\",{$direct_cachedata['output_jsjump']});
@@ -387,13 +387,13 @@ if (isset ($direct_classes['@names']['output_formbuilder']))
 			$f_return .= "</p>";
 		}
 
-$f_return .= ($direct_settings['iscript_form']." name='swgForm' id='swgForm' onsubmit=\"return djs_formbuilder_submit('swgForm');\">".(direct_linker ("form",$direct_cachedata['output_formtarget']))."<table cellspacing='1' summary='' class='pageborder1' style='width:100%;table-layout:auto'>
+$f_return .= ($direct_settings['iscript_form']." name='swgForm' id='swgForm' onsubmit=\"return djs_formbuilder_submit('swgForm');\">".(direct_linker ("form",$direct_cachedata['output_formtarget']))."<table class='pageborder1' style='width:100%;table-layout:auto'>
 <thead class='pagehide'><tr>
-<td valign='middle' align='center' class='pagetitlecellbg' style='padding:$direct_settings[theme_td_padding]'><span class='pagetitlecellcontent'>".(direct_local_get ("formbuilder_field"))."</span></td>
-<td valign='middle' align='center' class='pagetitlecellbg' style='padding:$direct_settings[theme_td_padding]'><span class='pagetitlecellcontent'>".(direct_local_get ("formbuilder_field_content"))."</span></td>
+<td class='pagetitlecellbg' style='padding:$direct_settings[theme_td_padding];text-align:center;vertical-align:middle'><span class='pagetitlecellcontent'>".(direct_local_get ("formbuilder_field"))."</span></td>
+<td class='pagetitlecellbg' style='padding:$direct_settings[theme_td_padding];text-align:center;vertical-align:middle'><span class='pagetitlecellcontent'>".(direct_local_get ("formbuilder_field_content"))."</span></td>
 </tr></thead><tbody>".($direct_classes['output_formbuilder']->form_get ($direct_cachedata['output_formelements']))."</tbody>
 </table>
-<p class='pagecontent' style='text-align:center'><input type='submit' id='$f_form_id' value=\"{$direct_cachedata['output_formbutton']}\" class='pagecontentinputbutton' onfocus=\"djs_formbuilder_focused('$f_form_id')\" /><script language='JavaScript1.5' type='text/javascript'><![CDATA[
+<p class='pagecontent' style='text-align:center'><input type='submit' id='$f_form_id' value=\"{$direct_cachedata['output_formbutton']}\" class='pagecontentinputbutton' onfocus=\"djs_formbuilder_focused('$f_form_id')\" /><script type='text/javascript'><![CDATA[
 djs_formbuilder_tabindex ('$f_form_id');
 ]]></script></p></form>");
 
@@ -447,13 +447,13 @@ LICENSE_WARNING_END //i*/
 				$f_return .= "</p>";
 			}
 
-$f_return .= ($direct_settings['iscript_form']." name='swgForm' id='swgForm' onsubmit=\"return djs_formbuilder_submit('swgForm');\">".(direct_linker ("form",$direct_cachedata['output_formtarget']))."<table cellspacing='1' summary='' class='pageborder1' style='width:100%;table-layout:auto'>
+$f_return .= ($direct_settings['iscript_form']." name='swgForm' id='swgForm' onsubmit=\"return djs_formbuilder_submit('swgForm');\">".(direct_linker ("form",$direct_cachedata['output_formtarget']))."<table class='pageborder1' style='width:100%;table-layout:auto'>
 <thead class='pagehide'><tr>
-<td valign='middle' align='center' class='pagetitlecellbg' style='padding:$direct_settings[theme_td_padding]'><span class='pagetitlecellcontent'>".(direct_local_get ("formbuilder_field"))."</span></td>
-<td valign='middle' align='center' class='pagetitlecellbg' style='padding:$direct_settings[theme_td_padding]'><span class='pagetitlecellcontent'>".(direct_local_get ("formbuilder_field_content"))."</span></td>
+<td class='pagetitlecellbg' style='padding:$direct_settings[theme_td_padding];text-align:center;vertical-align:middle'><span class='pagetitlecellcontent'>".(direct_local_get ("formbuilder_field"))."</span></td>
+<td class='pagetitlecellbg' style='padding:$direct_settings[theme_td_padding];text-align:center;vertical-align:middle'><span class='pagetitlecellcontent'>".(direct_local_get ("formbuilder_field_content"))."</span></td>
 </tr></thead><tbody>".($direct_classes['output_formbuilder']->form_get ($direct_cachedata['output_formelements']))."</tbody>
 </table>
-<p class='pagecontent' style='text-align:center'><input type='submit' id='$f_form_id' value=\"{$direct_cachedata['output_formbutton']}\" class='pagecontentinputbutton' onfocus=\"djs_formbuilder_focused('$f_form_id')\" /><script language='JavaScript1.5' type='text/javascript'><![CDATA[
+<p class='pagecontent' style='text-align:center'><input type='submit' id='$f_form_id' value=\"{$direct_cachedata['output_formbutton']}\" class='pagecontentinputbutton' onfocus=\"djs_formbuilder_focused('$f_form_id')\" /><script type='text/javascript'><![CDATA[
 djs_formbuilder_tabindex ('$f_form_id');
 ]]></script></p></form>");
 		}
@@ -493,7 +493,7 @@ function direct_output_oset_default_redirect ()
 
 return ("<p class='pagecontent'><span style='font-weight:bold'>".(direct_local_get ("core_redirect_url")).":</span> <a href=\"{$direct_cachedata['output_pagetarget']}\" target='_self'>{$direct_cachedata['output_redirect']}</a></p>
 <p id='swgjsjump_point' class='pagecontent' style='font-weight:bold;text-align:center'><span style='font-size:10px'>".(direct_local_get ("core_automated_redirection_unsupported"))."</span><br />
-<a href=\"{$direct_cachedata['output_pagetarget']}\" target='_self'>".(direct_local_get ("core_continue"))."</a></p><script language='JavaScript' type='text/javascript'><![CDATA[
+<a href=\"{$direct_cachedata['output_pagetarget']}\" target='_self'>".(direct_local_get ("core_continue"))."</a></p><script type='text/javascript'><![CDATA[
 djs_swgDOM_replace (\"<p class='pagecontent' style='font-size:10px;text-align:center'>(".(direct_local_get ("core_automated_redirection","text")).")<br />\\n\" +
 \"<a href=\\\"{$direct_cachedata['output_pagetarget']}\\\" target='_self'>".(direct_local_get ("core_continue","text"))."</a></p>\",'swgjsjump_point');
 self.setTimeout (\"self.location.replace ('{$direct_cachedata['output_scripttarget']}')\",2000);
@@ -520,7 +520,7 @@ function direct_output_oset_default_service_list ()
 
 	if (empty ($direct_cachedata['output_services']))
 	{
-$f_return = ("<div id='swg_default_service_list_filter_point' style='display:none'><!-- iPoint // --></div><script language='JavaScript1.5' type='text/javascript'><![CDATA[
+$f_return = ("<div id='swg_default_service_list_filter_point' style='display:none'><!-- iPoint // --></div><script type='text/javascript'><![CDATA[
 if (djs_swgDOM)
 {
 ".(direct_output_oset_default_filter_table (true,"swg_default_service_list_filter_point",(direct_local_get ("core_filter_search","text")),"djs_default_service_list_filter_process ()",$direct_cachedata['output_filter_text']))."
@@ -533,22 +533,22 @@ if (djs_swgDOM)
 	}
 	else
 	{
-$f_return = ("<table cellspacing='1' summary='' class='pageborder1' style='width:100%;table-layout:auto'>
+$f_return = ("<table class='pageborder1' style='width:100%;table-layout:auto'>
 <thead class='pagehide'><tr>
-<td colspan='2' align='center' class='pagetitlecellbg' style='padding:$direct_settings[theme_td_padding]'><span class='pagetitlecellcontent'>$direct_settings[theme_output_page_title]</span></td>
+<td colspan='2' class='pagetitlecellbg' style='padding:$direct_settings[theme_td_padding];text-align:center'><span class='pagetitlecellcontent'>$direct_settings[theme_output_page_title]</span></td>
 </tr></thead><tbody>");
 
 		if ($direct_cachedata['output_pages'] > 1)
 		{
 $f_return .= ("<tr>
-<td colspan='2' align='center' class='pageextrabg' style='padding:$direct_settings[theme_td_padding]'><span class='pageextracontent' style='font-size:10px'>".(direct_output_pages_generator ($direct_cachedata['output_page_url'],$direct_cachedata['output_pages'],$direct_cachedata['output_page']))."</span></td>
+<td colspan='2' class='pageextrabg' style='padding:$direct_settings[theme_td_padding];text-align:center'><span class='pageextracontent' style='font-size:10px'>".(direct_output_pages_generator ($direct_cachedata['output_page_url'],$direct_cachedata['output_pages'],$direct_cachedata['output_page']))."</span></td>
 </tr>");
 		}
 
 		if ($f_filter_check)
 		{
 $f_return .= ("<tr id='swg_default_service_list_filter_point1' style='display:none'>
-<td colspan='2' align='center' class='pagebg' style='padding:$direct_settings[theme_td_padding]'>".(direct_output_oset_default_filter_table (false,"swg_default_service_list_filter_point2",(direct_local_get ("core_filter_search","text")),"djs_default_service_list_filter_process ()",$direct_cachedata['output_filter_text']))."<script language='JavaScript1.5' type='text/javascript'><![CDATA[
+<td colspan='2' class='pagebg' style='padding:$direct_settings[theme_td_padding];text-align:center'>".(direct_output_oset_default_filter_table (false,"swg_default_service_list_filter_point2",(direct_local_get ("core_filter_search","text")),"djs_default_service_list_filter_process ()",$direct_cachedata['output_filter_text']))."<script type='text/javascript'><![CDATA[
 if (djs_swgDOM)
 {
 	djs_var['swg_default_service_list_filter_point1_style_display'] = 'table-row';
@@ -568,18 +568,18 @@ if (djs_swgDOM)
 			{
 				if ($f_right_switch)
 				{
-					$f_return .= "</td>\n<td valign='middle' align='left' class='pagebg' style='width:50%;padding:$direct_settings[theme_td_padding]'>";
+					$f_return .= "</td>\n<td class='pagebg' style='width:50%;padding:$direct_settings[theme_td_padding];text-align:left;vertical-align:middle'>";
 					$f_right_switch = false;
 				}
 				else
 				{
-					$f_return .= "</td>\n</tr><tr>\n<td valign='middle' align='left' class='pagebg' style='width:50%;padding:$direct_settings[theme_td_padding]'>";
+					$f_return .= "</td>\n</tr><tr>\n<td class='pagebg' style='width:50%;padding:$direct_settings[theme_td_padding];text-align:left;vertical-align:middle'>";
 					$f_right_switch = true;
 				}
 			}
 			else
 			{
-				$f_return .= "<tr>\n<td valign='middle' align='left' class='pagebg' style='width:50%;padding:$direct_settings[theme_td_padding]'>";
+				$f_return .= "<tr>\n<td class='pagebg' style='width:50%;padding:$direct_settings[theme_td_padding];text-align:left;vertical-align:middle'>";
 				$f_right_switch = true;
 			}
 

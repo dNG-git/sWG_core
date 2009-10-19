@@ -215,6 +215,8 @@ Try to identify the language using ACCEPT_LANGUAGE
 				$f_lang_iso = strtolower (str_replace ("-","_",$_SERVER['HTTP_ACCEPT_LANGUAGE']));
 				$f_lang_iso = preg_replace ("#\W#","",$f_lang_iso);
 				$f_lang_domain = substr ($f_lang_iso,0,2);
+				if (isset ($direct_settings["swg_lang_".$f_lang_iso])) { $f_lang_iso = $direct_settings["swg_lang_".$f_lang_iso]; }
+				if (isset ($direct_settings["swg_lang_".$f_lang_domain])) { $f_lang_domain = $direct_settings["swg_lang_".$f_lang_domain]; }
 
 				if (file_exists ($direct_settings['path_lang']."/swg_core.$f_lang_iso.xml")) { $direct_settings['lang'] = $f_lang_iso; }
 				elseif (file_exists ($direct_settings['path_lang']."/swg_core.$f_lang_domain.xml")) { $direct_settings['lang'] = $f_lang_domain; }
@@ -461,11 +463,11 @@ The standard result: One IP is enough
 		{
 			if (empty ($f_return))
 			{
-				if (($direct_cachedata['core_time'] + $direct_settings['timeout'] + $direct_settings['timeout_core']) < (time ())) { $f_return = array ("errors_core_unknown_error","FATAL ERROR:<br />The system is experiencing a high load and is therefore unable to service your request at this time.<br /><br />We apologize for this inconvenience.<br /><br />sWG/#echo(__FILEPATH__)# -kernel_class->service_init ()- (#echo(__LINE__)#)"); }
+				if (($direct_cachedata['core_time'] + $direct_settings['timeout'] + $direct_settings['timeout_core']) < (time ())) { $f_return = array ("core_unknown_error","FATAL ERROR:<br />The system is experiencing a high load and is therefore unable to service your request at this time.<br /><br />We apologize for this inconvenience.<br /><br />sWG/#echo(__FILEPATH__)# -kernel_class->service_init ()- (#echo(__LINE__)#)"); }
 				else { $f_return = $this->prekernel_error; }
 			}
 		}
-		else { $f_return = array ("errors_core_required_object_not_found","FATAL ERROR:<br />Unable to instantiate &quot;error_functions&quot;.<br /><br />sWG/#echo(__FILEPATH__)# -kernel_class->service_init ()- (#echo(__LINE__)#)"); }
+		else { $f_return = array ("core_required_object_not_found","FATAL ERROR:<br />Unable to instantiate &quot;error_functions&quot;.<br /><br />sWG/#echo(__FILEPATH__)# -kernel_class->service_init ()- (#echo(__LINE__)#)"); }
 
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -kernel_class->service_init ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}

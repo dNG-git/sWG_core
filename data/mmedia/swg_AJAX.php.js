@@ -193,11 +193,11 @@ function djs_swgAJAX_loading_writeln (f_position)
 	// Only continue if the basic test had been completed successfully
 	djs_var['core_swgAJAX_loading_position'] = f_position;
 
-djs_swgDOM_replace ("<div id='swgAJAX_loading' onclick='javascript:djs_swgAJAX_loading_hide();' style='position:absolute;display:none;width:250px;height:125px;top:0px;left:0px;z-index:256'><div style='position:fixed;cursor:wait'><table cellspacing='0' summary='' style='width:250px;height:125px;table-layout:fixed'>\n" +
+djs_swgDOM_replace ("<div id='swgAJAX_loading' onclick='javascript:djs_swgAJAX_loading_hide();' style='position:absolute;display:none;width:250px;height:125px;top:0px;left:0px;z-index:256'><div style='position:fixed;cursor:wait'><table style='width:250px;height:125px'>\n" +
 "<tbody>\n" +
 "<tr style='height:110px'>\n" +
 "<td style='width:15px;line-height:0px'><img src='<?php echo direct_linker_dynamic ("url0","s=cache&dsd=dfile+$direct_settings[path_mmedia]/swg_output_ajaxloading_01.png",true,false); ?>' width='15' height='110' alt='' title='' /></td>\n" +
-"<td valign='middle' align='center' style='width:220px;background-image:url(<?php echo direct_linker_dynamic ("url0","s=cache&dsd=dfile+$direct_settings[path_mmedia]/swg_output_ajaxloading_02.png",true,false); ?>);background-color:#E0E0E0'><p class='pageajaxloadingcontent' style='font-weight:bold'><?php echo direct_local_get ("core_loading","text"); ?></p>\n" +
+"<td style='width:220px;background-image:url(<?php echo direct_linker_dynamic ("url0","s=cache&dsd=dfile+$direct_settings[path_mmedia]/swg_output_ajaxloading_02.png",true,false); ?>);background-color:#E0E0E0;text-align:center;vertical-align:middle'><p class='pageajaxloadingcontent' style='font-weight:bold'><?php echo direct_local_get ("core_loading","text"); ?></p>\n" +
 "<p class='pageajaxloadingcontent'><?php echo direct_local_get ("core_loading_ajax","text"); ?></p></td>\n" +
 "<td style='width:15px;line-height:0px'><img src='<?php echo direct_linker_dynamic ("url0","s=cache&dsd=dfile+$direct_settings[path_mmedia]/swg_output_ajaxloading_03.png",true,false); ?>' width='15' height='110' alt='' title='' /></td>\n" +
 "</tr>\n" +

@@ -76,17 +76,13 @@ function djs_swgDOM_css_change_px (f_id,f_css_element,f_css_value)
 
 			if (f_css_value == '+')
 			{
-				f_css_value_temp = parseInt (f_object.style[f_css_element]);
+				f_css_value_temp = parseInt (f_object.style[f_css_element].replace (/px$/g,""));
 				if (f_css_value_temp) { f_object.style[f_css_element] = ((f_css_value_temp + 17) + "px"); }
 			}
 			else if (f_css_value == '-')
 			{
-				f_css_value_temp = parseInt (f_object.style[f_css_element]);
-
-				if (f_css_value_temp)
-				{
-					if (f_css_value_temp > 111) { f_object.style[f_css_element] = ((f_css_value_temp - 17) + "px"); }
-				}
+				f_css_value_temp = parseInt (f_object.style[f_css_element].replace (/px$/g,""));
+				if ((f_css_value_temp)&&(f_css_value_temp > djs_var['core_swgDOM_css_change_px_min'])) { f_object.style[f_css_element] = ((f_css_value_temp - 17) + "px"); }
 			}
 			else
 			{
@@ -97,6 +93,9 @@ function djs_swgDOM_css_change_px (f_id,f_css_element,f_css_value)
 	}
 	}
 }
+
+if (typeof (djs_var['core_swgDOM_css_change_px_min']) == 'undefined') { djs_var['core_swgDOM_css_change_px_min'] = 111; }
+else { djs_var['core_swgDOM_css_change_px_min'] = parseInt (djs_var['core_swgDOM_css_change_px_min']); }
 <?php } ?>
 
 <?php if ($g_function == "") { ?>
@@ -186,7 +185,6 @@ function djs_swgDOM_js_insert_url (f_url)
 				if (djs_swgDOM_head_node != null)
 				{
 					f_js_root = self.document.createElement ("script");
-					f_js_root.setAttribute ("language","JavaScript1.5");
 					f_js_root.setAttribute ("type","text/javascript");
 				}
 			}

@@ -1082,19 +1082,21 @@ $direct_settings[product_lcode_txt]
 	{
 		global $direct_cachedata,$direct_classes,$direct_local,$direct_settings;
 		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -output_class(inline)->theme_page ($f_title)- (#echo(__LINE__)#)"); }
-
+	
 		if ((!isset ($direct_local['lang_charset']))||(!$direct_local['lang_charset'])) { $direct_local['lang_charset'] = "UTF-8"; }
+		if ((!isset ($direct_local['lang_iso_domain']))||(!$direct_local['lang_iso_domain'])) { $direct_local['lang_iso_domain'] = "en"; }
 		$direct_settings['theme_xhtml_type'] = "application/xhtml+xml; charset=".$direct_local['lang_charset'];
 		header ("Content-Type: ".$direct_settings['theme_xhtml_type'],true);
 
-$this->page = ("<?xml version='1.0' encoding='$direct_local[lang_charset]' ?><!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
-<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en'>
+$this->page = ("<?xml version='1.0' encoding='$direct_local[lang_charset]' ?><!DOCTYPE html SYSTEM \"about:legacy-compat\">
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='$direct_local[lang_iso_domain]'>
 
 <head>
-<title>$f_title</title>
-<link rel='P3Pv1' href='{$direct_cachedata['output_p3purl']}' />
-<meta http-equiv='Content-Type' content='$direct_settings[theme_xhtml_type]' />
-<meta name='author' content='direct Netware Group' />
+<title>$f_title</title>");
+
+		if (strlen ($direct_cachedata['output_p3purl'])) { $this->page .= "\n<link rel='P3Pv1' href='{$direct_cachedata['output_p3purl']}'>"; }
+
+$this->page .= ("\n<meta name='author' content='direct Netware Group' />
 <meta name='creator' content='$direct_settings[product_lcode_txt] by the direct Netware Group' />
 <meta name='description' content='$direct_settings[product_lcode_subtitle_txt]' />
 <style type='text/css'><![CDATA[
@@ -1107,26 +1109,29 @@ a:visited { text-decoration:underline }
 a:hover { text-decoration:none }
 a:focus { text-decoration:underline }
 
-body { height:100%;margin:0px;padding:0px 19px;background-color:#FFFFFF }
+body { margin:0px;padding:0px 19px;background-color:#6A6A6A }
 body { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;font-style:normal;font-weight:normal }
 form { margin:0px;padding:0px }
 img { border:0px }
 input.file { width:90%;text-align:center;background-color:#F5F5F5 }
 input.file { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;color:#000000 }
-html { height:100% }
-table { margin:0px;border:0px;table-layout:auto }
+table { margin:0px;table-layout:fixed;border:0px;border-collapse:collapse;border-spacing:0px }
 td { padding:0px }
 
-.designcopyrightbg { background-color:#606060 }
+.designcopyrightbg { background-color:#808080 }
 .designcopyrightcontent { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:10px;color:#DDDDDD }
 .designcopyrightcontent a, .designcopyrightcontent a:link, .designcopyrightcontent a:active, .designcopyrightcontent a:visited, .designcopyrightcontent a:hover, .designcopyrightcontent a:focus { color:#FFFFFF }
+
+.designpagebg { background-color:#FFFFFF }
+.designpagebg *:first-child { margin-top:0px }
+.designpagebg *:last-child { margin-bottom:0px }
 
 .designtitlebg { background-image:url($direct_settings[iscript_url]a=cache&dsd=dfile+swg_bg.png);background-repeat:repeat-x;background-color:#FFFFFF }
 .designtitlecontent { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;color:#000000 }
 
 .pagebg { background-color:#FFFFFF }
 
-.pageborder1 { background-color:#193879 }
+.pageborder1 { background-color:#193879;border-collapse:separate;border-spacing:1px }
 .pageborder2 { border:1px solid #193879;background-color:#D9D9DA;padding:4px }
 
 .pagecontent { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;color:#222222 }
@@ -1143,6 +1148,9 @@ td { padding:0px }
 .pagecontenttitle { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold;color:#DDDDDD }
 .pagecontenttitle a, .pagecontenttitle a:link, .pagecontenttitle a:active, .pagecontenttitle a:visited, .pagecontenttitle a:hover, .pagecontenttitle a:focus { color:#FFFFFF }
 
+.pageembeddedborder1 { background-color:#DDDDDD;border-collapse:separate;border-spacing:1px }
+.pageembeddedborder2 { border:1px solid #DDDDDD;background-color:#FFFFFF;padding:4px }
+
 .pageerrorcontent { font-weight:bold;color:#FF0000 }
 .pageerrorcontent a, .pageerrorcontent a:link, .pageerrorcontent a:active, .pageerrorcontent a:visited, .pageerrorcontent a:hover, .pageerrorcontent a:focus { color:#CC0000 }
 
@@ -1151,7 +1159,7 @@ td { padding:0px }
 .pageextracontent a, .pageextracontent a:link, .pageextracontent a:active, .pageextracontent a:visited, .pageextracontent a:hover, .pageextracontent a:focus { color:#000000 }
 
 .pagehide { display:none }
-.pagehighlightborder1 { background-color:#FF0000 }
+.pagehighlightborder1 { background-color:#FF0000;border-collapse:separate;border-spacing:1px }
 .pagehighlightborder2 { border:1px solid #FF0000;background-color:#FBF6CD;padding:4px }
 
 .pagehr { height:1px;overflow:hidden;border-top:1px solid #193879 }
@@ -1165,18 +1173,18 @@ td { padding:0px }
 
 <body><!--
 internal sWG page theme
-// --><div style='position:absolute;top:0px;left:0px;z-index:255;width:19px;height:125px;background-color:#FFFFFF'>
+// --><div style='position:absolute;top:0px;left:0px;z-index:255;width:19px;height:71px;background-color:#FFFFFF'>
 <div style='width:19px;height:16px;background-color:#000000'></div>
 <div style='width:19px;height:1px;margin-top:1px;background-color:#000000'></div>
 <div style='width:19px;height:49px;margin-top:1px;background-color:#193879'></div>
 <div style='width:19px;height:1px;margin-top:1px;background-color:#193879'></div>
-</div><table cellspacing='0' summary='' style='width:100%;height:100%;table-layout:fixed;border-top:10px solid #000000'>
-<tbody><tr style='height:58px'>
-<td valign='middle' align='center' class='designtitlebg' style='padding-right:12px'><div class='designlogobg' style='position:absolute;top:14px;left:31px;z-index:1;width:152px;height:27px'><a href='http://www.direct-netware.de/redirect.php?$direct_settings[product_icode]' target='_blank'><img src='$direct_settings[iscript_url]a=cache&amp;dsd=dfile+swg_logo.png' width='75' height='75' alt='$direct_settings[product_lcode_txt]' title='$direct_settings[product_lcode_txt]' style='position:absolute;top:3px;left:0px;z-index:2' /></a></div>
-<p class='designtitlecontent' style='width:100%;height:58px;text-align:right'><span style='font-size:24px'>$direct_settings[product_lcode_html]</span><br />
+</div><div style='width:100%;height:10px;background-color:#000000'></div><table style='width:100%'>
+<thead><tr>
+<td class='designtitlebg' style='height:85px;padding:5px 15px;text-align:right;vertical-align:middle'><div style='float:left'><a href='http://www.direct-netware.de/redirect.php?$direct_settings[product_icode]' target='_blank'><img src='$direct_settings[iscript_url]a=cache&amp;dsd=dfile+swg_logo.png' width='75' height='75' alt='$direct_settings[product_lcode_txt]' title='$direct_settings[product_lcode_txt]' /></a></div>
+<p class='designtitlecontent'><span style='font-size:24px'>$direct_settings[product_lcode_html]</span><br />
 $direct_settings[product_lcode_subtitle_html]</p></td>
-</tr><tr style='height:100%'>
-<td valign='middle' align='left' class='pagebg' style='padding:0px 12px'>");
+</tr></thead><tbody><tr>
+<td class='designpagebg' style='padding:10px 12px;text-align:left;vertical-align:middle'>");
 
 		if ((is_array ($direct_cachedata['output_warning']))&&(!empty ($direct_cachedata['output_warning'])))
 		{
@@ -1184,10 +1192,10 @@ $direct_settings[product_lcode_subtitle_html]</p></td>
 		}
 
 $this->page .= ($direct_classes['output']->page_content."</td>
-</tr><tr style='height:50px'>
-<td valign='middle' align='center' class='designcopyrightbg'><span class='designcopyrightcontent'>Powered by: $direct_settings[product_lcode_html] $direct_settings[product_version]<br />
+</tr></tbody><tfoot><tr>
+<td class='designcopyrightbg' style='height:50px;text-align:center;vertical-align:middle'><span class='designcopyrightcontent'>Powered by: $direct_settings[product_lcode_html] $direct_settings[product_version]<br />
 &#xA9; <a href='http://www.direct-netware.de/redirect.php?$direct_settings[product_icode]' target='_blank'><span style='font-style:italic'>direct</span> Netware Group</a> - All rights reserved</span></td>
-</tr></tbody>
+</tr></tfoot>
 </table><div style='position:absolute;top:0px;right:0px;z-index:255;width:19px;height:71px;background-color:#FFFFFF'>
 <div style='width:19px;height:16px;background-color:#000000'></div>
 <div style='width:19px;height:1px;margin-top:1px;background-color:#000000'></div>

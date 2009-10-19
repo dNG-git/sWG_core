@@ -77,6 +77,11 @@ class direct_basic_functions extends direct_basic_functions_inline
 */
 	/*#ifndef(PHP4) */protected/* #*//*#ifdef(PHP4):var:#*/ $mimetype_icons_cache;
 /**
+	* @var boolean $PHP_filter_var True if the PHP function "filter_var () " is
+	*      supported.
+*/
+	/*#ifndef(PHP4) */protected/* #*//*#ifdef(PHP4):var:#*/ $PHP_filter_var;
+/**
 	* @var array $settings_cache Cache for already read settings files
 */
 	/*#ifndef(PHP4) */protected/* #*//*#ifdef(PHP4):var:#*/ $settings_cache;
@@ -131,6 +136,7 @@ Set up the caching variables
 
 		$this->mimetype_extensions_cache = array ();
 		$this->mimetype_icons_cache = array ();
+		$this->PHP_filter_var = function_exists ("filter_var");
 		$this->settings_cache = array ();
 	}
 /*#ifdef(PHP4):
@@ -304,86 +310,94 @@ Set up the caching variables
 	{
 		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -basic_functions_class->inputfilter_email ($f_data)- (#echo(__LINE__)#)"); }
 
-		$f_address_parsing = true;
-		$f_continue_check = true;
-		$f_data_part = "";
-
-		if (is_string ($f_data)) { $f_data = preg_replace ("#\r\n([\\x09\\x20])+#","\\1",$f_data); }
-		$f_data = $this->inputfilter_basic ($f_data);
-		$f_dot_array = explode (".",$f_data);
-
-		foreach ($f_dot_array as $f_dot_part)
+		if ($this->PHP_filter_var)
 		{
-			if (!$f_address_parsing) { $f_data_part .= ".".$f_dot_part; }
-			elseif ($f_continue_check)
+			$f_data = filter_var ($f_data,FILTER_VALIDATE_EMAIL);
+			$f_continue_check = ((is_bool ($f_data)) ? false : true);
+		}
+		else
+		{
+			$f_address_parsing = true;
+			$f_continue_check = true;
+			$f_data_part = "";
+
+			if (is_string ($f_data)) { $f_data = preg_replace ("#\r\n([\\x09\\x20])+#","\\1",$f_data); }
+			$f_data = $this->inputfilter_basic ($f_data);
+			$f_dot_array = explode (".",$f_data);
+
+			foreach ($f_dot_array as $f_dot_part)
 			{
-				if ((strlen ($f_data_part))||($f_dot_part[0] == "\""))
+				if (!$f_address_parsing) { $f_data_part .= ".".$f_dot_part; }
+				elseif ($f_continue_check)
 				{
-					if ((strlen ($f_dot_part) > 1)&&($f_dot_part[(strlen ($f_dot_part) - 1)] == "\""))
+					if ((strlen ($f_data_part))||($f_dot_part[0] == "\""))
 					{
-						if ((preg_match ("#([\\\\]+)\"$#",$f_dot_part,$f_result_array))&&(strlen ($f_result_array) % 2 == 1)) { $f_data_part .= $f_dot_part; }
+						if ((strlen ($f_dot_part) > 1)&&($f_dot_part[(strlen ($f_dot_part) - 1)] == "\""))
+						{
+							if ((preg_match ("#([\\\\]+)\"$#",$f_dot_part,$f_result_array))&&(strlen ($f_result_array) % 2 == 1)) { $f_data_part .= $f_dot_part; }
+							else
+							{
+								$f_data_part .= $f_dot_part;
+
+								if (preg_match ("#^\"[\\x00-\\x0c\\x0e-\\x7f]+\"$#",$f_data_part)) { $f_data_part = ""; }
+								else { $f_continue_check = false; }
+							}
+						}
 						else
 						{
-							$f_data_part .= $f_dot_part;
+							if (strpos ($f_dot_part,"\"@") === false) { $f_data_part .= $f_dot_part; }
+							else
+							{
+								$f_at_array = explode ("\"@",$f_dot_part,2);
+								$f_address_parsing = false;
 
-							if (preg_match ("#^\"[\\x00-\\x0c\\x0e-\\x7f]+\"$#",$f_data_part)) { $f_data_part = ""; }
-							else { $f_continue_check = false; }
+								if (preg_match ("#^\"[\\x00-\\x0c\\x0e-\\x7f]+$#",$f_data_part.$f_at_array[0])) { $f_data_part = $f_at_array[1]; }
+								else { $f_continue_check = false; }
+							}
 						}
 					}
 					else
 					{
-						if (strpos ($f_dot_part,"\"@") === false) { $f_data_part .= $f_dot_part; }
+						if (strpos ($f_dot_part,"@") === false) { $f_data_part = $f_dot_part; }
 						else
 						{
-							$f_at_array = explode ("\"@",$f_dot_part,2);
+							$f_at_array = explode ("@",$f_dot_part,2);
 							$f_address_parsing = false;
-
-							if (preg_match ("#^\"[\\x00-\\x0c\\x0e-\\x7f]+$#",$f_data_part.$f_at_array[0])) { $f_data_part = $f_at_array[1]; }
-							else { $f_continue_check = false; }
+							$f_data_part = $f_at_array[0];
 						}
-					}
-				}
-				else
-				{
-					if (strpos ($f_dot_part,"@") === false) { $f_data_part = $f_dot_part; }
-					else
-					{
-						$f_at_array = explode ("@",$f_dot_part,2);
-						$f_address_parsing = false;
-						$f_data_part = $f_at_array[0];
-					}
 
-					if (preg_match ("#[\\x00-\\x20\\x22\\x28\\x29\\x2c\\x2e\\x3a-\\x3c\\x3e\\x40\\x5b-\\x5d\\x7f-\\xff]#",$f_data_part)) { $f_continue_check = false; }
-					$f_data_part = ($f_address_parsing ? "" : $f_at_array[1]);
+						if (preg_match ("#[\\x00-\\x20\\x22\\x28\\x29\\x2c\\x2e\\x3a-\\x3c\\x3e\\x40\\x5b-\\x5d\\x7f-\\xff]#",$f_data_part)) { $f_continue_check = false; }
+						$f_data_part = ($f_address_parsing ? "" : $f_at_array[1]);
+					}
 				}
 			}
-		}
 
-		if (!strlen ($f_data_part)) { $f_continue_check = false; }
+			if (!strlen ($f_data_part)) { $f_continue_check = false; }
 
-		$f_dot_array = explode (".",$f_data_part);
-		$f_data_part = "";
+			$f_dot_array = explode (".",$f_data_part);
+			$f_data_part = "";
 
-		foreach ($f_dot_array as $f_dot_part)
-		{
-			if ($f_continue_check)
+			foreach ($f_dot_array as $f_dot_part)
 			{
-				if ((strlen ($f_data_part))||($f_dot_part[0] == '['))
+				if ($f_continue_check)
 				{
-					if ((strlen ($f_dot_part) > 1)&&($f_dot_part[(strlen ($f_dot_part) - 1)] == "]"))
+					if ((strlen ($f_data_part))||($f_dot_part[0] == '['))
 					{
-						if ((preg_match ("#([\\\\]+)\]$#",$f_dot_part,$f_result_array))&&(strlen ($f_result_array) % 2 == 1)) { $f_data_part .= $f_dot_part; }
-						else
+						if ((strlen ($f_dot_part) > 1)&&($f_dot_part[(strlen ($f_dot_part) - 1)] == "]"))
 						{
-							$f_data_part .= $f_dot_part;
+							if ((preg_match ("#([\\\\]+)\]$#",$f_dot_part,$f_result_array))&&(strlen ($f_result_array) % 2 == 1)) { $f_data_part .= $f_dot_part; }
+							else
+							{
+								$f_data_part .= $f_dot_part;
 
-							if (preg_match ("#^\[[\\x00-\\x0c\\x0e-\\x7f]+\]$#",$f_data_part)) { $f_data_part = ""; }
-							else { $f_continue_check = false; }
+								if (preg_match ("#^\[[\\x00-\\x0c\\x0e-\\x7f]+\]$#",$f_data_part)) { $f_data_part = ""; }
+								else { $f_continue_check = false; }
+							}
 						}
+						else { $f_data_part .= $f_dot_part; }
 					}
-					else { $f_data_part .= $f_dot_part; }
+					elseif (preg_match ("#[\\x00-\\x20\\x22\\x28\\x29\\x2c\\x2e\\x3a-\\x3c\\x3e\\x40\\x5b-\\x5d\\x7f-\\xff]#",$f_dot_part)) { $f_continue_check = false; }
 				}
-				elseif (preg_match ("#[\\x00-\\x20\\x22\\x28\\x29\\x2c\\x2e\\x3a-\\x3c\\x3e\\x40\\x5b-\\x5d\\x7f-\\xff]#",$f_dot_part)) { $f_continue_check = false; }
 			}
 		}
 
@@ -438,7 +452,13 @@ Set up the caching variables
 	{
 		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -basic_functions_class->inputfilter_filepath ($f_data)- (#echo(__LINE__)#)"); }
 
-		$f_return = (((is_numeric ($f_data))&&(preg_match ("#^(-|- |)(\d+)$#i",$f_data,$f_result_array))) ? $f_result_array[0] : "");
+		if ($this->PHP_filter_var)
+		{
+			$f_return = filter_var ($f_data,FILTER_VALIDATE_FLOAT,(FILTER_FLAG_ALLOW_FRACTION | FILTER_FLAG_ALLOW_THOUSAND | FILTER_FLAG_ALLOW_SCIENTIFIC));
+			if (is_bool ($f_return)) { $f_return = ""; }
+		}
+		else { $f_return = ((is_numeric ($f_data)) ? (float)$f_data : ""); }
+
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -basic_functions_class->inputfilter_number ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 

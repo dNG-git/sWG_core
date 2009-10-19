@@ -181,15 +181,15 @@ Set up some variables
 		global $direct_settings;
 		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -output_class->js_header ()- (#echo(__LINE__)#)"); }
 
-$this->header_elements ("<script language='JavaScript' type='text/javascript'><![CDATA[
+$this->header_elements ("<script type='text/javascript'><![CDATA[
 var djs_swgDOM = false;
 var djs_swgAJAX = false;
 if (typeof (djs_var) == 'undefined') { var djs_var = new Array (); }
 ]]></script>");
 
-		$this->header_elements ("<script language='JavaScript1.5' src='".(direct_linker_dynamic ("url0","s=cache&dsd=dfile+$direct_settings[path_mmedia]/swg_DOM.php.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'><!-- // Document Object Model check and functions // --></script>");
-		$this->header_elements ("<script language='JavaScript1.5' src='".(direct_linker_dynamic ("url0","s=cache&dsd=dfile+$direct_settings[path_mmedia]/swg_AJAX.php.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'><!-- // Asynchronous JavaScript and XML // --></script>");
-		$this->header_elements ("<script language='JavaScript' src='".(direct_linker_dynamic ("url0","s=cache&dsd=dfile+$direct_settings[path_mmedia]/swg_basic_functions.php.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'><!-- // These are basic javascript functions // --></script>");
+		$this->header_elements ("<script src='".(direct_linker_dynamic ("url0","s=cache&dsd=dfile+$direct_settings[path_mmedia]/swg_DOM.php.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'><!-- // Document Object Model check and functions // --></script>");
+		$this->header_elements ("<script src='".(direct_linker_dynamic ("url0","s=cache&dsd=dfile+$direct_settings[path_mmedia]/swg_AJAX.php.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'><!-- // Asynchronous JavaScript and XML // --></script>");
+		$this->header_elements ("<script src='".(direct_linker_dynamic ("url0","s=cache&dsd=dfile+$direct_settings[path_mmedia]/swg_basic_functions.php.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'><!-- // These are basic javascript functions // --></script>");
 	}
 
 	//f// direct_output_control->js_helper ($f_text,$f_url = "",$f_close_onload = true)
@@ -215,8 +215,8 @@ if (typeof (djs_var) == 'undefined') { var djs_var = new Array (); }
 		$f_js_helper_open = ($f_close_onload ? 0 : 1);
 		if (strlen ($f_url)) { $f_text = "<a href=\"$f_url\" target='_blank'>$f_text</a>"; }
 
-$f_return = ("<div class='pagehelperbg' style='position:relative;width:75%;text-align:center'><div class='pagehelpericon'><a href=\"javascript:djs_diblock_switch('$f_js_helper_id');\"><img src='".(direct_linker_dynamic ("url0","s=cache&dsd=dfile+$direct_settings[path_mmedia]/swg_output_helper.png",true,false))."' width='32' height='32' alt=\"".(direct_local_get ("core_detailed_information"))."\" title=\"".(direct_local_get ("core_detailed_information"))."\" /></a></div><span class='pagehelpercontentlink'><a href=\"javascript:djs_diblock_switch('$f_js_helper_id');\" id='{$f_js_helper_id}_title'>".(direct_local_get ("core_detailed_information"))."</a></span><div id='$f_js_helper_id'><div class='pagehelpercontent' style='text-align:justify'><br />
-$f_text</div></div></div><script language='JavaScript' type='text/javascript'><![CDATA[
+$f_return = ("<div class='pagehelperbg' style='position:relative;width:75%;margin:auto;text-align:center'><div class='pagehelpericon'><a href=\"javascript:djs_diblock_switch('$f_js_helper_id');\"><img src='".(direct_linker_dynamic ("url0","s=cache&dsd=dfile+$direct_settings[path_mmedia]/swg_output_helper.png",true,false))."' width='32' height='32' alt=\"".(direct_local_get ("core_detailed_information"))."\" title=\"".(direct_local_get ("core_detailed_information"))."\" /></a></div><span class='pagehelpercontentlink'><a href=\"javascript:djs_diblock_switch('$f_js_helper_id');\" id='{$f_js_helper_id}_title'>".(direct_local_get ("core_detailed_information"))."</a></span><div id='$f_js_helper_id'><div class='pagehelpercontent' style='text-align:justify'><br />
+$f_text</div></div></div><script type='text/javascript'><![CDATA[
 if (djs_swgDOM_elements_editable) { djs_diblock_init ('$f_js_helper_id',$f_js_helper_open); }
 else { djs_var['core_run_onload'].push (\"djs_diblock_init ('$f_js_helper_id',$f_js_helper_open)\"); }
 djs_load_functions ('swg_basic_functions.php.js','djs_diblock_switch');
