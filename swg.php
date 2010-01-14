@@ -1096,7 +1096,8 @@ $this->page = ("<?xml version='1.0' encoding='$direct_local[lang_charset]' ?><!D
 
 		if (strlen ($direct_cachedata['output_p3purl'])) { $this->page .= "\n<link rel='P3Pv1' href='{$direct_cachedata['output_p3purl']}'>"; }
 
-$this->page .= ("\n<meta name='author' content='direct Netware Group' />
+$this->page .= ("\n<meta http-equiv='Content-Type' content='$direct_settings[theme_xhtml_type]' />
+<meta name='author' content='direct Netware Group' />
 <meta name='creator' content='$direct_settings[product_lcode_txt] by the direct Netware Group' />
 <meta name='description' content='$direct_settings[product_lcode_subtitle_txt]' />
 <style type='text/css'><![CDATA[
@@ -1112,10 +1113,10 @@ a:focus { text-decoration:underline }
 body { margin:0px;padding:0px 19px;background-color:#6A6A6A }
 body { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;font-style:normal;font-weight:normal }
 form { margin:0px;padding:0px }
-img { border:0px }
+img { border:none }
 input.file { width:90%;text-align:center;background-color:#F5F5F5 }
 input.file { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;color:#000000 }
-table { margin:0px;table-layout:fixed;border:0px;border-collapse:collapse;border-spacing:0px }
+table { margin:0px;table-layout:fixed;border:none;border-collapse:collapse;border-spacing:0px }
 td { padding:0px }
 
 .designcopyrightbg { background-color:#808080 }
@@ -1455,8 +1456,11 @@ function direct_html_encode_special ($f_data)
 */
 function direct_outputenc_xhtml_cleanup (&$f_data)
 {
+	global $direct_settings;
 	if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -direct_outputenc_xhtml_cleanup (+f_data)- (#echo(__LINE__)#)"); }
-	$f_data = preg_replace ("#<(script|style)(.*?)><\!\[CDATA\[(.*?)\]\]><\/(script|style)>#si","<\\1\\2><!--\\3// --></\\4>",$f_data);
+
+	$f_content_type = str_replace ("application/xhtml+xml","text/html",$direct_settings['theme_xhtml_type']);
+	$f_data = preg_replace (array ("#\s*<\?(.*?)\?>(.*?)<#s","#\s*\/\s*>#s","#<meta(.+?)".(preg_quote ($direct_settings['theme_xhtml_type'],"#"))."(.+?)>#si","#<(script|style)(.*?)><\!\[CDATA\[(.*?)\]\]><\/(script|style)>#si"),(array ("<",">","<meta\\1$f_content_type\\2>","<\\1\\2><!--\\3// --></\\4>")),$f_data);
 }
 
 //f// direct_outputenc_xhtml_legacy (&$f_data)
@@ -1472,11 +1476,9 @@ function direct_outputenc_xhtml_legacy (&$f_data)
 	global $direct_settings;
 	if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -direct_outputenc_xhtml_legacy (+f_data)- (#echo(__LINE__)#)"); }
 
-	$f_content_type = preg_replace ("#^(.*?)application/xhtml\+xml(.*?)$#i","\\1text/html\\2",$direct_settings['theme_xhtml_type']);
+	$f_content_type = str_replace ("application/xhtml+xml","text/html",$direct_settings['theme_xhtml_type']);
 	header ("Content-Type: ".$f_content_type,true);
-
-	$f_data = preg_replace ("#<meta(.+?)".(preg_quote ($direct_settings['theme_xhtml_type'],"#"))."(.+?)>#si","<meta\\1$f_content_type\\2>",$f_data);
-	$f_data = preg_replace ("#<(script|style)(.*?)><\!\[CDATA\[(.*?)\]\]><\/(script|style)>#si","<\\1\\2><!--\\3// --></\\4>",$f_data);
+	$f_data = preg_replace (array ("#\s*<\?(.*?)\?>(.*?)<#s","#\s*\/\s*>#s","#<meta(.+?)".(preg_quote ($direct_settings['theme_xhtml_type'],"#"))."(.+?)>#si","#<(script|style)(.*?)><\!\[CDATA\[(.*?)\]\]><\/(script|style)>#si"),(array ("<",">","<meta\\1$f_content_type\\2>","<\\1\\2><!--\\3// --></\\4>")),$f_data);
 }
 
 //j// Script specific commands

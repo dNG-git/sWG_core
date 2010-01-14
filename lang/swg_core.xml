@@ -275,6 +275,12 @@
   <credits><insufficient><input input="string" /></insufficient></credits>
   <database><error><input input="string" /></error></database>
   <datasub><eid><invalid><input input="string" /></invalid></eid></datasub>
+
+  <daemon>
+   <eid><invalid><input input="string" /></invalid></eid>
+   <unavailable><input input="string" /></unavailable>
+  </daemon>
+
   <redirector><link><not><found><input input="string" /></found></not></link></redirector>
   <required><object><not><found><input input="string" /></found></not></object></required>
   <service><inactive><input input="string" /></inactive></service>
