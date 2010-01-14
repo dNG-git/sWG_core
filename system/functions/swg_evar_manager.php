@@ -111,13 +111,19 @@ function direct_evars_get_walker ($f_xml_array)
 	if (is_array ($f_xml_array))
 	{
 		if (isset ($f_xml_array['xml.item'])) { unset ($f_xml_array['xml.item']); }
+		$f_mtree = isset ($f_xml_array['xml.mtree']);
+		if ($f_mtree) { unset ($f_xml_array['xml.mtree']); }
 
 		if (!empty ($f_xml_array))
 		{
 			foreach ($f_xml_array as $f_key => $f_xml_node_array)
 			{
-				if (isset ($f_xml_node_array['xml.item'])) { $f_return[$f_key] = direct_evars_get_walker ($f_xml_node_array); }
-				elseif (strlen ($f_xml_node_array['tag'])) { $f_return[$f_xml_node_array['tag']] = (isset ($f_xml_node_array['attributes']['base64']) ? base64_decode ($f_xml_node_array['value']) : $f_xml_node_array['value']); }
+				if ((isset ($f_xml_node_array['xml.item']))||(isset ($f_xml_node_array['xml.mtree']))) { $f_return[$f_key] = direct_evars_get_walker ($f_xml_node_array); }
+				elseif (strlen ($f_xml_node_array['tag']))
+				{
+					if ($f_mtree) { $f_return[] = (isset ($f_xml_node_array['attributes']['base64']) ? base64_decode ($f_xml_node_array['value']) : $f_xml_node_array['value']); }
+					else { $f_return[$f_xml_node_array['tag']] = (isset ($f_xml_node_array['attributes']['base64']) ? base64_decode ($f_xml_node_array['value']) : $f_xml_node_array['value']); }
+				}
 			}
 		}
 	}

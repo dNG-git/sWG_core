@@ -564,10 +564,7 @@ Set up the caching variables
 				}
 			}
 		}
-		else
-		{
-			if (file_exists ($f_file)) { $f_return = direct_file_get ("s",$f_file); }
-		}
+		elseif (file_exists ($f_file)) { $f_return = direct_file_get ("s",$f_file); }
 
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -basic_functions_class->memcache_get_file ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
@@ -650,8 +647,6 @@ Set up the caching variables
 	{
 		global $direct_settings;
 		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -basic_functions_class->memcache_write_file (+f_data,$f_file,$f_type)- (#echo(__LINE__)#)"); }
-
-		$f_return = false;
 
 		if ((strlen ($direct_settings['swg_memcache']))&&(($direct_settings['swg_memcache_files'])||($direct_settings['swg_memcache_merged_xml_files'])))
 		{
@@ -867,7 +862,7 @@ Set up the caching variables
 						if (isset ($f_xml_node_array['tag']))
 						{
 							$f_key = preg_replace ("#swg_settings_file_v(\d+)_#i","",$f_key);
-							$direct_settings[$f_key] = $f_xml_node_array['value'];
+							if ((!isset ($direct_settings[$f_key]))||(strlen ($f_xml_node_array['value']))) { $direct_settings[$f_key] = $f_xml_node_array['value']; }
 						}
 						elseif (isset ($f_xml_node_array[0]['tag']))
 						{

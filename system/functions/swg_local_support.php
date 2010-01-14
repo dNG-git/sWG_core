@@ -154,7 +154,7 @@ function direct_local_get_xml_translation (&$f_xml_node_array,$f_tag,$f_extract_
 	return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -direct_local_get_xml_translation ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 }
 
-//f// direct_local_integration ($f_module,$f_dlang = "en",$f_force = false)
+//f// direct_local_integration ($f_module,$f_dlang = "en",$f_force = false,$f_lang_forced = NULL)
 /**
 * Integrate a translation module into the current program context.
 *
@@ -168,13 +168,14 @@ function direct_local_get_xml_translation (&$f_xml_node_array,$f_tag,$f_extract_
 * @return boolean True on successful inclusion
 * @since  v0.1.03
 */
-function direct_local_integration ($f_module,$f_dlang = "en",$f_force = false)
+function direct_local_integration ($f_module,$f_dlang = "en",$f_force = false,$f_lang_forced = NULL)
 {
 	global $direct_cachedata,$direct_classes,$direct_local,$direct_settings;
-	if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_local_integration ($f_module,$f_dlang)- (#echo(__LINE__)#)"); }
+	if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_local_integration ($f_module,$f_dlang,+f_force,+f_lang_forced)- (#echo(__LINE__)#)"); }
 
 	if (!isset ($direct_cachedata['core_local_integration_modules'])) { $direct_cachedata['core_local_integration_modules'] = array (); }
 
+	$f_lang = ((isset ($f_lang_forced)) ? $f_lang_forced : $direct_settings['lang']);
 	$f_module = preg_replace ("#\W#i","",$f_module);
 	$f_return = false;
 
@@ -182,9 +183,9 @@ function direct_local_integration ($f_module,$f_dlang = "en",$f_force = false)
 	{
 		$direct_cachedata['core_local_integration_modules'][$f_module] = true;
 
-		if (file_exists ($direct_settings['path_lang']."/swg_{$f_module}.$direct_settings[lang].xml")) { $f_xml_array = $direct_classes['basic_functions']->memcache_get_file_merged_xml ($direct_settings['path_lang']."/swg_{$f_module}.$direct_settings[lang].xml"); }
-		elseif (file_exists ($direct_settings['path_lang']."/swg_{$f_module}.$direct_settings[swg_lang].xml")) { $f_xml_array = $direct_classes['basic_functions']->memcache_get_file_merged_xml ($direct_settings['path_lang']."/swg_{$f_module}.$direct_settings[swg_lang].xml"); }
-		else { $f_xml_array = $direct_classes['basic_functions']->memcache_get_file_merged_xml ($direct_settings['path_lang']."/swg_{$f_module}.$f_dlang.xml"); }
+		if (file_exists ($direct_settings['path_lang']."/swg_$f_module.$f_lang.xml")) { $f_xml_array = $direct_classes['basic_functions']->memcache_get_file_merged_xml ($direct_settings['path_lang']."/swg_$f_module.$f_lang.xml"); }
+		elseif (file_exists ($direct_settings['path_lang']."/swg_$f_module.{$direct_settings['swg_lang']}.xml")) { $f_xml_array = $direct_classes['basic_functions']->memcache_get_file_merged_xml ($direct_settings['path_lang']."/swg_$f_module.{$direct_settings['swg_lang']}.xml"); }
+		else { $f_xml_array = $direct_classes['basic_functions']->memcache_get_file_merged_xml ($direct_settings['path_lang']."/swg_$f_module.$f_dlang.xml"); }
 
 		if (!empty ($f_xml_array))
 		{

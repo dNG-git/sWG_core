@@ -33,6 +33,8 @@
   <html><![CDATA[<span style='font-style:italic'>direct</span> Netware Group - Initial Installation]]></html>
   <txt value="direct Netware Group - Initial Installation" />
  </title>
+
+ <umask><change value="0000" /></umask>
 </swg>
 
 <p3p><url /><cp /></p3p>

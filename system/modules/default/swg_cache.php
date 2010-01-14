@@ -107,11 +107,13 @@ if (($g_continue_check)&&($g_modification_check))
 		$direct_classes['output']->last_modified ($g_server_last_modified);
 	}
 
-	if (preg_match ("#^(.*?)\.php\.js$#i",$g_dfile))
+	if (preg_match ("#^(.*?)\.php\.(css|js)$#i",$g_dfile,$g_result_array))
 	{
 		if ($direct_classes['basic_functions']->include_file ($g_dfile,2))
 		{
-			header ("Content-Type: text/javascript");
+			if ($g_result_array[2] == "css") { header ("Content-Type: text/css"); }
+			else { header ("Content-Type: text/javascript"); }
+
 			$direct_classes['output']->header (true,false);
 			ob_end_flush ();
 		}

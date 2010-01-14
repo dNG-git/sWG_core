@@ -144,6 +144,35 @@ if (!@function_exists ("call_user_func"))
 	}
 }
 :#*/
+if (!@function_exists ("mb_convert_encoding"))
+{
+	//f// mb_convert_encoding ($f_data,$f_to,$f_from = NULL)
+/**
+	* "mb_convert_encoding ()" is an optional function to handle multibyte
+	* strings. This implementation does only call "utf8_encode ()" and
+	* "utf8_decode ()" if applicable for the defined encoding definitions.
+	*
+	* php.net: Converts the character encoding of string str to to_encoding from
+	* optionally from_encoding.
+	*
+	* mb_convert_encoding ( string $str , string $to_encoding [, mixed $from_encoding ] )
+	*
+	* @param  string $f_data Input string
+	* @param  string $f_to The type of encoding the string is being converted
+	*         to.
+	* @param  mixed $f_from Is specified by character code names before
+	*         conversion.
+	* @return string Returns the string
+	* @since  v0.1.08
+*/
+	function mb_convert_encoding ($f_data,$f_to,$f_from = NULL)
+	{
+		if ((strtoupper ($f_to) == "UTF-8")&&(($f_from == NULL)||(($f_from != "auto")&&(/*#ifndef(PHP4) */stripos/* #*//*#ifdef(PHP4):stristr:#*/ ($f_from,"UTF-8") === false)))) { return utf8_encode ($f_data); }
+		elseif ((strtoupper ($f_to) != "UTF-8")&&($f_from != NULL)&&(($f_from == "auto")||(/*#ifndef(PHP4) */stripos/* #*//*#ifdef(PHP4):stristr:#*/ ($f_from,"UTF-8") !== false))) { return utf8_decode ($f_data); }
+		else { return $f_data; }
+	}
+}
+
 if (!@function_exists ("mb_internal_encoding"))
 {
 	//f// mb_internal_encoding ($f_encoding = "")
