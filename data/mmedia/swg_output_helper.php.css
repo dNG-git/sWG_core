@@ -1,4 +1,4 @@
-.pagehelperbg { margin:2px 14px 5px 5px;padding:6px 4px 6px 4px;border:1px solid #204B87;border-radius:3px 3px;background-color:#FFFFFF }
+.pagehelperbg { cursor:pointer;margin:2px 14px 5px 5px;padding:6px 28px 6px 4px;border:1px solid #204B87;border-radius:3px 3px;background-color:#FFFFFF }
 .pagehelpericon { position:absolute;top:-12px;right:-8px }
 .pagehelpercontent { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;color:#000000 }
 .pagehelpercontent a, .pagehelpercontent a:link, .pagehelpercontent a:visited { color:#000000;text-decoration:none }

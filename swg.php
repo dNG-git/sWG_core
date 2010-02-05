@@ -1139,6 +1139,7 @@ td { padding:0px }
 .pagecontent a, .pagecontent a:link, .pagecontent a:active, .pagecontent a:visited, .pagecontent a:hover, .pagecontent a:focus { color:#000000 }
 .pagecontentinputbutton { background-color:#F5F5F5;font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;color:#000000 }
 .pagecontentinputcheckbox { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;color:#222222;background-color:#FFFFFF }
+.pagecontentinputfocused { border-color:#193879 }
 .pagecontentinputtextnpassword { border:1px solid #C0C0C0;background-color:#F5F5F5 }
 .pagecontentinputtextnpassword { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;color:#222222 }
 .pagecontentselect { border:1px solid #C0C0C0;background-color:#F5F5F5 }

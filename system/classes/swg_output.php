@@ -149,7 +149,7 @@ Set up some variables
 *\/
 	function direct_output_control () { $this->__construct (); }
 :#*/
-	//f// direct_output_control->css_header ()
+	//f// direct_output_control->css_header ($f_ajaxloading = true,$f_helper = true)
 /**
 	* Adds standard CSS definitions to the list of output (X)HTML headers
 	*
@@ -158,12 +158,14 @@ Set up some variables
 	* @uses   USE_debug_reporting
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function css_header ()
+	/*#ifndef(PHP4) */public /* #*/function css_header ($f_ajaxloading = true,$f_helper = true)
 	{
-		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -output_class->css_header ()- (#echo(__LINE__)#)"); }
+		global $direct_settings;
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -output_class->css_header (+f_ajaxloading,+f_helper)- (#echo(__LINE__)#)"); }
 
-		$this->header_elements ("<link rel='stylesheet' type='text/css' href='".(direct_linker_dynamic ("url0","s=cache&dsd=dfile+data/mmedia/swg_output_ajaxloading.css",true,false))."' />");
-		$this->header_elements ("<link rel='stylesheet' type='text/css' href='".(direct_linker_dynamic ("url0","s=cache&dsd=dfile+data/mmedia/swg_output_helper.css",true,false))."' />");
+		$this->header_elements ("<link rel='stylesheet' type='text/css' href='".(direct_linker_dynamic ("url0","s=cache&dsd=dfile+data/mmedia/ext_jquery/themes/$direct_settings[theme_jquery_ui]/jquery-ui.css",true,false))."' />");
+		if ($f_ajaxloading) { $this->header_elements ("<link rel='stylesheet' type='text/css' href='".(direct_linker_dynamic ("url0","s=cache&dsd=dfile+data/mmedia/swg_output_ajaxloading.php.css",true,false))."' />"); }
+		if ($f_helper) { $this->header_elements ("<link rel='stylesheet' type='text/css' href='".(direct_linker_dynamic ("url0","s=cache&dsd=dfile+data/mmedia/swg_output_helper.php.css",true,false))."' />"); }
 	}
 
 	//f// direct_output_control->js_header ()
@@ -182,13 +184,12 @@ Set up some variables
 		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -output_class->js_header ()- (#echo(__LINE__)#)"); }
 
 $this->header_elements ("<script type='text/javascript'><![CDATA[
-var djs_swgDOM = false;
-var djs_swgAJAX = false;
-if (typeof (djs_var) == 'undefined') { var djs_var = new Array (); }
+if (typeof (djs_var) == 'undefined') { var djs_var = [ ]; }
 ]]></script>");
 
-		$this->header_elements ("<script src='".(direct_linker_dynamic ("url0","s=cache&dsd=dfile+$direct_settings[path_mmedia]/swg_DOM.php.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'><!-- // Document Object Model check and functions // --></script>");
-		$this->header_elements ("<script src='".(direct_linker_dynamic ("url0","s=cache&dsd=dfile+$direct_settings[path_mmedia]/swg_AJAX.php.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'><!-- // Asynchronous JavaScript and XML // --></script>");
+		$this->header_elements ("<script src='".(direct_linker_dynamic ("url0","s=cache&dsd=dfile+$direct_settings[path_mmedia]/ext_jquery/jquery-1.4.1.min.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'><!-- // jQuery 1.4 library // --></script>");
+		$this->header_elements ("<script src='".(direct_linker_dynamic ("url0","s=cache&dsd=dfile+$direct_settings[path_mmedia]/swg_AJAX.php.js++dbid+".$direct_settings['product_buildid'],true,true))."' type='text/javascript'><!-- // Asynchronous JavaScript and XML // --></script>");
+		$this->header_elements ("<script src='".(direct_linker_dynamic ("url0","s=cache&dsd=dfile+$direct_settings[path_mmedia]/swg_DOM.php.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'><!-- // jQuery based DOM // --></script>");
 		$this->header_elements ("<script src='".(direct_linker_dynamic ("url0","s=cache&dsd=dfile+$direct_settings[path_mmedia]/swg_basic_functions.php.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'><!-- // These are basic javascript functions // --></script>");
 	}
 
@@ -212,14 +213,12 @@ if (typeof (djs_var) == 'undefined') { var djs_var = new Array (); }
 
 		$f_js_helper_id = ("swghelp".$this->js_helper_element);
 		$this->js_helper_element++;
-		$f_js_helper_open = ($f_close_onload ? 0 : 1);
+		$f_close_onload = ($f_close_onload ? "true" : "false");
 		if (strlen ($f_url)) { $f_text = "<a href=\"$f_url\" target='_blank'>$f_text</a>"; }
 
-$f_return = ("<div class='pagehelperbg' style='position:relative;width:75%;margin:auto;text-align:center'><div class='pagehelpericon'><a href=\"javascript:djs_diblock_switch('$f_js_helper_id');\"><img src='".(direct_linker_dynamic ("url0","s=cache&dsd=dfile+$direct_settings[path_mmedia]/swg_output_helper.png",true,false))."' width='32' height='32' alt=\"".(direct_local_get ("core_detailed_information"))."\" title=\"".(direct_local_get ("core_detailed_information"))."\" /></a></div><span class='pagehelpercontentlink'><a href=\"javascript:djs_diblock_switch('$f_js_helper_id');\" id='{$f_js_helper_id}_title'>".(direct_local_get ("core_detailed_information"))."</a></span><div id='$f_js_helper_id'><div class='pagehelpercontent' style='text-align:justify'><br />
-$f_text</div></div></div><script type='text/javascript'><![CDATA[
-if (djs_swgDOM_elements_editable) { djs_diblock_init ('$f_js_helper_id',$f_js_helper_open); }
-else { djs_var['core_run_onload'].push (\"djs_diblock_init ('$f_js_helper_id',$f_js_helper_open)\"); }
-djs_load_functions ('swg_basic_functions.php.js','djs_diblock_switch');
+$f_return = ("<div id='$f_js_helper_id' class='pagehelperbg' style='position:relative;width:75%;margin:auto;text-align:justify'><div class='pagehelpericon'><img src='".(direct_linker_dynamic ("url0","s=cache&dsd=dfile+$direct_settings[path_mmedia]/swg_output_helper.png",true,false))."' width='32' height='32' alt=\"".(direct_local_get ("core_detailed_information"))."\" title=\"".(direct_local_get ("core_detailed_information"))."\" /></div><span class='pagehelpercontent'>$f_text</span></div><script type='text/javascript'><![CDATA[
+djs_var['core_run_onload'].push ({ func:'djs_load_functions',params: { file:'swg_output_helper.php.js' } });
+djs_var['core_run_onload'].push ({ func:'djs_core_helper_init',params:{ id:'$f_js_helper_id',hide:$f_close_onload } });
 ]]></script>");
 
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -output_class->js_helper ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
@@ -1088,17 +1087,36 @@ function direct_output_theme ($f_theme)
 	$f_return = true;
 
 	if (!isset ($direct_classes['basic_functions'])) { direct_class_init ("basic_functions"); }
+	$direct_settings['theme'] = NULL;
+	$f_mobile_check = isset ($_SERVER['HTTP_X_WAP_PROFILE']);
 
-	if ($direct_classes['basic_functions']->include_file ($direct_settings['path_themes']."/$f_theme/swg_theme.php",2))
+	if (strlen ($f_theme))
 	{
-		$direct_settings['theme'] = $f_theme;
-		if (!isset ($direct_settings['theme_subtype'])) { $direct_settings['theme_subtype'] = ""; }
+		if (($f_mobile_check)&&($direct_classes['basic_functions']->include_file ($direct_settings['path_themes']."/{$f_theme}_mobile/swg_theme.php",2)))
+		{
+			$direct_settings['theme'] = $f_theme."_mobile";
+			if (!isset ($direct_settings['theme_subtype'])) { $direct_settings['theme_subtype'] = ""; }
+		}
+		elseif ($direct_classes['basic_functions']->include_file ($direct_settings['path_themes']."/$f_theme/swg_theme.php",2))
+		{
+			$direct_settings['theme'] = $f_theme;
+			if (!isset ($direct_settings['theme_subtype'])) { $direct_settings['theme_subtype'] = ""; }
+		}
 	}
-	else
+
+	if (!isset ($direct_settings['theme']))
 	{
-		$direct_settings['theme'] = $direct_settings['swg_theme'];
-		if (!isset ($direct_settings['theme_subtype'])) { $direct_settings['theme_subtype'] = ""; }
-		$f_return = $direct_classes['basic_functions']->include_file ($direct_settings['path_themes']."/$direct_settings[theme]/swg_theme.php",2);
+		if (($f_mobile_check)&&($direct_classes['basic_functions']->include_file ($direct_settings['path_themes']."/{$direct_settings['swg_theme']}_mobile/swg_theme.php",2)))
+		{
+			$direct_settings['theme'] = $direct_settings['swg_theme']."_mobile";
+			if (!isset ($direct_settings['theme_subtype'])) { $direct_settings['theme_subtype'] = ""; }
+		}
+		else
+		{
+			$direct_settings['theme'] = $direct_settings['swg_theme'];
+			if (!isset ($direct_settings['theme_subtype'])) { $direct_settings['theme_subtype'] = ""; }
+			$f_return = $direct_classes['basic_functions']->include_file ($direct_settings['path_themes']."/$direct_settings[theme]/swg_theme.php",2);
+		}
 	}
 
 	$direct_classes['basic_functions']->settings_get ($direct_settings['path_themes']."/$direct_settings[theme]/swg_theme_up.xml");
@@ -1179,6 +1197,7 @@ if (!isset ($direct_settings['swg_pages_per_list'])) { $direct_settings['swg_pag
 if (!isset ($direct_settings['swg_path_related_data'])) { $direct_settings['swg_path_related_data'] = $direct_settings['path_data']."/related/"; }
 if (!isset ($direct_settings['swg_options_image'])) { $direct_settings['swg_options_image'] = false; }
 if (!isset ($direct_settings['swg_theme_supported_subtypes'])) { $direct_settings['swg_theme_supported_subtypes'] = array (); }
+if (!isset ($direct_settings['theme_jquery_ui'])) { $direct_settings['theme_jquery_ui'] = "overcast"; }
 if (!isset ($direct_settings['theme_lightmode_supported'])) { $direct_settings['theme_lightmode_supported'] = false; }
 }
 
