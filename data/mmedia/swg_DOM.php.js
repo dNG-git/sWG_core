@@ -120,9 +120,9 @@ function djs_swgDOM_replace (f_params)
 {
 	if ((typeof (f_params['data']) != 'undefined')&&(typeof (f_params['id']) != 'undefined'))
 	{
-		var f_jquery_object = djs_swgDOM_insert_prepare (f_params.data);
+		var f_jquery_object = djs_swgDOM_insert_prepare (f_params.data).attr ('id',f_params.id);
 
-		if (typeof (f_params['id_replaced']) == 'undefined') { f_params['id_replaced'] = f_params['id']; }
+		if (typeof (f_params['id_replaced']) == 'undefined') { f_params['id_replaced'] = f_params.id; }
 		if (typeof (f_params['onReplace']) == 'undefined') { f_params['onReplace'] = null; }
 		if (typeof (f_params['onReplaced']) == 'undefined') { f_params['onReplaced'] = null; }
 
