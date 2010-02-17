@@ -163,9 +163,9 @@ Set up some variables
 		global $direct_settings;
 		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -output_class->css_header (+f_ajaxloading,+f_helper)- (#echo(__LINE__)#)"); }
 
-		$this->header_elements ("<link rel='stylesheet' type='text/css' href='".(direct_linker_dynamic ("url0","s=cache&dsd=dfile+data/mmedia/ext_jquery/themes/$direct_settings[theme_jquery_ui]/jquery-ui.css",true,false))."' />");
-		if ($f_ajaxloading) { $this->header_elements ("<link rel='stylesheet' type='text/css' href='".(direct_linker_dynamic ("url0","s=cache&dsd=dfile+data/mmedia/swg_output_ajaxloading.php.css",true,false))."' />"); }
-		if ($f_helper) { $this->header_elements ("<link rel='stylesheet' type='text/css' href='".(direct_linker_dynamic ("url0","s=cache&dsd=dfile+data/mmedia/swg_output_helper.php.css",true,false))."' />"); }
+		$this->header_elements ("<link href='".(direct_linker_dynamic ("url0","s=cache&dsd=dfile+data/mmedia/ext_jquery/themes/$direct_settings[theme_jquery_ui]/jquery-ui.css",true,false))."' rel='stylesheet' type='text/css' />");
+		if ($f_ajaxloading) { $this->header_elements ("<link href='".(direct_linker_dynamic ("url0","s=cache&dsd=dfile+data/mmedia/swg_output_ajaxloading.php.css",true,false))."' rel='stylesheet' type='text/css' />"); }
+		if ($f_helper) { $this->header_elements ("<link href='".(direct_linker_dynamic ("url0","s=cache&dsd=dfile+data/mmedia/swg_output_helper.php.css",true,false))."' rel='stylesheet' type='text/css' />"); }
 	}
 
 	//f// direct_output_control->js_header ()
@@ -187,10 +187,10 @@ $this->header_elements ("<script type='text/javascript'><![CDATA[
 if (typeof (djs_var) == 'undefined') { var djs_var = [ ]; }
 ]]></script>");
 
-		$this->header_elements ("<script src='".(direct_linker_dynamic ("url0","s=cache&dsd=dfile+$direct_settings[path_mmedia]/ext_jquery/jquery-1.4.1.min.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'><!-- // jQuery 1.4 library // --></script>");
+		$this->header_elements ("<script src='".(direct_linker_dynamic ("url0","s=cache&dsd=dfile+$direct_settings[path_mmedia]/ext_jquery/jquery-1.4.2.min.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'><!-- // jQuery library // --></script>");
 		$this->header_elements ("<script src='".(direct_linker_dynamic ("url0","s=cache&dsd=dfile+$direct_settings[path_mmedia]/swg_AJAX.php.js++dbid+".$direct_settings['product_buildid'],true,true))."' type='text/javascript'><!-- // Asynchronous JavaScript and XML // --></script>");
 		$this->header_elements ("<script src='".(direct_linker_dynamic ("url0","s=cache&dsd=dfile+$direct_settings[path_mmedia]/swg_DOM.php.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'><!-- // jQuery based DOM // --></script>");
-		$this->header_elements ("<script src='".(direct_linker_dynamic ("url0","s=cache&dsd=dfile+$direct_settings[path_mmedia]/swg_basic_functions.php.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'><!-- // These are basic javascript functions // --></script>");
+		$this->header_elements ("<script src='".(direct_linker_dynamic ("url0","s=cache&dsd=dfile+$direct_settings[path_mmedia]/swg_basic_functions.php.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'><!-- // Basic javascript helper functions // --></script>");
 	}
 
 	//f// direct_output_control->js_helper ($f_text,$f_url = "",$f_close_onload = true)
