@@ -41,10 +41,8 @@ function djs_dialog (f_id,f_params)
 
 	if (f_id != null)
 	{
-		if (f_params == null) { f_params = { bgiframe:true }; }
-		else { f_params['bgiframe'] = true; }
-
-		if (typeof (f_params['width']) == 'undefined') { f_params['width'] = ($(self).width () / 2); }
+		if (f_params == null) { f_params = { width:($(self).width () / 2) }; }
+		else if (typeof (f_params['width']) == 'undefined') { f_params['width'] = ($(self).width () / 2); }
 
 		$("#" + f_id).dialog (f_params);
 	}
