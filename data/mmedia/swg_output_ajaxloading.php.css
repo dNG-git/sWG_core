@@ -1,2 +1,3 @@
-.pageajaxloadingbg { cursor:wait;background-image:url(<?php echo direct_linker_dynamic ("url0","s=cache&dsd=dfile+$direct_settings[path_mmedia]/swg_output_ajaxloading.png",false,false); ?>);background-repeat:no-repeat }
+.pageajaxloadingbg { cursor:wait;background-image:url(<?php echo direct_linker_dynamic ("url0","s=cache;dsd=dfile+{$direct_settings['path_mmedia']}/swg_output_ajaxloading.png",false,false); ?>);background-repeat:no-repeat }
 .pageajaxloadingcontent { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;font-style:normal;line-height:normal;font-weight:normal;color:#000000 }
+.pageajaxloadingtransfereffect { border: 1px solid black; }

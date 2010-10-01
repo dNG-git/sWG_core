@@ -138,8 +138,10 @@ $f_return .= ("<tr>
 <p id='swgjsjump_point' class='pagecontent' style='text-align:center;font-weight:bold'>".(direct_local_get ("aphandler_please_wait_a_second_nojs"))."<br /><br />
 <span style='font-size:10px'>".(direct_local_get ("core_automated_redirection_unsupported"))."</span><br />
 <a href=\"{$direct_cachedata['output_pagetarget']}\" target='_self'>".(direct_local_get ("core_continue"))."</a></p><script type='text/javascript'><![CDATA[
-djs_swgDOM_replace (\"<p class='pagecontent' style='font-size:10px;text-align:center'>(".(direct_local_get ("core_automated_redirection","text")).")<br />\\n\" +
-\"<a href=\\\"{$direct_cachedata['output_pagetarget']}\\\" target='_self'>".(direct_local_get ("core_continue","text"))."</a></p>\",'swgjsjump_point');\n");
+djs_var['core_run_onload'].push ({ func:'djs_swgDOM_replace',params:{ id:'swgjsjump_point',
+data:\"<p class='pagecontent' style='font-size:10px;text-align:center'>(".(direct_local_get ("core_automated_redirection","text")).")<br />\\n\" +
+ \"<a href=\\\"{$direct_cachedata['output_pagetarget']}\\\" target='_self'>".(direct_local_get ("core_continue","text"))."</a></p>\"
+} });\n");
 
 	if (($direct_cachedata['output_ajaxtarget'])&&($direct_cachedata['output_ajaxnexttarget'])) { $f_return .= "\nif (!djs_var['core_aphandler_ajax_mode']) { djs_var['core_run_onload'].push ('self.setTimeout (\"self.location.replace (\\'{$direct_cachedata['output_scripttarget']}\\')\",1000)'); }"; }
 	else { $f_return .= "\ndjs_var['core_run_onload'].push ('self.setTimeout (\"self.location.replace (\\'{$direct_cachedata['output_scripttarget']}\\')\",1000)');"; }
@@ -170,8 +172,10 @@ function direct_output_oset_default_done ()
 		{
 $f_return .= ("\n<p id='swgjsjump_point' class='pagecontent' style='font-weight:bold;text-align:center'><span style='font-size:10px'>".(direct_local_get ("core_automated_redirection_unsupported"))."</span><br />
 <a href=\"{$direct_cachedata['output_pagetarget']}\" target='_self'>".(direct_local_get ("core_continue"))."</a></p><script type='text/javascript'><![CDATA[
-djs_swgDOM_replace (\"<p class='pagecontent' style='font-size:10px;text-align:center'>(".(direct_local_get ("core_automated_redirection","text")).")<br />\\n\" +
-\"<a href=\\\"{$direct_cachedata['output_pagetarget']}\\\" target='_self'>".(direct_local_get ("core_continue","text"))."</a></p>\",'swgjsjump_point');
+djs_var['core_run_onload'].push ({ func:'djs_swgDOM_replace',params:{ id:'swgjsjump_point',
+data:\"<p class='pagecontent' style='font-size:10px;text-align:center'>(".(direct_local_get ("core_automated_redirection","text")).")<br />\\n\" +
+ \"<a href=\\\"{$direct_cachedata['output_pagetarget']}\\\" target='_self'>".(direct_local_get ("core_continue","text"))."</a></p>\"
+} });
 self.setTimeout (\"self.location.replace (\\\"{$direct_cachedata['output_scripttarget']}\\\")\",{$direct_cachedata['output_jsjump']});
 ]]></script>");
 		}
@@ -377,15 +381,12 @@ if (isset ($direct_classes['@names']['output_formbuilder']))
 			$f_return .= "</p>";
 		}
 
-$f_return .= ($direct_settings['iscript_form']." name='swgForm' id='swgForm' onsubmit=\"return djs_formbuilder_submit('swgForm');\">".(direct_linker ("form",$direct_cachedata['output_formtarget']))."<table class='pageborder1' style='width:100%;table-layout:auto'>
-<thead class='pagehide'><tr>
-<td class='pagetitlecellbg' style='padding:$direct_settings[theme_td_padding];text-align:center;vertical-align:middle'><span class='pagetitlecellcontent'>".(direct_local_get ("formbuilder_field"))."</span></td>
-<td class='pagetitlecellbg' style='padding:$direct_settings[theme_td_padding];text-align:center;vertical-align:middle'><span class='pagetitlecellcontent'>".(direct_local_get ("formbuilder_field_content"))."</span></td>
-</tr></thead><tbody>".($direct_classes['output_formbuilder']->form_get ($direct_cachedata['output_formelements']))."</tbody>
-</table>
-<p class='pagecontent' style='text-align:center'><input type='submit' id='$f_form_id' value=\"{$direct_cachedata['output_formbutton']}\" class='pagecontentinputbutton' onfocus=\"djs_formbuilder_focused('$f_form_id')\" /><script type='text/javascript'><![CDATA[
-djs_formbuilder_tabindex ('$f_form_id');
-]]></script></p></form>");
+$f_return .= ($direct_settings['iscript_form']." name='swg_form' id='swg_form'>".(direct_linker ("form",$direct_cachedata['output_formtarget'])).($direct_classes['output_formbuilder']->form_get ($direct_cachedata['output_formelements']))."
+<p class='pagecontent' style='text-align:center'><input type='submit' id='$f_form_id' value=\"{$direct_cachedata['output_formbutton']}\" class='pagecontentinputbutton' /><script type='text/javascript'><![CDATA[
+djs_var['core_run_onload'].push ({ func:'djs_formbuilder_init',params: { id:'$f_form_id',type:'button' } });\n");
+
+		if (isset ($direct_cachedata['output_formsupport_ajax_dialog'])) { $f_return .= "djs_var['core_run_onload'].push ({ func:'djs_formbuilder_init',params: { id:'swg_form',id_button:'$f_form_id',type:'form' } });\n"; }
+		$f_return .= "]]></script></p></form>";
 
 /*i// LICENSE_WARNING
 ----------------------------------------------------------------------------
@@ -436,15 +437,12 @@ LICENSE_WARNING_END //i*/
 				$f_return .= "</p>";
 			}
 
-$f_return .= ($direct_settings['iscript_form']." name='swgForm' id='swgForm' onsubmit=\"return djs_formbuilder_submit('swgForm');\">".(direct_linker ("form",$direct_cachedata['output_formtarget']))."<table class='pageborder1' style='width:100%;table-layout:auto'>
-<thead class='pagehide'><tr>
-<td class='pagetitlecellbg' style='padding:$direct_settings[theme_td_padding];text-align:center;vertical-align:middle'><span class='pagetitlecellcontent'>".(direct_local_get ("formbuilder_field"))."</span></td>
-<td class='pagetitlecellbg' style='padding:$direct_settings[theme_td_padding];text-align:center;vertical-align:middle'><span class='pagetitlecellcontent'>".(direct_local_get ("formbuilder_field_content"))."</span></td>
-</tr></thead><tbody>".($direct_classes['output_formbuilder']->form_get ($direct_cachedata['output_formelements']))."</tbody>
-</table>
-<p class='pagecontent' style='text-align:center'><input type='submit' id='$f_form_id' value=\"{$direct_cachedata['output_formbutton']}\" class='pagecontentinputbutton' onfocus=\"djs_formbuilder_focused('$f_form_id')\" /><script type='text/javascript'><![CDATA[
-djs_formbuilder_tabindex ('$f_form_id');
-]]></script></p></form>");
+$f_return .= ($direct_settings['iscript_form']." name='swg_form' id='swg_form'>".(direct_linker ("form",$direct_cachedata['output_formtarget'])).($direct_classes['output_formbuilder']->form_get ($direct_cachedata['output_formelements']))."
+<p class='pagecontent' style='text-align:center'><input type='submit' id='$f_form_id' value=\"{$direct_cachedata['output_formbutton']}\" class='pagecontentinputbutton' /><script type='text/javascript'><![CDATA[
+djs_var['core_run_onload'].push ({ func:'djs_formbuilder_init',params: { id:'$f_form_id',type:'button' } });\n");
+
+			if (isset ($direct_cachedata['output_formsupport_ajax_dialog'])) { $f_return .= "djs_var['core_run_onload'].push ({ func:'djs_formbuilder_init',params: { id:'swg_form',id_button:'$f_form_id',type:'form' } });\n"; }
+			$f_return .= "]]></script></p></form>";
 		}
 
 /*i// LICENSE_WARNING
@@ -482,8 +480,10 @@ return ("<p class='pagecontenttitle'>".(direct_local_get ("core_redirect"))."</p
 <p class='pagecontent'><span style='font-weight:bold'>".(direct_local_get ("core_redirect_url")).":</span> <a href=\"{$direct_cachedata['output_pagetarget']}\" target='_self'>{$direct_cachedata['output_redirect']}</a></p>
 <p id='swgjsjump_point' class='pagecontent' style='font-weight:bold;text-align:center'><span style='font-size:10px'>".(direct_local_get ("core_automated_redirection_unsupported"))."</span><br />
 <a href=\"{$direct_cachedata['output_pagetarget']}\" target='_self'>".(direct_local_get ("core_continue"))."</a></p><script type='text/javascript'><![CDATA[
-djs_swgDOM_replace (\"<p class='pagecontent' style='font-size:10px;text-align:center'>(".(direct_local_get ("core_automated_redirection","text")).")<br />\\n\" +
-\"<a href=\\\"{$direct_cachedata['output_pagetarget']}\\\" target='_self'>".(direct_local_get ("core_continue","text"))."</a></p>\",'swgjsjump_point');
+djs_var['core_run_onload'].push ({ func:'djs_swgDOM_replace',params:{ id:'swgjsjump_point',
+data:\"<p class='pagecontent' style='font-size:10px;text-align:center'>(".(direct_local_get ("core_automated_redirection","text")).")<br />\\n\" +
+ \"<a href=\\\"{$direct_cachedata['output_pagetarget']}\\\" target='_self'>".(direct_local_get ("core_continue","text"))."</a></p>\"
+} });
 self.setTimeout (\"self.location.replace ('{$direct_cachedata['output_scripttarget']}')\",2000);
 ]]></script>");
 }
@@ -512,14 +512,12 @@ function direct_output_oset_default_service_list ()
 
 		if ($f_filter_check)
 		{
-$f_return .= ("<div id='swg_default_service_list_filter_point' style='display:none'><!-- iPoint // --></div><script type='text/javascript'><![CDATA[
-if (djs_swgDOM)
+$f_return = ("<span id='swg_default_service_list_filter_point' style='display:none'><!-- iPoint // --></span><script type='text/javascript'><![CDATA[
+function djs_default_service_list_filter_replace (f_params)
 {
-".(direct_output_oset_default_filter_table (true,"swg_default_service_list_filter_point",(direct_local_get ("core_filter_search","text")),"djs_default_service_list_filter_process ()",$direct_cachedata['output_filter_text']))."
-
-	function djs_default_service_list_filter_process () { self.location.replace ('".(direct_linker ("url1","m=dataport&s=swgap;default;filter&dsd=dtheme+1++dfid+{$direct_cachedata['output_filter_fid']}++dftext+[f_text]++tid+{$direct_cachedata['output_filter_tid']}++source+".$direct_cachedata['output_filter_source'],false))."'.replace (/\[f_text\]/g,(encodeURIComponent (self.document.getElementById('swg_default_service_list_filter_point_f').value)))); }
-	djs_formbuilder_tabindex ('swg_default_service_list_filter_point_f');
-	djs_formbuilder_tabindex ('swg_default_service_list_filter_point_b');
+djs_swgDOM_replace ({ id:'swg_default_service_list_filter_point',
+data:(".(direct_output_oset_default_filter_table (true,"swg_default_service_list_filter_point",(direct_local_get ("core_filter_search","text")),$direct_cachedata['output_filter_text']))."),
+onReplace:{ func:'djs_default_service_list_filter_init',params:{ } } });
 }
 ]]></script>");
 		}
@@ -531,29 +529,12 @@ if (djs_swgDOM)
 $f_return = ("<table class='pageborder1' style='width:100%;table-layout:auto'>
 <thead><tr>
 <td colspan='2' class='pagetitlecellbg' style='padding:$direct_settings[theme_td_padding];text-align:left'><span class='pagetitlecellcontent'>$f_page_title</span></td>
-</tr></thead><tbody>");
+</tr></thead><tbody id='swg_default_service_list_filter_table'>");
 
 		if ($direct_cachedata['output_pages'] > 1)
 		{
 $f_return .= ("<tr>
 <td colspan='2' class='pageextrabg' style='padding:$direct_settings[theme_td_padding];text-align:center'><span class='pageextracontent' style='font-size:10px'>".(direct_output_pages_generator ($direct_cachedata['output_page_url'],$direct_cachedata['output_pages'],$direct_cachedata['output_page']))."</span></td>
-</tr>");
-		}
-
-		if ($f_filter_check)
-		{
-$f_return .= ("<tr id='swg_default_service_list_filter_point1' style='display:none'>
-<td colspan='2' class='pagebg' style='padding:$direct_settings[theme_td_padding];text-align:center'>".(direct_output_oset_default_filter_table (false,"swg_default_service_list_filter_point2",(direct_local_get ("core_filter_search","text")),"djs_default_service_list_filter_process ()",$direct_cachedata['output_filter_text']))."<script type='text/javascript'><![CDATA[
-if (djs_swgDOM)
-{
-	djs_var['swg_default_service_list_filter_point1_style_display'] = 'table-row';
-	djs_var['core_run_onload'].push ('djs_iblock_init (\"swg_default_service_list_filter_point1\",true)');
-
-	function djs_default_service_list_filter_process () { self.location.replace ('".(direct_linker ("url1","m=dataport&s=swgap;default;filter&dsd=dtheme+1++dfid+{$direct_cachedata['output_filter_fid']}++dftext+[f_text]++tid+{$direct_cachedata['output_filter_tid']}++source+".$direct_cachedata['output_filter_source'],false))."'.replace (/\[f_text\]/g,(encodeURIComponent (self.document.getElementById('swg_default_service_list_filter_point2_f').value)))); }
-	djs_formbuilder_tabindex ('swg_default_service_list_filter_point2_f');
-	djs_formbuilder_tabindex ('swg_default_service_list_filter_point2_b');
-}
-]]></script></td>
 </tr>");
 		}
 
@@ -586,6 +567,43 @@ $f_return .= ("<span class='pagecontent'>{$f_service_array[0]}<a href='{$f_servi
 
 		$f_return .= ($f_right_switch ? "</td>\n<td class='pagebg' style='width:50%'><span style='font-size:8px'>&#0160;</span></td>\n</tr></tbody>\n</table>" : "</td>\n</tr></tbody>\n</table>");
 		if ($direct_cachedata['output_pages'] > 1) { $f_return .= "\n<p class='pageborder2' style='text-align:center'><span class='pageextracontent' style='font-size:10px'>".(direct_output_pages_generator ($direct_cachedata['output_page_url'],$direct_cachedata['output_pages'],$direct_cachedata['output_page']))."</span></p>"; }
+
+		if ($f_filter_check)
+		{
+$f_return .= ("<script type='text/javascript'><![CDATA[
+function djs_default_service_list_filter_replace (f_params)
+{
+	var f_content = \"<tr>\\n<td colspan='2' class='pagebg' style='text-align:center'>\";
+
+f_content += (".(direct_output_oset_default_filter_table (true,"swg_default_service_list_filter_point",(direct_local_get ("core_filter_search","text")),$direct_cachedata['output_filter_text'])).");\n\n	");
+
+	if ($direct_cachedata['output_pages'] > 1) { $f_return .= "\$('#swg_default_service_list_filter_table tr:first-child').after (f_content + \"</td>\\n</tr>\");"; }
+	else { $f_return .= "\$('#swg_default_service_list_filter_table tr:first-child').before (f_content + \"</td>\\n</tr>\");"; }
+
+$f_return .= ("
+	djs_run ({ func:'djs_default_service_list_filter_init',params:{ } });
+}
+]]></script>");
+		}
+	}
+
+	if ($f_filter_check)
+	{
+$f_return .= ("<script type='text/javascript'><![CDATA[
+function djs_default_service_list_filter_init (f_params)
+{
+	\$('#swg_default_service_list_filter_pointb').bind ('click',function () { djs_default_service_list_filter_process (encodeURIComponent (\$('#swg_default_service_list_filter_pointi').val ())); });
+
+	djs_formbuilder_init ({ id:'swg_default_service_list_filter_pointi' });
+	djs_formbuilder_init ({ id:'swg_default_service_list_filter_pointb',type:'button' });
+}
+
+function djs_default_service_list_filter_process (f_text) { self.location.replace ('".(direct_linker ("url1","s=filter;dsd=dtheme+1++dfid+{$direct_cachedata['output_filter_fid']}++dftext+[text]++tid+{$direct_cachedata['output_filter_tid']}++source+".$direct_cachedata['output_filter_source'],false))."'.replace (/\[text\]/g,f_text)); }
+
+djs_var['core_run_onload'].push ({ func:'djs_default_service_list_filter_replace',params: { } });
+djs_var['core_run_onload'].push ({ func:'djs_formbuilder_init',params: { id:'swg_default_service_list_filter_pointi' } });
+djs_var['core_run_onload'].push ({ func:'djs_formbuilder_init',params: { id:'swg_default_service_list_filter_pointb',type:'button' } });
+]]></script>");
 	}
 
 	return $f_return;

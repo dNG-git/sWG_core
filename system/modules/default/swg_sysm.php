@@ -62,7 +62,7 @@ case "merror":
 {
 	if (USE_debug_reporting) { direct_debug (1,"sWG/system/modules/default/swg_sysm.php _a=merror_ (63)"); }
 
-	$direct_classes['basic_functions']->include_file ($direct_settings['system']."/modules/default/swgi_custom_merror.php");
+	$direct_classes['basic_functions']->include_file ($direct_settings['path_system']."/modules/default/swgi_custom_merror.php");
 	break 1;
 }
 //j// $direct_settings['a'] == "munconfigured"
@@ -77,7 +77,7 @@ case "munconfigured":
 	if ($direct_classes['kernel']->service_init_default ())
 	{
 	//j// BOA
-	$direct_classes['error_functions']->error_page ("login","core_unconfigured","sWG/system/modules/default/swg_sysm.php _a=munconfigured_ (80)");
+	$direct_classes['output']->output_send_error ("login","core_unconfigured","sWG/system/modules/default/swg_sysm.php _a=munconfigured_ (80)");
 	//j// EOA
 	}
 
@@ -96,7 +96,7 @@ case "unknown":
 	if ($direct_classes['kernel']->service_init_default ())
 	{
 	//j// BOA
-	$direct_classes['error_functions']->error_page ("standard","core_unknown_error","FATAL ERROR:<br />Request terminated<br />sWG/system/modules/default/swg_sysm.php _a=unknown_ (99)");
+	$direct_classes['output']->output_send_error ("standard","core_unknown_error","FATAL ERROR:<br />Request terminated<br />sWG/system/modules/default/swg_sysm.php _a=unknown_ (99)");
 	//j// EOA
 	}
 

@@ -171,7 +171,7 @@ Set up kernel variables
 */
 	/*#ifndef(PHP4) */public /* #*/function basekernel_init ()
 	{
-		global $direct_classes,$direct_local,$direct_settings;
+		global $direct_cachedata,$direct_classes,$direct_settings;
 		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -kernel_class->basekernel_init ()- (#echo(__LINE__)#)"); }
 
 		$f_return = false;
@@ -201,39 +201,7 @@ standard URL, ...
 
 			$direct_classes['basic_functions']->require_file ($direct_settings['path_system']."/functions/swg_file_functions.php",1);
 			$direct_classes['basic_functions']->settings_get ($direct_settings['path_data']."/settings/swg_core.php",true);
-
-/* -------------------------------------------------------------------------
-This is an international tool - check the requested language string
-------------------------------------------------------------------------- */
-
-			if (!file_exists ($direct_settings['path_lang']."/swg_core.$direct_settings[lang].xml"))
-			{
-/* -------------------------------------------------------------------------
-Try to identify the language using ACCEPT_LANGUAGE
-------------------------------------------------------------------------- */
-
-				$f_lang_iso = strtolower (str_replace ("-","_",$_SERVER['HTTP_ACCEPT_LANGUAGE']));
-				$f_lang_iso = preg_replace ("#\W#","",$f_lang_iso);
-				$f_lang_domain = substr ($f_lang_iso,0,2);
-				if (isset ($direct_settings["swg_lang_".$f_lang_iso])) { $f_lang_iso = $direct_settings["swg_lang_".$f_lang_iso]; }
-				if (isset ($direct_settings["swg_lang_".$f_lang_domain])) { $f_lang_domain = $direct_settings["swg_lang_".$f_lang_domain]; }
-
-				if (file_exists ($direct_settings['path_lang']."/swg_core.$f_lang_iso.xml")) { $direct_settings['lang'] = $f_lang_iso; }
-				elseif (file_exists ($direct_settings['path_lang']."/swg_core.$f_lang_domain.xml")) { $direct_settings['lang'] = $f_lang_domain; }
-				else { $direct_settings['lang'] = $direct_settings['swg_lang']; }
-			}
-
-/* -------------------------------------------------------------------------
-This is still an international tool - give me the basic language files as
-well as everything else that is required to be able to use the
-"error_page ()" function.
-------------------------------------------------------------------------- */
-
-			$direct_classes['basic_functions']->require_file ($direct_settings['path_system']."/functions/swg_local_support.php",1);
-			direct_local_integration ("core");
-			if (isset ($direct_local['lang_charset'])) { mb_internal_encoding ($direct_local['lang_charset']); }
-
-			$direct_classes['basic_functions']->require_file ($direct_settings['path_system']."/classes/swg_error_functions.php",1);
+			$direct_settings['user']['timezone'] = (int)(date ("Z") / 3600);
 
 /* -------------------------------------------------------------------------
 evars (Extended variables), files and backward compatibility will be
@@ -244,78 +212,7 @@ available right now
 			$direct_classes['basic_functions']->require_file ($direct_settings['path_system']."/functions/swg_linker.php",1);
 			$direct_classes['basic_functions']->require_file ($direct_settings['path_system']."/functions/swg_string_translator.php",1);
 
-/* -------------------------------------------------------------------------
-Now filter out the IP and hostname of the visitor - I want to know it
-------------------------------------------------------------------------- */
-
-			$f_proxy_ip = (isset ($_SERVER['HTTP_FORWARDED_FOR']) ? $_SERVER['HTTP_FORWARDED_FOR'] : "");
-			if ((isset ($_SERVER['HTTP_X_FORWARDED_FOR']))&&(!$f_proxy_ip)) { $f_proxy_ip = $_SERVER['HTTP_X_FORWARDED_FOR']; }
-			if ((isset ($_SERVER['HTTP_CLIENT_IP']))&&(!$f_proxy_ip)) { $f_proxy_ip = $_SERVER['HTTP_CLIENT_IP']; }
-			if ((isset ($_SERVER['HTTP_X_CLIENT_IP']))&&(!$f_proxy_ip)) { $f_proxy_ip = $_SERVER['HTTP_X_CLIENT_IP']; }
-			if ((isset ($_SERVER['HTTP_COMING_FROM']))&&(!$f_proxy_ip)) { $f_proxy_ip = $_SERVER['HTTP_COMING_FROM']; }
-			if ((isset ($_SERVER['HTTP_X_COMING_FROM']))&&(!$f_proxy_ip)) { $f_proxy_ip = $_SERVER['HTTP_X_COMING_FROM']; }
-			if ((isset ($_SERVER['HTTP_FORWARDED']))&&(!$f_proxy_ip)) { $f_proxy_ip = $_SERVER['HTTP_FORWARDED']; }
-			if ((isset ($_SERVER['HTTP_X_FORWARDED']))&&(!$f_proxy_ip)) { $f_proxy_ip = $_SERVER['HTTP_X_FORWARDED']; }
-
-/* -------------------------------------------------------------------------
-The custom IP code should be used for individual IP identifications - it's
-the last chance to get it, otherwise it's $_SERVER['REMOTE_ADDR']
-WARNING! Using "swg_ip_customcode" may be a security risk.
-------------------------------------------------------------------------- */
-
-			if ((empty ($direct_settings['swg_ip_customcode']))||($direct_settings['swg_phpback_secure_functions_only'])) { $direct_settings['user_ip'] = $_SERVER['REMOTE_ADDR']; }
-			else
-			{
-				$swg_ip = "";
-				@eval ($direct_settings['swg_ip_customcode']);
-				$direct_settings['user_ip'] = $swg_ip;
-			}
-
-/* -------------------------------------------------------------------------
-We were unable to find the IP ... writing "unknown"
-------------------------------------------------------------------------- */
-
-			if ((!$direct_settings['user_ip'])||($direct_settings['user_ip'] == "127.0.0.1")||($direct_settings['user_ip'] == "::1"))
-			{
-				$direct_settings['user_ip'] = "unknown";
-				$direct_settings['user_ip_name'] = "unknown";
-			}
-			else { $direct_settings['user_ip_name'] = ""; }
-
-			if (strlen ($f_proxy_ip))
-			{
-/* -------------------------------------------------------------------------
-Looks like the user is using a visible proxy - save whole IP information
-------------------------------------------------------------------------- */
-
-				$direct_settings['user_ip_name'] = $direct_settings['user_ip'];
-
-				$f_proxy_ip = str_replace (",",": ",(str_replace (" ","",$f_proxy_ip)));
-				$direct_settings['user_ip'] = $f_proxy_ip.": ".$direct_settings['user_ip'];
-
-				if ((!isset ($_SERVER['HTTPS']))||(!$_SERVER['HTTPS']))
-				{
-					direct_output_warning (direct_local_get ("core_user_warning"),(direct_local_get ("core_user_warning_proxy")));
-					$direct_settings['user_proxywarn'] = true;
-				}
-			}
-			else
-			{
-/* -------------------------------------------------------------------------
-The standard result: One IP is enough
-------------------------------------------------------------------------- */
-
-				if ($direct_settings['swg_kernel_hostname'])
-				{
-					if (preg_match ("#^([0123456789\.\:]+)$#",$direct_settings['user_ip'])) { $direct_settings['user_ip_name'] = @gethostbyaddr ($direct_settings['user_ip']); }
-					if (!strlen ($direct_settings['user_ip_name'])) { $direct_settings['user_ip_name'] = $direct_settings['user_ip']; }
-				}
-
-				$direct_settings['user_proxywarn'] = false;
-			}
-
 			$this->functions['service_https'] = true;
-			$this->functions['service_init'] = true;
 			$f_return = true;
 		}
 
@@ -340,10 +237,50 @@ The standard result: One IP is enough
 */
 	/*#ifndef(PHP4) */public /* #*/function kernel_modules_load ()
 	{
-		global $direct_classes,$direct_settings;
+		global $direct_classes,$direct_local,$direct_settings;
 		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -kernel_class->kernel_modules_load ()- (#echo(__LINE__)#)"); }
 
-		$f_return = false;
+		if ($direct_classes['basic_functions']->include_file ($direct_settings['path_system']."/classes/swg_ihandler_{$direct_settings['ihandler']}.php",1))
+		{
+			$f_return = direct_class_init ("input");
+
+/* -------------------------------------------------------------------------
+This is an international tool - check the requested language string
+------------------------------------------------------------------------- */
+
+			if (!file_exists ($direct_settings['path_lang']."/swg_core.{$direct_settings['lang']}.xml"))
+			{
+/* -------------------------------------------------------------------------
+Try to identify the language using ACCEPT_LANGUAGE
+------------------------------------------------------------------------- */
+
+				if (isset ($_SERVER['HTTP_ACCEPT_LANGUAGE'])) { $f_lang_iso = strtolower (str_replace ("-","_",$_SERVER['HTTP_ACCEPT_LANGUAGE'])); }
+				elseif (isset ($_SERVER['LANG'])) { $f_lang_iso = strtolower (str_replace ("-","_",$_SERVER['LANG'])); }
+				else { $f_lang_iso = "en_US"; }
+
+				$f_lang_iso = preg_replace ("#\W#","",$f_lang_iso);
+				$f_lang_domain = substr ($f_lang_iso,0,2);
+				if (isset ($direct_settings["swg_lang_".$f_lang_iso])) { $f_lang_iso = $direct_settings["swg_lang_".$f_lang_iso]; }
+				if (isset ($direct_settings["swg_lang_".$f_lang_domain])) { $f_lang_domain = $direct_settings["swg_lang_".$f_lang_domain]; }
+
+				if (file_exists ($direct_settings['path_lang']."/swg_core.$f_lang_iso.xml")) { $direct_settings['lang'] = $f_lang_iso; }
+				elseif (file_exists ($direct_settings['path_lang']."/swg_core.$f_lang_domain.xml")) { $direct_settings['lang'] = $f_lang_domain; }
+				else { $direct_settings['lang'] = $direct_settings['swg_lang']; }
+			}
+
+/* -------------------------------------------------------------------------
+This is still an international tool - give me the basic language files as
+well as everything else that is required to be able to use the
+"error_page ()" function.
+------------------------------------------------------------------------- */
+
+			$direct_classes['basic_functions']->require_file ($direct_settings['path_system']."/functions/swg_local_support.php",1);
+			direct_local_integration ("core");
+			if (isset ($direct_local['lang_charset'])) { mb_internal_encoding ($direct_local['lang_charset']); }
+		}
+		else { $f_return = false; }
+
+		if (($f_return)&&(direct_class_init ("input"))) { $f_return = $direct_classes['basic_functions']->include_file ($direct_settings['path_system']."/classes/swg_ohandler_{$direct_settings['ohandler']}.php",1); }
 
 		if (file_exists ($direct_settings['path_data']."/settings/swg_kernel_modules.php"))
 		{
@@ -366,6 +303,9 @@ The standard result: One IP is enough
 				}
 			}
 		}
+
+		if (!direct_class_init ("output")) { $f_return = false; }
+		$this->functions['service_init'] = $f_return;
 
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -kernel_class->kernel_modules_load ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
@@ -398,38 +338,36 @@ The standard result: One IP is enough
 		if ((!$f_https_required)||(($f_https_required)&&(isset ($_SERVER['HTTPS']))&&($_SERVER['HTTPS']))) { $f_return = true; }
 		else
 		{
+			direct_class_init ("output");
+
 			if ($direct_settings['dsd']['https_redirect'])
 			{
-				direct_class_init ("error_functions");
-
-				if (direct_class_function_check ($direct_classes['error_functions'],"error_page")) { $direct_classes['error_functions']->error_page ("fatal","core_https_redirect_failed","FATAL ERROR:<br />Request terminated<br />sWG/#echo(__FILEPATH__)# -kernel_class->service_https ()- (#echo(__LINE__)#)"); }
-				elseif ($direct_local['lang_charset']) { $direct_classes['basic_functions']->emergency_mode (direct_local_get ("errors_core_https_redirect_failed")."<br /><br />FATAL ERROR:<br />Request terminated<br /><br />sWG/#echo(__FILEPATH__)# -kernel_class->service_https ()- (#echo(__LINE__)#)"); }
-				else { $direct_classes['basic_functions']->emergency_mode ("The system is unable to perform the required redirection to a secure https connection.<br /><br />sWG/#echo(__FILEPATH__)# -kernel_class->service_https ()- (#echo(__LINE__)#)"); }
+				if (isset ($direct_local['lang_charset'])) { $direct_classes['output']->output_send_error ("fatal","core_https_redirect_failed","FATAL ERROR:<br />Request terminated<br />sWG/#echo(__FILEPATH__)# -kernel_class->service_https ()- (#echo(__LINE__)#)"); }
+				else { $direct_classes['output']->output_send_error ("fatal","The system is unable to perform the required redirection to a secure https connection.<br /><br />sWG/#echo(__FILEPATH__)# -kernel_class->service_https ()- (#echo(__LINE__)#)"); }
 			}
 			else
 			{
-				if (direct_class_function_check ($direct_classes['basic_functions'],"require_file"))
+				$direct_classes['basic_functions']->require_file ($direct_settings['path_system']."/functions/swg_linker.php");
+
+				if (/*#ifndef(PHP4) */stripos/* #*//*#ifdef(PHP4):stristr:#*/($f_url,";dsd=") === false)
 				{
-					$direct_classes['basic_functions']->require_file ($direct_settings['path_system']."/functions/swg_linker.php");
-
-					if (/*#ifndef(PHP4) */stripos/* #*//*#ifdef(PHP4):stristr:#*/($f_url,"&dsd=") === false) { $f_url .= ((strpos ($f_url,"#") === false) ? "&dsd=https_redirect+1" : str_replace ("#","&dsd=https_redirect+1#",$f_url)); }
-					else { $f_url = str_replace ("&dsd=","&dsd=https_redirect+1++",$f_url); }
-
-					if (/*#ifndef(PHP4) */stripos/* #*//*#ifdef(PHP4):stristr:#*/($direct_settings['https_base_url'],"https://") === false)
-					{
-						$f_url = direct_linker ("url1",$f_url,false);
-						$f_url = str_replace ("http://","https://",$f_url);
-					}
-					else
-					{
-						$direct_settings['iscript_req'] = $direct_settings['https_base_url'];
-						$f_url = direct_linker ("url1",$f_url,false);
-					}
-
-					direct_class_init ("output");
-					$direct_classes['output']->redirect ($f_url);
+					if (strpos ($f_url,"#") === false) { $f_url .= ";dsd=https_redirect+1"; }
+					else { $f_url = str_replace ("#",";dsd=https_redirect+1#",$f_url); }
 				}
-				else { $direct_classes['basic_functions']->emergency_mode ("The system could not load a required component.<br /><br />Error accessing basic functions to initiate redirection<br /><br />sWG/#echo(__FILEPATH__)# -kernel_class->service_https ()- (#echo(__LINE__)#)"); }
+				else { $f_url = str_replace (";dsd=",";dsd=https_redirect+1++",$f_url); }
+
+				if ((!isset ($direct_settings['https_base_url']))||(/*#ifndef(PHP4) */stripos/* #*//*#ifdef(PHP4):stristr:#*/($direct_settings['https_base_url'],"https://") === false))
+				{
+					$f_url = direct_linker ("url1",$f_url,false);
+					$f_url = str_replace ("http://","https://",$f_url);
+				}
+				else
+				{
+					$direct_settings['iscript_req'] = $direct_settings['https_base_url'];
+					$f_url = direct_linker ("url1",$f_url,false);
+				}
+
+				$direct_classes['output']->redirect ($f_url);
 			}
 
 			exit ();
@@ -457,17 +395,14 @@ The standard result: One IP is enough
 		global $direct_cachedata,$direct_settings;
 		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -kernel_class->service_init ($f_threshold_id)- (#echo(__LINE__)#)"); }
 
-		$f_return = $this->v_subkernel_init ($f_threshold_id);
+		$f_return = array ();
+		$this->v_subkernel_init ($f_threshold_id);
 
-		if (direct_class_init ("error_functions"))
+		if (empty ($this->prekernel_error))
 		{
-			if (empty ($f_return))
-			{
-				if (($direct_cachedata['core_time'] + $direct_settings['timeout'] + $direct_settings['timeout_core']) < (time ())) { $f_return = array ("core_unknown_error","FATAL ERROR:<br />The system is experiencing a high load and is therefore unable to service your request at this time.<br /><br />We apologize for this inconvenience.<br /><br />sWG/#echo(__FILEPATH__)# -kernel_class->service_init ()- (#echo(__LINE__)#)"); }
-				else { $f_return = $this->prekernel_error; }
-			}
+			if (($direct_cachedata['core_time'] + $direct_settings['timeout'] + $direct_settings['timeout_core']) < (time ())) { $f_return = array ("core_unknown_error","FATAL ERROR:<br />The system is experiencing a high load and is therefore unable to service your request at this time.<br /><br />We apologize for this inconvenience.<br /><br />sWG/#echo(__FILEPATH__)# -kernel_class->service_init ()- (#echo(__LINE__)#)"); }
 		}
-		else { $f_return = array ("core_required_object_not_found","FATAL ERROR:<br />Unable to instantiate &quot;error_functions&quot;.<br /><br />sWG/#echo(__FILEPATH__)# -kernel_class->service_init ()- (#echo(__LINE__)#)"); }
+		else { $f_return = $this->prekernel_error; }
 
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -kernel_class->service_init ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
@@ -493,16 +428,18 @@ The standard result: One IP is enough
 		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->service_init_default ($f_threshold_id)- (#echo(__LINE__)#)"); }
 
 		$f_return = false;
-		$f_error_array = $this->service_init ($f_threshold_id);
+		$f_error_data = $this->service_init ($f_threshold_id);
 
-		if (empty ($f_error_array)) { $f_return = true; }
-		elseif (direct_class_function_check ($direct_classes['error_functions'],"error_page"))
+		if (empty ($f_error_data)) { $f_return = true; }
+		elseif (direct_class_init ("output"))
 		{
-			if (/*#ifndef(PHP4) */stripos/* #*//*#ifdef(PHP4):stristr:#*/($f_error_array[0],"access_denied") === false) { $direct_classes['error_functions']->error_page ("fatal",$f_error_array[0],$f_error_array[1]); }
-			else { $direct_classes['error_functions']->error_page ("login",$f_error_array[0],$f_error_array[1]); }
+			if ($direct_local['lang_charset'])
+			{
+				if (/*#ifndef(PHP4) */stripos/* #*//*#ifdef(PHP4):stristr:#*/($f_error_data[0],"access_denied") === false) { $direct_classes['output']->output_send_error ("fatal",$f_error_data[0],$f_error_data[1]); }
+				else { $direct_classes['output']->output_send_error ("login",$f_error_data[0],$f_error_data[1]); }
+			}
+			else { $direct_classes['output']->output_send_error ("fatal","An unknown error occurred while initiating the requested resource.<br /><br />sWG/#echo(__FILEPATH__)# -kernel_class->service_init_default ()- (#echo(__LINE__)#)"); }
 		}
-		elseif ($direct_local['lang_charset']) { $direct_classes['basic_functions']->emergency_mode (direct_local_get ($f_error_array[0])."<br /><br />sWG/#echo(__FILEPATH__)# -kernel_class->service_init_default ()- (#echo(__LINE__)#)"); }
-		else { $direct_classes['basic_functions']->emergency_mode ("An unknown error occurred while initiating the requested resource.<br /><br />sWG/#echo(__FILEPATH__)# -kernel_class->service_init_default ()- (#echo(__LINE__)#)"); }
 
 		return /*#ifdef(DEBUG):direct_debug (9,"sWG/#echo(__FILEPATH__)# -kernel_class->service_init_default ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
@@ -524,23 +461,23 @@ The standard result: One IP is enough
 	{
 		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->service_init_rboolean ($f_threshold_id)- (#echo(__LINE__)#)"); }
 
-		$f_error_array = $this->service_init ($f_threshold_id);
-		return /*#ifdef(DEBUG):direct_debug (9,"sWG/#echo(__FILEPATH__)# -kernel_class->service_init_rboolean ()- (#echo(__LINE__)#)",:#*/(empty ($f_error_array) ? true : false)/*#ifdef(DEBUG):,true):#*/;
+		$f_error_data = $this->service_init ($f_threshold_id);
+		return /*#ifdef(DEBUG):direct_debug (9,"sWG/#echo(__FILEPATH__)# -kernel_class->service_init_rboolean ()- (#echo(__LINE__)#)",:#*/(empty ($f_error_data) ? true : false)/*#ifdef(DEBUG):,true):#*/;
 	}
 
 	//f// direct_kernel_system->service_load ()
 /**
 	* Loads the required files to start a service or redirect the user.
 	*
-	* @uses   direct_basic_functions::include_file()
-	* @uses   direct_basic_functions::varfilter()
-	* @uses   direct_class_function_check()
-	* @uses   direct_class_init()
-	* @uses   direct_debug()
-	* @uses   direct_linker()
-	* @uses   direct_output_control::redirect()
-	* @uses   USE_debug_reporting
-	* @since  v0.1.05
+	* @uses  direct_basic_functions::include_file()
+	* @uses  direct_basic_functions::varfilter()
+	* @uses  direct_class_function_check()
+	* @uses  direct_class_init()
+	* @uses  direct_debug()
+	* @uses  direct_linker()
+	* @uses  direct_output_control::redirect()
+	* @uses  USE_debug_reporting
+	* @since v0.1.05
 */
 	/*#ifndef(PHP4) */public /* #*/function service_load ()
 	{
@@ -572,37 +509,35 @@ The standard result: One IP is enough
 			}
 		}
 
-		if ($f_timeout_time < (time ())) { $this->prekernel_error = array ("core_unknown_error","FATAL ERROR:<br />The system is experiencing a high load and is therefore unable to service your request at this time.<br /><br />We apologize for this inconvenience.<br /><br />sWG/#echo(__FILEPATH__)# -kernel_class->service_load ()- (#echo(__LINE__)#)"); }
+		if ($f_timeout_time < (time ())) { $direct_classes['output']->output_send_error ("fatal","core_unknown_error","FATAL ERROR:<br />The system is experiencing a high load and is therefore unable to service your request at this time.<br /><br />We apologize for this inconvenience.<br /><br />sWG/#echo(__FILEPATH__)# -kernel_class->service_load ()- (#echo(__LINE__)#)"); }
 		elseif ($f_redirected)
 		{
 			$f_redirected = direct_class_function_check ($direct_classes['basic_functions'],"include_file");
-
-			if ($f_redirected) { $f_redirected = $direct_classes['basic_functions']->include_file ($direct_settings['path_system']."/classes/swg_output.php"); }
 			if ($f_redirected) { $f_redirected = $direct_classes['basic_functions']->include_file ($direct_settings['path_system']."/functions/swg_linker.php"); }
 			if ($f_redirected) { $f_redirected = direct_class_init ("output"); }
 
 			if ($f_redirected)
 			{
 				$f_redirect_url = "";
-				if (!$GLOBALS['i_lang']) { $f_redirect_url .= "&lang="; }
-				if (!$GLOBALS['i_theme']) { $f_redirect_url .= "&theme="; }
-				$f_redirect_url .= "&dsd=".($direct_classes['basic_functions']->varfilter ($f_redirect_dsds,"settings"));
+				if (!$direct_settings['lang']) { $f_redirect_url .= ";lang="; }
+				if (!$direct_settings['theme']) { $f_redirect_url .= ";theme="; }
+				$f_redirect_url .= ";dsd=".($direct_classes['basic_functions']->varfilter ($f_redirect_dsds,"settings"));
 
-				$f_redirect_url = direct_linker ("url1","m=$direct_settings[m]&s=$direct_settings[s]&a=".$direct_settings['a'].$f_redirect_url,false);
+				$f_redirect_url = direct_linker ("url1","m=$direct_settings[m];s=$direct_settings[s];a=".$direct_settings['a'].$f_redirect_url,false);
 				$direct_classes['output']->redirect ($f_redirect_url);
 			}
-			else { $this->prekernel_error = array ("core_required_object_not_found","The system could not load a required component.<br /><br />Error accessing basic functions to initiate redirection<br /><br />sWG/#echo(__FILEPATH__)# -kernel_class->service_load ()- (#echo(__LINE__)#)"); }
+			else { $direct_classes['output']->output_send_error ("fatal","core_required_object_not_found","The system could not load a required component.<br /><br />Error accessing basic functions to initiate redirection<br /><br />sWG/#echo(__FILEPATH__)# -kernel_class->service_load ()- (#echo(__LINE__)#)"); }
 		}
 		else
 		{
 			$f_module = trim (str_replace ("/"," ",$direct_settings['s']));
-			$f_module_array = explode (" ",$f_module);
-			$f_module = ((count ($f_module_array)) - 1);
-			$f_module_array[$f_module] = ("swg_".$f_module_array[$f_module].".php");
-			$f_module = implode ("/",$f_module_array);
+			$f_module_data = explode (" ",$f_module);
+			$f_module = ((count ($f_module_data)) - 1);
+			$f_module_data[$f_module] = ("swg_".$f_module_data[$f_module].".php");
+			$f_module = implode ("/",$f_module_data);
 
 			if (file_exists ($direct_settings['path_system']."/modules/$direct_settings[m]/".$f_module)) { $direct_classes['basic_functions']->include_file ($direct_settings['path_system']."/modules/$direct_settings[m]/".$f_module,4); }
-			else { $this->prekernel_error = array ("core_required_object_not_found","FATAL ERROR:<br />&quot;$direct_settings[path_system]/modules/$direct_settings[m]/$f_module&quot; was not found<br /><br />sWG/#echo(__FILEPATH__)# -kernel_class->subkernel_load ()- (#echo(__LINE__)#)"); }
+			else { $direct_classes['output']->output_send_error ("fatal","core_required_object_not_found","FATAL ERROR:<br />&quot;$direct_settings[path_system]/modules/$direct_settings[m]/$f_module&quot; was not found<br /><br />sWG/#echo(__FILEPATH__)# -kernel_class->service_load ()- (#echo(__LINE__)#)"); }
 		}
 	}
 
@@ -611,10 +546,10 @@ The standard result: One IP is enough
 	* Loads the required file(s) to integrate a module subkernel into the sWG
 	* kernel system.
 	*
-	* @uses   direct_basic_functions::include_file()
-	* @uses   direct_debug()
-	* @uses   USE_debug_reporting
-	* @since  v0.1.05
+	* @uses  direct_basic_functions::include_file()
+	* @uses  direct_debug()
+	* @uses  USE_debug_reporting
+	* @since v0.1.05
 */
 	/*#ifndef(PHP4) */public /* #*/function subkernel_load ()
 	{
@@ -626,6 +561,7 @@ The standard result: One IP is enough
 		if (($direct_settings['m'])&&(file_exists ($direct_settings['path_system']."/modules/$direct_settings[m]/swg_subkernel.php"))) { include_once ($direct_settings['path_system']."/modules/$direct_settings[m]/swg_subkernel.php"); }
 		else
 		{
+			$direct_settings['m'] = "default";
 			$direct_settings['s'] = "sysm";
 			$direct_settings['a'] = "merror";
 
@@ -793,13 +729,13 @@ The standard result: One IP is enough
 /**
 	* "Virtual Binding" for "subkernel_init ()"
 	*
-	* @param  string $f_threshold_id This parameter is used to determine if
-	*         a request to write data is below the threshold (timeout). Multiple
-	*         thresholds may exist.
-	* @uses   direct_debug()
-	* @uses   direct_virtual_class::v_call_get()
-	* @uses   USE_debug_reporting
-	* @since  v0.1.05
+	* @param string $f_threshold_id This parameter is used to determine if
+	*        a request to write data is below the threshold (timeout). Multiple
+	*        thresholds may exist.
+	* @uses  direct_debug()
+	* @uses  direct_virtual_class::v_call_get()
+	* @uses  USE_debug_reporting
+	* @since v0.1.05
 */
 	/*#ifndef(PHP4) */public /* #*/function v_subkernel_init ($f_threshold_id = "")
 	{
@@ -1057,20 +993,20 @@ The standard result: One IP is enough
 		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_type,$f_cookie_mode) : false);
 	}
 
-	//f// direct_kernel_system->v_uuid_init (&$f_uuid)
+	//f// direct_kernel_system->v_uuid_init ($f_uuid = NULL)
 /**
 	* "Virtual Binding" for "uuid_init ()"
 	*
-	* @param  string &$f_uuid uuID of the current session
+	* @param  string $f_uuid uuID of the current session
 	* @uses   direct_debug()
 	* @uses   direct_virtual_class::v_call_get()
 	* @uses   USE_debug_reporting
 	* @return boolean True on success
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function v_uuid_init (&$f_uuid)
+	/*#ifndef(PHP4) */public /* #*/function v_uuid_init ($f_uuid = NULL)
 	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_uuid_init ($f_uuid)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_uuid_init (+f_uuid)- (#echo(__LINE__)#)"); }
 
 		$f_call = $this->v_call_get ("v_uuid_init");
 		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_uuid) : false);
@@ -1127,28 +1063,25 @@ define ("CLASS_direct_kernel_system",true);
 
 if (!isset ($direct_settings['swg_kernel_hostname'])) { $direct_settings['swg_kernel_hostname'] = false; }
 if (!isset ($direct_settings['swg_phpback_secure_functions_only'])) { $direct_settings['swg_phpback_secure_functions_only'] = true; }
-
-$direct_settings['swg_force_notheme'] = false;
 $direct_settings['swg_force_local_handling'] = "";
 
-if (!file_exists ($direct_settings['path_data']."/settings/swg_lock.chk"))
-{
-	if (!isset ($direct_classes['basic_functions'])) { direct_class_init ("basic_functions"); }
-	$direct_classes['basic_functions']->emergency_mode ("Dear Sir or Madam<br /><br />This is the &quot;secured WebGine&quot; program at &quot;$direct_settings[swg_server]&quot;.<br /><br />I'm afraid I wasn't able to deliver the requested resource because an &quot;Emergency lock&quot; has been activated.<br />Please feel free to contact the administration or simply try to reach your resource again later.<br /><br />Request terminated<br /><br />sWG/#echo(__FILEPATH__)# _main_ (#echo(__LINE__)#)");
-}
-else
+if (file_exists ($direct_settings['path_data']."/settings/swg_lock.chk"))
 {
 	direct_class_init ("kernel");
 
 	if ($direct_classes['kernel'])
 	{
-	if ($direct_classes['kernel']->basekernel_init ())
+	if (($direct_classes['kernel']->basekernel_init ())&&($direct_classes['kernel']->kernel_modules_load ()))
 	{
-		$direct_classes['kernel']->kernel_modules_load ();
 		$direct_classes['kernel']->subkernel_load ();
 		$direct_classes['kernel']->service_load ();
 	}
 	}
+}
+else
+{
+	direct_class_init ("output");
+	$direct_classes['output']->output_send_error ("critical","Dear Sir or Madam<br /><br />This is the &quot;secured WebGine&quot; program at &quot;$direct_settings[swg_server]&quot;.<br /><br />I'm afraid I wasn't able to deliver the requested resource because an &quot;Emergency lock&quot; has been activated.<br />Please feel free to contact the administration or simply try to reach your resource again later.<br /><br />Request terminated<br /><br />sWG/#echo(__FILEPATH__)# _main_ (#echo(__LINE__)#)");
 }
 
 //j// EOF

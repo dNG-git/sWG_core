@@ -97,14 +97,14 @@ value='de' />"
 			if (preg_match ("#^(.+?)\#(.*?)$#",$f_data,$f_result_array)) { $f_data = $f_result_array[1]; }
 		}
 
-		$f_variables_array = explode ("&",$f_data);
+		$f_variables_array = explode (";",$f_data);
 
 		foreach ($f_variables_array as $f_variable)
 		{
 			if ($f_variable)
 			{
 				$f_variable_array = explode ("=",$f_variable,2);
-				if ($f_variable_array[0]) { $f_return .= "<input type='hidden' name='{$f_variable_array[0]}' value='{$f_variable_array[1]}' />"; }
+				if ($f_variable_array[0]) { $f_return .= "<input type='hidden' name='{$f_variable_array[0]}' value=\"".(direct_html_encode_special ($f_variable_array[1]))."\" />"; }
 			}
 		}
 
@@ -115,9 +115,10 @@ Automatically add language, theme and uuid fields to the form
 		if (/*#ifndef(PHP4) */stripos/* #*//*#ifdef(PHP4):stristr:#*/($f_data,"lang=") === false) { $f_return .= "<input type='hidden' name='lang' value='$direct_settings[lang]' />"; }
 		if (/*#ifndef(PHP4) */stripos/* #*//*#ifdef(PHP4):stristr:#*/($f_data,"theme=") === false) { $f_return .= "<input type='hidden' name='theme' value='$direct_settings[theme]' />"; }
 
-		if (($direct_settings['uuid'])&&($f_withuuid))
+		if ((isset ($direct_classes['input']))&&($f_withuuid))
 		{
-			if ((!$direct_classes['kernel']->v_uuid_is_cookied ())&&($direct_classes['kernel']->v_uuid_check_usage ())) { $f_return .= "<input type='hidden' name='uuid' value='$direct_settings[uuid]' />"; }
+			$f_uuid = $direct_classes['input']->uuid_get ();
+			if (($f_uuid)&&(!$direct_classes['kernel']->v_uuid_is_cookied ())&&($direct_classes['kernel']->v_uuid_check_usage ())) { $f_return .= "<input type='hidden' name='uuid' value='$f_uuid' />"; }
 		}
 	}
 	elseif ($f_type == "optical")
@@ -302,22 +303,24 @@ function direct_linker_dynamic ($f_type,$f_data,$f_ampconvert = true,$f_withuuid
 
 	if (/*#ifndef(PHP4) */stripos/* #*//*#ifdef(PHP4):stristr:#*/($f_data,"lang=") === false)
 	{
-		if ($f_data) { $f_data .= "&"; }
+		if ($f_data) { $f_data .= ";"; }
 		$f_data .= "lang=".$direct_settings['lang'];
 	}
 
 	if (/*#ifndef(PHP4) */stripos/* #*//*#ifdef(PHP4):stristr:#*/($f_data,"theme=") === false)
 	{
-		if ($f_data) { $f_data .= "&"; }
+		if ($f_data) { $f_data .= ";"; }
 		$f_data .= "theme=".$direct_settings['theme'];
 	}
 
-	if (($direct_settings['uuid'])&&($f_withuuid))
+	if ((isset ($direct_classes['input']))&&($f_withuuid))
 	{
-		if ((!$direct_classes['kernel']->v_uuid_is_cookied ())&&($direct_classes['kernel']->v_uuid_check_usage ()))
+		$f_uuid = $direct_classes['input']->uuid_get ();
+
+		if (($f_uuid)&&(!$direct_classes['kernel']->v_uuid_is_cookied ())&&($direct_classes['kernel']->v_uuid_check_usage ()))
 		{
-			if ($f_data) { $f_data .= "&"; }
-			$f_data .= "uuid=".$direct_settings['uuid'];
+			if ($f_data) { $f_data .= ";"; }
+			$f_data .= "uuid=".$f_uuid;
 		}
 	}
 
@@ -381,26 +384,28 @@ function direct_linker_shadow ($f_type,$f_data,$f_withuuid = true)
 
 	if (/*#ifndef(PHP4) */stripos/* #*//*#ifdef(PHP4):stristr:#*/($f_data,"lang=") === false)
 	{
-		if ($f_data) { $f_data .= "&"; }
+		if ($f_data) { $f_data .= ";"; }
 		$f_data .= "lang=".$direct_settings['lang'];
 	}
 
 	if (/*#ifndef(PHP4) */stripos/* #*//*#ifdef(PHP4):stristr:#*/($f_data,"theme=") === false)
 	{
-		if ($f_data) { $f_data .= "&"; }
+		if ($f_data) { $f_data .= ";"; }
 		$f_data .= "theme=".$direct_settings['theme'];
 	}
 
-	if (($direct_settings['uuid'])&&($f_withuuid))
+	if ((isset ($direct_classes['input']))&&($f_withuuid))
 	{
-		if ((!$direct_classes['kernel']->v_uuid_is_cookied ())&&($direct_classes['kernel']->v_uuid_check_usage ()))
+		$f_uuid = $direct_classes['input']->uuid_get ();
+
+		if (($f_uuid)&&(!$direct_classes['kernel']->v_uuid_is_cookied ())&&($direct_classes['kernel']->v_uuid_check_usage ()))
 		{
-			if ($f_data) { $f_data .= "&"; }
-			$f_data .= "uuid=".$direct_settings['uuid'];
+			if ($f_data) { $f_data .= ";"; }
+			$f_data .= "uuid=".$f_uuid;
 		}
 	}
 
-	$f_variables_array = explode ("&",$f_data);
+	$f_variables_array = explode (";",$f_data);
 
 	if (!empty ($f_variables_array))
 	{

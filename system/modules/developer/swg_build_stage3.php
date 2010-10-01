@@ -75,12 +75,7 @@ Thank you for using the secured WebGine!
 Check for a developer version of the sWG.
 ------------------------------------------------------------------------- */
 
-$g_continue_check = false;
-
-if (file_exists ("_developer"))
-{
-	if (is_dir ("_developer")) { $g_continue_check = true; }
-}
+$g_continue_check = ((($direct_settings['ihandler'] == "cmd")&&(file_exists ("_developer"))&&(is_dir ("_developer"))) ? true : false);
 
 if (!$direct_classes['kernel']->service_init_rboolean ()) { $g_continue_check = false; }
 if (!file_exists ("swg.php")) { $g_continue_check = false; }

@@ -20,7 +20,8 @@ sWG/#echo(__FILEPATH__)#
 ----------------------------------------------------------------------------
 NOTE_END //n*/
 /**
-* Subkernel for: default
+* There are several tools to create new output easily. Here you will find most
+* of them (including methods from direct_output_inline).
 *
 * @internal   We are using phpDocumentor to automate the documentation process
 *             for creating the Developer's Manual. All sections including
@@ -31,9 +32,8 @@ NOTE_END //n*/
 * @author     direct Netware Group
 * @copyright  (C) direct Netware Group - All rights reserved
 * @package    sWG_core
-* @subpackage default
-* @uses       direct_product_iversion
-* @since      v0.1.01
+* @subpackage input
+* @since      v0.1.08
 * @license    http://www.direct-netware.de/redirect.php?licenses;w3c
 *             W3C (R) Software License
 */
@@ -43,52 +43,76 @@ All comments will be removed in the "production" packages (they will be in
 all development packets)
 ------------------------------------------------------------------------- */
 
-//j// Basic configuration
-
-/* -------------------------------------------------------------------------
-Direct calls will be honored with an "exit ()"
-------------------------------------------------------------------------- */
-
-if (!defined ("direct_product_iversion")) { exit (); }
-
 //j// Functions and classes
 
 /* -------------------------------------------------------------------------
 Testing for required classes
 ------------------------------------------------------------------------- */
 
-if (!defined ("CLASS_direct_subkernel_default"))
+$g_continue_check = ((defined ("CLASS_direct_icmd")) ? false : true);
+if (($g_continue_check)&&(!defined ("CLASS_direct_input"))) { $g_continue_check = $direct_classes['basic_functions']->include_file ($direct_settings['path_system']."/classes/swg_ihandler.php",1); }
+
+if ($g_continue_check)
 {
-//c// direct_subkernel_default
+//c// direct_icmd
 /**
-* Subkernel for: default
+* "direct_icmd" fetches and provides input related data.
 *
 * @author     direct Netware Group
 * @copyright  (C) direct Netware Group - All rights reserved
 * @package    sWG_core
-* @subpackage default
-* @uses       CLASS_direct_virtual_class
-* @since      v0.1.05
+* @subpackage input
+* @uses       CLASS_direct_input
+* @since      v0.1.08
 * @license    http://www.direct-netware.de/redirect.php?licenses;w3c
 *             W3C (R) Software License
 */
-class direct_subkernel_default extends direct_virtual_class
+class direct_icmd extends direct_input
 {
 /* -------------------------------------------------------------------------
 Extend the class using old and new behavior
 ------------------------------------------------------------------------- */
 
-	//f// direct_subkernel_default->__construct () and direct_subkernel_default->direct_subkernel_default ()
+	//f// direct_basic_functions->__construct () and direct_basic_functions->direct_basic_functions ()
 /**
-	* Constructor (PHP5) __construct (direct_subkernel_default)
+	* Constructor (PHP5) __construct (direct_icmd)
 	*
 	* @uses  direct_debug()
 	* @uses  USE_debug_reporting
-	* @since v0.1.05
+	* @since v0.1.08
 */
 	/*#ifndef(PHP4) */public /* #*/function __construct ()
 	{
-		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -kernel_class->__construct (direct_subkernel_default)- (#echo(__LINE__)#)"); }
+		global $direct_settings;
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -output_class->__construct (direct_icmd)- (#echo(__LINE__)#)"); }
+
+/* -------------------------------------------------------------------------
+Parse input line again but this time consider all $_SERVER['argv'] entries.
+------------------------------------------------------------------------- */
+
+		if ((isset ($_SERVER['argc']))&&($_SERVER['argc'] > 1))
+		{
+			$f_argv = $_SERVER['argv'];
+			$f_iline = "";
+			unset ($f_argv[0]);
+
+			foreach ($f_argv as $f_argv_entry)
+			{
+				if (($f_argv_entry)&&($f_argv_entry != "-"))
+				{
+					if ($f_iline) { $f_iline .= ";"; }
+					$f_iline .= $f_argv_entry;
+				}
+			}
+
+			$f_variables = direct_basic_functions::iline_parse ($f_iline);
+			$direct_settings['dsd'] = (isset ($f_variables['dsd']) ? $f_variables['dsd'] : "");
+		}
+		else
+		{
+			$direct_settings['dsd'] = "";
+			$f_variables = array ();
+		}
 
 /* -------------------------------------------------------------------------
 My parent should be on my side to get the work done
@@ -97,53 +121,33 @@ My parent should be on my side to get the work done
 		parent::__construct ();
 
 /* -------------------------------------------------------------------------
-Informing the system about the available function
+Set protocol specific data
 ------------------------------------------------------------------------- */
 
-		$this->functions['subkernel_init'] = true;
+		$direct_settings['user_ip'] = "unknown";
+		$direct_settings['user_ip_name'] = "unknown";
+
+		$this->method = "GET";
+		$this->pass = (isset ($f_variables['pass']) ? $f_variables['pass'] : NULL);
+		$this->uuid = (isset ($f_variables['uuid']) ? $f_variables['uuid'] : NULL);
+		$this->user = (isset ($f_variables['user']) ? $f_variables['user'] : NULL);
 	}
 /*#ifdef(PHP4):
 /**
-	* Constructor (PHP4) direct_subkernel_default (direct_subkernel_default)
+	* Constructor (PHP4) direct_icmd (direct_icmd)
 	*
-	* @since v0.1.05
+	* @since v0.1.08
 *\/
-	function direct_subkernel_default () { $this->__construct (); }
+	function direct_icmd () { $this->__construct (); }
 :#*/
-	//f// direct_subkernel_default->subkernel_init ($f_threshold_id = "")
-/**
-	* Running subkernel specific checkups.
-	*
-	* @param  string $f_threshold_id This parameter is used to determine if
-	*         a request to write data is below the threshold (timeout).
-	* @uses   direct_debug()
-	* @uses   USE_debug_reporting
-	* @return array Returned array contains error details if applicable
-	* @since  v0.1.05
-*/
-	/*#ifndef(PHP4) */public /* #*/function subkernel_init ($f_threshold_id = "")
-	{
-		global $direct_classes;
-		if (USE_debug_reporting) { direct_debug (2,"sWG/#echo(__FILEPATH__)# -kernel_class->subkernel_init ($f_threshold_id)- (#echo(__LINE__)#)"); }
-
-		$direct_classes['kernel']->v_user_init ($f_threshold_id);
-		$direct_classes['kernel']->v_group_init ();
-
-		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -kernel_class->subkernel_init ()- (#echo(__LINE__)#)",(:#*/array ()/*#ifdef(DEBUG):),true):#*/;
-	}
 }
 
 /* -------------------------------------------------------------------------
 Mark this class as the most up-to-date one
 ------------------------------------------------------------------------- */
 
-$direct_classes['@names']['subkernel_default'] = "direct_subkernel_default";
-define ("CLASS_direct_subkernel_default",true);
-
-//j// Script specific commands
-
-direct_class_init ("subkernel_default");
-$direct_classes['kernel']->v_call_set ("v_subkernel_init",$direct_classes['subkernel_default'],"subkernel_init");
+$direct_classes['@names']['input'] = "direct_icmd";
+define ("CLASS_direct_icmd",true);
 }
 
 //j// EOF

@@ -20,7 +20,8 @@ sWG/#echo(__FILEPATH__)#
 ----------------------------------------------------------------------------
 NOTE_END //n*/
 /**
-* Subkernel for: default
+* The "input" generic handler specify all get/set functions as well as
+* variables for later use.
 *
 * @internal   We are using phpDocumentor to automate the documentation process
 *             for creating the Developer's Manual. All sections including
@@ -31,9 +32,8 @@ NOTE_END //n*/
 * @author     direct Netware Group
 * @copyright  (C) direct Netware Group - All rights reserved
 * @package    sWG_core
-* @subpackage default
-* @uses       direct_product_iversion
-* @since      v0.1.01
+* @subpackage input
+* @since      v0.1.08
 * @license    http://www.direct-netware.de/redirect.php?licenses;w3c
 *             W3C (R) Software License
 */
@@ -43,52 +43,62 @@ All comments will be removed in the "production" packages (they will be in
 all development packets)
 ------------------------------------------------------------------------- */
 
-//j// Basic configuration
-
-/* -------------------------------------------------------------------------
-Direct calls will be honored with an "exit ()"
-------------------------------------------------------------------------- */
-
-if (!defined ("direct_product_iversion")) { exit (); }
-
 //j// Functions and classes
 
 /* -------------------------------------------------------------------------
 Testing for required classes
 ------------------------------------------------------------------------- */
 
-if (!defined ("CLASS_direct_subkernel_default"))
+if (!defined ("CLASS_direct_input"))
 {
-//c// direct_subkernel_default
+//c// direct_ihttp
 /**
-* Subkernel for: default
+* The "direct_ihandler" is mainly an interface specification.
 *
 * @author     direct Netware Group
 * @copyright  (C) direct Netware Group - All rights reserved
 * @package    sWG_core
-* @subpackage default
+* @subpackage input
 * @uses       CLASS_direct_virtual_class
-* @since      v0.1.05
+* @since      v0.1.08
 * @license    http://www.direct-netware.de/redirect.php?licenses;w3c
 *             W3C (R) Software License
 */
-class direct_subkernel_default extends direct_virtual_class
+class direct_input extends direct_virtual_class
 {
+/**
+	* @var string $method HTTP (like) method
+*/
+	/*#ifndef(PHP4) */protected/* #*//*#ifdef(PHP4):var:#*/ $method;
+/**
+	* @var string $pass Password
+*/
+	/*#ifndef(PHP4) */protected/* #*//*#ifdef(PHP4):var:#*/ $pass;
+/**
+	* @var string $user User name
+*/
+	/*#ifndef(PHP4) */protected/* #*//*#ifdef(PHP4):var:#*/ $user;
+/**
+	* @var string $uuid UUID
+*/
+	/*#ifndef(PHP4) */protected/* #*//*#ifdef(PHP4):var:#*/ $uuid;
+
 /* -------------------------------------------------------------------------
 Extend the class using old and new behavior
 ------------------------------------------------------------------------- */
 
-	//f// direct_subkernel_default->__construct () and direct_subkernel_default->direct_subkernel_default ()
+	//f// direct_input->__construct () and direct_input->direct_input ()
 /**
-	* Constructor (PHP5) __construct (direct_subkernel_default)
+	* Constructor (PHP5) __construct (direct_input)
 	*
 	* @uses  direct_debug()
 	* @uses  USE_debug_reporting
-	* @since v0.1.05
+	* @since v0.1.08
 */
 	/*#ifndef(PHP4) */public /* #*/function __construct ()
 	{
-		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -kernel_class->__construct (direct_subkernel_default)- (#echo(__LINE__)#)"); }
+		global $direct_classes,$direct_settings;
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -output_class->__construct (direct_input)- (#echo(__LINE__)#)"); }
 
 /* -------------------------------------------------------------------------
 My parent should be on my side to get the work done
@@ -97,39 +107,83 @@ My parent should be on my side to get the work done
 		parent::__construct ();
 
 /* -------------------------------------------------------------------------
-Informing the system about the available function
+Informing the system about available functions
 ------------------------------------------------------------------------- */
 
-		$this->functions['subkernel_init'] = true;
+		$this->functions['pass_get'] = true;
+		$this->functions['uuid_get'] = true;
+		$this->functions['uuid_set'] = true;
+		$this->functions['user_get'] = true;
+		$this->functions['user_set'] = true;
+
+/* -------------------------------------------------------------------------
+Parse DSD
+------------------------------------------------------------------------- */
+
+		$direct_settings['dsd'] = $direct_classes['basic_functions']->dsd_parse ($direct_settings['dsd']);
 	}
 /*#ifdef(PHP4):
 /**
-	* Constructor (PHP4) direct_subkernel_default (direct_subkernel_default)
+	* Constructor (PHP4) direct_input (direct_input)
 	*
-	* @since v0.1.05
+	* @since v0.1.08
 *\/
-	function direct_subkernel_default () { $this->__construct (); }
+	function direct_input () { $this->__construct (); }
 :#*/
-	//f// direct_subkernel_default->subkernel_init ($f_threshold_id = "")
+	//f// direct_input->pass_get ()
 /**
-	* Running subkernel specific checkups.
+	* Return a password identified through protocol specific ways.
 	*
-	* @param  string $f_threshold_id This parameter is used to determine if
-	*         a request to write data is below the threshold (timeout).
-	* @uses   direct_debug()
-	* @uses   USE_debug_reporting
-	* @return array Returned array contains error details if applicable
-	* @since  v0.1.05
+	* @return mixed String if identified; NULL if not
+	* @since  v0.1.08
 */
-	/*#ifndef(PHP4) */public /* #*/function subkernel_init ($f_threshold_id = "")
+	/*#ifndef(PHP4) */public /* #*/function pass_get () { return $this->pass; }
+
+	//f// direct_input->uuid_get ()
+/**
+	* Return a UUID identified through protocol specific ways.
+	*
+	* @return mixed String if identified; NULL if not
+	* @since  v0.1.08
+*/
+	/*#ifndef(PHP4) */public /* #*/function uuid_get () { return $this->uuid; }
+
+	//f// direct_input->uuid_set ($f_uuid)
+/**
+	* Set the defined UUID.
+	*
+	* @param string $f_uuid UUID
+	* @since v0.1.08
+*/
+	/*#ifndef(PHP4) */public /* #*/function uuid_set ($f_uuid)
 	{
-		global $direct_classes;
-		if (USE_debug_reporting) { direct_debug (2,"sWG/#echo(__FILEPATH__)# -kernel_class->subkernel_init ($f_threshold_id)- (#echo(__LINE__)#)"); }
+		global $direct_settings;
+		$direct_settings['uuid'] = $f_uuid;
+		$this->uuid = $f_uuid;
+	}
 
-		$direct_classes['kernel']->v_user_init ($f_threshold_id);
-		$direct_classes['kernel']->v_group_init ();
+	//f// direct_input->user_get ()
+/**
+	* Return a user name identified through protocol specific ways.
+	*
+	* @return mixed String if identified; NULL if not
+	* @since  v0.1.08
+*/
+	/*#ifndef(PHP4) */public /* #*/function user_get () { return $this->user; }
 
-		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -kernel_class->subkernel_init ()- (#echo(__LINE__)#)",(:#*/array ()/*#ifdef(DEBUG):),true):#*/;
+	//f// direct_input->user_set ($f_user)
+/**
+	* Set the defined user name.
+	*
+	* @param string $f_user User name
+	* @since v0.1.08
+*/
+	/*#ifndef(PHP4) */public /* #*/function user_set ($f_user)
+	{
+		global $direct_settings;
+		$direct_settings['user']['name'] = $f_user;
+		$direct_settings['user']['name_html'] = direct_html_encode_special ($f_user);
+		$this->user = $f_user;
 	}
 }
 
@@ -137,13 +191,7 @@ Informing the system about the available function
 Mark this class as the most up-to-date one
 ------------------------------------------------------------------------- */
 
-$direct_classes['@names']['subkernel_default'] = "direct_subkernel_default";
-define ("CLASS_direct_subkernel_default",true);
-
-//j// Script specific commands
-
-direct_class_init ("subkernel_default");
-$direct_classes['kernel']->v_call_set ("v_subkernel_init",$direct_classes['subkernel_default'],"subkernel_init");
+define ("CLASS_direct_input",true);
 }
 
 //j// EOF

@@ -1,5 +1,10 @@
 _extras
 .*
+*.mdproj
+*.mdw
+*.pidb
+*.sln
+*.userprefs
 data/settings/swg_build_targets.php
-system/classes/ext_core/*
 makefile.php
+system/classes/ext_core/*

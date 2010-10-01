@@ -112,7 +112,9 @@ My parent should be on my side to get the work done
 Informing the system about available functions
 ------------------------------------------------------------------------- */
 
+		$this->functions['backtrace_get'] = true;
 		$this->functions['datetime'] = true;
+		$this->functions['dsd_parse'] = true;
 		$this->functions['inputfilter_basic'] = true;
 		$this->functions['inputfilter_email'] = true;
 		$this->functions['inputfilter_filepath'] = true;
@@ -146,7 +148,51 @@ Set up the caching variables
 	* @since v0.1.01
 *\/
 	function direct_basic_functions () { $this->__construct (); }
-:#*/
+:#\n*/
+	//f// direct_basic_functions->__destruct ()
+/**
+	* Destructor (PHP5) __destruct (direct_basic_functions)
+	*
+	* @since v0.1.08
+*/
+	/*#ifndef(PHP4) */public /* #*/function __destruct () { restore_error_handler (); }
+
+	//f// direct_basic_functions->backtrace_get ($f_data = "")
+/**
+	* Parse a given backtrace array (or try to load one via "debug_backtrace").
+	*
+	* @param  mixed $f_data Already extracted backtrace as array (otherwise use
+	*         current one)
+	* @uses   direct_debug()
+	* @uses   USE_debug_reporting
+	* @since  v0.1.03
+*/
+	/*#ifndef(PHP4) */public /* #*/function backtrace_get ($f_data = "")
+	{
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -basic_functions_class->backtrace_get (+f_data)- (#echo(__LINE__)#)"); }
+		$f_return = array ();
+
+		if (is_array ($f_data)) { $f_backtrace_array = $f_data; }
+		elseif (function_exists ("debug_backtrace")) { $f_backtrace_array = debug_backtrace (); }
+
+		if (isset ($f_backtrace_array))
+		{
+			foreach ($f_backtrace_array as $f_backtrace_entry_array)
+			{
+				$f_backtrace_line = "";
+
+				if (isset ($f_backtrace_entry_array['file'])) { $f_backtrace_line .= $f_backtrace_entry_array['file'].": "; }
+				if (isset ($f_backtrace_entry_array['class'])) { $f_backtrace_line .= $f_backtrace_entry_array['class']."->"; }
+				if (isset ($f_backtrace_entry_array['function'])) { $f_backtrace_line .= $f_backtrace_entry_array['function']." "; }
+				if (isset ($f_backtrace_entry_array['line'])) { $f_backtrace_line .= "({$f_backtrace_entry_array['line']}) "; }
+
+				$f_return[] = $f_backtrace_line;
+			}
+		}
+
+		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -basic_functions_class->backtrace_get ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
+	}
+
 	//f// direct_basic_functions->datetime ($f_type,$f_date,$f_cutz,$f_dtconnector,$f_dtconnector = "")
 /**
 	* First of all, we want to provide a function to format a date (including
@@ -168,7 +214,7 @@ Set up the caching variables
 */
 	/*#ifndef(PHP4) */public /* #*/function datetime ($f_type,$f_date,$f_cutz,$f_dtconnector = "")
 	{
-		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -basic_functions_class->datetime ($f_type,$f_date,$f_cutz,$f_dtconnector)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -basic_functions_class->datetime ($f_type,$f_date,$f_cutz,$f_dtconnector)- (#echo(__LINE__)#)"); }
 
 		if (!empty ($f_cutz)) { $f_date += (3600 * $f_cutz); }
 
@@ -206,6 +252,45 @@ Set up the caching variables
 		if ($f_cutz > 0) { $f_return .= "+".$f_cutz; }
 
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -basic_functions_class->datetime ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
+	}
+
+	//f// direct_basic_functions->dsd_parse ($f_data)
+/**
+	* DSD stands for dynamic service data and should be used for transfering
+	* IDs for news, topics, ... All data will be encoded using addslashes -
+	* take care for HTML injection!
+	*
+	* @param  mixed $f_data DSD string for parsing or an array to generate a
+	*         DSD string.
+	* @uses   direct_debug()
+	* @uses   USE_debug_reporting
+	* @return mixed Parsed DSD array or an string for output
+	* @since  v0.1.08
+*/
+	/*#ifndef(PHP4) */public /* #*/function dsd_parse ($f_data)
+	{
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -basic_functions_class->dsd_parse (+f_data)- (#echo(__LINE__)#)"); }
+
+		if (is_array ($f_data)) { $f_return = ""; }
+		elseif (is_string ($f_data))
+		{
+			if (strpos ($f_data," ") !== false) { $f_data = urlencode ($f_data); }
+			$f_data = preg_replace ("#[\+]{3,}#i","++",$f_data);
+
+			$f_dsds = explode ("++",$f_data);
+			$f_return = array ();
+
+			foreach ($f_dsds as $f_dsd)
+			{
+				$f_data = explode ("+",(trim ($f_dsd)),2);
+
+				if (isset ($f_data[1])) { $f_return[$f_data[0]] = preg_replace ("#[\\x00-\\x21]#","",(urldecode ($f_data[1]))); }
+				elseif ($f_data[0]) { $f_return[$f_data[0]] = ""; }
+			}
+		}
+		else { $f_return = NULL; }
+
+		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -basic_functions_class->dsd_parse ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
 	//f// direct_basic_functions->include_file ($f_file,$f_cachelevel = 4,$f_once = true)
@@ -469,13 +554,13 @@ Set up the caching variables
 	* will remove these slashes from arrays and strings depending on the
 	* Magic-Quotes-Runtime setting.
 	*
-	* @param  mixed $f_data Input array or string
-	* @param  boolean $f_force Force input to be stripslashed
-	* @uses   direct_debug()
-	* @uses   INFO_magic_quotes_sybase
-	* @uses   INFO_magic_quotes_runtime
-	* @uses   USE_debug_reporting
-	* @since  v0.1.01
+	* @param mixed $f_data Input array or string
+	* @param boolean $f_force Force input to be stripslashed
+	* @uses  direct_debug()
+	* @uses  INFO_magic_quotes_sybase
+	* @uses  INFO_magic_quotes_runtime
+	* @uses  USE_debug_reporting
+	* @since v0.1.01
 */
 	/*#ifndef(PHP4) */public /* #*/function magic_quotes_filter (&$f_data,$f_force = false)
 	{
@@ -506,12 +591,12 @@ Set up the caching variables
 	* security. Our function "magic_quotes_input ()" will remove these
 	* slashes depending on the global setting.
 	*
-	* @param  string $f_data Input string
-	* @uses   direct_debug()
-	* @uses   INFO_magic_quotes_input
-	* @uses   INFO_magic_quotes_sybase
-	* @uses   USE_debug_reporting
-	* @since  v0.1.01
+	* @param string $f_data Input string
+	* @uses  direct_debug()
+	* @uses  INFO_magic_quotes_input
+	* @uses  INFO_magic_quotes_sybase
+	* @uses  USE_debug_reporting
+	* @since v0.1.01
 */
 	/*#ifndef(PHP4) */public /* #*/function magic_quotes_input (&$f_data)
 	{
@@ -658,7 +743,7 @@ Set up the caching variables
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -basic_functions_class->memcache_write_file ()- (#echo(__LINE__)#)",(:#*/direct_file_write ($f_data,$f_file,$f_type)/*#ifdef(DEBUG):),true):#*/;
 	}
 
-	//f// direct_basic_functions->mimetype_extension ($f_extension)
+	//f// direct_basic_functions->mimetype_extension ($f_extension,$f_case_insensitive = false)
 /**
 	* Identify a mimetype via the given extension. Warning: Extensions may be
 	* altered. Take the needed steps to check the magic string.
@@ -671,10 +756,10 @@ Set up the caching variables
 	* @return string Identified mimetype string
 	* @since  v0.1.03
 */
-	/*#ifndef(PHP4) */public /* #*/function mimetype_extension ($f_extension)
+	/*#ifndef(PHP4) */public /* #*/function mimetype_extension ($f_extension,$f_case_insensitive = false)
 	{
 		global $direct_settings;
-		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -basic_functions_class->mimetype_extension ($f_extension)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -basic_functions_class->mimetype_extension ($f_extension,+f_case_insensitive)- (#echo(__LINE__)#)"); }
 
 		if (empty ($this->mimetype_extensions_cache))
 		{
@@ -682,11 +767,13 @@ Set up the caching variables
 			if ($f_xml_array) { $this->mimetype_extensions_cache = $f_xml_array; }
 		}
 
+		if ($f_case_insensitive) { $f_extension = strtolower ($f_extension); }
+
 		if ((isset ($this->mimetype_extensions_cache["swg_mimetype_file_v1_".$f_extension]))&&(!empty ($f_extension))) { return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -basic_functions_class->mimetype_extension ()- (#echo(__LINE__)#)",:#*/$this->mimetype_extensions_cache["swg_mimetype_file_v1_".$f_extension]['value']/*#ifdef(DEBUG):,true):#*/; }
 		else { return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -basic_functions_class->mimetype_extension ()- (#echo(__LINE__)#)",:#*/"text/x-unknown"/*#ifdef(DEBUG):,true):#*/; }
 	}
 
-	//f// direct_basic_functions->mimetype_icon ($f_mimetype,$f_file = "")
+	//f// direct_basic_functions->mimetype_icon ($f_mimetype,$f_file = "",$f_case_insensitive = false)
 /**
 	* Identify a mimetype via the given extension. Warning: Extensions may be
 	* altered. Take the needed steps to check the magic string.
@@ -700,10 +787,10 @@ Set up the caching variables
 	* @return string Identified mimetype icon path
 	* @since  v0.1.03
 */
-	/*#ifndef(PHP4) */public /* #*/function mimetype_icon ($f_mimetype,$f_file = "")
+	/*#ifndef(PHP4) */public /* #*/function mimetype_icon ($f_mimetype,$f_file = "",$f_case_insensitive = false)
 	{
 		global $direct_settings;
-		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -basic_functions_class->mimetype_icon ($f_mimetype,$f_file)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -basic_functions_class->mimetype_icon ($f_mimetype,$f_file,+f_case_insensitive)- (#echo(__LINE__)#)"); }
 
 		if (!$f_file) { $f_file = $direct_settings['path_data']."/settings/swg_mimetype_icons.xml"; }
 		$f_file_md5 = md5 ($f_file);
@@ -732,6 +819,7 @@ Set up the caching variables
 
 		if (!empty ($f_icons_array))
 		{
+			if ($f_case_insensitive) { $f_mimetype = strtolower ($f_mimetype); }
 			$f_mimetype_array = explode ("/",$f_mimetype,2);
 			$f_return = (isset ($f_icons_array[$f_mimetype_array[0]."/".$f_mimetype_array[1]]) ? $f_icons_array[$f_mimetype_array[0]."/".$f_mimetype_array[1]] : $f_icons_array[$f_mimetype_array[0]]);
 		}
@@ -802,11 +890,18 @@ Set up the caching variables
 		else
 		{
 			trigger_error ("sWG/#echo(__FILEPATH__)# -basic_functions_class->require_file ()- (#echo(__LINE__)#) reporting: Requested file $f_file not found",E_USER_ERROR);
-			if ((class_exists ("direct_error_functions",/*#ifndef(PHP4) */false/* #*/))&&(!isset ($direct_classes['error_functions']))) { direct_class_init ("error_functions"); }
+			direct_class_init ("output");
 
-			if (direct_class_function_check ($direct_classes['error_functions'],"error_page")) { $direct_classes['error_functions']->error_page ("critical","core_required_object_not_found","FATAL ERROR:<br />&quot;$f_file&quot; was not found<br />sWG/#echo(__FILEPATH__)# -basic_functions_class->require_file ()- (#echo(__LINE__)#)"); }
-			elseif  ($direct_local['lang_charset']) { $direct_classes['basic_functions']->emergency_mode (direct_local_get ("errors_core_required_object_not_found")."<br /><br />FATAL ERROR:<br />&quot;$f_file&quot; was not found<br /><br />sWG/#echo(__FILEPATH__)# -basic_functions_class->require_file ()- (#echo(__LINE__)#)"); }
-			else { $direct_classes['basic_functions']->emergency_mode ("The system could not load a required component.<br /><br />&quot;$f_file&quot; was not found<br /><br />sWG/#echo(__FILEPATH__)# -basic_functions_class->require_file ()- (#echo(__LINE__)#)"); }
+			if (direct_class_function_check ($direct_classes['output'],"output_send_error"))
+			{
+				if (isset ($direct_local['lang_charset'])) { $direct_classes['output']->output_send_error ("critical","core_required_object_not_found","FATAL ERROR:<br />&quot;$f_file&quot; was not found<br />sWG/#echo(__FILEPATH__)# -basic_functions_class->require_file ()- (#echo(__LINE__)#)"); }
+				else { $direct_classes['output']->output_send_error ("critical","The system could not load a required component.<br /><br />&quot;$f_file&quot; was not found<br /><br />sWG/#echo(__FILEPATH__)# -basic_functions_class->require_file ()- (#echo(__LINE__)#)"); }
+			}
+			else
+			{
+				echo ("The system could not load a required component.<br /><br />&quot;$f_file&quot; was not found<br /><br />sWG/#echo(__FILEPATH__)# -basic_functions_class->require_file ()- (#echo(__LINE__)#)");
+				exit ();
+			}
 		}
 	}
 
@@ -877,11 +972,18 @@ Set up the caching variables
 				}
 				elseif ($f_required)
 				{
-					if ((class_exists ("direct_error_functions",/*#ifndef(PHP4) */false/* #*/))&&(!isset ($direct_classes['error_functions']))) { direct_class_init ("error_functions"); }
+					direct_class_init ("output");
 
-					if (direct_class_function_check ($direct_classes['error_functions'],"error_page")) { $direct_classes['error_functions']->error_page ("critical","core_required_object_not_found","FATAL ERROR:<br />&quot;$f_file&quot; was not found<br />sWG/#echo(__FILEPATH__)# -basic_functions_class->settings_get ()- (#echo(__LINE__)#)"); }
-					elseif  ($direct_local['lang_charset']) { $direct_classes['basic_functions']->emergency_mode (direct_local_get ("errors_core_required_object_not_found")."<br /><br />FATAL ERROR:<br />&quot;$f_file&quot; was not found<br /><br />sWG/#echo(__FILEPATH__)# -basic_functions_class->settings_get ()- (#echo(__LINE__)#)"); }
-					else { $direct_classes['basic_functions']->emergency_mode ("The system could not load a required component.<br /><br />&quot;$f_file&quot; was not found<br /><br />sWG/#echo(__FILEPATH__)# -basic_functions_class->settings_get ()- (#echo(__LINE__)#)"); }
+					if (direct_class_function_check ($direct_classes['output'],"output_send_error"))
+					{
+						if (isset ($direct_local['lang_charset'])) { $direct_classes['output']->output_send_error ("critical","core_required_object_not_found","FATAL ERROR:<br />&quot;$f_file&quot; was not found<br />sWG/#echo(__FILEPATH__)# -basic_functions_class->settings_get ()- (#echo(__LINE__)#)"); }
+						else { $direct_classes['output']->output_send_error ("critical","The system could not load a required component.<br /><br />&quot;$f_file&quot; was not found<br /><br />sWG/#echo(__FILEPATH__)# -basic_functions_class->settings_get ()- (#echo(__LINE__)#)"); }
+					}
+					else
+					{
+						echo ("The system could not load a required component.<br /><br />&quot;$f_file&quot; was not found<br /><br />sWG/#echo(__FILEPATH__)# -basic_functions_class->settings_get ()- (#echo(__LINE__)#)");
+						exit ();
+					}
 				}
 			}
 		}
@@ -1046,6 +1148,42 @@ it together to our result.
 	}
 }
 
+//f// direct_core_php_error ($f_level,$f_err_msg,$f_err_file = NULL,$f_err_no = NULL,$f_err_context = NULL)
+/**
+* Define a error handler for "trigger_error ()" and "E_USER_NOTICE",
+* "E_USER_WARNING" as well as "E_USER_ERROR".
+*
+* @param  string $f_theme Requested theme
+* @uses   direct_debug()
+* @uses   USE_debug_reporting
+* @return boolean False on error
+* @since  v0.1.08
+*/
+function direct_core_php_error ($f_level,$f_err_msg,$f_err_file = NULL,$f_err_no = NULL,$f_err_context = NULL)
+{
+	global $direct_cachedata;
+	if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -direct_core_php_error (+f_level,$f_err_msg,+f_err_file,+f_err_no,+f_err_context)- (#echo(__LINE__)#)"); }
+
+	switch ($f_level & (E_USER_NOTICE | E_USER_WARNING | E_USER_ERROR))
+	{
+	case (E_USER_NOTICE):
+	{
+		if (USE_debug_reporting_level > 8) { $direct_cachedata['core_error'][] = $f_err_msg; }
+		break 1;
+	}
+	case (E_USER_WARNING):
+	{
+		if (USE_debug_reporting_level) { $direct_cachedata['core_error'][] = $f_err_msg; }
+		break 1;
+	}
+	case (E_USER_ERROR):
+	{
+		$direct_cachedata['core_error'][] = $f_err_msg;
+		break 1;
+	}
+	}
+}
+
 /* -------------------------------------------------------------------------
 Mark this class as the most up-to-date one
 ------------------------------------------------------------------------- */
@@ -1071,6 +1209,8 @@ else
 	if (!isset ($direct_settings['swg_memcache_merged_xml_files'])) { $direct_settings['swg_memcache_merged_xml_files'] = true; }
 	if (!isset ($direct_settings['swg_memcache_source_code'])) { $direct_settings['swg_memcache_source_code'] = 0; }
 }
+
+set_error_handler ("direct_core_php_error"/*#ifndef(PHP4) */,(E_USER_NOTICE | E_USER_WARNING | E_USER_ERROR)/* #*/);
 }
 
 //j// EOF

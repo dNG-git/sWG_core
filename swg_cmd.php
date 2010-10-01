@@ -20,12 +20,8 @@ sWG/#echo(__FILEPATH__)#
 ----------------------------------------------------------------------------
 NOTE_END //n*/
 /**
-* This is the main PHP file for the secured WebGine. It will secure inputs,
+* This is the console PHP file for the secured WebGine. It will secure inputs,
 * handle emergency modes and control classes and functions.
-*
-* Current PHP requirement: >= PHP 4.1.0
-* Reason: we are working with superglobal variables like $_SERVER
-* - swg.php
 *
 * @internal  We are using phpDocumentor to automate the documentation process
 *            for creating the Developer's Manual. All sections including
@@ -36,7 +32,7 @@ NOTE_END //n*/
 * @author    direct Netware Group
 * @copyright (C) direct Netware Group - All rights reserved
 * @package   sWG_core
-* @since     v0.1.01
+* @since     v0.1.08
 * @license   http://www.direct-netware.de/redirect.php?licenses;w3c
 *            W3C (R) Software License
 */
@@ -52,13 +48,13 @@ all development packets)
 Check and set constants to their default values if necessary.
 ------------------------------------------------------------------------- */
 
-if (!defined ("OW_error_reporting")) { define ("OW_error_reporting",true); }
-/*#ifdef(PHP4):if (!defined ("OW_magic_quotes_runtime")) { define ("OW_magic_quotes_runtime",true); }:#*/
+if (!defined ("OW_error_reporting")) { define ("OW_error_reporting",false); }
+/*#ifdef(PHP4):if (!defined ("OW_magic_quotes_runtime")) { define ("OW_magic_quotes_runtime",true); }:#\n*/
 if (!defined ("OW_set_time_limit_custom")) { define ("OW_set_time_limit_custom",false); }
-if (!defined ("USE_backtrace")) { define ("USE_backtrace",false); }
+if (!defined ("USE_backtrace")) { define ("USE_backtrace",true); }
 if (!defined ("USE_charset_html_filtering")) { define ("USE_charset_html_filtering",true); }
 if (!defined ("USE_cookies")) { define ("USE_cookies",true); }
-if (!defined ("USE_debug_reporting")) { define ("USE_debug_reporting",false); }
+if (!defined ("USE_debug_reporting")) { define ("USE_debug_reporting",true); }
 
 if (!defined ("USE_debug_reporting_level"))
 {
@@ -80,19 +76,17 @@ enviroments) as well as Magic-Quotes-Runtime and time limit and co.
 ------------------------------------------------------------------------- */
 
 if (OW_error_reporting) { error_reporting (0); }
-/*#ifdef(PHP4):if (OW_magic_quotes_runtime) { set_magic_quotes_runtime (0); }:#*/
+/*#ifdef(PHP4):if (OW_magic_quotes_runtime) { set_magic_quotes_runtime (0); }:#\n*/
 ignore_user_abort (1);
 mt_srand (/*#ifdef(PHP4):((double)microtime ()) * 1000000:#*/);
 
 if (OW_set_time_limit_custom) { set_time_limit (OW_set_time_limit_custom); }
-elseif (USE_set_time_limit_0) { set_time_limit (0); }
 elseif (USE_set_time_limit_20) { set_time_limit (20); }
+else { set_time_limit (0); }
 
 if (!defined ("INFO_magic_quotes_input")) { define ("INFO_magic_quotes_input",(get_magic_quotes_gpc ())); }
 if (!defined ("INFO_magic_quotes_runtime")) { define ("INFO_magic_quotes_runtime",(get_magic_quotes_runtime ())); }
 if (!defined ("INFO_magic_quotes_sybase")) { define ("INFO_magic_quotes_sybase",(get_cfg_var ("magic_quotes_sybase"))); }
-
-import_request_variables ("CP","i_");
 
 //j// Data initialisation
 
@@ -145,7 +139,7 @@ Set up variables that can be changed with an integration script.
 ------------------------------------------------------------------------- */
 
 $g_variables = array (
-"swg_ihandler" => array (&$swg_ihandler,"ihandler","http"),
+"swg_ihandler" => array (&$swg_ihandler,"ihandler","cmd"),
 "swg_iscript_form" => array (&$swg_iscript_form,"iscript_form",""),
 "swg_iscript_url" => array (&$swg_iscript_url,"iscript_url",""),
 "swg_path_data" => array (&$swg_path_data,"path_data","data"),
@@ -173,7 +167,7 @@ The iscript var contains the current sWG file name. Our first step is to
 make sure that the query key gets removed.
 ------------------------------------------------------------------------- */
 
-$direct_settings['iscript'] = (defined ("OW_PHP_SELF") ? OW_PHP_SELF : basename (str_replace ("?".$_SERVER['QUERY_STRING'],"",$_SERVER['PHP_SELF'])));
+if (!isset ($direct_settings['iscript'])) { $direct_settings['iscript'] = $_SERVER['PHP_SELF']; }
 
 /* -------------------------------------------------------------------------
 Let's play around with iscript. Our idea is to allow a perfect integration.
@@ -222,22 +216,9 @@ if ($direct_settings['s'] == "") { $direct_settings['s'] = "index"; }
 Evalute the available timeout (not getting a timeout error)
 ------------------------------------------------------------------------- */
 
-if (USE_set_time_limit_0) { $direct_settings['timeout'] = 3600; }
-else
-{
-	$direct_settings['timeout'] = (OW_set_time_limit_custom ? OW_set_time_limit_custom : get_cfg_var ("max_execution_time"));
-
-	if ($direct_settings['timeout'])
-	{
-		$direct_settings['timeout'] = ceil ($direct_settings['timeout'] / 1.5);
-		if ($direct_settings['timeout'] < 2) { $direct_settings['timeout'] = 2; }
-		if ($direct_settings['timeout'] > 20) { $direct_settings['timeout'] = 20; }
-	}
-	else { $direct_settings['timeout'] = 2; }
-}
-
-$direct_settings['timeout_core'] = ceil ($direct_settings['timeout'] / 3);
-$direct_settings['timeout_lightmode'] = floor ($direct_settings['timeout'] - ($direct_settings['timeout_core'] / 3));
+$direct_settings['timeout'] = 3600;
+$direct_settings['timeout_core'] = 3600;
+$direct_settings['timeout_lightmode'] = 3600;
 
 //j// Functions and classes
 
@@ -340,7 +321,6 @@ behavior
 
 		if ($f_exit)
 		{
-			if (!headers_sent ()) { header ("Content-Type: text/plain; charset=UTF-8",true); }
 			echo $this->debug_walker ($f_data);
 			echo "\n\n".$this->debug_walker ($direct_cachedata['core_debug']);
 			echo "\n\n".$this->debug_walker ($direct_cachedata['core_error']);
@@ -617,7 +597,20 @@ Informing the system about available functions
 		global $direct_cachedata,$direct_classes,$direct_settings;
 		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -basic_functions_class->iline_parse (+f_line)- (#echo(__LINE__)#)"); }
 
-		if (!isset ($f_line)) { $f_line = (isset ($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : ""); }
+		if (!isset ($f_line))
+		{
+			if ((isset ($_SERVER['argc']))&&($_SERVER['argc'] > 2))
+			{
+				$direct_settings['iscript'] = $_SERVER['argv'][0];
+				$f_line = $_SERVER['argv'][2];
+			}
+			else
+			{
+				$direct_settings['iscript'] = basename ($_SERVER['argv'][0]);
+				$f_line = $_SERVER['argv'][1];
+			}
+		}
+
 		$f_line_array = explode (";",$f_line);
 		$f_return = array ();
 
@@ -655,10 +648,6 @@ define ("CLASS_direct_basic_functions_inline",true);
 */
 class direct_output_inline extends direct_virtual_class
 {
-/**
-	* @var integer $last_modified Variable to save the oset data
-*/
-	/*#ifndef(PHP4) */public/* #*//*#ifdef(PHP4):var:#*/ $last_modified;
 /**
 	* @var string $output_content Variable containing the content
 */
@@ -767,37 +756,13 @@ Set "last modified" time to "0".
 		}
 
 		$f_headers['Expires'] = $f_expires." GMT";
-
-		if (($f_withenc)&&(USE_outputenc)&&(extension_loaded ("zlib"))) { ob_start ("ob_gzhandler"); }
-		else { ob_start (); }
-
 		if ($this->last_modified) { $f_last_modified = gmdate ("D, d M Y H:i:s",$this->last_modified); }
 		$f_headers['Last-Modified'] = $f_last_modified." GMT";
 
-		if ((!empty ($direct_cachedata['core_cookies']))&&(USE_cookies))
+		if (!empty ($direct_cachedata['core_cookies']))
 		{
 			$f_headers['Set-Cookie'] = array ();
 			foreach ($direct_cachedata['core_cookies'] as $f_cookie) { $f_headers['Set-Cookie'][] = $f_cookie; }
-		}
-
-/* -------------------------------------------------------------------------
-Encode the output for smaller bandwidth connections
-------------------------------------------------------------------------- */
-
-		$f_p3purl = str_replace ("&","&amp;",$f_p3purl);
-		$direct_cachedata['output_p3purl'] = $f_p3purl;
-
-		if (($f_p3purl.$f_p3pcp) != "")
-		{
-			$f_p3pdata = (($f_p3purl == "") ? "policyref=\"$f_p3purl\"" : "");
-
-			if ($f_p3pcp != "")
-			{
-				if ($f_p3pdata != "") { $f_p3pdata .= ","; }
-				$f_p3pdata .= "CP=\"$f_p3pcp\"";
-			}
-
-			$f_headers['P3P'] = $f_p3pdata;
 		}
 
 		$this->output_headers = array_merge ($this->output_headers,$f_headers);
@@ -816,146 +781,6 @@ Encode the output for smaller bandwidth connections
 	{
 		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -output_class(inline)->last_modified ($f_timestamp)- (#echo(__LINE__)#)"); }
 		$this->last_modified = $f_timestamp;
-	}
-
-	//f// direct_output_inline->theme_page ($f_title)
-/**
-	* Prepare an output for a XHTML encoded page with the standard sWG design.
-	*
-	* @param string $f_title Valid XHTML page title
-	* @uses  direct_debug()
-	* @uses  USE_debug_reporting
-	* @since v0.1.01
-*/
-	/*#ifndef(PHP4) */public /* #*/function theme_page ($f_title)
-	{
-		global $direct_cachedata,$direct_classes,$direct_local,$direct_settings;
-		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -output_class(inline)->theme_page ($f_title)- (#echo(__LINE__)#)"); }
-	
-		if ((!isset ($direct_local['lang_iso_domain']))||(!$direct_local['lang_iso_domain'])) { $direct_local['lang_iso_domain'] = "en"; }
-		$direct_settings['theme_xhtml_type'] = "application/xhtml+xml; charset=".$direct_local['lang_charset'];
-
-		$direct_classes['output']->output_header ("Content-Type",$direct_settings['theme_xhtml_type']);
-
-$this->output_data = ("<?xml version='1.0' encoding='$direct_local[lang_charset]' ?><!DOCTYPE html SYSTEM \"about:legacy-compat\">
-<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='$direct_local[lang_iso_domain]'>
-
-<head>
-<title>$f_title</title>");
-
-		if (strlen ($direct_cachedata['output_p3purl'])) { $this->output_data .= "\n<link rel='P3Pv1' href='{$direct_cachedata['output_p3purl']}'>"; }
-
-$this->output_data .= ("\n<meta http-equiv='Content-Type' content='$direct_settings[theme_xhtml_type]' />
-<meta name='author' content='direct Netware Group' />
-<meta name='creator' content='$direct_settings[product_lcode_txt] by the direct Netware Group' />
-<meta name='description' content='$direct_settings[product_lcode_subtitle_txt]' />
-<style type='text/css'><![CDATA[
-p, td { cursor:default }
-
-a { cursor:pointer }
-a:link { text-decoration:underline }
-a:active { text-decoration:none }
-a:visited { text-decoration:underline }
-a:hover { text-decoration:none }
-a:focus { text-decoration:underline }
-
-body { margin:0px;padding:0px 19px;background-color:#6A6A6A }
-body { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;font-style:normal;font-weight:normal }
-form { margin:0px;padding:0px }
-img { border:none }
-input.file { width:90%;text-align:center;background-color:#F5F5F5 }
-input.file { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;color:#000000 }
-table { margin:0px;table-layout:fixed;border:none;border-collapse:collapse;border-spacing:0px }
-td { padding:0px }
-
-.designcopyrightbg { background-color:#808080 }
-.designcopyrightcontent { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:10px;color:#DDDDDD }
-.designcopyrightcontent a, .designcopyrightcontent a:link, .designcopyrightcontent a:active, .designcopyrightcontent a:visited, .designcopyrightcontent a:hover, .designcopyrightcontent a:focus { color:#FFFFFF }
-
-.designpagebg { background-color:#FFFFFF }
-.designpagebg *:first-child { margin-top:0px }
-.designpagebg *:last-child { margin-bottom:0px }
-
-.designtitlebg { background-image:url($direct_settings[iscript_url]a=cache;dsd=dfile+swg_bg.png);background-repeat:repeat-x;background-color:#FFFFFF }
-.designtitlecontent { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;color:#000000 }
-
-.pagebg { background-color:#FFFFFF }
-
-.pageborder1 { background-color:#193879;border-collapse:separate;border-spacing:1px }
-.pageborder2 { border:1px solid #193879;background-color:#D9D9DA;padding:4px }
-
-.pagecontent { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;color:#222222 }
-.pagecontent a, .pagecontent a:link, .pagecontent a:active, .pagecontent a:visited, .pagecontent a:hover, .pagecontent a:focus { color:#000000 }
-.pagecontentinputbutton { background-color:#F5F5F5;font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;color:#000000 }
-.pagecontentinputcheckbox { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;color:#222222;background-color:#FFFFFF }
-.pagecontentinputfocused { border-color:#193879 }
-.pagecontentinputtextnpassword { border:1px solid #C0C0C0;background-color:#F5F5F5 }
-.pagecontentinputtextnpassword { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;color:#222222 }
-.pagecontentselect { border:1px solid #C0C0C0;background-color:#F5F5F5 }
-.pagecontentselect { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;color:#222222 }
-.pagecontenttextarea { border:1px solid #C0C0C0;background-color:#F5F5F5 }
-.pagecontenttextarea { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;color:#222222 }
-.pagecontenttitle { border:1px solid #193879;background-color:#375A9D;padding:5px }
-.pagecontenttitle { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold;color:#DDDDDD }
-.pagecontenttitle a, .pagecontenttitle a:link, .pagecontenttitle a:active, .pagecontenttitle a:visited, .pagecontenttitle a:hover, .pagecontenttitle a:focus { color:#FFFFFF }
-
-.pageembeddedborder1 { background-color:#DDDDDD;border-collapse:separate;border-spacing:1px }
-.pageembeddedborder2 { border:1px solid #DDDDDD;background-color:#FFFFFF;padding:4px }
-
-.pageerrorcontent { font-weight:bold;color:#FF0000 }
-.pageerrorcontent a, .pageerrorcontent a:link, .pageerrorcontent a:active, .pageerrorcontent a:visited, .pageerrorcontent a:hover, .pageerrorcontent a:focus { color:#CC0000 }
-
-.pageextrabg { background-color:#D9D9DA }
-.pageextracontent { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;color:#222222 }
-.pageextracontent a, .pageextracontent a:link, .pageextracontent a:active, .pageextracontent a:visited, .pageextracontent a:hover, .pageextracontent a:focus { color:#000000 }
-
-.pagehide { display:none }
-.pagehighlightborder1 { background-color:#FF0000;border-collapse:separate;border-spacing:1px }
-.pagehighlightborder2 { border:1px solid #FF0000;background-color:#FBF6CD;padding:4px }
-
-.pagehr { height:1px;overflow:hidden;border-top:1px solid #193879 }
-
-.pagetitlecellbg { background-color:#375A9D }
-.pagetitlecellcontent { display:block;padding:3px }
-.pagetitlecellcontent { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold;color:#FFFFFF }
-.pagetitlecellcontent a, .pagetitlecellcontent a:link, .pagetitlecellcontent a:active, .pagetitlecellcontent a:visited, .pagetitlecellcontent a:hover, .pagetitlecellcontent a:focus { color:#FFFFFF }
-]]></style>
-</head>
-
-<body><!--
-internal sWG page theme
-// --><div style='position:absolute;top:0px;left:0px;z-index:255;width:19px;height:71px;background-color:#FFFFFF'>
-<div style='width:19px;height:16px;background-color:#000000'></div>
-<div style='width:19px;height:1px;margin-top:1px;background-color:#000000'></div>
-<div style='width:19px;height:49px;margin-top:1px;background-color:#193879'></div>
-<div style='width:19px;height:1px;margin-top:1px;background-color:#193879'></div>
-</div><div style='width:100%;height:10px;background-color:#000000'></div><table style='width:100%'>
-<thead><tr>
-<td class='designtitlebg' style='height:85px;padding:5px 15px;text-align:right;vertical-align:middle'><div style='float:left'><a href='http://www.direct-netware.de/redirect.php?$direct_settings[product_icode]' target='_blank'><img src='$direct_settings[iscript_url]a=cache;dsd=dfile+swg_logo.png' width='75' height='75' alt='$direct_settings[product_lcode_txt]' title='$direct_settings[product_lcode_txt]' /></a></div>
-<p class='designtitlecontent'><span style='font-size:24px'>$direct_settings[product_lcode_html]</span><br />
-$direct_settings[product_lcode_subtitle_html]</p></td>
-</tr></thead><tbody><tr>
-<td class='designpagebg' style='padding:10px 12px;text-align:left;vertical-align:middle'>");
-
-		if ((is_array ($direct_cachedata['output_warning']))&&(!empty ($direct_cachedata['output_warning'])))
-		{
-			foreach ($direct_cachedata['output_warning'] as $f_warning_data) { $this->output_data .= "<p class='pagehighlightborder2'><span class='pageextracontent'><span style='font-weight:bold'>{$f_warning_data['title']}</span><br />\n{$f_warning_data['text']}</span></p>"; }
-		}
-
-$this->output_data .= ($direct_classes['output']->output_content."</td>
-</tr></tbody><tfoot><tr>
-<td class='designcopyrightbg' style='height:50px;text-align:center;vertical-align:middle'><span class='designcopyrightcontent'>Powered by: $direct_settings[product_lcode_html] $direct_settings[product_version]<br />
-&#xA9; <a href='http://www.direct-netware.de/redirect.php?$direct_settings[product_icode]' target='_blank'><span style='font-style:italic'>direct</span> Netware Group</a> - All rights reserved</span></td>
-</tr></tfoot>
-</table><div style='position:absolute;top:0px;right:0px;z-index:255;width:19px;height:71px;background-color:#FFFFFF'>
-<div style='width:19px;height:16px;background-color:#000000'></div>
-<div style='width:19px;height:1px;margin-top:1px;background-color:#000000'></div>
-<div style='width:19px;height:49px;margin-top:1px;background-color:#193879'></div>
-<div style='width:19px;height:1px;margin-top:1px;background-color:#193879'></div>
-</div>
-</body>
-
-</html>");
 	}
 
 	//f// direct_output_inline->output_header ($f_name = "",$f_value = NULL)
@@ -998,7 +823,6 @@ $this->output_data .= ($direct_classes['output']->output_content."</td>
 	* @uses  direct_html_encode_special()
 	* @uses  direct_local_get()
 	* @uses  direct_output_inline::theme_page()
-	* @uses  direct_output_inline::output_send_error()
 	* @uses  direct_outputenc_xhtml_cleanup()
 	* @uses  direct_outputenc_xhtml_legacy()
 	* @uses  USE_debug_reporting
@@ -1010,14 +834,12 @@ $this->output_data .= ($direct_classes['output']->output_content."</td>
 		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -output_class(inline)->output_response (+f_title,+f_headers)- (#echo(__LINE__)#)"); }
 
 		if ((!isset ($direct_local['lang_charset']))||(!$direct_local['lang_charset'])) { $direct_local['lang_charset'] = "UTF-8"; }
+		echo "<?xml version='1.0' encoding='$direct_local[lang_charset]' ?><swg xmlns='urn:de.direct-netware.xmlns:swg.v1'>";
 
 		if ((USE_debug_reporting)&&((isset ($direct_settings['dsd']['debug_text']))||(isset ($direct_settings['dsd']['debug_xml']))))
 		{
 			if (isset ($direct_settings['dsd']['debug_xml']))
 			{
-				$this->output_headers['Content-Type'] = "text/xml; charset=".$direct_local['lang_charset'];
-				echo "<?xml version='1.0' encoding='$direct_local[lang_charset]' ?><swg>";
-
 				if ((is_array ($direct_cachedata['core_debug']))&&(!empty ($direct_cachedata['core_debug'])))
 				{
 					echo "<debug>";
@@ -1048,52 +870,40 @@ $this->output_data .= ($direct_classes['output']->output_content."</td>
 
 					echo "</errors>";
 				}
-
-				echo "</swg>";
 			}
-			else { $this->output_headers['Content-Type'] = "text/plain; charset=".$direct_local['lang_charset']; }
 		}
 		elseif (isset ($f_title))
 		{
-			if (!isset ($direct_classes['output_theme'])) { direct_class_init ("output_theme"); }
-
-			if (isset ($direct_classes['output_theme']))
+			if ($f_title)
 			{
-				if ($f_title)
-				{
-					if (isset ($direct_settings['swg_title_txt'])) { $f_title = (direct_html_encode_special ($direct_settings['swg_title_txt'])).": ".$f_title; }
-				}
-				else { $f_title = direct_html_encode_special ($direct_settings['swg_title_txt']); }
-
-				if (isset ($direct_settings['dsd']['debug_inline']))
-				{
-					if ((USE_debug_reporting)&&(is_array ($direct_cachedata['core_debug']))&&(!empty ($direct_cachedata['core_debug'])))
-					{
-						foreach ($direct_cachedata['core_debug'] as $f_line_data) { $direct_cachedata['output_warning'][] = array ("title" => "Debug","text" => direct_html_encode_special ($f_line_data)); }
-					}
-
-					if ((is_array ($direct_cachedata['core_error']))&&(!empty ($direct_cachedata['core_error'])))
-					{
-						foreach ($direct_cachedata['core_error'] as $f_line_data) { $direct_cachedata['output_warning'][] = array ("title" => "Error","text" => direct_html_encode_special ($f_line_data)); }
-					}
-				}
-
-				if (is_array ($f_headers)) { $this->output_headers = array_merge ($this->output_headers,$f_headers); }
-
-				if (function_exists ($this->output_data)) { $this->output_data (); }
-				else { $direct_classes['output_theme']->theme_page ($f_title); }
-
-				if (isset ($direct_settings['theme_xhtml_type']))
-				{
-					if (/*#ifndef(PHP4) */stripos /* #*//*#ifdef(PHP4):stristr :#*/($_SERVER['HTTP_ACCEPT'],"application/xhtml+xml") === false) { $this->output_response_xhtml_legacy ($direct_classes['output_theme']->output_data); }
-				}
-				else { direct_outputenc_xhtml_cleanup ($direct_classes['output_theme']->output_data); }
-
-				$this->output_response_headers ();
-				$this->output_response_data ($direct_classes['output_theme']->output_data);
+				if (isset ($direct_settings['swg_title_txt'])) { $f_title = (direct_html_encode_special ($direct_settings['swg_title_txt'])).": ".$f_title; }
 			}
-			elseif (isset ($direct_local['lang_charset'])) { $this->output_send_error ("fatal","core_required_object_not_found","FATAL ERROR:<br />The theme class is unavailable.<br />sWG/#echo(__FILEPATH__)# -output_class->output_response ()- (#echo(__LINE__)#)"); }
-			else { $this->output_send_error ("fatal","The system was unable to load a required component.","sWG/#echo(__FILEPATH__)# -output_class->output_response ()- (#echo(__LINE__)#)"); }
+			else { $f_title = direct_html_encode_special ($direct_settings['swg_title_txt']); }
+
+			echo "<title><![CDATA[".(str_replace ("]]>","]]]]><![CDATA[>",$f_title))."]]></title>";
+
+			if (isset ($direct_settings['dsd']['debug_inline']))
+			{
+				echo "<debug>";
+
+				if ((USE_debug_reporting)&&(is_array ($direct_cachedata['core_debug']))&&(!empty ($direct_cachedata['core_debug'])))
+				{
+					foreach ($direct_cachedata['core_debug'] as $f_line_data) { echo "<debug><![CDATA[".(str_replace ("]]>","]]]]><![CDATA[>",$f_line_data))."]]></debug>"; }
+				}
+
+				if ((is_array ($direct_cachedata['core_error']))&&(!empty ($direct_cachedata['core_error'])))
+				{
+					foreach ($direct_cachedata['core_error'] as $f_line_data) { echo "<error><![CDATA[".(str_replace ("]]>","]]]]><![CDATA[>",$f_line_data))."]]></error>"; }
+				}
+
+				echo "</debug>";
+			}
+
+			if (function_exists ($this->output_data)) { $this->output_data (); }
+			$this->output_response_headers ();
+
+			$this->output_content = "<data><![CDATA[".(str_replace ("]]>","]]]]><![CDATA[>",$this->output_content))."]]></data>";
+			$this->output_response_data ($this->output_content);
 		}
 		else
 		{
@@ -1133,7 +943,7 @@ $direct_settings[product_lcode_txt]
 // -->");
 		}
 
-		ob_end_flush ();
+		echo "</swg>";
 	}
 
 	//f// direct_output_inline->output_response_data (&$f_data)
@@ -1144,24 +954,6 @@ $direct_settings[product_lcode_txt]
 	* @since v0.1.08
 */
 	/*#ifndef(PHP4) */protected /* #*/function output_response_data (&$f_data) { echo $f_data; }
-
-	//f// direct_output_inline->output_response_xhtml_legacy (&$f_data)
-/**
-	* The sWG uses XHTML by default. If the browser does not support XHTML we need
-	* to switch to a legacy HTML (quirks) mode.
-	*
-	* @param string $f_data Reference to the output content
-	* @since v0.1.08
-*/
-	/*#ifndef(PHP4) */protected /* #*/function output_response_xhtml_legacy (&$f_data)
-	{
-		global $direct_classes,$direct_settings;
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -output_class(inline)->output_response_xhtml_legacy (+f_data)- (#echo(__LINE__)#)"); }
-
-		$f_content_type = str_replace ("application/xhtml+xml","text/html",$direct_settings['theme_xhtml_type']);
-		$this->output_header ("Content-Type",$f_content_type);
-		$f_data = preg_replace (array ("#\s*<\?(.*?)\?>(.*?)<#s","#\s*\/\s*>#s","#<meta(.+?)".(preg_quote ($direct_settings['theme_xhtml_type'],"#"))."(.+?)>#si","#<(script|style)(.*?)><\!\[CDATA\[(.*?)\]\]><\/(script|style)>#si"),(array ("<",">","<meta\\1$f_content_type\\2>","<\\1\\2><!--\\3// --></\\4>")),$f_data);
-	}
 
 	//f// direct_output_inline->output_response_headers ()
 /**
@@ -1180,16 +972,24 @@ $direct_settings[product_lcode_txt]
 	/*#ifndef(PHP4) */protected /* #*/function output_response_headers ()
 	{
 		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -output_class(inline)->output_response_headers ()- (#echo(__LINE__)#)"); }
+		echo "<headers>";
 
 		foreach ($this->output_headers as $f_header_name => $f_header_value)
 		{
-			if (is_int ($f_header_name)) { header ($f_header_value); }
+			if (is_int ($f_header_name)) { echo "<header>$f_header_value</header>"; }
 			elseif (is_array ($f_header_value))
 			{
-				foreach ($f_header_value as $f_header_array_value) { header ($f_header_name.": ".$f_header_array_value,false); }
+				foreach ($f_header_value as $f_header_array_value)
+				{
+					echo "<header>";
+					foreach ($f_header_value as $f_header_array_value) { echo "<header>$f_header_name: $f_header_value</header>"; }
+					echo "</header>";
+				}
 			}
-			else { header ($f_header_name.": ".$f_header_value); }
+			else { echo "<header>$f_header_name: $f_header_value</header>"; }
 		}
+
+		echo "</headers>";
 	}
 
 	//f// direct_output_inline->output_send ($f_title = "",$f_headers = NULL)
@@ -1217,17 +1017,15 @@ $direct_settings[product_lcode_txt]
 	*        problem
 	* @uses  direct_class_init()
 	* @uses  direct_debug()
-	* @uses  direct_output_inline::header()
 	* @uses  direct_output_inline::output_send()
 	* @uses  USE_debug_reporting
 	* @since v0.1.01
 */
 	/*#ifndef(PHP4) */public /* #*/function output_send_error ($f_type,$f_error,$f_extra_data = "")
 	{
-		global $direct_cachedata,$direct_classes,$direct_local,$direct_settings;
-		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -output_class(inline)->output_send_error ($f_type,$f_error,+f_extra_data)- (#echo(__LINE__)#)"); }
+		global $direct_cachedata,$direct_classes,$direct_settings;
+		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -basic_functions_class->emergency_mode (+f_data)- (#echo(__LINE__)#)"); }
 
-		if (!isset ($direct_classes['output'])) { direct_class_init ("output"); }
 		if ((!preg_match ("#\W#i",$f_error))&&(function_exists ("direct_local_get"))) { $f_error = direct_local_get ("errors_".$f_error); }
 		if (strlen ($f_extra_data)) { $f_extra_data = "\n<p class='pagecontent' style='text-align:center'>$f_extra_data</p>"; }
 
@@ -1524,72 +1322,19 @@ The next few actions are for internal use - they will show images and basic
 system information
 ------------------------------------------------------------------------- */
 
-if (($direct_settings['m'] == "default")&&($direct_settings['s'] == "index")&&(($direct_settings['a'] == "cache")||($direct_settings['a'] == "info")))
+if (($direct_settings['m'] == "default")&&($direct_settings['s'] == "index")&&($direct_settings['a'] == "info"))
 {
 /* -------------------------------------------------------------------------
 Create instances of required classes
 ------------------------------------------------------------------------- */
 
+	if (USE_debug_reporting) { direct_debug (1,"sWG/#echo(__FILEPATH__)# _a=info_ (#echo(__LINE__)#)"); }
+
 	direct_class_init ("output");
 
-	//j// if ($direct_settings['a'] == "cache")
-	if (($direct_settings['a'] == "cache")&&(isset ($direct_settings['dsd'])))
-	{
-		if (USE_debug_reporting) { direct_debug (1,"sWG/#echo(__FILEPATH__)# _a=cache_ (#echo(__LINE__)#)"); }
-		$g_base64 = "";
-
-		if ($direct_settings['dsd'] == "dfile+swg_bg.png")
-		{
-/* -------------------------------------------------------------------------
-The base64-encoded background image for the sWG page
-------------------------------------------------------------------------- */
-
-			$g_base64 = "iVBORw0KGgoAAAANSUhEUgAAADYAAABFCAYAAAAB8xWyAAAAAXNSR0IArs4c6QAAAAZiS0dEABkAOAB5lxIzPAAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9gGEwweBsttWr0AAAAgdEVYdENvbW1lbnQAKGMpIGRpcmVjdCBOZXR3YXJlIEdyb3VweVc7DwAAANBJREFUaN7t100OgjAURWGeYQf+7n9NrICEpGpdQx2JOAWJWr+OGJBHTs7tuyG6ritNhSdKKVWCtX3f18jVbJpKTxsRjAH7xSier7fx+bjfzv7w2nMYG4tv8v6SxbP2nBiGoVgewBQ0Y4w9wF7K7pKfZXfYzS/NL5jzJ1F8U2l+w5xIKRXLw7oHJoqMzTWWJqV5WlC+a8+p9kez2ihGzllB24qMMQZMFBljDJgoMgZMFIEBszxEEZgoMsaY5SGKjDEGzFYE5o4BE0Vg7hiwj5076vUxjnsT618AAAAASUVORK5CYII=";
-		}
-		elseif ($direct_settings['dsd'] == "dfile+swg_logo.png")
-		{
-/* -------------------------------------------------------------------------
-The base64-encoded sWG logo
-------------------------------------------------------------------------- */
-
-/*n// NOTE
-----------------------------------------------------------------------------
-We are using images created by the "Tango Desktop Project"
-(C) Creative Commons Attribution Share-Alike license
-Thanks for your work (Latest update: 12/10/06)
-----------------------------------------------------------------------------
-NOTE_END //n*/
-
-$g_base64 = ("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");
-		}
-
-		if ($g_base64)
-		{
-			$direct_cachedata['core_service_activated'] = true;
-			$direct_classes['output']->header (true,false);
-			$direct_classes['output']->output_header ("Content-Type","image/png");
-			$direct_classes['output']->output_data = base64_decode ($g_base64);
-			$direct_classes['output']->output_send (NULL);
-		}
-	}
-	//j// else [($direct_settings['a'] == "info")]
-	else
-	{
-		if (USE_debug_reporting) { direct_debug (1,"sWG/#echo(__FILEPATH__)# _a=info_ (#echo(__LINE__)#)"); }
-
-		$g_loaded_extensions = get_loaded_extensions ();
-		natsort ($g_loaded_extensions);
-		$g_loaded_extensions = implode (", ",$g_loaded_extensions);
+	$g_loaded_extensions = get_loaded_extensions ();
+	natsort ($g_loaded_extensions);
+	$g_loaded_extensions = implode (", ",$g_loaded_extensions);
 
 /* -------------------------------------------------------------------------
 Show me the credits - please do not remove
@@ -1608,17 +1353,17 @@ $direct_classes['output']->output_content = ("<p class='pagecontent' style='text
 Show me the basic settings
 ------------------------------------------------------------------------- */
 
-		$direct_classes['output']->output_content .= "<p class='pagecontent' style='text-align:center;font-size:10px'>Error reporting is ";
-		$direct_classes['output']->output_content .= (OW_error_reporting ? "off" : "on");
+	$direct_classes['output']->output_content .= "<p class='pagecontent' style='text-align:center;font-size:10px'>Error reporting is ";
+	$direct_classes['output']->output_content .= (OW_error_reporting ? "off" : "on");
 /*#ifdef(PHP4):
 	$direct_classes['output']->output_content .= "<br />\nMagic_Quotes_Runtime overwriting is ";
 	$direct_classes['output']->output_content .= (OW_magic_quotes_runtime ? "on" : "off");
 :#\n*/
-		$direct_classes['output']->output_content .= "<br />\nCompression for output (if available) is ";
-		$direct_classes['output']->output_content .= (((USE_outputenc)&&(extension_loaded ("zlib"))) ? "on" : "off");
+	$direct_classes['output']->output_content .= "<br />\nCompression for output (if available) is ";
+	$direct_classes['output']->output_content .= (((USE_outputenc)&&(extension_loaded ("zlib"))) ? "on" : "off");
 
-		$direct_classes['output']->output_content .= "<br />\nUsing SOCKET functions is ";
-		$direct_classes['output']->output_content .= (USE_socket ? "on" : "off");
+	$direct_classes['output']->output_content .= "<br />\nUsing SOCKET functions is ";
+	$direct_classes['output']->output_content .= (USE_socket ? "on" : "off");
 
 $direct_classes['output']->output_content .= ("<br />
 Timeout value is $direct_settings[timeout] (core: +$direct_settings[timeout_core])<br />
@@ -1628,21 +1373,20 @@ Light version activation value is $direct_settings[timeout_lightmode]</p>");
 Show me the system configuration (in debug mode) - thank you
 ------------------------------------------------------------------------- */
 
-		if (USE_debug_reporting)
-		{
+	if (USE_debug_reporting)
+	{
 $direct_classes['output']->output_content .= ("<p class='pagecontent' style='text-align:center;font-weight:bold'>About the server</p>
 <p class='pagecontent' style='text-align:center;font-size:10px'><span style='font-weight:bold'>Installed PHP version:</span> ").PHP_VERSION.(" [Zend Engine ").(zend_version ()).("]<br />
 <span style='font-weight:bold'>Running operation system:</span> ").PHP_OS.(" [").(php_uname ()).("]<br />
 <span style='font-weight:bold'>Activated PHP extensions:</span> $g_loaded_extensions</p>");
-		}
-
-		direct_class_init ("output_theme");
-
-		$direct_classes['output']->header (false,true);
-		$direct_classes['output']->output_send ($direct_settings['product_lcode_htmltitle']);
-
-		$direct_cachedata['core_service_activated'] = true;
 	}
+
+	direct_class_init ("output_theme");
+
+	$direct_classes['output']->header (false,true);
+	$direct_classes['output']->output_send ($direct_settings['product_lcode_htmltitle']);
+
+	$direct_cachedata['core_service_activated'] = true;
 }
 else
 {
