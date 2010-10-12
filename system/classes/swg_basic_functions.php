@@ -157,17 +157,17 @@ Set up the caching variables
 */
 	/*#ifndef(PHP4) */public /* #*/function __destruct () { restore_error_handler (); }
 
-	//f// direct_basic_functions->backtrace_get ($f_data = "")
+	//f// direct_basic_functions->backtrace_get ($f_data = NULL)
 /**
 	* Parse a given backtrace array (or try to load one via "debug_backtrace").
 	*
-	* @param  mixed $f_data Already extracted backtrace as array (otherwise use
-	*         current one)
+	* @param  array $f_data Already extracted backtrace as array
 	* @uses   direct_debug()
 	* @uses   USE_debug_reporting
-	* @since  v0.1.03
+	* @return array Backtrace array
+	* @since  v0.1.08
 */
-	/*#ifndef(PHP4) */public /* #*/function backtrace_get ($f_data = "")
+	/*#ifndef(PHP4) */public /* #*/function backtrace_get ($f_data = NULL)
 	{
 		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -basic_functions_class->backtrace_get (+f_data)- (#echo(__LINE__)#)"); }
 		$f_return = array ();
@@ -260,18 +260,17 @@ Set up the caching variables
 	* IDs for news, topics, ... All data will be encoded using addslashes -
 	* take care for HTML injection!
 	*
-	* @param  mixed $f_data DSD string for parsing or an array to generate a
-	*         DSD string.
+	* @param  mixed $f_data DSD string for parsing or an array to use
 	* @uses   direct_debug()
 	* @uses   USE_debug_reporting
-	* @return mixed Parsed DSD array or an string for output
+	* @return array Parsed DSD array
 	* @since  v0.1.08
 */
 	/*#ifndef(PHP4) */public /* #*/function dsd_parse ($f_data)
 	{
 		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -basic_functions_class->dsd_parse (+f_data)- (#echo(__LINE__)#)"); }
 
-		if (is_array ($f_data)) { $f_return = ""; }
+		if (is_array ($f_data)) { $f_return = $f_data; }
 		elseif (is_string ($f_data))
 		{
 			if (strpos ($f_data," ") !== false) { $f_data = urlencode ($f_data); }
@@ -547,14 +546,14 @@ Set up the caching variables
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -basic_functions_class->inputfilter_number ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_basic_functions->magic_quotes_filter ($f_data,$f_force = false)
+	//f// direct_basic_functions->magic_quotes_filter (&$f_data,$f_force = false)
 /**
 	* Unfortunately we are unable to stop Magic-Quotes-Runtime completely or
 	* sometimes it should add slashes to incoming data. The following function
 	* will remove these slashes from arrays and strings depending on the
 	* Magic-Quotes-Runtime setting.
 	*
-	* @param mixed $f_data Input array or string
+	* @param mixed &$f_data Input array or string
 	* @param boolean $f_force Force input to be stripslashed
 	* @uses  direct_debug()
 	* @uses  INFO_magic_quotes_sybase
@@ -585,13 +584,13 @@ Set up the caching variables
 		}
 	}
 
-	//f// direct_basic_functions->magic_quotes_input ($f_data)
+	//f// direct_basic_functions->magic_quotes_input (&$f_data)
 /**
 	* Incoming variables may contain additional slashes as an increasing step for
 	* security. Our function "magic_quotes_input ()" will remove these
 	* slashes depending on the global setting.
 	*
-	* @param string $f_data Input string
+	* @param string &$f_data Input string
 	* @uses  direct_debug()
 	* @uses  INFO_magic_quotes_input
 	* @uses  INFO_magic_quotes_sybase
@@ -725,7 +724,7 @@ Set up the caching variables
 	* @uses   direct_debug()
 	* @uses   direct_file_write()
 	* @uses   USE_debug_reporting
-	* @return mixed Returns the result given as $f_result.
+	* @return boolean True on success
 	* @since  v0.1.02
 */
 	/*#ifndef(PHP4) */public /* #*/function memcache_write_file ($f_data,$f_file,$f_type = "s0")
@@ -749,6 +748,8 @@ Set up the caching variables
 	* altered. Take the needed steps to check the magic string.
 	*
 	* @param  string $f_extension Input extension string
+	* @param  boolean $f_case_insensitive If true the mode will be case
+	*         insensitive
 	* @uses   direct_basic_functions::$this->memcache_get_file()
 	* @uses   direct_debug()
 	* @uses   direct_xml_bridge::xml2array()
@@ -775,11 +776,12 @@ Set up the caching variables
 
 	//f// direct_basic_functions->mimetype_icon ($f_mimetype,$f_file = "",$f_case_insensitive = false)
 /**
-	* Identify a mimetype via the given extension. Warning: Extensions may be
-	* altered. Take the needed steps to check the magic string.
+	* Return the mimetype icon for the given mimetype.
 	*
 	* @param  string $f_mimetype Mimetype for the requested icon
-	* @param  string $f_file Mimetype icon definition file (Optional)
+	* @param  string $f_file Mimetype icon definition file
+	* @param  boolean $f_case_insensitive If true the mode will be case
+	*         insensitive
 	* @uses   direct_basic_functions::$this->memcache_get_file()
 	* @uses   direct_debug()
 	* @uses   direct_xml_bridge::xml2array()
@@ -835,8 +837,8 @@ Set up the caching variables
 	* @param  string $f_file Relative path from "swg.php" to the file and
 	*         filename
 	* @param  integer $f_cachelevel There are three cache levels for system files.
-	*         1 is for always needed files, 2 for often used and 3 for module
-	*         specific ones. Level 4 is used to cache module files.
+	*         "1" is for always needed files, "2" for often used and "3" for
+	*         module specific ones. Level "4" is used to cache module files.
 	* @param  boolean $f_once Include a file once only
 	* @uses   direct_basic_functions::set_debug_result()
 	* @uses   direct_basic_functions_inline::emergency_mode()

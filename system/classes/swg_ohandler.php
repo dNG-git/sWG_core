@@ -75,6 +75,10 @@ class direct_output extends direct_output_inline
 */
 	/*#ifndef(PHP4) */protected/* #*//*#ifdef(PHP4):var:#*/ $header_elements;
 /**
+	* @var integer $js_helper_element Javascript element counter
+*/
+	/*#ifndef(PHP4) */protected/* #*//*#ifdef(PHP4):var:#*/ $js_helper_element;
+/**
 	* @var array $menus Menus for the current page
 */
 	/*#ifndef(PHP4) */protected/* #*//*#ifdef(PHP4):var:#*/ $menus;
@@ -87,7 +91,7 @@ class direct_output extends direct_output_inline
 */
 	/*#ifndef(PHP4) */protected/* #*//*#ifdef(PHP4):var:#*/ $oset;
 /**
-	* @var string $output_additional_copyright Additional copyrights
+	* @var mixed $output_additional_copyright Additional copyrights
 */
 	/*#ifndef(PHP4) */public/* #*//*#ifdef(PHP4):var:#*/ $output_additional_copyright;
 /**
@@ -144,6 +148,7 @@ Informing the system about available functions
 Set up some variables
 ------------------------------------------------------------------------- */
 
+		$this->js_helper_element = 0;
 		$this->menus = array ();
 		$this->menus_protected = array ();
 		$this->oset = "default";
@@ -151,7 +156,6 @@ Set up some variables
 		$this->output_additional_header = array ();
 		$this->related_manager_data = NULL;
 		$this->smiley_data = NULL;
-		
 	}
 /*#ifdef(PHP4):
 /**
@@ -161,21 +165,19 @@ Set up some variables
 *\/
 	function direct_output () { $this->__construct (); }
 :#*/
-	//f// direct_output->backtrace_get ($f_data = "",$f_handling = "text")
+	//f// direct_output->backtrace_get ($f_data = NULL,$f_handling = "text")
 /**
-	* This operation prints $this->dvar to the browser (and exists) or to
-	* $direct_cachedata['core_debug'].
+	* Parse a given backtrace array (or try to load one via "debug_backtrace").
 	*
-	* @param  mixed $f_data Already extracted backtrace as array (otherwise use
-	*         current one)
-	* @param  boolean $f_handling Return the string as "text" or "html" formatted
-	*         string
+	* @param  array $f_data Already extracted backtrace as array
+	* @param  string $f_handling Return the string formatted as "text" or "html"
 	* @uses   direct_debug()
 	* @uses   direct_error_functions::backtrace_get()
 	* @uses   USE_debug_reporting
+	* @return string Formatted backtrace string
 	* @since  v0.1.03
 */
-	/*#ifndef(PHP4) */protected /* #*/function backtrace_get ($f_data = "",$f_handling = "text")
+	/*#ifndef(PHP4) */protected /* #*/function backtrace_get ($f_data = NULL,$f_handling = "text")
 	{
 		global $direct_classes;
 		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -output_class->backtrace_get (+f_data,$f_handling)- (#echo(__LINE__)#)"); }
@@ -190,11 +192,14 @@ Set up some variables
 /**
 	* Adds standard CSS definitions to the list of output (X)HTML headers
 	*
-	* @uses   direct_debug()
-	* @uses   direct_linker_dynamic()
-	* @uses   direct_output::header_elements()
-	* @uses   USE_debug_reporting
-	* @since  v0.1.05
+	* @param boolean $f_ajaxloading True to include the
+	*        "swg_output_ajaxloading.php.css"
+	* @param boolean $f_helper True to include the "swg_output_helper.php.css"
+	* @uses  direct_debug()
+	* @uses  direct_linker_dynamic()
+	* @uses  direct_output::header_elements()
+	* @uses  USE_debug_reporting
+	* @since v0.1.05
 */
 	/*#ifndef(PHP4) */public /* #*/function css_header ($f_ajaxloading = true,$f_helper = true)
 	{
@@ -204,6 +209,48 @@ Set up some variables
 		$this->header_elements ("<link href='$direct_settings[path_mmedia]/ext_jquery/themes/$direct_settings[theme_jquery_ui]/jquery-ui-1.8.5.css' rel='stylesheet' type='text/css' />");
 		if ($f_ajaxloading) { $this->header_elements ("<link href='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+data/mmedia/swg_output_ajaxloading.php.css",true,false))."' rel='stylesheet' type='text/css' />"); }
 		if ($f_helper) { $this->header_elements ("<link href='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+data/mmedia/swg_output_helper.php.css",true,false))."' rel='stylesheet' type='text/css' />"); }
+	}
+
+	//f// direct_output->header_elements ($f_data = "",$f_id = "",$f_unshift = False)
+/**
+	* Creates a JavaScript section including all functions required by the sWG.
+	*
+	* @param  string $f_data Header definition to be added
+	* @param  string $f_id Defined ID of the header element
+	* @param  boolean $f_unshift Add as the first header element
+	* @uses   direct_debug()
+	* @uses   USE_debug_reporting
+	* @return mixed Nothing in input mode or the ready to use XHTML string
+	* @since  v0.1.05
+*/
+	/*#ifndef(PHP4) */public /* #*/function header_elements ($f_data = "",$f_id = "",$f_unshift = False)
+	{
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -output_class->header_elements ($f_data,$f_id,+f_unshift)- (#echo(__LINE__)#)"); }
+
+		if (strlen ($f_data))
+		{
+			if (!strlen ($f_id)) { $f_id = md5 ($f_data); }
+
+			if ($f_unshift) { $this->output_additional_header = array_merge (array ($f_id => $f_data),$this->output_additional_header); }
+			else { $this->output_additional_header[$f_id] = $f_data; }
+		}
+		else { return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -output_class->header_elements ()- (#echo(__LINE__)#)",(:#*/implode ("\n",$this->output_additional_header)/*#ifdef(DEBUG):),true):#*/; }
+	}
+
+	//f// direct_output->header_sent ($f_id)
+/**
+	* Checks if a header ID was added to the output.
+	*
+	* @param  string $f_id Defined ID of the header element
+	* @uses   direct_debug()
+	* @uses   USE_debug_reporting
+	* @return boolean True if included
+	* @since  v0.1.05
+*/
+	/*#ifndef(PHP4) */public /* #*/function header_sent ($f_id = "")
+	{
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -output_class->header_sent ($f_id)- (#echo(__LINE__)#)"); }
+		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -output_class->header_sent ()- (#echo(__LINE__)#)",(:#*/isset ($this->output_additional_header[$f_id])/*#ifdef(DEBUG):),true):#*/;
 	}
 
 	//f// direct_output->js_header ()
@@ -274,47 +321,6 @@ djs_var['core_run_onload'].push ({ func:'djs_core_helper_init',params:{ id:'$f_j
 ]]></script>");
 
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -output_class->js_helper ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
-	}
-
-	//f// direct_output->header_elements ($f_data = "",$f_id = "")
-/**
-	* Creates a JavaScript section including all functions required by the sWG.
-	*
-	* @param  string $f_data Header definition to be added
-	* @param  string $f_id Defined ID of the header element
-	* @uses   direct_debug()
-	* @uses   USE_debug_reporting
-	* @return mixed Nothing in input mode or the ready to use XHTML string
-	* @since  v0.1.05
-*/
-	/*#ifndef(PHP4) */public /* #*/function header_elements ($f_data = "",$f_id = "",$f_unshift = False)
-	{
-		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -output_class->header_elements ($f_data,$f_id)- (#echo(__LINE__)#)"); }
-
-		if (strlen ($f_data))
-		{
-			if (!strlen ($f_id)) { $f_id = md5 ($f_data); }
-
-			if ($f_unshift) { $this->output_additional_header = array_merge (array ($f_id => $f_data),$this->output_additional_header); }
-			else { $this->output_additional_header[$f_id] = $f_data; }
-		}
-		else { return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -output_class->header_elements ()- (#echo(__LINE__)#)",(:#*/implode ("\n",$this->output_additional_header)/*#ifdef(DEBUG):),true):#*/; }
-	}
-
-	//f// direct_output->header_sent ($f_id)
-/**
-	* Checks if a header ID was added to the output.
-	*
-	* @param  string $f_id Defined ID of the header element
-	* @uses   direct_debug()
-	* @uses   USE_debug_reporting
-	* @return boolean True if included
-	* @since  v0.1.05
-*/
-	/*#ifndef(PHP4) */public /* #*/function header_sent ($f_id = "")
-	{
-		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -output_class->header_sent ($f_id)- (#echo(__LINE__)#)"); }
-		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -output_class->header_sent ()- (#echo(__LINE__)#)",(:#*/isset ($this->output_additional_header[$f_id])/*#ifdef(DEBUG):),true):#*/;
 	}
 
 	//f// direct_output->options_check ($f_menu)
@@ -460,7 +466,6 @@ $this->menus[$f_menu][$f_level][] = array (
 		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -output_class->oset ($f_module,$f_obj)- (#echo(__LINE__)#)"); }
 
 		$f_return = false;
-
 		$this->output_content = $this->oset_content ($f_module,$f_obj);
 
 		if (strlen ($this->output_content))
@@ -473,9 +478,9 @@ $this->menus[$f_menu][$f_level][] = array (
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -output_class->oset ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_output->oset_get_content ($f_module,$f_obj)
+	//f// direct_output->oset_content ($f_module,$f_obj)
 /**
-	* Load an OSet element
+	* Load an OSet element and return it.
 	*
 	* @param  string $f_module The OSet module
 	* @param  string $f_obj The target OSet object
@@ -646,6 +651,7 @@ file of the default OSet
 	*
 	* @param  string $f_rid The related ID
 	* @param  string $f_exec_mode Mode when the related content will be executed
+	* @param  boolean $f_no_traverse True to not load ascending related IDs
 	* @uses   direct_debug()
 	* @uses   USE_debug_reporting
 	* @return boolean True on success
@@ -952,11 +958,11 @@ LICENSE_WARNING_END //i*/
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -output_class->smiley_encode ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_output->smiley_parse_xmltree ($f_data)
+	//f// direct_output->smiley_parse_xmltree ($f_xml_array)
 /**
 	* Converts an XML array tree into a smiley code array
 	*
-	* @param  array $f_data Input XML array tree
+	* @param  array $f_xml_array Input XML array tree
 	* @uses   direct_debug()
 	* @uses   USE_debug_reporting
 	* @return string Filtered string
@@ -964,7 +970,7 @@ LICENSE_WARNING_END //i*/
 */
 	/*#ifndef(PHP4) */protected /* #*/function smiley_parse_xmltree ($f_xml_array)
 	{
-		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -output_class->smiley_parse_xmltree (+f_data)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -output_class->smiley_parse_xmltree (+f_xml_array)- (#echo(__LINE__)#)"); }
 		$f_return = array ();
 
 		if ((is_array ($f_xml_array))&&(!empty ($f_xml_array)))

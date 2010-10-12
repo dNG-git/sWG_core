@@ -578,13 +578,13 @@ Informing the system about available functions
 *\/
 	function direct_basic_functions_inline () { $this->__construct (); }
 :#\n*/
-	//f// direct_basic_functions_inline->iline_parse ($f_line = NULL)
+	//f// direct_basic_functions_inline->iline_parse ($f_iline = NULL)
 /**
 	* We are trying to catch all errors - even semi-fatal ones. For that reason
 	* we provide the emergency mode function that does not require an active theme
 	* or localiation strings to work.
 	*
-	* @param string $f_data Valid XHTML error description
+	* @param string $f_iline Input query string with ";" delimiter.
 	* @uses  direct_class_init()
 	* @uses  direct_debug()
 	* @uses  direct_oxhtml_inline::header()
@@ -592,34 +592,34 @@ Informing the system about available functions
 	* @uses  USE_debug_reporting
 	* @since v0.1.01
 */
-	/*#ifndef(PHP4) */public static /* #*/function iline_parse ($f_line = NULL)
+	/*#ifndef(PHP4) */public static /* #*/function iline_parse ($f_iline = NULL)
 	{
 		global $direct_cachedata,$direct_classes,$direct_settings;
 		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -basic_functions_class->iline_parse (+f_line)- (#echo(__LINE__)#)"); }
 
-		if (!isset ($f_line))
+		if (!isset ($f_iline))
 		{
 			if ((isset ($_SERVER['argc']))&&($_SERVER['argc'] > 2))
 			{
 				$direct_settings['iscript'] = $_SERVER['argv'][0];
-				$f_line = $_SERVER['argv'][2];
+				$f_iline = $_SERVER['argv'][2];
 			}
 			else
 			{
 				$direct_settings['iscript'] = basename ($_SERVER['argv'][0]);
-				$f_line = $_SERVER['argv'][1];
+				$f_iline = $_SERVER['argv'][1];
 			}
 		}
 
-		$f_line_array = explode (";",$f_line);
+		$f_iline_array = explode (";",$f_iline);
 		$f_return = array ();
 
-		foreach ($f_line_array as $f_line)
+		foreach ($f_iline_array as $f_iline)
 		{
-			$f_value_array = explode ("=",$f_line,2);
+			$f_value_array = explode ("=",$f_iline,2);
 
 			if (count ($f_value_array) > 1) { $f_return[$f_value_array[0]] = $f_value_array[1]; }
-			elseif (!isset ($f_return['ohandler'])) { $f_return['ohandler'] = preg_replace ("#\W#","",$f_line); }
+			elseif (!isset ($f_return['ohandler'])) { $f_return['ohandler'] = preg_replace ("#\W#","",$f_iline); }
 		}
 
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -basic_functions_class->iline_parse ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
@@ -783,12 +783,13 @@ Set "last modified" time to "0".
 		$this->last_modified = $f_timestamp;
 	}
 
-	//f// direct_output_inline->output_header ($f_name = "",$f_value = NULL)
+	//f// direct_output_inline->output_header ($f_name = "",$f_value = NULL,$f_name_as_key = false)
 /**
 	* Returns or sets a header.
 	*
-	* @param string $f_title Valid XHTML page title
-	* @uses  direct_output_inline::output_response()
+	* @param string $f_name Header name
+	* @param mixed $f_value Header value as string or array
+	* @param boolean $f_name_as_key True if the name is used as a key
 	* @uses  USE_debug_reporting
 	* @since v0.1.08
 */
@@ -819,10 +820,12 @@ Set "last modified" time to "0".
 	* to user.
 	*
 	* @param string $f_title Valid XHTML page title
+	* @param array $f_headers Additional output headers
 	* @uses  direct_debug()
 	* @uses  direct_html_encode_special()
 	* @uses  direct_local_get()
 	* @uses  direct_output_inline::theme_page()
+	* @uses  direct_output_inline::output_send_error()
 	* @uses  direct_outputenc_xhtml_cleanup()
 	* @uses  direct_outputenc_xhtml_legacy()
 	* @uses  USE_debug_reporting
@@ -950,7 +953,7 @@ $direct_settings[product_lcode_txt]
 /**
 	* Send the content of a page.
 	*
-	* @param string $f_data Data to send
+	* @param string &$f_data Data to send
 	* @since v0.1.08
 */
 	/*#ifndef(PHP4) */protected /* #*/function output_response_data (&$f_data) { echo $f_data; }
@@ -1023,9 +1026,10 @@ $direct_settings[product_lcode_txt]
 */
 	/*#ifndef(PHP4) */public /* #*/function output_send_error ($f_type,$f_error,$f_extra_data = "")
 	{
-		global $direct_cachedata,$direct_classes,$direct_settings;
-		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -basic_functions_class->emergency_mode (+f_data)- (#echo(__LINE__)#)"); }
+		global $direct_cachedata,$direct_classes,$direct_local,$direct_settings;
+		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -output_class(inline)->output_send_error ($f_type,$f_error,+f_extra_data)- (#echo(__LINE__)#)"); }
 
+		if (!isset ($direct_classes['output'])) { direct_class_init ("output"); }
 		if ((!preg_match ("#\W#i",$f_error))&&(function_exists ("direct_local_get"))) { $f_error = direct_local_get ("errors_".$f_error); }
 		if (strlen ($f_extra_data)) { $f_extra_data = "\n<p class='pagecontent' style='text-align:center'>$f_extra_data</p>"; }
 

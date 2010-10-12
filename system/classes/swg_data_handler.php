@@ -32,7 +32,7 @@ NOTE_END //n*/
 * @author     direct Netware Group
 * @copyright  (C) direct Netware Group - All rights reserved
 * @package    sWG_core
-* @subpackage kernel
+* @subpackage basic_functions
 * @since      v0.1.03
 * @license    http://www.direct-netware.de/redirect.php?licenses;w3c
 *             W3C (R) Software License
@@ -58,7 +58,7 @@ if (!defined ("CLASS_direct_data_handler"))
 * @author     direct Netware Group
 * @copyright  (C) direct Netware Group - All rights reserved
 * @package    sWG_core
-* @subpackage kernel
+* @subpackage basic_functions
 * @uses       CLASS_direct_virtual_class
 * @since      v0.1.03
 * @license    http://www.direct-netware.de/redirect.php?licenses;w3c

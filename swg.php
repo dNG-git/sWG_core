@@ -598,13 +598,13 @@ Informing the system about available functions
 *\/
 	function direct_basic_functions_inline () { $this->__construct (); }
 :#\n*/
-	//f// direct_basic_functions_inline->iline_parse ($f_line = NULL)
+	//f// direct_basic_functions_inline->iline_parse ($f_iline = NULL)
 /**
 	* We are trying to catch all errors - even semi-fatal ones. For that reason
 	* we provide the emergency mode function that does not require an active theme
 	* or localiation strings to work.
 	*
-	* @param string $f_data Valid XHTML error description
+	* @param string $f_iline Input query string with ";" delimiter.
 	* @uses  direct_class_init()
 	* @uses  direct_debug()
 	* @uses  direct_oxhtml_inline::header()
@@ -612,21 +612,21 @@ Informing the system about available functions
 	* @uses  USE_debug_reporting
 	* @since v0.1.01
 */
-	/*#ifndef(PHP4) */public static /* #*/function iline_parse ($f_line = NULL)
+	/*#ifndef(PHP4) */public static /* #*/function iline_parse ($f_iline = NULL)
 	{
 		global $direct_cachedata,$direct_classes,$direct_settings;
 		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -basic_functions_class->iline_parse (+f_line)- (#echo(__LINE__)#)"); }
 
-		if (!isset ($f_line)) { $f_line = (isset ($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : ""); }
-		$f_line_array = explode (";",$f_line);
+		if (!isset ($f_iline)) { $f_iline = (isset ($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : ""); }
+		$f_iline_array = explode (";",$f_iline);
 		$f_return = array ();
 
-		foreach ($f_line_array as $f_line)
+		foreach ($f_iline_array as $f_iline)
 		{
-			$f_value_array = explode ("=",$f_line,2);
+			$f_value_array = explode ("=",$f_iline,2);
 
 			if (count ($f_value_array) > 1) { $f_return[$f_value_array[0]] = $f_value_array[1]; }
-			elseif (!isset ($f_return['ohandler'])) { $f_return['ohandler'] = preg_replace ("#\W#","",$f_line); }
+			elseif (!isset ($f_return['ohandler'])) { $f_return['ohandler'] = preg_replace ("#\W#","",$f_iline); }
 		}
 
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -basic_functions_class->iline_parse ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
@@ -818,152 +818,13 @@ Encode the output for smaller bandwidth connections
 		$this->last_modified = $f_timestamp;
 	}
 
-	//f// direct_output_inline->theme_page ($f_title)
-/**
-	* Prepare an output for a XHTML encoded page with the standard sWG design.
-	*
-	* @param string $f_title Valid XHTML page title
-	* @uses  direct_debug()
-	* @uses  USE_debug_reporting
-	* @since v0.1.01
-*/
-	/*#ifndef(PHP4) */public /* #*/function theme_page ($f_title)
-	{
-		global $direct_cachedata,$direct_classes,$direct_local,$direct_settings;
-		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -output_class(inline)->theme_page ($f_title)- (#echo(__LINE__)#)"); }
-	
-		if ((!isset ($direct_local['lang_iso_domain']))||(!$direct_local['lang_iso_domain'])) { $direct_local['lang_iso_domain'] = "en"; }
-		$direct_settings['theme_xhtml_type'] = "application/xhtml+xml; charset=".$direct_local['lang_charset'];
-
-		$direct_classes['output']->output_header ("Content-Type",$direct_settings['theme_xhtml_type']);
-
-$this->output_data = ("<?xml version='1.0' encoding='$direct_local[lang_charset]' ?><!DOCTYPE html SYSTEM \"about:legacy-compat\">
-<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='$direct_local[lang_iso_domain]'>
-
-<head>
-<title>$f_title</title>");
-
-		if (strlen ($direct_cachedata['output_p3purl'])) { $this->output_data .= "\n<link rel='P3Pv1' href='{$direct_cachedata['output_p3purl']}'>"; }
-
-$this->output_data .= ("\n<meta http-equiv='Content-Type' content='$direct_settings[theme_xhtml_type]' />
-<meta name='author' content='direct Netware Group' />
-<meta name='creator' content='$direct_settings[product_lcode_txt] by the direct Netware Group' />
-<meta name='description' content='$direct_settings[product_lcode_subtitle_txt]' />
-<style type='text/css'><![CDATA[
-p, td { cursor:default }
-
-a { cursor:pointer }
-a:link { text-decoration:underline }
-a:active { text-decoration:none }
-a:visited { text-decoration:underline }
-a:hover { text-decoration:none }
-a:focus { text-decoration:underline }
-
-body { margin:0px;padding:0px 19px;background-color:#6A6A6A }
-body { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;font-style:normal;font-weight:normal }
-form { margin:0px;padding:0px }
-img { border:none }
-input.file { width:90%;text-align:center;background-color:#F5F5F5 }
-input.file { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;color:#000000 }
-table { margin:0px;table-layout:fixed;border:none;border-collapse:collapse;border-spacing:0px }
-td { padding:0px }
-
-.designcopyrightbg { background-color:#808080 }
-.designcopyrightcontent { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:10px;color:#DDDDDD }
-.designcopyrightcontent a, .designcopyrightcontent a:link, .designcopyrightcontent a:active, .designcopyrightcontent a:visited, .designcopyrightcontent a:hover, .designcopyrightcontent a:focus { color:#FFFFFF }
-
-.designpagebg { background-color:#FFFFFF }
-.designpagebg *:first-child { margin-top:0px }
-.designpagebg *:last-child { margin-bottom:0px }
-
-.designtitlebg { background-image:url($direct_settings[iscript_url]a=cache;dsd=dfile+swg_bg.png);background-repeat:repeat-x;background-color:#FFFFFF }
-.designtitlecontent { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;color:#000000 }
-
-.pagebg { background-color:#FFFFFF }
-
-.pageborder1 { background-color:#193879;border-collapse:separate;border-spacing:1px }
-.pageborder2 { border:1px solid #193879;background-color:#D9D9DA;padding:4px }
-
-.pagecontent { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;color:#222222 }
-.pagecontent a, .pagecontent a:link, .pagecontent a:active, .pagecontent a:visited, .pagecontent a:hover, .pagecontent a:focus { color:#000000 }
-.pagecontentinputbutton { background-color:#F5F5F5;font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;color:#000000 }
-.pagecontentinputcheckbox { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;color:#222222;background-color:#FFFFFF }
-.pagecontentinputfocused { border-color:#193879 }
-.pagecontentinputtextnpassword { border:1px solid #C0C0C0;background-color:#F5F5F5 }
-.pagecontentinputtextnpassword { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;color:#222222 }
-.pagecontentselect { border:1px solid #C0C0C0;background-color:#F5F5F5 }
-.pagecontentselect { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;color:#222222 }
-.pagecontenttextarea { border:1px solid #C0C0C0;background-color:#F5F5F5 }
-.pagecontenttextarea { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;color:#222222 }
-.pagecontenttitle { border:1px solid #193879;background-color:#375A9D;padding:5px }
-.pagecontenttitle { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold;color:#DDDDDD }
-.pagecontenttitle a, .pagecontenttitle a:link, .pagecontenttitle a:active, .pagecontenttitle a:visited, .pagecontenttitle a:hover, .pagecontenttitle a:focus { color:#FFFFFF }
-
-.pageembeddedborder1 { background-color:#DDDDDD;border-collapse:separate;border-spacing:1px }
-.pageembeddedborder2 { border:1px solid #DDDDDD;background-color:#FFFFFF;padding:4px }
-
-.pageerrorcontent { font-weight:bold;color:#FF0000 }
-.pageerrorcontent a, .pageerrorcontent a:link, .pageerrorcontent a:active, .pageerrorcontent a:visited, .pageerrorcontent a:hover, .pageerrorcontent a:focus { color:#CC0000 }
-
-.pageextrabg { background-color:#D9D9DA }
-.pageextracontent { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;color:#222222 }
-.pageextracontent a, .pageextracontent a:link, .pageextracontent a:active, .pageextracontent a:visited, .pageextracontent a:hover, .pageextracontent a:focus { color:#000000 }
-
-.pagehide { display:none }
-.pagehighlightborder1 { background-color:#FF0000;border-collapse:separate;border-spacing:1px }
-.pagehighlightborder2 { border:1px solid #FF0000;background-color:#FBF6CD;padding:4px }
-
-.pagehr { height:1px;overflow:hidden;border-top:1px solid #193879 }
-
-.pagetitlecellbg { background-color:#375A9D }
-.pagetitlecellcontent { display:block;padding:3px }
-.pagetitlecellcontent { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold;color:#FFFFFF }
-.pagetitlecellcontent a, .pagetitlecellcontent a:link, .pagetitlecellcontent a:active, .pagetitlecellcontent a:visited, .pagetitlecellcontent a:hover, .pagetitlecellcontent a:focus { color:#FFFFFF }
-]]></style>
-</head>
-
-<body><!--
-internal sWG page theme
-// --><div style='position:absolute;top:0px;left:0px;z-index:255;width:19px;height:71px;background-color:#FFFFFF'>
-<div style='width:19px;height:16px;background-color:#000000'></div>
-<div style='width:19px;height:1px;margin-top:1px;background-color:#000000'></div>
-<div style='width:19px;height:49px;margin-top:1px;background-color:#193879'></div>
-<div style='width:19px;height:1px;margin-top:1px;background-color:#193879'></div>
-</div><div style='width:100%;height:10px;background-color:#000000'></div><table style='width:100%'>
-<thead><tr>
-<td class='designtitlebg' style='height:85px;padding:5px 15px;text-align:right;vertical-align:middle'><div style='float:left'><a href='http://www.direct-netware.de/redirect.php?$direct_settings[product_icode]' target='_blank'><img src='$direct_settings[iscript_url]a=cache;dsd=dfile+swg_logo.png' width='75' height='75' alt='$direct_settings[product_lcode_txt]' title='$direct_settings[product_lcode_txt]' /></a></div>
-<p class='designtitlecontent'><span style='font-size:24px'>$direct_settings[product_lcode_html]</span><br />
-$direct_settings[product_lcode_subtitle_html]</p></td>
-</tr></thead><tbody><tr>
-<td class='designpagebg' style='padding:10px 12px;text-align:left;vertical-align:middle'>");
-
-		if ((is_array ($direct_cachedata['output_warning']))&&(!empty ($direct_cachedata['output_warning'])))
-		{
-			foreach ($direct_cachedata['output_warning'] as $f_warning_data) { $this->output_data .= "<p class='pagehighlightborder2'><span class='pageextracontent'><span style='font-weight:bold'>{$f_warning_data['title']}</span><br />\n{$f_warning_data['text']}</span></p>"; }
-		}
-
-$this->output_data .= ($direct_classes['output']->output_content."</td>
-</tr></tbody><tfoot><tr>
-<td class='designcopyrightbg' style='height:50px;text-align:center;vertical-align:middle'><span class='designcopyrightcontent'>Powered by: $direct_settings[product_lcode_html] $direct_settings[product_version]<br />
-&#xA9; <a href='http://www.direct-netware.de/redirect.php?$direct_settings[product_icode]' target='_blank'><span style='font-style:italic'>direct</span> Netware Group</a> - All rights reserved</span></td>
-</tr></tfoot>
-</table><div style='position:absolute;top:0px;right:0px;z-index:255;width:19px;height:71px;background-color:#FFFFFF'>
-<div style='width:19px;height:16px;background-color:#000000'></div>
-<div style='width:19px;height:1px;margin-top:1px;background-color:#000000'></div>
-<div style='width:19px;height:49px;margin-top:1px;background-color:#193879'></div>
-<div style='width:19px;height:1px;margin-top:1px;background-color:#193879'></div>
-</div>
-</body>
-
-</html>");
-	}
-
-	//f// direct_output_inline->output_header ($f_name = "",$f_value = NULL)
+	//f// direct_output_inline->output_header ($f_name = "",$f_value = NULL,$f_name_as_key = false)
 /**
 	* Returns or sets a header.
 	*
-	* @param string $f_title Valid XHTML page title
-	* @uses  direct_output_inline::output_response()
+	* @param string $f_name Header name
+	* @param mixed $f_value Header value as string or array
+	* @param boolean $f_name_as_key True if the name is used as a key
 	* @uses  USE_debug_reporting
 	* @since v0.1.08
 */
@@ -994,6 +855,7 @@ $this->output_data .= ($direct_classes['output']->output_content."</td>
 	* to user.
 	*
 	* @param string $f_title Valid XHTML page title
+	* @param array $f_headers Additional output headers
 	* @uses  direct_debug()
 	* @uses  direct_html_encode_special()
 	* @uses  direct_local_get()
@@ -1140,28 +1002,10 @@ $direct_settings[product_lcode_txt]
 /**
 	* Send the content of a page.
 	*
-	* @param string $f_data Data to send
+	* @param string &$f_data Data to send
 	* @since v0.1.08
 */
 	/*#ifndef(PHP4) */protected /* #*/function output_response_data (&$f_data) { echo $f_data; }
-
-	//f// direct_output_inline->output_response_xhtml_legacy (&$f_data)
-/**
-	* The sWG uses XHTML by default. If the browser does not support XHTML we need
-	* to switch to a legacy HTML (quirks) mode.
-	*
-	* @param string $f_data Reference to the output content
-	* @since v0.1.08
-*/
-	/*#ifndef(PHP4) */protected /* #*/function output_response_xhtml_legacy (&$f_data)
-	{
-		global $direct_classes,$direct_settings;
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -output_class(inline)->output_response_xhtml_legacy (+f_data)- (#echo(__LINE__)#)"); }
-
-		$f_content_type = str_replace ("application/xhtml+xml","text/html",$direct_settings['theme_xhtml_type']);
-		$this->output_header ("Content-Type",$f_content_type);
-		$f_data = preg_replace (array ("#\s*<\?(.*?)\?>(.*?)<#s","#\s*\/\s*>#s","#<meta(.+?)".(preg_quote ($direct_settings['theme_xhtml_type'],"#"))."(.+?)>#si","#<(script|style)(.*?)><\!\[CDATA\[(.*?)\]\]><\/(script|style)>#si"),(array ("<",">","<meta\\1$f_content_type\\2>","<\\1\\2><!--\\3// --></\\4>")),$f_data);
-	}
 
 	//f// direct_output_inline->output_response_headers ()
 /**
@@ -1190,6 +1034,24 @@ $direct_settings[product_lcode_txt]
 			}
 			else { header ($f_header_name.": ".$f_header_value); }
 		}
+	}
+
+	//f// direct_output_inline->output_response_xhtml_legacy (&$f_data)
+/**
+	* The sWG uses XHTML by default. If the browser does not support XHTML we need
+	* to switch to a legacy HTML (quirks) mode.
+	*
+	* @param string &$f_data Reference to the output content
+	* @since v0.1.08
+*/
+	/*#ifndef(PHP4) */protected /* #*/function output_response_xhtml_legacy (&$f_data)
+	{
+		global $direct_classes,$direct_settings;
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -output_class(inline)->output_response_xhtml_legacy (+f_data)- (#echo(__LINE__)#)"); }
+
+		$f_content_type = str_replace ("application/xhtml+xml","text/html",$direct_settings['theme_xhtml_type']);
+		$this->output_header ("Content-Type",$f_content_type);
+		$f_data = preg_replace (array ("#\s*<\?(.*?)\?>(.*?)<#s","#\s*\/\s*>#s","#<meta(.+?)".(preg_quote ($direct_settings['theme_xhtml_type'],"#"))."(.+?)>#si","#<(script|style)(.*?)><\!\[CDATA\[(.*?)\]\]><\/(script|style)>#si"),(array ("<",">","<meta\\1$f_content_type\\2>","<\\1\\2><!--\\3// --></\\4>")),$f_data);
 	}
 
 	//f// direct_output_inline->output_send ($f_title = "",$f_headers = NULL)
@@ -1260,6 +1122,146 @@ $f_error</p>$f_extra_data
 /* #*//*#ifdef(PHP4):
 		exit ();
 :#\n*/
+	}
+
+	//f// direct_output_inline->theme_page ($f_title)
+/**
+	* Prepare an output for a XHTML encoded page with the standard sWG design.
+	*
+	* @param string $f_title Valid XHTML page title
+	* @uses  direct_debug()
+	* @uses  USE_debug_reporting
+	* @since v0.1.01
+*/
+	/*#ifndef(PHP4) */public /* #*/function theme_page ($f_title)
+	{
+		global $direct_cachedata,$direct_classes,$direct_local,$direct_settings;
+		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -output_class(inline)->theme_page ($f_title)- (#echo(__LINE__)#)"); }
+	
+		if ((!isset ($direct_local['lang_iso_domain']))||(!$direct_local['lang_iso_domain'])) { $direct_local['lang_iso_domain'] = "en"; }
+		$direct_settings['theme_xhtml_type'] = "application/xhtml+xml; charset=".$direct_local['lang_charset'];
+
+		$direct_classes['output']->output_header ("Content-Type",$direct_settings['theme_xhtml_type']);
+
+$this->output_data = ("<?xml version='1.0' encoding='$direct_local[lang_charset]' ?><!DOCTYPE html SYSTEM \"about:legacy-compat\">
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='$direct_local[lang_iso_domain]'>
+
+<head>
+<title>$f_title</title>");
+
+		if (strlen ($direct_cachedata['output_p3purl'])) { $this->output_data .= "\n<link rel='P3Pv1' href='{$direct_cachedata['output_p3purl']}'>"; }
+
+$this->output_data .= ("\n<meta http-equiv='Content-Type' content='$direct_settings[theme_xhtml_type]' />
+<meta name='author' content='direct Netware Group' />
+<meta name='creator' content='$direct_settings[product_lcode_txt] by the direct Netware Group' />
+<meta name='description' content='$direct_settings[product_lcode_subtitle_txt]' />
+<style type='text/css'><![CDATA[
+p, td { cursor:default }
+
+a { cursor:pointer }
+a:link { text-decoration:underline }
+a:active { text-decoration:none }
+a:visited { text-decoration:underline }
+a:hover { text-decoration:none }
+a:focus { text-decoration:underline }
+
+body { margin:0px;padding:0px 19px;background-color:#6A6A6A }
+body { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;font-style:normal;font-weight:normal }
+form { margin:0px;padding:0px }
+img { border:none }
+input.file { width:90%;text-align:center;background-color:#F5F5F5 }
+input.file { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;color:#000000 }
+table { margin:0px;table-layout:fixed;border:none;border-collapse:collapse;border-spacing:0px }
+td { padding:0px }
+
+.designcopyrightbg { background-color:#808080 }
+.designcopyrightcontent { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:10px;color:#DDDDDD }
+.designcopyrightcontent a, .designcopyrightcontent a:link, .designcopyrightcontent a:active, .designcopyrightcontent a:visited, .designcopyrightcontent a:hover, .designcopyrightcontent a:focus { color:#FFFFFF }
+
+.designpagebg { background-color:#FFFFFF }
+.designpagebg *:first-child { margin-top:0px }
+.designpagebg *:last-child { margin-bottom:0px }
+
+.designtitlebg { background-image:url($direct_settings[iscript_url]a=cache;dsd=dfile+swg_bg.png);background-repeat:repeat-x;background-color:#FFFFFF }
+.designtitlecontent { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;color:#000000 }
+
+.pagebg { background-color:#FFFFFF }
+
+.pageborder1 { background-color:#193879;border-collapse:separate;border-spacing:1px }
+.pageborder2 { border:1px solid #193879;background-color:#D9D9DA;padding:4px }
+
+.pagecontent { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;color:#222222 }
+.pagecontent a, .pagecontent a:link, .pagecontent a:active, .pagecontent a:visited, .pagecontent a:hover, .pagecontent a:focus { color:#000000 }
+.pagecontentinputbutton { background-color:#F5F5F5;font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;color:#000000 }
+.pagecontentinputcheckbox { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;color:#222222;background-color:#FFFFFF }
+.pagecontentinputfocused { border-color:#193879 }
+.pagecontentinputtextnpassword { border:1px solid #C0C0C0;background-color:#F5F5F5 }
+.pagecontentinputtextnpassword { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;color:#222222 }
+.pagecontentselect { border:1px solid #C0C0C0;background-color:#F5F5F5 }
+.pagecontentselect { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;color:#222222 }
+.pagecontenttextarea { border:1px solid #C0C0C0;background-color:#F5F5F5 }
+.pagecontenttextarea { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;color:#222222 }
+.pagecontenttitle { border:1px solid #193879;background-color:#375A9D;padding:5px }
+.pagecontenttitle { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold;color:#DDDDDD }
+.pagecontenttitle a, .pagecontenttitle a:link, .pagecontenttitle a:active, .pagecontenttitle a:visited, .pagecontenttitle a:hover, .pagecontenttitle a:focus { color:#FFFFFF }
+
+.pageembeddedborder1 { background-color:#DDDDDD;border-collapse:separate;border-spacing:1px }
+.pageembeddedborder2 { border:1px solid #DDDDDD;background-color:#FFFFFF;padding:4px }
+
+.pageerrorcontent { font-weight:bold;color:#FF0000 }
+.pageerrorcontent a, .pageerrorcontent a:link, .pageerrorcontent a:active, .pageerrorcontent a:visited, .pageerrorcontent a:hover, .pageerrorcontent a:focus { color:#CC0000 }
+
+.pageextrabg { background-color:#D9D9DA }
+.pageextracontent { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;color:#222222 }
+.pageextracontent a, .pageextracontent a:link, .pageextracontent a:active, .pageextracontent a:visited, .pageextracontent a:hover, .pageextracontent a:focus { color:#000000 }
+
+.pagehide { display:none }
+.pagehighlightborder1 { background-color:#FF0000;border-collapse:separate;border-spacing:1px }
+.pagehighlightborder2 { border:1px solid #FF0000;background-color:#FBF6CD;padding:4px }
+
+.pagehr { height:1px;overflow:hidden;border-top:1px solid #193879 }
+
+.pagetitlecellbg { background-color:#375A9D }
+.pagetitlecellcontent { display:block;padding:3px }
+.pagetitlecellcontent { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold;color:#FFFFFF }
+.pagetitlecellcontent a, .pagetitlecellcontent a:link, .pagetitlecellcontent a:active, .pagetitlecellcontent a:visited, .pagetitlecellcontent a:hover, .pagetitlecellcontent a:focus { color:#FFFFFF }
+]]></style>
+</head>
+
+<body><!--
+internal sWG page theme
+// --><div style='position:absolute;top:0px;left:0px;z-index:255;width:19px;height:71px;background-color:#FFFFFF'>
+<div style='width:19px;height:16px;background-color:#000000'></div>
+<div style='width:19px;height:1px;margin-top:1px;background-color:#000000'></div>
+<div style='width:19px;height:49px;margin-top:1px;background-color:#193879'></div>
+<div style='width:19px;height:1px;margin-top:1px;background-color:#193879'></div>
+</div><div style='width:100%;height:10px;background-color:#000000'></div><table style='width:100%'>
+<thead><tr>
+<td class='designtitlebg' style='height:85px;padding:5px 15px;text-align:right;vertical-align:middle'><div style='float:left'><a href='http://www.direct-netware.de/redirect.php?$direct_settings[product_icode]' target='_blank'><img src='$direct_settings[iscript_url]a=cache;dsd=dfile+swg_logo.png' width='75' height='75' alt='$direct_settings[product_lcode_txt]' title='$direct_settings[product_lcode_txt]' /></a></div>
+<p class='designtitlecontent'><span style='font-size:24px'>$direct_settings[product_lcode_html]</span><br />
+$direct_settings[product_lcode_subtitle_html]</p></td>
+</tr></thead><tbody><tr>
+<td class='designpagebg' style='padding:10px 12px;text-align:left;vertical-align:middle'>");
+
+		if ((is_array ($direct_cachedata['output_warning']))&&(!empty ($direct_cachedata['output_warning'])))
+		{
+			foreach ($direct_cachedata['output_warning'] as $f_warning_data) { $this->output_data .= "<p class='pagehighlightborder2'><span class='pageextracontent'><span style='font-weight:bold'>{$f_warning_data['title']}</span><br />\n{$f_warning_data['text']}</span></p>"; }
+		}
+
+$this->output_data .= ($direct_classes['output']->output_content."</td>
+</tr></tbody><tfoot><tr>
+<td class='designcopyrightbg' style='height:50px;text-align:center;vertical-align:middle'><span class='designcopyrightcontent'>Powered by: $direct_settings[product_lcode_html] $direct_settings[product_version]<br />
+&#xA9; <a href='http://www.direct-netware.de/redirect.php?$direct_settings[product_icode]' target='_blank'><span style='font-style:italic'>direct</span> Netware Group</a> - All rights reserved</span></td>
+</tr></tfoot>
+</table><div style='position:absolute;top:0px;right:0px;z-index:255;width:19px;height:71px;background-color:#FFFFFF'>
+<div style='width:19px;height:16px;background-color:#000000'></div>
+<div style='width:19px;height:1px;margin-top:1px;background-color:#000000'></div>
+<div style='width:19px;height:49px;margin-top:1px;background-color:#193879'></div>
+<div style='width:19px;height:1px;margin-top:1px;background-color:#193879'></div>
+</div>
+</body>
+
+</html>");
 	}
 }
 

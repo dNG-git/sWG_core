@@ -49,7 +49,7 @@ Testing for required classes
 ------------------------------------------------------------------------- */
 
 $g_continue_check = ((defined ("CLASS_direct_ihttp")) ? false : true);
-if (($g_continue_check)&&(!defined ("CLASS_direct_input"))) { $g_continue_check = $direct_classes['basic_functions']->include_file ($direct_settings['path_system']."/classes/swg_ihandler.php",1); }
+if (($g_continue_check)&&(!defined ("CLASS_direct_input"))) { $g_continue_check = ($direct_classes['basic_functions']->include_file ($direct_settings['path_system']."/classes/swg_ihandler.php",1) ? defined ("CLASS_direct_input") : false); }
 
 if ($g_continue_check)
 {
@@ -73,10 +73,11 @@ class direct_ihttp extends direct_input
 Extend the class using old and new behavior
 ------------------------------------------------------------------------- */
 
-	//f// direct_basic_functions->__construct () and direct_basic_functions->direct_basic_functions ()
+	//f// direct_ihttp->__construct () and direct_ihttp->direct_ihttp ()
 /**
 	* Constructor (PHP5) __construct (direct_ihttp)
 	*
+	* @param string $f_iline Input query string with ";" delimiter.
 	* @uses  direct_debug()
 	* @uses  USE_debug_reporting
 	* @since v0.1.08
@@ -84,7 +85,7 @@ Extend the class using old and new behavior
 	/*#ifndef(PHP4) */public /* #*/function __construct ($f_iline = NULL)
 	{
 		global $direct_settings;
-		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -output_class->__construct (direct_ihttp)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -input_class->__construct (direct_ihttp)- (#echo(__LINE__)#)"); }
 
 		if (count ($_POST))
 		{
@@ -208,12 +209,19 @@ The standard result: One IP is enough
 		}
 
 		$this->method = strtoupper ($_SERVER['REQUEST_METHOD']);
-		$this->pass = (isset ($_SERVER['PHP_AUTH_PW']) ? $_SERVER['PHP_AUTH_PW'] : NULL);
 
-		if ((isset ($_SERVER['PHP_AUTH_DIGEST']))&&(preg_match ("#opaque=\"(\w{32})\"#",$_SERVER['PHP_AUTH_DIGEST'],$f_result_array))) { $this->uuid = $f_result_array[1]; }
+		if ((isset ($_SERVER['PHP_AUTH_DIGEST']))&&(preg_match ("#opaque=\"(\w{32})\"#",$_SERVER['PHP_AUTH_DIGEST'],$f_result_array)))
+		{
+			$this->auth = "digest";
+			$this->uuid = $f_result_array[1];
+		}
+		elseif (isset ($_SERVER['PHP_AUTH_USER']))
+		{
+			$this->auth = "basic";
+			$this->pass = (isset ($_SERVER['PHP_AUTH_PW']) ? $_SERVER['PHP_AUTH_PW'] : NULL);
+			$this->user = $_SERVER['PHP_AUTH_USER'];
+		}
 		else { $this->uuid = (isset ($direct_settings['uuid']) ? $direct_settings['uuid'] : NULL); }
-
-		$this->user = (isset ($_SERVER['PHP_AUTH_USER']) ? $_SERVER['PHP_AUTH_USER'] : NULL);
 	}
 /*#ifdef(PHP4):
 /**

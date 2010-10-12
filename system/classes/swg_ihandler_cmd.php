@@ -50,7 +50,7 @@ Testing for required classes
 ------------------------------------------------------------------------- */
 
 $g_continue_check = ((defined ("CLASS_direct_icmd")) ? false : true);
-if (($g_continue_check)&&(!defined ("CLASS_direct_input"))) { $g_continue_check = $direct_classes['basic_functions']->include_file ($direct_settings['path_system']."/classes/swg_ihandler.php",1); }
+if (($g_continue_check)&&(!defined ("CLASS_direct_input"))) { $g_continue_check = ($direct_classes['basic_functions']->include_file ($direct_settings['path_system']."/classes/swg_ihandler.php",1) ? defined ("CLASS_direct_input") : false); }
 
 if ($g_continue_check)
 {
@@ -73,7 +73,7 @@ class direct_icmd extends direct_input
 Extend the class using old and new behavior
 ------------------------------------------------------------------------- */
 
-	//f// direct_basic_functions->__construct () and direct_basic_functions->direct_basic_functions ()
+	//f// direct_icmd->__construct () and direct_icmd->direct_icmd ()
 /**
 	* Constructor (PHP5) __construct (direct_icmd)
 	*
@@ -84,7 +84,7 @@ Extend the class using old and new behavior
 	/*#ifndef(PHP4) */public /* #*/function __construct ()
 	{
 		global $direct_settings;
-		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -output_class->__construct (direct_icmd)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -input_class->__construct (direct_icmd)- (#echo(__LINE__)#)"); }
 
 /* -------------------------------------------------------------------------
 Parse input line again but this time consider all $_SERVER['argv'] entries.

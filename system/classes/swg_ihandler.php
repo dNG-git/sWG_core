@@ -69,6 +69,10 @@ class direct_input extends direct_virtual_class
 /**
 	* @var string $method HTTP (like) method
 */
+	/*#ifndef(PHP4) */protected/* #*//*#ifdef(PHP4):var:#*/ $auth;
+/**
+	* @var string $method HTTP (like) method
+*/
 	/*#ifndef(PHP4) */protected/* #*//*#ifdef(PHP4):var:#*/ $method;
 /**
 	* @var string $pass Password
@@ -98,7 +102,7 @@ Extend the class using old and new behavior
 	/*#ifndef(PHP4) */public /* #*/function __construct ()
 	{
 		global $direct_classes,$direct_settings;
-		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -output_class->__construct (direct_input)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -input_class->__construct (direct_input)- (#echo(__LINE__)#)"); }
 
 /* -------------------------------------------------------------------------
 My parent should be on my side to get the work done
@@ -110,6 +114,7 @@ My parent should be on my side to get the work done
 Informing the system about available functions
 ------------------------------------------------------------------------- */
 
+		$this->functions['auth_get'] = true;
 		$this->functions['pass_get'] = true;
 		$this->functions['uuid_get'] = true;
 		$this->functions['uuid_set'] = true;
@@ -117,10 +122,15 @@ Informing the system about available functions
 		$this->functions['user_set'] = true;
 
 /* -------------------------------------------------------------------------
-Parse DSD
+Set protocol specific data
 ------------------------------------------------------------------------- */
 
 		$direct_settings['dsd'] = $direct_classes['basic_functions']->dsd_parse ($direct_settings['dsd']);
+
+		$this->auth = NULL;
+		$this->pass = NULL;
+		$this->user = "";
+		$this->uuid = NULL;
 	}
 /*#ifdef(PHP4):
 /**
@@ -130,6 +140,16 @@ Parse DSD
 *\/
 	function direct_input () { $this->__construct (); }
 :#*/
+	//f// direct_input->auth_get ()
+/**
+	* Return the authentification protocol identified through protocol specific
+	* ways.
+	*
+	* @return mixed String if identified; NULL if not
+	* @since  v0.1.08
+*/
+	/*#ifndef(PHP4) */public /* #*/function auth_get () { return $this->auth; }
+
 	//f// direct_input->pass_get ()
 /**
 	* Return a password identified through protocol specific ways.
@@ -166,7 +186,7 @@ Parse DSD
 /**
 	* Return a user name identified through protocol specific ways.
 	*
-	* @return mixed String if identified; NULL if not
+	* @return string User name used by the system or sent by the browser
 	* @since  v0.1.08
 */
 	/*#ifndef(PHP4) */public /* #*/function user_get () { return $this->user; }
@@ -181,9 +201,14 @@ Parse DSD
 	/*#ifndef(PHP4) */public /* #*/function user_set ($f_user)
 	{
 		global $direct_settings;
-		$direct_settings['user']['name'] = $f_user;
-		$direct_settings['user']['name_html'] = direct_html_encode_special ($f_user);
-		$this->user = $f_user;
+
+		if (isset ($f_user))
+		{
+			$direct_settings['user']['name'] = $f_user;
+			$direct_settings['user']['name_html'] = direct_html_encode_special ($f_user);
+			$this->user = $f_user;
+		}
+		else { $this->user = ""; }
 	}
 }
 

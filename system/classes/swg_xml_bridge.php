@@ -34,7 +34,6 @@ NOTE_END //n*/
 * @copyright  (C) direct Netware Group - All rights reserved
 * @package    sWG_core
 * @subpackage xml
-* @uses       direct_product_iversion
 * @since      v0.1.03
 * @license    http://www.direct-netware.de/redirect.php?licenses;w3c
 *             W3C (R) Software License
@@ -52,7 +51,7 @@ Testing for required classes
 ------------------------------------------------------------------------- */
 
 $g_continue_check = ((defined ("CLASS_direct_xml_bridge")) ? false : true);
-if (($g_continue_check)&&(!defined ("CLASS_direct_xml_reader"))) { $g_continue_check = $direct_classes['basic_functions']->include_file ($direct_settings['path_system']."/classes/ext_core/xml_reader.php",1); }
+if (($g_continue_check)&&(!defined ("CLASS_direct_xml_reader"))) { $g_continue_check = ($direct_classes['basic_functions']->include_file ($direct_settings['path_system']."/classes/ext_core/xml_reader.php",1) ? defined ("CLASS_direct_xml_reader") : false); }
 
 if ($g_continue_check)
 {

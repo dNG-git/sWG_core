@@ -50,7 +50,7 @@ Testing for required classes
 
 $g_continue_check = ((defined ("CLASS_direct_developer_builder")) ? false : true);
 if (($g_continue_check)&&(!defined ("CLASS_direct_file"))) { $g_continue_check = $direct_classes['basic_functions']->include_file ($direct_settings['path_system']."/classes/ext_core/file.php",1); }
-if (($g_continue_check)&&(!defined ("CLASS_direct_php_builder"))) { $g_continue_check = $direct_classes['basic_functions']->include_file ($direct_settings['path_system']."/classes/ext_core/php_builder.php",1); }
+if (($g_continue_check)&&(!defined ("CLASS_direct_php_builder"))) { $g_continue_check = ($direct_classes['basic_functions']->include_file ($direct_settings['path_system']."/classes/ext_core/php_builder.php",1) ? defined ("CLASS_direct_php_builder") : false); }
 if (($g_continue_check)&&(!defined ("CLASS_direct_xml"))) { $g_continue_check = $direct_classes['basic_functions']->include_file ($direct_settings['path_system']."/classes/swg_xml.php",1); }
 if (($g_continue_check)&&(!function_exists ("direct_dir_exists"))) { $g_continue_check = $direct_classes['basic_functions']->include_file ($direct_settings['path_system']."/functions/swg_dir_functions.php",1); }
 
@@ -64,7 +64,7 @@ if ($g_continue_check)
 * @author     direct Netware Group
 * @copyright  (C) direct Netware Group - All rights reserved
 * @package    sWG_core
-* @subpackage basic_functions
+* @subpackage developer
 * @uses       CLASS_direct_php_builder
 * @since      v0.1.08
 * @license    http://www.direct-netware.de/redirect.php?licenses;w3c

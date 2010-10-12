@@ -49,7 +49,7 @@ Testing for required classes
 ------------------------------------------------------------------------- */
 
 $g_continue_check = ((defined ("CLASS_direct_oxhtml")) ? false : true);
-if (($g_continue_check)&&(!defined ("CLASS_direct_output"))) { $g_continue_check = $direct_classes['basic_functions']->include_file ($direct_settings['path_system']."/classes/swg_ohandler.php",1); }
+if (($g_continue_check)&&(!defined ("CLASS_direct_output"))) { $g_continue_check = ($direct_classes['basic_functions']->include_file ($direct_settings['path_system']."/classes/swg_ohandler.php",1) ? defined ("CLASS_direct_output") : false); }
 
 if ($g_continue_check)
 {
@@ -105,16 +105,11 @@ My parent should be on my side to get the work done
 Informing the system about available functions
 ------------------------------------------------------------------------- */
 
-		$this->functions['backtrace_get'] = true;
 		$this->functions['theme_subtype'] = true;
 
 /* -------------------------------------------------------------------------
 Set up some variables
 ------------------------------------------------------------------------- */
-
-		$this->js_helper_element = 0;
-
-// TODO		if ((!$direct_settings['swg_force_notheme'])&&(!isset ($direct_classes['output_theme']))) {
 
 		$f_mobile_check = isset ($_SERVER['HTTP_X_WAP_PROFILE']);
 		$this->theme = NULL;
@@ -149,21 +144,19 @@ Set up some variables
 *\/
 	function direct_oxhtml () { $this->__construct (); }
 :#*/
-	//f// direct_oxhtml->backtrace_get ($f_data = "",$f_handling = "text")
+	//f// direct_oxhtml->backtrace_get ($f_data = NULL,$f_handling = "text")
 /**
-	* This operation prints $this->dvar to the browser (and exists) or to
-	* $direct_cachedata['core_debug'].
+	* Parse a given backtrace array (or try to load one via "debug_backtrace").
 	*
-	* @param  mixed $f_data Already extracted backtrace as array (otherwise use
-	*         current one)
-	* @param  boolean $f_handling Return the string as "text" or "html" formatted
-	*         string
+	* @param  array $f_data Already extracted backtrace as array
+	* @param  string $f_handling Return the string formatted as "text" or "html"
 	* @uses   direct_debug()
 	* @uses   direct_basic_functions::backtrace_get()
 	* @uses   USE_debug_reporting
+	* @return string Formatted backtrace string
 	* @since  v0.1.03
 */
-	/*#ifndef(PHP4) */protected /* #*/function backtrace_get ($f_data = "",$f_handling = "text")
+	/*#ifndef(PHP4) */protected /* #*/function backtrace_get ($f_data = NULL,$f_handling = "text")
 	{
 		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -output_class->backtrace_get (+f_data,$f_handling)- (#echo(__LINE__)#)"); }
 
@@ -271,6 +264,7 @@ Set up some variables
 	* to user.
 	*
 	* @param string $f_title Valid XHTML page title
+	* @param array $f_headers Additional output headers
 	* @uses  direct_debug()
 	* @uses  direct_html_encode_special()
 	* @uses  direct_local_get()
@@ -283,50 +277,33 @@ Set up some variables
 	{
 		global $direct_cachedata,$direct_classes,$direct_settings;
 		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -output_class->output_response (+f_title,+f_headers)- (#echo(__LINE__)#)"); }
-/* -------------------------------------------------------------------------
-TODO Check and activate light mode if required.
-------------------------------------------------------------------------- *-/
 
 		if (!$direct_settings['swg_force_notheme'])
-		{
-			if (($direct_cachedata['core_time'] + $direct_settings['timeout_lightmode']) < (time ()))
-			{
-				$f_subtype = ($direct_settings['theme_subtype'] ? $direct_settings['theme_subtype']."_light" : "light");
-				if (direct_oxhtml_theme_subtype ($f_subtype)) { direct_class_init ("output_theme",true); }
-			}
-
-			if (!isset ($direct_classes['output_theme'])) { direct_class_init ("output_theme"); }
-		}
-
-/* -------------------------------------------------------------------------
-Parse additional copyright information for output.
-------------------------------------------------------------------------- *-/
-
-		if ((is_array (@$direct_settings['additional_copyright']))&&(!empty ($direct_settings['additional_copyright'])))
 		{
 			$this->output_additional_copyright = "";
 
-			foreach ($direct_settings['additional_copyright'] as $f_copyright_array)
-			{
-				if ($this->output_additional_copyright) { $this->output_additional_copyright .= "<br />\n"; }
-
-				if (count ($f_copyright_array) == 2) { $this->output_additional_copyright .= "<a href='{$f_copyright_array[0]}' target='_blank'>{$f_copyright_array[1]}</a>"; }
-				elseif (count ($f_copyright_array) > 2) { $this->output_additional_copyright .= ($f_copyright_array[0]."<a href='{$f_copyright_array[1]}' target='_blank'>{$f_copyright_array[2]}</a>".$f_copyright_array[3]); }
-			}
-		}
-		else { $this->output_additional_copyright = ""; }
-------------------------------------------------------------------------- */
-
-		if (!$direct_settings['swg_force_notheme'])
-		{
 			if (($direct_cachedata['core_time'] + $direct_settings['timeout_lightmode']) < (time ()))
 			{
 				$f_subtype = ($this->theme_subtype ? $this->theme_subtype."_light" : "light");
 				$this->theme_subtype ($f_subtype);
 			}
+/* -------------------------------------------------------------------------
+Parse additional copyright information for output.
+------------------------------------------------------------------------- */
+
+			elseif ((is_array (@$direct_settings['additional_copyright']))&&(!empty ($direct_settings['additional_copyright'])))
+			{
+				foreach ($direct_settings['additional_copyright'] as $f_copyright_array)
+				{
+					if ($this->output_additional_copyright) { $this->output_additional_copyright .= "<br />\n"; }
+
+					if (count ($f_copyright_array) == 2) { $this->output_additional_copyright .= "<a href='{$f_copyright_array[0]}' target='_blank'>{$f_copyright_array[1]}</a>"; }
+					elseif (count ($f_copyright_array) > 2) { $this->output_additional_copyright .= ($f_copyright_array[0]."<a href='{$f_copyright_array[1]}' target='_blank'>{$f_copyright_array[2]}</a>".$f_copyright_array[3]); }
+				}
+			}
 		}
 
-		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -direct_oxhtml_theme ()- (#echo(__LINE__)#)",(:#*/parent::output_response ($f_title,$f_headers)/*#ifdef(DEBUG):),true):#*/;
+		parent::output_response ($f_title,$f_headers);
 	}
 
 	//f// direct_oxhtml->output_send_error ($f_type,$f_error,$f_extra_data = "")
@@ -364,7 +341,7 @@ Parse additional copyright information for output.
 		global $direct_cachedata,$direct_classes,$direct_settings;
 		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -output_class->output_send_error ($f_type,$f_error,+f_extra_data)- (#echo(__LINE__)#)"); }
 
-		$f_return = true;
+		$f_continue_check = true;
 
 		if (!function_exists ("direct_linker")) { $direct_classes['basic_functions']->require_file ($direct_settings['path_system']."/functions/swg_linker.php"); }
 
@@ -382,21 +359,21 @@ Parse additional copyright information for output.
 
 		$this->related_manager ("error_".(preg_replace ("#\W+#","",$f_type))."_".(preg_replace ("#\W+#","",$f_error)),"pre_module_service_action");
 
-		if (isset ($direct_cachedata['output_error_extradata'])) { $f_return = false; }
+		if (isset ($direct_cachedata['output_error_extradata'])) { $f_continue_check = false; }
 		else
 		{
 			$direct_cachedata['output_error'] = (((!preg_match ("#\W+#i",$f_error))&&(function_exists ("direct_local_get"))) ? direct_local_get ("errors_".$f_error) : $f_error);
 			$direct_cachedata['output_error_extradata'] = ($f_extra_data ? preg_replace ("#(\/|\&amp;|\&|\?|,)(?!\>|(\w{2,4};))#"," \\1 \\2",$f_extra_data) : "");
 		}
 
-		if (($f_return)&&(function_exists ("direct_linker")))
+		if (($f_continue_check)&&(function_exists ("direct_linker")))
 		{
 			if (!isset ($direct_cachedata['page_this'])) { $direct_cachedata['page_this'] = ""; }
 			$direct_cachedata['output_link_back'] = (((isset ($direct_cachedata['page_backlink']))&&($direct_cachedata['page_backlink'])&&($direct_cachedata['page_this'] != $direct_cachedata['page_backlink'])) ? direct_linker ("url0",$direct_cachedata['page_backlink']) : "");
 			$direct_cachedata['output_link_retry'] = ($direct_cachedata['page_this'] ? direct_linker ("url0",$direct_cachedata['page_this']) : "");
 
-			if ($f_type == "fatal") { $f_return = $this->oset ("default".$this->theme_subtype,"error_fatal"); }
-			elseif ($f_type == "critical") { $f_return = $this->oset ("default".$this->theme_subtype,"error_critical"); }
+			if ($f_type == "fatal") { $f_continue_check = $this->oset ("default".$this->theme_subtype,"error_fatal"); }
+			elseif ($f_type == "critical") { $f_continue_check = $this->oset ("default".$this->theme_subtype,"error_critical"); }
 			elseif (($f_type == "login")&&(direct_class_function_check ($direct_classes['kernel'],"v_usertype_get_int")))
 			{
 				if ($direct_classes['kernel']->v_usertype_get_int ($direct_settings['user']['type'])) { $direct_cachedata['output_current_user'] = $direct_settings['user']['name_html']; }
@@ -406,16 +383,16 @@ Parse additional copyright information for output.
 				elseif ($direct_cachedata['page_backlink']) { $direct_cachedata['output_link_login'] = direct_linker ("url0","m=account;s=status;a=login;dsd=source+".(urlencode (base64_encode ($direct_cachedata['page_backlink'])))); }
 				else { $direct_cachedata['output_link_login'] = direct_linker ("url0","m=account;s=status;a=login"); }
 
-				$f_return = $this->oset ("default".$this->theme_subtype,"error_login");
+				$f_continue_check = $this->oset ("default".$this->theme_subtype,"error_login");
 			}
-			else { $f_return = $this->oset ("default".$this->theme_subtype,"error_standard"); }
+			else { $f_continue_check = $this->oset ("default".$this->theme_subtype,"error_standard"); }
 		}
-		else { $f_return = false; }
+		else { $f_continue_check = false; }
 
 		$this->related_manager ("error_".(preg_replace ("#\W+#","",$f_type))."_".(preg_replace ("#\W+#","",$f_error)),"post_module_service_action");
 		if ((USE_backtrace)||($f_type == "fatal")) { $direct_cachedata['core_debug_backtrace'] = $direct_classes['basic_functions']->backtrace_get (); }
 
-		if ($f_return)
+		if ($f_continue_check)
 		{
 			$this->options_flush ();
 			$this->header (false,true,@$direct_settings['p3p_url'],@$direct_settings['p3p_cp']);
