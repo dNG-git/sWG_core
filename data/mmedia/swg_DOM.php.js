@@ -142,7 +142,10 @@ function djs_swgDOM_replace (f_params)
 		if (typeof (f_params['onReplaced']) == 'undefined') { f_params['onReplaced'] = null; }
 
 		djs_var.swgDOM_replace_cache[f_params.id] = { id:f_params.id_replaced,jquery_object:f_jquery_object,onReplace:f_params.onReplace,onReplaced:f_params.onReplaced };
-		$("#" + f_params.id).fadeOut ('fast',djs_swgDOM_replace_with);
+
+		f_jquery_object = $("#" + f_params.id);
+		f_jquery_object.after ("<div id='" + f_params.id_replaced + "phdiv' style='position:absolute;top:0px;left:0px;width:1px;height:" + ($(self.document).height ()) + "px;z-index:-256'>&#0160;</div>");
+		f_jquery_object.fadeOut ('fast',djs_swgDOM_replace_with);
 	}
 }
 
@@ -165,12 +168,13 @@ function djs_swgDOM_replace_with ()
 			if (djs_var.swgDOM_replace_cache[f_id].onReplaced == null)
 			{
 				delete (djs_var.swgDOM_replace_cache[f_id]);
-				$("#" + f_id_new).fadeIn ('fast');
+				$("#" + f_id_new).fadeIn ('fast',function () { $("#" + f_id_new + "phdiv").remove (); });
 			}
 			else
 			{
 				$("#" + f_id_new).fadeIn ('fast',function ()
 				{
+					$("#" + f_id_new + "phdiv").remove ();
 					djs_run (djs_var.swgDOM_replace_cache[f_id].onReplaced,djs_var.swgDOM_replace_cache[f_id],false);
 					delete (djs_var.swgDOM_replace_cache[f_id]);
 				});
