@@ -771,7 +771,7 @@ Set up the caching variables
 		if ($f_case_insensitive) { $f_extension = strtolower ($f_extension); }
 
 		if ((isset ($this->mimetype_extensions_cache["swg_mimetype_file_v1_".$f_extension]))&&(!empty ($f_extension))) { return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -basic_functions_class->mimetype_extension ()- (#echo(__LINE__)#)",:#*/$this->mimetype_extensions_cache["swg_mimetype_file_v1_".$f_extension]['value']/*#ifdef(DEBUG):,true):#*/; }
-		else { return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -basic_functions_class->mimetype_extension ()- (#echo(__LINE__)#)",:#*/"text/x-unknown"/*#ifdef(DEBUG):,true):#*/; }
+		else { return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -basic_functions_class->mimetype_extension ()- (#echo(__LINE__)#)",:#*/"application/octet-stream"/*#ifdef(DEBUG):,true):#*/; }
 	}
 
 	//f// direct_basic_functions->mimetype_icon ($f_mimetype,$f_file = "",$f_case_insensitive = false)

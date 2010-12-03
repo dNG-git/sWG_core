@@ -78,7 +78,14 @@
    <show><input input="string" /></show>
   </information></detailed>
 
-  <done><input input="string" /></done>
+  <done>
+   <input input="string" />
+
+   <status>
+    <completed><input input="string" /></completed>
+    <error><input input="string" /></error>
+   </status>
+  </done>
 
   <error>
    <input input="string" />

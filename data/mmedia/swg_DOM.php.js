@@ -24,9 +24,9 @@ $g_block = (isset ($direct_settings['dsd']['dblock']) ? $direct_settings['dsd'][
 if ($g_block == "djs_swgDOM_attr_change_int") {
 ?>
 function djs_swgDOM_attr_change_int (f_id,f_attr_element,f_attr_value) { $("#" + f_id).attr (f_attr_element,f_attr_value); }
-<?php } ?>
-
-<?php if ($g_block == "djs_swgDOM_css_change_px") { ?>
+<?php
+} if ($g_block == "djs_swgDOM_css_change_px") {
+?>
 function djs_swgDOM_css_change_px (f_id,f_css_element,f_css_value,f_duration)
 {
 	var f_jquery_object = $("#" + f_id);
@@ -62,10 +62,10 @@ function djs_swgDOM_css_change_px (f_id,f_css_element,f_css_value,f_duration)
 }
 
 if (typeof (djs_var['core_swgDOM_css_change_px_min']) == 'undefined') { djs_var['core_swgDOM_css_change_px_min'] = 111; }
-else { djs_var['core_swgDOM_css_change_px_min'] = parseInt (djs_var['core_swgDOM_css_change_px_min']); }
-<?php } ?>
-
-<?php if ($g_block == "") { ?>
+else { djs_var.core_swgDOM_css_change_px_min = parseInt (djs_var.core_swgDOM_css_change_px_min); }
+<?php
+} if ($g_block == "") {
+?>
 function djs_swgDOM_insert_after (f_params)
 {
 	if ((typeof (f_params['data']) != 'undefined')&&(typeof (f_params['id']) != 'undefined'))
@@ -126,7 +126,7 @@ function djs_swgDOM_insert_before (f_params)
 function djs_swgDOM_insert_prepare (f_data)
 {
 	if (typeof (f_data) == 'object') { return f_data.hide (); }
-	else { return jQuery(f_data).hide (); }
+	else { return $(f_data).hide (); }
 }
 
 djs_var['swgDOM_replace_cache'] = { };

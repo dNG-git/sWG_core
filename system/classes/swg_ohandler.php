@@ -140,6 +140,8 @@ Informing the system about available functions
 		$this->functions['options_generator'] = true;
 		$this->functions['options_insert'] = true;
 		$this->functions['oset'] = true;
+		$this->functions['oset_content'] = true;
+		$this->functions['oset_callable'] = true;
 		$this->functions['redirect'] = true;
 		$this->functions['servicemenu'] = true;
 		$this->functions['warning'] = true;
@@ -206,7 +208,7 @@ Set up some variables
 		global $direct_settings;
 		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -output_class->css_header (+f_ajaxloading,+f_helper)- (#echo(__LINE__)#)"); }
 
-		$this->header_elements ("<link href='$direct_settings[path_mmedia]/ext_jquery/themes/$direct_settings[theme_jquery_ui]/jquery-ui-1.8.5.css' rel='stylesheet' type='text/css' />");
+		$this->header_elements ("<link href='$direct_settings[path_mmedia]/ext_jquery/themes/$direct_settings[theme_jquery_ui]/jquery-ui-1.8.6.css' rel='stylesheet' type='text/css' />");
 		if ($f_ajaxloading) { $this->header_elements ("<link href='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+data/mmedia/swg_output_ajaxloading.php.css",true,false))."' rel='stylesheet' type='text/css' />"); }
 		if ($f_helper) { $this->header_elements ("<link href='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+data/mmedia/swg_output_helper.php.css",true,false))."' rel='stylesheet' type='text/css' />"); }
 	}
@@ -269,7 +271,7 @@ Set up some variables
 		global $direct_settings;
 		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -output_class->js_header ()- (#echo(__LINE__)#)"); }
 
-		$this->header_elements ("<script src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_mmedia]/ext_jquery/jquery-1.4.2.min.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'><!-- // jQuery library // --></script>");
+		$this->header_elements ("<script src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_mmedia]/ext_jquery/jquery-1.4.4.min.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'><!-- // jQuery library // --></script>");
 		$this->header_elements ("<script src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_mmedia]/swg_AJAX.php.js++dbid+".$direct_settings['product_buildid'],true,true))."' type='text/javascript'><!-- // Asynchronous JavaScript and XML // --></script>");
 		$this->header_elements ("<script src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_mmedia]/swg_DOM.php.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'><!-- // jQuery based DOM // --></script>");
 
@@ -308,7 +310,7 @@ if (typeof (djs_var) == 'undefined') { var djs_var = [ ]; }
 		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -output_class->js_helper (+f_text,$f_url,$f_close_onload)- (#echo(__LINE__)#)"); }
 
 $this->header_elements ("<script type='text/javascript'><![CDATA[
-djs_var['core_run_onload'].push ({ func:'djs_load_functions',params: { file:'swg_output_helper.php.js' } });
+djs_var.core_run_onload.push ({ func:'djs_load_functions',params: { file:'swg_output_helper.php.js' } });
 ]]></script>");
 
 		$f_js_helper_id = ("swghelp".$this->js_helper_element);
@@ -317,7 +319,7 @@ djs_var['core_run_onload'].push ({ func:'djs_load_functions',params: { file:'swg
 		if (strlen ($f_url)) { $f_text = "<a href=\"$f_url\" target='_blank'>$f_text</a>"; }
 
 $f_return = ("<div id='$f_js_helper_id' class='pagehelperbg' style='position:relative;width:75%;margin:auto;text-align:justify'><div class='pagehelpericon'><img src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_mmedia]/swg_output_helper.png",true,false))."' width='32' height='32' alt=\"".(direct_local_get ("core_detailed_information"))."\" title=\"".(direct_local_get ("core_detailed_information"))."\" /></div><span class='pagehelpercontent'>$f_text</span></div><script type='text/javascript'><![CDATA[
-djs_var['core_run_onload'].push ({ func:'djs_core_helper_init',params:{ id:'$f_js_helper_id',hide:$f_close_onload } });
+djs_var.core_run_onload.push ({ func:'djs_core_helper_init',params:{ id:'$f_js_helper_id',hide:$f_close_onload } });
 ]]></script>");
 
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -output_class->js_helper ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
@@ -478,12 +480,13 @@ $this->menus[$f_menu][$f_level][] = array (
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -output_class->oset ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_output->oset_content ($f_module,$f_obj)
+	//f// direct_output->oset_callable ($f_module,$f_obj,$f_include = false)
 /**
-	* Load an OSet element and return it.
+	* Return the OSet callable.
 	*
 	* @param  string $f_module The OSet module
 	* @param  string $f_obj The target OSet object
+	* @param  boolean $f_include True if it is a include OSet module
 	* @uses   direct_basic_functions::include_file()
 	* @uses   direct_basic_functions::settings_get()
 	* @uses   direct_debug()
@@ -491,30 +494,31 @@ $this->menus[$f_menu][$f_level][] = array (
 	* @return string Output data
 	* @since  v0.1.07
 */
-	/*#ifndef(PHP4) */public /* #*/function oset_content ($f_module,$f_obj)
+	/*#ifndef(PHP4) */public /* #*/function oset_callable ($f_module,$f_obj,$f_include = false)
 	{
 		global $direct_classes,$direct_settings;
 		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -output_class->oset_content ($f_module,$f_obj)- (#echo(__LINE__)#)"); }
 
+		$f_oset = ($f_include ? "direct_{$f_module}_oset_".$f_obj : "direct_output_oset_{$f_module}_".$f_obj);
 		$f_return = "";
 
-		if (!function_exists ("direct_output_oset_".$f_obj))
+		if (!function_exists ($f_oset))
 		{
 /* -------------------------------------------------------------------------
 We are supporting subdirectories. Split it and get relevant module data!
 ------------------------------------------------------------------------- */
 
-			if (strpos ($f_module,"/") === false) { $f_oset = "swg_$f_module.php"; }
+			if (strpos ($f_module,"/") === false) { $f_oset_file = ($f_include ? "swgi_$f_module.php" : "swg_$f_module.php"); }
 			else
 			{
-				$f_oset = substr (strrchr ($f_module,"/"),1);
-				$f_oset = preg_replace ("#[;\/\\\?:@\=\&\.\+]#i","",$f_oset);
+				$f_oset_file = substr (strrchr ($f_module,"/"),1);
+				$f_oset_file = preg_replace ("#[;\/\\\?:@\=\&\.\+]#i","",$f_oset_file);
 
-				$f_oset_path = preg_quote ($f_oset);
+				$f_oset_path = preg_quote ($f_oset_file);
 				$f_oset_path = preg_replace ("#\/$f_oset_path$#","",$f_module);
 				$f_oset_path = preg_replace ("#[;\?:@\=\&\.\+]#i","",$f_oset_path);
 
-				$f_oset = $f_oset_path."/swg_{$f_oset}.php";
+				$f_oset_file = ($f_include ? $f_oset_path."/swgi_{$f_oset_file}.php" : $f_oset_path."/swg_{$f_oset_file}.php");
 				$f_module = str_replace ("/","_",$f_module);
 			}
 
@@ -523,17 +527,36 @@ The next step is to get the file if available ... otherwise try to catch the
 file of the default OSet
 ------------------------------------------------------------------------- */
 
-			if ((!$direct_classes['basic_functions']->include_file ($direct_settings['path_system']."/osets/{$this->oset}/".$f_oset))&&($direct_settings['swg_theme_oset']))
+			if ((!$direct_classes['basic_functions']->include_file ($direct_settings['path_system']."/osets/{$this->oset}/".$f_oset_file))&&($direct_settings['swg_theme_oset']))
 			{
 				$this->oset = $direct_settings['swg_theme_oset'];
-				$direct_classes['basic_functions']->require_file ($direct_settings['path_system']."/osets/{$this->oset}/".$f_oset);
+				$direct_classes['basic_functions']->require_file ($direct_settings['path_system']."/osets/{$this->oset}/".$f_oset_file);
 			}
 
 			$direct_classes['basic_functions']->settings_get ($direct_settings['path_system']."/osets/{$this->oset}/swg_oset_up.xml");
 		}
 
-		$f_oset = "direct_output_oset_{$f_module}_".$f_obj;
-		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -output_class->oset_content ()- (#echo(__LINE__)#)",:#*/(function_exists ($f_oset) ? $f_oset () : "")/*#ifdef(DEBUG):,true):#*/;
+		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -output_class->oset_content ()- (#echo(__LINE__)#)",:#*/(function_exists ($f_oset) ? $f_oset : NULL)/*#ifdef(DEBUG):,true):#*/;
+	}
+
+	//f// direct_output->oset_content ($f_module,$f_obj)
+/**
+	* Load an OSet element and return it.
+	*
+	* @param  string $f_module The OSet module
+	* @param  string $f_obj The target OSet object
+	* @uses   direct_output::oset_callable()
+	* @uses   direct_debug()
+	* @uses   USE_debug_reporting
+	* @return string Output data
+	* @since  v0.1.07
+*/
+	/*#ifndef(PHP4) */public /* #*/function oset_content ($f_module,$f_obj)
+	{
+		if (USE_debug_reporting) { direct_debug (7,"sWG/#echo(__FILEPATH__)# -output_class->oset_content ($f_module,$f_obj)- (#echo(__LINE__)#)"); }
+
+		$f_oset = $this->oset_callable ($f_module,$f_obj);
+		return /*#ifdef(DEBUG):direct_debug (9,"sWG/#echo(__FILEPATH__)# -output_class->oset_content ()- (#echo(__LINE__)#)",:#*/(is_callable ($f_oset) ? $f_oset () : "")/*#ifdef(DEBUG):,true):#*/;
 	}
 
 	//f// direct_output->pages_generator ($f_uri,$f_pages,$f_cpage = "",$f_with_lastnext_keys = true)

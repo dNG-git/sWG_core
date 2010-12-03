@@ -143,6 +143,7 @@ Set protocol specific data
 		}
 
 		$direct_settings['iscript_req'] = (((isset ($_SERVER['HTTPS']))&&($_SERVER['HTTPS'])) ? "https://".$direct_settings['swg_server'] : "http://".$direct_settings['swg_server']);
+		if ((defined ("USE_cookies"))&&(isset ($_COOKIE['BrowserSupport']))) { $direct_settings['swg_clientsupport'] = array_flip (explode (" ",$_COOKIE['BrowserSupport'])); }
 
 /* -------------------------------------------------------------------------
 Now filter out the IP and hostname of the visitor - I want to know it

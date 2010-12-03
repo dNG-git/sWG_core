@@ -33,7 +33,7 @@ function djs_core_helper_hidden ()
 {
 	var f_jquery_object = $(this);
 	var f_id = f_jquery_object.attr ('id');
-	djs_var['core_output_helper_cache'][f_id] = f_jquery_object.replaceWith ("<div id='" + f_id + "' style='display:none'><a href=\"javascript:djs_core_helper_show('" + f_id + "');\"><?php echo direct_local_get ("core_detailed_information_show"); ?></a></div>");
+	djs_var.core_output_helper_cache[f_id] = f_jquery_object.replaceWith ("<div id='" + f_id + "' style='display:none'><a href=\"javascript:djs_core_helper_show('" + f_id + "');\"><?php echo direct_local_get ("core_detailed_information_show"); ?></a></div>");
 
 	$("#" + f_id).fadeIn ('slow');
 }
@@ -45,10 +45,10 @@ function djs_core_helper_shown ()
 	var f_jquery_object = $(this);
 	var f_id = f_jquery_object.attr ('id');
 
-	if (typeof (djs_var['core_output_helper_cache'][f_id]) != 'undefined')
+	if (typeof (djs_var.core_output_helper_cache[f_id]) != 'undefined')
 	{
-		f_jquery_object.replaceWith (djs_var['core_output_helper_cache'][f_id]);
-		delete (djs_var['core_output_helper_cache'][f_id]);
+		f_jquery_object.replaceWith (djs_var.core_output_helper_cache[f_id]);
+		delete (djs_var.core_output_helper_cache[f_id]);
 
 		f_jquery_object = $("#" + f_id);
 		f_jquery_object.one ("click",function () { djs_core_helper_hide (f_id); });

@@ -5,6 +5,7 @@
 <aif value='audio/x-aiff' />
 <aifc value='audio/x-aiff' />
 <aiff value='audio/x-aiff' />
+<air value='application/vnd.adobe.air-application-installer-package+zip' />
 <asc value='text/plain' />
 <au value='audio/basic' />
 <avi value='video/x-msvideo' />
@@ -19,6 +20,7 @@
 <csh value='application/x-csh' />
 <css value='text/css' />
 <dcr value='application/x-director' />
+<digitstart__7z value='application/x-7z-compressed' />
 <dir value='application/x-director' />
 <djv value='image/vnd.djvu' />
 <djvu value='image/vnd.djvu' />

@@ -126,6 +126,7 @@ Set protocol specific data
 ------------------------------------------------------------------------- */
 
 		$direct_settings['dsd'] = $direct_classes['basic_functions']->dsd_parse ($direct_settings['dsd']);
+		$direct_settings['swg_clientsupport'] = array ();
 
 		$this->auth = NULL;
 		$this->pass = NULL;
