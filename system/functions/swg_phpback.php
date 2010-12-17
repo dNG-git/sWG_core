@@ -155,7 +155,8 @@ if (!@function_exists ("mb_convert_encoding"))
 	* php.net: Converts the character encoding of string str to to_encoding from
 	* optionally from_encoding.
 	*
-	* mb_convert_encoding ( string $str , string $to_encoding [, mixed $from_encoding ] )
+	* mb_convert_encoding ( string $str , string $to_encoding
+	* [, mixed $from_encoding ] )
 	*
 	* @param  string $f_data Input string
 	* @param  string $f_to The type of encoding the string is being converted
@@ -192,6 +193,74 @@ if (!@function_exists ("mb_internal_encoding"))
 	* @since  v0.1.08
 */
 	function mb_internal_encoding ($f_encoding = "") { return (strlen ($f_encoding) ? "phpback" : true); }
+}
+
+if (!@function_exists ("mb_send_mail"))
+{
+	//f// mb_send_mail ($f_recipients,$f_subject,$f_email_content,$f_email_headers = NULL,$f_email_parameters = NULL)
+/**
+	* "mb_send_mail ()" is an optional function to handle multibyte strings. This
+	* implementation is NOT compatible with multibyte strings and things will
+	* probably break in connection with UTF-8 or similar encoded strings.
+	*
+	* php.net: Send encoded mail
+	*
+	* mb_send_mail ( string $to , string $subject , string $message
+	* [, string $additional_headers = NULL
+	* [, string $additional_parameter = NULL ]] )
+	*
+	* @param  string $f_recipients Recipients
+	* @param  string $f_subject Title of the eMail
+	* @param  string $f_email_content eMail content
+	* @param  string $f_email_headers Additional headers
+	* @param  string $f_email_parameters Additional parameters
+	* @return boolean True on success
+	* @since  v0.1.08
+*/
+	function mb_send_mail ($f_data,$f_encoding = "") { return mail ($f_recipients,$f_subject,$f_email_content,$f_email_headers,$f_email_parameters); }
+}
+
+if (!@function_exists ("mb_strlen"))
+{
+	//f// mb_strlen ($f_data,$f_encoding = "")
+/**
+	* "mb_strlen ()" is an optional function to handle multibyte strings. This
+	* implementation is NOT compatible with multibyte strings and things will
+	* probably break in connection with UTF-8 or similar encoded strings.
+	*
+	* php.net: Get string length
+	*
+	* mb_strlen ( string $str [, string $encoding ] )
+	*
+	* @param  string $f_data Input string 
+	* @param  string $f_encoding Character encoding name to be used
+	* @return integer Returns the string length
+	* @since  v0.1.08
+*/
+	function mb_strlen ($f_data,$f_encoding = "") { return strlen ($f_data); }
+}
+
+if (!@function_exists ("mb_strpos"))
+{
+	//f// mb_strpos ($f_data,$f_search_value,$f_offset = NULL,$f_encoding = "")
+/**
+	* "mb_strpos ()" is an optional function to handle multibyte strings. This
+	* implementation is NOT compatible with multibyte strings and things will
+	* probably break in connection with UTF-8 or similar encoded strings.
+	*
+	* php.net: Find position of first occurrence of string in a string
+	*
+	* mb_substr ( string $haystack , string $needle [, int $offset
+	* [, string $encoding ]] )
+	*
+	* @param  string $f_data Input string
+	* @param  string $f_search_value Search value
+	* @param  integer $f_offset String offset
+	* @param  string $f_encoding Character encoding name to be used
+	* @return string Returns the substring
+	* @since  v0.1.08
+*/
+	function mb_strpos ($f_data,$f_search_value,$f_offset = NULL,$f_encoding = "") { return (($f_offset === NULL) ? strpos ($f_data,$f_search_value) : strpos ($f_data,$f_search_value,$f_offset)); }
 }
 
 if (!@function_exists ("mb_substr"))
