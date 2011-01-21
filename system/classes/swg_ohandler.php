@@ -1037,11 +1037,15 @@ LICENSE_WARNING_END //i*/
 */
 	/*#ifndef(PHP4) */public /* #*/function warning ($f_title,$f_text)
 	{
-		global $direct_cachedata;
+		global $direct_cachedata,$direct_settings;
 		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -output_class->warning ($f_title,+f_text)- (#echo(__LINE__)#)"); }
 
-		$f_text = direct_html_encode_special (preg_replace ("#\[url:(.+?)\](.+?)[/url]#i","<a href=\"\\1\" target='_self'>\\2</a>",$f_text));
-		$direct_cachedata['output_warning'][] = array ("title" => direct_html_encode_special ($f_title),"text" => $f_text);
+		if ($direct_settings['swg_header_warnings']) { $this->output_header ("Warning","Warning: 199 sWG \"".(str_replace ('"','\"',$f_text))."\"",true,true); }
+		else
+		{
+			$f_text = direct_html_encode_special (preg_replace ("#\[url:(.+?)\](.+?)[/url]#i","<a href=\"\\1\" target='_self'>\\2</a>",$f_text));
+			$direct_cachedata['output_warning'][] = array ("title" => direct_html_encode_special ($f_title),"text" => $f_text);
+		}
 	}
 }
 
@@ -1053,6 +1057,7 @@ define ("CLASS_direct_output",true);
 
 //j// Script specific commands
 
+if (!isset ($direct_settings['swg_header_warnings'])) { $direct_settings['swg_header_warnings'] = true; }
 if (!isset ($direct_settings['swg_pages_key_last'])) { $direct_settings['swg_pages_key_last'] = "&#0171;"; }
 if (!isset ($direct_settings['swg_pages_key_next'])) { $direct_settings['swg_pages_key_next'] = "&#0187;"; }
 if (!isset ($direct_settings['swg_pages_per_list'])) { $direct_settings['swg_pages_per_list'] = 6; }

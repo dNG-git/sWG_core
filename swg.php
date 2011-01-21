@@ -818,23 +818,33 @@ Encode the output for smaller bandwidth connections
 		$this->last_modified = $f_timestamp;
 	}
 
-	//f// direct_output_inline->output_header ($f_name = "",$f_value = NULL,$f_name_as_key = false)
+	//f// direct_output_inline->output_header ($f_name = "",$f_value = NULL,$f_name_as_key = false,$f_value_append = false)
 /**
 	* Returns or sets a header.
 	*
 	* @param string $f_name Header name
 	* @param mixed $f_value Header value as string or array
 	* @param boolean $f_name_as_key True if the name is used as a key
+	* @param boolean $f_value_append True if headers should be appended
 	* @uses  USE_debug_reporting
 	* @since v0.1.08
 */
-	/*#ifndef(PHP4) */public /* #*/function output_header ($f_name = "",$f_value = NULL,$f_name_as_key = false)
+	/*#ifndef(PHP4) */public /* #*/function output_header ($f_name = "",$f_value = NULL,$f_name_as_key = false,$f_value_append = false)
 	{
 		if (isset ($f_value))
 		{
 			if ($f_name_as_key)
 			{
-				if (isset ($this->output_headers_indexed[$f_name])) { $this->output_headers[$this->output_headers_indexed[$f_name]] = $f_value; }
+				if (isset ($this->output_headers_indexed[$f_name]))
+				{
+					if ($f_value_append)
+					{
+						if (is_array ($this->output_headers[$this->output_headers_indexed[$f_name]])) { $f_value = array_merge ($this->output_headers[$this->output_headers_indexed[$f_name]],(array ($f_value))); }
+						else { $f_value = array ($this->output_headers[$this->output_headers_indexed[$f_name]],$f_value); }
+					}
+
+					$this->output_headers[$this->output_headers_indexed[$f_name]] = $f_value;
+				}
 				else
 				{
 					$this->output_headers[$this->output_headers_index] = $f_value;
