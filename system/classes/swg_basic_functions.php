@@ -369,7 +369,7 @@ Set up the caching variables
 
 		if (is_string ($f_data))
 		{
-			$f_data = preg_replace ("#[\\x00-\\x09]#","",$f_data);
+			$f_data = ($this->PHP_filter_var ? (filter_var ($f_data,FILTER_SANITIZE_STRING,(FILTER_FLAG_NO_ENCODE_QUOTES | FILTER_FLAG_STRIP_LOW))) : preg_replace ("#[\\x00-\\x09]#","",$f_data));
 			if (INFO_magic_quotes_input) { $this->magic_quotes_input ($f_data); }
 		}
 		else { $f_data = ""; }
