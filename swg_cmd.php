@@ -101,10 +101,10 @@ part
 */
 $direct_cachedata = array ("core_cookies" => array (),"core_debug" => array (),"core_error" => array (),"core_service_activated" => false,"core_time" => time (),"output_warning" => array ());
 /**
-* $direct_classes is mainly for internal use. It contains a list of initiated
+* $direct_globals is mainly for internal use. It contains a list of initiated
 * classes and their current full names.
 */
-$direct_classes = array ("@names" => array ());
+$direct_globals = array ("@names" => array ());
 /**
 * All localisation strings should be saved into this array.
 */
@@ -594,7 +594,7 @@ Informing the system about available functions
 */
 	/*#ifndef(PHP4) */public static /* #*/function iline_parse ($f_iline = NULL)
 	{
-		global $direct_cachedata,$direct_classes,$direct_settings;
+		global $direct_cachedata,$direct_globals,$direct_settings;
 		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -basic_functions_class->iline_parse (+f_line)- (#echo(__LINE__)#)"); }
 
 		if (!isset ($f_iline))
@@ -629,7 +629,7 @@ Informing the system about available functions
 Mark this class as the most up-to-date one
 ------------------------------------------------------------------------- */
 
-$direct_classes['@names']['basic_functions'] = "direct_basic_functions_inline";
+$direct_globals['@names']['basic_functions'] = "direct_basic_functions_inline";
 define ("CLASS_direct_basic_functions_inline",true);
 
 //c// direct_output_inline
@@ -811,6 +811,7 @@ Set "last modified" time to "0".
 			else { $this->output_headers[$f_name] = $f_value; }
 		}
 		elseif (isset ($this->output_headers[$f_name])) { return $this->output_headers[$f_name]; }
+		elseif (($f_name_as_key)&&(isset ($this->output_headers_indexed[$f_name]))) { return $this->output_headers[$this->output_headers_indexed[$f_name]]; }
 		else { return NULL; }
 	}
 
@@ -825,7 +826,6 @@ Set "last modified" time to "0".
 	* @uses  direct_html_encode_special()
 	* @uses  direct_local_get()
 	* @uses  direct_output_inline::theme_page()
-	* @uses  direct_output_inline::output_send_error()
 	* @uses  direct_outputenc_xhtml_cleanup()
 	* @uses  direct_outputenc_xhtml_legacy()
 	* @uses  USE_debug_reporting
@@ -833,7 +833,7 @@ Set "last modified" time to "0".
 */
 	/*#ifndef(PHP4) */public /* #*/function output_response ($f_title = "",$f_headers = NULL)
 	{
-		global $direct_cachedata,$direct_classes,$direct_local,$direct_settings;
+		global $direct_cachedata,$direct_globals,$direct_local,$direct_settings;
 		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -output_class(inline)->output_response (+f_title,+f_headers)- (#echo(__LINE__)#)"); }
 
 		if ((!isset ($direct_local['lang_charset']))||(!$direct_local['lang_charset'])) { $direct_local['lang_charset'] = "UTF-8"; }
@@ -911,7 +911,9 @@ Set "last modified" time to "0".
 		else
 		{
 			$this->output_response_headers ();
-			$this->output_response_data ($this->output_data);
+
+			if (($this->output_data)||(!is_string ($this->output_header ("HTTP/1.1",NULL,true)))) { $this->output_response_data ($this->output_data); }
+			else { $this->output_send_error ("fatal",($this->output_header ("HTTP/1.1",NULL,true)),"","sWG/#echo(__FILEPATH__)# -output_class->output_response ()- (#echo(__LINE__)#)"); }
 		}
 
 		$f_debug_endtime = /*#ifndef(PHP4) */microtime (true)/* #*//*#ifdef(PHP4):time ():#*/;
@@ -1007,7 +1009,7 @@ $direct_settings[product_lcode_txt]
 */
 	/*#ifndef(PHP4) */public /* #*/function output_send ($f_title = "",$f_headers = NULL) { $this->output_response ($f_title,$f_headers); }
 
-	//f// direct_output_inline->output_send_error ($f_type,$f_error,$f_extra_data = "")
+	//f// direct_output_inline->output_send_error ($f_type,$f_error,$f_extra_data = "",$f_error_position = "")
 /**
 	* We are trying to catch all errors - even semi-fatal ones. For that reason
 	* we provide the emergency mode function that does not require an active theme
@@ -1018,22 +1020,29 @@ $direct_settings[product_lcode_txt]
 	* @param string $f_error A key for localisation strings or an error message
 	* @param string $f_extra_data More detailed information to track down the
 	*        problem
+	* @param string $f_error_position Position where the error occurred
 	* @uses  direct_class_init()
 	* @uses  direct_debug()
 	* @uses  direct_output_inline::output_send()
 	* @uses  USE_debug_reporting
 	* @since v0.1.01
 */
-	/*#ifndef(PHP4) */public /* #*/function output_send_error ($f_type,$f_error,$f_extra_data = "")
+	/*#ifndef(PHP4) */public /* #*/function output_send_error ($f_type,$f_error,$f_extra_data = "",$f_error_position = "")
 	{
-		global $direct_cachedata,$direct_classes,$direct_local,$direct_settings;
-		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -output_class(inline)->output_send_error ($f_type,$f_error,+f_extra_data)- (#echo(__LINE__)#)"); }
+		global $direct_cachedata,$direct_globals,$direct_local,$direct_settings;
+		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -output_class(inline)->output_send_error ($f_type,$f_error,+f_extra_data,$f_error_position)- (#echo(__LINE__)#)"); }
 
-		if (!isset ($direct_classes['output'])) { direct_class_init ("output"); }
 		if ((!preg_match ("#\W#i",$f_error))&&(function_exists ("direct_local_get"))) { $f_error = direct_local_get ("errors_".$f_error); }
-		if (strlen ($f_extra_data)) { $f_extra_data = "\n<p class='pagecontent' style='text-align:center'>$f_extra_data</p>"; }
 
-$direct_classes['output']->output_content = ("<p class='pagecontent' style='text-align:center'><span style='font-weight:bold'>$direct_settings[product_lcode_html]</span> $direct_settings[product_version]</p>
+		if (strlen ($f_extra_data))
+		{
+			$f_extra_data = "\n<p class='pagecontent' style='text-align:center'>".$f_extra_data;
+			if ((USE_debug_reporting)&&($f_error_position)) { $f_extra_data .= "<br />\n<span style='font-size:10px'>$f_error_position</span>"; }
+			$f_extra_data .= "</p>";
+		}
+		elseif ((USE_debug_reporting)&&($f_error_position)) { $f_extra_data = "\n<p class='pagecontent' style='text-align:center;font-size:10px'>$f_error_position</p>"; }
+
+$direct_globals['output']->output_content = ("<p class='pagecontent' style='text-align:center'><span style='font-weight:bold'>$direct_settings[product_lcode_html]</span> $direct_settings[product_version]</p>
 <p class='pagecontent' style='text-align:center'><span style='font-weight:bold;color:#FF0000'>Entering emergency mode:</span><br />
 $f_error</p>$f_extra_data
 <p class='pagecontent' style='text-align:center;font-size:10px'>If this seems to be a bug then please <a href='http://www.direct-netware.de/redirect.php?$direct_settings[product_icode];itracker;bug' target='_blank'>report</a> it.</p>");
@@ -1043,18 +1052,18 @@ $f_error</p>$f_extra_data
 			if (!empty ($direct_cachedata['core_debug']))
 			{
 				$f_data = array_map ("direct_html_encode_special",$direct_cachedata['core_debug']);
-				$direct_classes['output']->output_content .= ("\n<p class='pagecontent' style='text-align:center;font-size:10px'><span style='font-weight:bold'>Debug Data List:</span><br />\n".(implode ("<br />\n",$f_data))."</p>");
+				$direct_globals['output']->output_content .= ("\n<p class='pagecontent' style='text-align:center;font-size:10px'><span style='font-weight:bold'>Debug Data List:</span><br />\n".(implode ("<br />\n",$f_data))."</p>");
 			}
 
 			if (!empty ($direct_cachedata['core_error']))
 			{
 				$f_data = array_map ("direct_html_encode_special",$direct_cachedata['core_error']);
-				$direct_classes['output']->output_content .= ("\n<p class='pagecontent' style='text-align:center;font-size:10px'><span style='font-weight:bold'>Error List:</span><br />\n".(implode ("<br />\n",$f_data))."</p>");
+				$direct_globals['output']->output_content .= ("\n<p class='pagecontent' style='text-align:center;font-size:10px'><span style='font-weight:bold'>Error List:</span><br />\n".(implode ("<br />\n",$f_data))."</p>");
 			}
 		}
 
-		$direct_classes['output']->header (false,true);
-		$direct_classes['output']->output_send ($direct_settings['product_lcode_htmltitle']);
+		$direct_globals['output']->header (false,true);
+		$direct_globals['output']->output_send ($direct_settings['product_lcode_htmltitle']);
 
 /*#ifndef(PHP4) */
 		$direct_cachedata['core_service_activated'] = true;
@@ -1069,8 +1078,8 @@ $f_error</p>$f_extra_data
 Mark this class as the most up-to-date one
 ------------------------------------------------------------------------- */
 
-$direct_classes['@names']['output'] = "direct_output_inline";
-$direct_classes['@names']['output_theme'] = "direct_output_inline";
+$direct_globals['@names']['output'] = "direct_output_inline";
+$direct_globals['@names']['output_theme'] = "direct_output_inline";
 define ("CLASS_direct_output_inline",true);
 
 //f// __autoload ($f_class)
@@ -1088,7 +1097,7 @@ define ("CLASS_direct_output_inline",true);
 */
 function __autoload ($f_class)
 {
-	global $direct_classes,$direct_settings;
+	global $direct_globals,$direct_settings;
 	if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -__autoload ($f_class)- (#echo(__LINE__)#)"); }
 
 /* -------------------------------------------------------------------------
@@ -1098,7 +1107,7 @@ Search for the requested class ...
 	$f_class = preg_replace ("#^direct_#","",$f_class);
 	$f_include_check = false;
 
-	if (isset ($direct_classes['basic_functions']))
+	if (isset ($direct_globals['basic_functions']))
 	{
 		if ((isset ($direct_settings['swg_autoload_extensions']))&&(is_array ($direct_settings['swg_autoload_extensions'])))
 		{
@@ -1108,10 +1117,10 @@ Search for the requested class ...
 			} 
 		}
 
-		if ((!$f_include_check)&&(direct_class_function_check ($direct_classes['basic_functions'],"include_file")))
+		if ((!$f_include_check)&&(direct_class_function_check ($direct_globals['basic_functions'],"include_file")))
 		{
-			$f_include_check = $direct_classes['basic_functions']->include_file ($direct_settings['path_system']."/classes/dhandler/swg_$f_class.php");
-			if (!$f_include_check) { $direct_classes['basic_functions']->include_file ($direct_settings['path_system']."/classes/swg_$f_class.php"); }
+			$f_include_check = $direct_globals['basic_functions']->include_file ($direct_settings['path_system']."/classes/dhandler/swg_$f_class.php");
+			if (!$f_include_check) { $direct_globals['basic_functions']->include_file ($direct_settings['path_system']."/classes/swg_$f_class.php"); }
 		}
 	}
 }
@@ -1149,23 +1158,23 @@ function direct_class_function_check (&$f_class,$f_function)
 */
 function direct_class_init ($f_class,$f_force_reinit = false)
 {
-	global $direct_classes;
+	global $direct_globals;
 	if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_class_init ($f_class,+f_force_reinit)- (#echo(__LINE__)#)"); }
 
 	$f_return = false;
 
-	if (isset ($direct_classes[$f_class]))
+	if (isset ($direct_globals[$f_class]))
 	{
-		if ((!$f_force_reinit)&&(get_class ($direct_classes[$f_class]) == $direct_classes['@names'][$f_class])) { $f_return = true; }
-		else { $direct_classes[$f_class] = NULL; }
+		if ((!$f_force_reinit)&&(get_class ($direct_globals[$f_class]) == $direct_globals['@names'][$f_class])) { $f_return = true; }
+		else { $direct_globals[$f_class] = NULL; }
 	}
 
 	if (!$f_return)
 	{
-		if (defined ("CLASS_".$direct_classes['@names'][$f_class]))
+		if (defined ("CLASS_".$direct_globals['@names'][$f_class]))
 		{
-			$direct_classes[$f_class] = new $direct_classes['@names'][$f_class] ();
-			if (is_object ($direct_classes[$f_class])) { $f_return = true; }
+			$direct_globals[$f_class] = new $direct_globals['@names'][$f_class] ();
+			if (is_object ($direct_globals[$f_class])) { $f_return = true; }
 		}
 	}
 
@@ -1300,23 +1309,25 @@ function direct_html_encode_special ($f_data)
 	} /* #\n*/
 }
 
-//f// direct_outputenc_xhtml_cleanup (&$f_data)
+///f// direct_outputenc_xhtml_cleanup (&$f_data,$f_content_type)
 /**
 * If the theme is not compatible with XHTML, we need to convert the
 * <script>-content of sWG provided JavaScript functions.
 *
-* @param string $f_data Reference to the output content
+* @param string &$f_data Reference to the output content
+* @param string $f_content_type Content type for $f_data
 * @uses  direct_debug()
 * @uses  USE_debug_reporting
 * @since v0.1.05
 */
-function direct_outputenc_xhtml_cleanup (&$f_data)
+function direct_outputenc_xhtml_cleanup (&$f_data,$f_content_type = NULL)
 {
 	global $direct_settings;
-	if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -direct_outputenc_xhtml_cleanup (+f_data)- (#echo(__LINE__)#)"); }
+	if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -direct_outputenc_xhtml_cleanup (+f_data,+f_content_type)- (#echo(__LINE__)#)"); }
 
-	$f_content_type = str_replace ("application/xhtml+xml","text/html",$direct_settings['theme_xhtml_type']);
-	$f_data = preg_replace (array ("#\s*<\?(.*?)\?>(.*?)<#s","#\s*\/\s*>#s","#<meta(.+?)".(preg_quote ($direct_settings['theme_xhtml_type'],"#"))."(.+?)>#si","#<(script|style)(.*?)><\!\[CDATA\[(.*?)\]\]><\/(script|style)>#si"),(array ("<",">","<meta\\1$f_content_type\\2>","<\\1\\2><!--\\3// --></\\4>")),$f_data);
+	if (!isset ($f_content_type)) { $f_content_type = $direct_settings['theme_xhtml_type']; }
+	$f_html_content_type = str_replace ("application/xhtml+xml","text/html",$f_content_type);
+	$f_data = preg_replace (array ("#\s*<\?(.*?)\?>(.*?)<#s","#\s*\/\s*>#s","#<meta(.+?)".(preg_quote ($f_content_type,"#"))."(.+?)>#si","#<(script|style)(.*?)><\!\[CDATA\[(.*?)\]\]><\/(script|style)>#si"),(array ("<",">","<meta\\1$f_html_content_type\\2>","<\\1\\2><!--\\3// --></\\4>")),$f_data);
 }
 
 //j// Script specific commands
@@ -1344,7 +1355,7 @@ Create instances of required classes
 Show me the credits - please do not remove
 ------------------------------------------------------------------------- */
 
-$direct_classes['output']->output_content = ("<p class='pagecontent' style='text-align:center'><span style='font-weight:bold'>$direct_settings[product_lcode_html]</span> $direct_settings[product_version] - <span style='font-weight:bold'>Program information</span></p>
+$direct_globals['output']->output_content = ("<p class='pagecontent' style='text-align:center'><span style='font-weight:bold'>$direct_settings[product_lcode_html]</span> $direct_settings[product_version] - <span style='font-weight:bold'>Program information</span></p>
 <p class='pagecontent' style='text-align:center;font-weight:bold'>About the developers</p>
 <p class='pagecontent' style='text-align:center;font-size:10px'><span style='font-weight:bold'>Developer:</span> <a href='http://www.direct-netware.de/redirect.php?web;en' target='_blank'><span style='font-style:italic'>direct</span> Netware Group</a><br />
 <span style='font-weight:bold'>Copyright holder:</span> <a href='http://www.direct-netware.de' target='_blank'><span style='font-style:italic'>direct</span> Netware Group</a> - All rights reserved</p>
@@ -1357,19 +1368,19 @@ $direct_classes['output']->output_content = ("<p class='pagecontent' style='text
 Show me the basic settings
 ------------------------------------------------------------------------- */
 
-	$direct_classes['output']->output_content .= "<p class='pagecontent' style='text-align:center;font-size:10px'>Error reporting is ";
-	$direct_classes['output']->output_content .= (OW_error_reporting ? "off" : "on");
+	$direct_globals['output']->output_content .= "<p class='pagecontent' style='text-align:center;font-size:10px'>Error reporting is ";
+	$direct_globals['output']->output_content .= (OW_error_reporting ? "off" : "on");
 /*#ifdef(PHP4):
-	$direct_classes['output']->output_content .= "<br />\nMagic_Quotes_Runtime overwriting is ";
-	$direct_classes['output']->output_content .= (OW_magic_quotes_runtime ? "on" : "off");
+	$direct_globals['output']->output_content .= "<br />\nMagic_Quotes_Runtime overwriting is ";
+	$direct_globals['output']->output_content .= (OW_magic_quotes_runtime ? "on" : "off");
 :#\n*/
-	$direct_classes['output']->output_content .= "<br />\nCompression for output (if available) is ";
-	$direct_classes['output']->output_content .= (((USE_outputenc)&&(extension_loaded ("zlib"))) ? "on" : "off");
+	$direct_globals['output']->output_content .= "<br />\nCompression for output (if available) is ";
+	$direct_globals['output']->output_content .= (((USE_outputenc)&&(extension_loaded ("zlib"))) ? "on" : "off");
 
-	$direct_classes['output']->output_content .= "<br />\nUsing SOCKET functions is ";
-	$direct_classes['output']->output_content .= (USE_socket ? "on" : "off");
+	$direct_globals['output']->output_content .= "<br />\nUsing SOCKET functions is ";
+	$direct_globals['output']->output_content .= (USE_socket ? "on" : "off");
 
-$direct_classes['output']->output_content .= ("<br />
+$direct_globals['output']->output_content .= ("<br />
 Timeout value is $direct_settings[timeout] (core: +$direct_settings[timeout_core])<br />
 Light version activation value is $direct_settings[timeout_lightmode]</p>");
 
@@ -1379,7 +1390,7 @@ Show me the system configuration (in debug mode) - thank you
 
 	if (USE_debug_reporting)
 	{
-$direct_classes['output']->output_content .= ("<p class='pagecontent' style='text-align:center;font-weight:bold'>About the server</p>
+$direct_globals['output']->output_content .= ("<p class='pagecontent' style='text-align:center;font-weight:bold'>About the server</p>
 <p class='pagecontent' style='text-align:center;font-size:10px'><span style='font-weight:bold'>Installed PHP version:</span> ").PHP_VERSION.(" [Zend Engine ").(zend_version ()).("]<br />
 <span style='font-weight:bold'>Running operation system:</span> ").PHP_OS.(" [").(php_uname ()).("]<br />
 <span style='font-weight:bold'>Activated PHP extensions:</span> $g_loaded_extensions</p>");
@@ -1387,8 +1398,8 @@ $direct_classes['output']->output_content .= ("<p class='pagecontent' style='tex
 
 	direct_class_init ("output_theme");
 
-	$direct_classes['output']->header (false,true);
-	$direct_classes['output']->output_send ($direct_settings['product_lcode_htmltitle']);
+	$direct_globals['output']->header (false,true);
+	$direct_globals['output']->output_send ($direct_settings['product_lcode_htmltitle']);
 
 	$direct_cachedata['core_service_activated'] = true;
 }
@@ -1425,7 +1436,7 @@ Create instances of required classes
 ------------------------------------------------------------------------- */
 
 	$g_service_error = NULL;
-	if ((isset ($direct_classes['kernel']))&&(direct_class_function_check ($direct_classes['kernel'],"service_init"))) { $g_service_error = $direct_classes['kernel']->service_init (); }
+	if ((isset ($direct_globals['kernel']))&&(direct_class_function_check ($direct_globals['kernel'],"service_init"))) { $g_service_error = $direct_globals['kernel']->service_init (); }
 	else { direct_class_init ("basic_functions"); }
 
 	direct_class_init ("output");
@@ -1433,22 +1444,22 @@ Create instances of required classes
 /*#ifndef(PHP4) */
 	if (empty ($g_service_error))
 	{
-		if (isset ($g_error)) { $g_error = array ("core_unknown_error","FATAL ERROR:<br />Unknown exception catched: {$g_error}<br /><br />sWG/#echo(__FILEPATH__)# _main_ (#echo(__LINE__)#)","The WebGine has catched an unknown error.<br /><br />Unknown exception catched: {$g_error}<br /><br />sWG/#echo(__FILEPATH__)# _main_ (#echo(__LINE__)#)"); }
-		else { $g_error = array ("core_unsupported_command","FATAL ERROR:<br />Request terminated<br /><br />sWG/#echo(__FILEPATH__)# _main_ (#echo(__LINE__)#)","The WebGine has been accessed using an unknown command.<br /><br />Request terminated<br /><br />sWG/#echo(__FILEPATH__)# _main_ (#echo(__LINE__)#)"); }
+		if (isset ($g_error)) { $g_error = array ("core_unknown_error","FATAL ERROR:<br />Unknown exception catched: ".$g_error,"The WebGine has catched an unknown error.<br /><br />Unknown exception catched:".$g_error,"sWG/#echo(__FILEPATH__)# _main_ (#echo(__LINE__)#)"); }
+		else { $g_error = array ("core_unsupported_command","FATAL ERROR: Request terminated","The WebGine has been accessed using an unknown command.<br /><br />Request terminated<br /><br />sWG/#echo(__FILEPATH__)# _main_ (#echo(__LINE__)#)"); }
 	}
 	else { $g_error = $g_service_error; }
 
 	try/* #\n*/
 /*#ifdef(PHP4):
-	$g_error = (isset ($g_service_error) ? $g_service_error : array ("core_unsupported_command","FATAL ERROR:<br />Request terminated<br /><br />sWG/#echo(__FILEPATH__)# _main_ (#echo(__LINE__)#)","The WebGine has been accessed using an unknown command.<br /><br />Request terminated<br /><br />sWG/#echo(__FILEPATH__)# _main_ (#echo(__LINE__)#)"));
+	$g_error = (isset ($g_service_error) ? $g_service_error : array ("core_unsupported_command","FATAL ERROR: Request terminated","The WebGine has been accessed using an unknown command.<br /><br />Request terminated","sWG/#echo(__FILEPATH__)# _main_ (#echo(__LINE__)#)"));
 :#*/
 	{
-		if (direct_class_function_check ($direct_classes['output'],"output_send_error"))
+		if (direct_class_function_check ($direct_globals['output'],"output_send_error"))
 		{
-			$direct_classes['output']->output_header ("HTTP/1.1","HTTP/1.1 500 Internal Server Error",true);
+			$direct_globals['output']->output_header ("HTTP/1.1","HTTP/1.1 500 Internal Server Error",true);
 
-			if (isset ($direct_local['lang_charset'])) { $direct_classes['output']->output_send_error ("fatal",$g_error[0],$g_error[1]); }
-			else { $direct_classes['output']->output_send_error ("fatal",$g_error[2],$g_error[1]); }
+			if (isset ($direct_local['lang_charset'])) { $direct_globals['output']->output_send_error ("fatal",$g_error[0],$g_error[1],$g_error[3]); }
+			else { $direct_globals['output']->output_send_error ("fatal",$g_error[2],$g_error[1],$g_error[3]); }
 		}
 		else
 		{

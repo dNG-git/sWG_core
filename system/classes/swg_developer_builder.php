@@ -49,10 +49,10 @@ Testing for required classes
 ------------------------------------------------------------------------- */
 
 $g_continue_check = ((defined ("CLASS_direct_developer_builder")) ? false : true);
-if (($g_continue_check)&&(!defined ("CLASS_direct_file"))) { $g_continue_check = $direct_classes['basic_functions']->include_file ($direct_settings['path_system']."/classes/ext_core/file.php",1); }
-if (($g_continue_check)&&(!defined ("CLASS_direct_php_builder"))) { $g_continue_check = ($direct_classes['basic_functions']->include_file ($direct_settings['path_system']."/classes/ext_core/php_builder.php",1) ? defined ("CLASS_direct_php_builder") : false); }
-if (($g_continue_check)&&(!defined ("CLASS_direct_xml"))) { $g_continue_check = $direct_classes['basic_functions']->include_file ($direct_settings['path_system']."/classes/swg_xml.php",1); }
-if (($g_continue_check)&&(!function_exists ("direct_dir_exists"))) { $g_continue_check = $direct_classes['basic_functions']->include_file ($direct_settings['path_system']."/functions/swg_dir_functions.php",1); }
+if (($g_continue_check)&&(!defined ("CLASS_direct_file"))) { $g_continue_check = $direct_globals['basic_functions']->include_file ($direct_settings['path_system']."/classes/ext_core/file.php",1); }
+if (($g_continue_check)&&(!defined ("CLASS_direct_php_builder"))) { $g_continue_check = ($direct_globals['basic_functions']->include_file ($direct_settings['path_system']."/classes/ext_core/php_builder.php",1) ? defined ("CLASS_direct_php_builder") : false); }
+if (($g_continue_check)&&(!defined ("CLASS_direct_xml"))) { $g_continue_check = $direct_globals['basic_functions']->include_file ($direct_settings['path_system']."/classes/swg_xml.php",1); }
+if (($g_continue_check)&&(!function_exists ("direct_dir_exists"))) { $g_continue_check = $direct_globals['basic_functions']->include_file ($direct_settings['path_system']."/functions/swg_dir_functions.php",1); }
 
 if ($g_continue_check)
 {
@@ -121,10 +121,10 @@ Extend the class using old and new behavior
 */
 	/*#ifndef(PHP4) */public /* #*/function __construct ()
 	{
-		global $direct_cachedata,$direct_classes,$direct_settings;
+		global $direct_cachedata,$direct_globals,$direct_settings;
 		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -developer_builder_class->__construct (direct_developer_builder)- (#echo(__LINE__)#)"); }
 
-		$direct_classes['basic_functions']->include_file ("makefile.php");
+		$direct_globals['basic_functions']->include_file ("makefile.php");
 
 /* -------------------------------------------------------------------------
 My parent should be on my side to get the work done

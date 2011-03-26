@@ -49,7 +49,7 @@ Testing for required classes
 ------------------------------------------------------------------------- */
 
 $g_continue_check = ((defined ("CLASS_direct_ihttp")) ? false : true);
-if (($g_continue_check)&&(!defined ("CLASS_direct_input"))) { $g_continue_check = ($direct_classes['basic_functions']->include_file ($direct_settings['path_system']."/classes/swg_ihandler.php",1) ? defined ("CLASS_direct_input") : false); }
+if (($g_continue_check)&&(!defined ("CLASS_direct_input"))) { $g_continue_check = ($direct_globals['basic_functions']->include_file ($direct_settings['path_system']."/classes/swg_ihandler.php",1) ? defined ("CLASS_direct_input") : false); }
 
 if ($g_continue_check)
 {
@@ -105,9 +105,10 @@ Extend the class using old and new behavior
 		}
 		elseif (isset ($_SERVER['QUERY_STRING']))
 		{
-			if (!isset ($f_iline)) { $f_iline = $_SERVER['QUERY_STRING']; }
-			$f_variables = direct_basic_functions::iline_parse ($f_iline);
+			if (isset ($f_iline)) { $f_variables = direct_basic_functions::iline_parse ($f_iline); }
+			else { $f_variables = direct_basic_functions::iline_parse ($_SERVER['QUERY_STRING']); }
 
+			if ((isset ($f_iline))&&(isset ($f_variables['dsd']))) { $direct_settings['dsd'] = $f_variables['dsd']; }
 			if (isset ($f_variables['lang'])) { $direct_settings['lang'] = preg_replace ("#\W+#","",$f_variables['lang']); }
 			if (isset ($f_variables['theme'])) { $direct_settings['theme'] = preg_replace ("#\s+#","",$f_variables['theme']); }
 			if (isset ($f_variables['uuid'])) { $direct_settings['uuid'] = preg_replace ("#\s+#","",$f_variables['uuid']); }
@@ -238,7 +239,7 @@ The standard result: One IP is enough
 Mark this class as the most up-to-date one
 ------------------------------------------------------------------------- */
 
-$direct_classes['@names']['input'] = "direct_ihttp";
+$direct_globals['@names']['input'] = "direct_ihttp";
 define ("CLASS_direct_ihttp",true);
 }
 

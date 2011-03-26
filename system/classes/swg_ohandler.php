@@ -181,10 +181,10 @@ Set up some variables
 */
 	/*#ifndef(PHP4) */protected /* #*/function backtrace_get ($f_data = NULL,$f_handling = "text")
 	{
-		global $direct_classes;
+		global $direct_globals;
 		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -output_class->backtrace_get (+f_data,$f_handling)- (#echo(__LINE__)#)"); }
 
-		$f_backtrace_array = $direct_classes['basic_functions']->backtrace_get ($f_data);
+		$f_backtrace_array = $direct_globals['basic_functions']->backtrace_get ($f_data);
 		$f_return = (empty ($f_backtrace_array) ? "" : implode ("\n",$f_backtrace_array));
 
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -output_class->backtrace_get ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
@@ -208,7 +208,7 @@ Set up some variables
 		global $direct_settings;
 		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -output_class->css_header (+f_ajaxloading,+f_helper)- (#echo(__LINE__)#)"); }
 
-		$this->header_elements ("<link href='$direct_settings[path_mmedia]/ext_jquery/themes/$direct_settings[theme_jquery_ui]/jquery-ui-1.8.6.css' rel='stylesheet' type='text/css' />");
+		$this->header_elements ("<link href='$direct_settings[path_mmedia]/ext_jquery/themes/$direct_settings[theme_jquery_ui]/jquery-ui-1.8.11.css' rel='stylesheet' type='text/css' />");
 		if ($f_ajaxloading) { $this->header_elements ("<link href='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+data/mmedia/swg_output_ajaxloading.php.css",true,false))."' rel='stylesheet' type='text/css' />"); }
 		if ($f_helper) { $this->header_elements ("<link href='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+data/mmedia/swg_output_helper.php.css",true,false))."' rel='stylesheet' type='text/css' />"); }
 	}
@@ -271,7 +271,7 @@ Set up some variables
 		global $direct_settings;
 		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -output_class->js_header ()- (#echo(__LINE__)#)"); }
 
-		$this->header_elements ("<script src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_mmedia]/ext_jquery/jquery-1.4.4.min.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'><!-- // jQuery library // --></script>");
+		$this->header_elements ("<script src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_mmedia]/ext_jquery/jquery-1.5.1.min.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'><!-- // jQuery library // --></script>");
 		$this->header_elements ("<script src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_mmedia]/swg_AJAX.php.js++dbid+".$direct_settings['product_buildid'],true,true))."' type='text/javascript'><!-- // Asynchronous JavaScript and XML // --></script>");
 		$this->header_elements ("<script src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_mmedia]/swg_DOM.php.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'><!-- // jQuery based DOM // --></script>");
 
@@ -464,7 +464,7 @@ $this->menus[$f_menu][$f_level][] = array (
 */
 	/*#ifndef(PHP4) */public /* #*/function oset ($f_module,$f_obj)
 	{
-		global $direct_cachedata,$direct_classes,$direct_settings;
+		global $direct_cachedata,$direct_globals,$direct_settings;
 		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -output_class->oset ($f_module,$f_obj)- (#echo(__LINE__)#)"); }
 
 		$f_return = false;
@@ -475,7 +475,7 @@ $this->menus[$f_menu][$f_level][] = array (
 			$f_return = true;
 			$this->output_content = $this->smiley_decode ($this->output_content);
 		}
-		else { $this->output_send_error ("critical","core_required_object_not_found","FATAL ERROR:<br />&quot;$f_obj&quot; of &quot;$f_module&quot; has reported an error while initiating the OSet<br />sWG/#echo(__FILEPATH__)# -output_class->oset ()- (#echo(__LINE__)#)"); }
+		else { $this->output_send_error ("critical","core_required_object_not_found","FATAL ERROR:<br />&quot;$f_obj&quot; of &quot;$f_module&quot; has reported an error while initiating the OSet","sWG/#echo(__FILEPATH__)# -output_class->oset ()- (#echo(__LINE__)#)"); }
 
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -output_class->oset ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
@@ -496,7 +496,7 @@ $this->menus[$f_menu][$f_level][] = array (
 */
 	/*#ifndef(PHP4) */public /* #*/function oset_callable ($f_module,$f_obj,$f_include = false)
 	{
-		global $direct_classes,$direct_settings;
+		global $direct_globals,$direct_settings;
 		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -output_class->oset_content ($f_module,$f_obj)- (#echo(__LINE__)#)"); }
 
 		$f_oset = ($f_include ? "direct_{$f_module}_oset_".$f_obj : "direct_output_oset_{$f_module}_".$f_obj);
@@ -527,13 +527,13 @@ The next step is to get the file if available ... otherwise try to catch the
 file of the default OSet
 ------------------------------------------------------------------------- */
 
-			if ((!$direct_classes['basic_functions']->include_file ($direct_settings['path_system']."/osets/{$this->oset}/".$f_oset_file))&&($direct_settings['swg_theme_oset']))
+			if ((!$direct_globals['basic_functions']->include_file ($direct_settings['path_system']."/osets/{$this->oset}/".$f_oset_file))&&($direct_settings['swg_theme_oset']))
 			{
 				$this->oset = $direct_settings['swg_theme_oset'];
-				$direct_classes['basic_functions']->require_file ($direct_settings['path_system']."/osets/{$this->oset}/".$f_oset_file);
+				$direct_globals['basic_functions']->require_file ($direct_settings['path_system']."/osets/{$this->oset}/".$f_oset_file);
 			}
 
-			$direct_classes['basic_functions']->settings_get ($direct_settings['path_system']."/osets/{$this->oset}/swg_oset_up.xml");
+			$direct_globals['basic_functions']->settings_get ($direct_settings['path_system']."/osets/{$this->oset}/swg_oset_up.xml");
 		}
 
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -output_class->oset_content ()- (#echo(__LINE__)#)",:#*/(function_exists ($f_oset) ? $f_oset : NULL)/*#ifdef(DEBUG):,true):#*/;
@@ -564,7 +564,7 @@ file of the default OSet
 	* Return a complete page list (XHTML) using the given paramters
 	*
 	* @param  string $f_uri URI where the DSD page variable should be added
-	*         (should include &dsd= or &dsd=some+thing++)
+	*         (should include ;dsd= or ;dsd=some+thing++)
 	* @param  integer $f_pages Amount of pages
 	* @param  integer $f_cpage Currently selected page
 	* @param  boolean $f_with_lastnext_keys True to include links for the last and
@@ -682,7 +682,7 @@ file of the default OSet
 */
 	/*#ifndef(PHP4) */public /* #*/function related_manager ($f_rid,$f_exec_mode = "post_module_service_action",$f_no_traverse = false)
 	{
-		global $direct_cachedata,$direct_classes,$direct_settings;
+		global $direct_cachedata,$direct_globals,$direct_settings;
 		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -output_class->related_manager ($f_rid,$f_exec_mode,+f_no_traverse)- (#echo(__LINE__)#)"); }
 
 		$f_return = false;
@@ -690,7 +690,7 @@ file of the default OSet
 		if ((($direct_cachedata['core_time'] + $direct_settings['timeout']) > (time ()))&&($f_rid))
 		{
 			$f_data_id = "swg_".$f_rid;
-			$f_related_path = $direct_classes['basic_functions']->varfilter ($direct_settings['swg_path_related_data'],"settings");
+			$f_related_path = $direct_globals['basic_functions']->varfilter ($direct_settings['swg_path_related_data'],"settings");
 			$f_related_tree_array = array ();
 
 			$f_id_array = ($f_no_traverse ? array ($f_data_id) : explode ("_",$f_rid));
@@ -710,7 +710,7 @@ file of the default OSet
 						{
 							if (file_exists ($f_related_path.$f_data_id.".xml"))
 							{
-								$f_xml_array = $direct_classes['basic_functions']->memcache_get_file_merged_xml ($f_related_path.$f_data_id.".xml");
+								$f_xml_array = $direct_globals['basic_functions']->memcache_get_file_merged_xml ($f_related_path.$f_data_id.".xml");
 
 								if ($f_xml_array)
 								{
@@ -754,13 +754,13 @@ file of the default OSet
 
 									if ($f_continue_check)
 									{
-										$f_related_item_array['attributes']['module'] = $direct_classes['basic_functions']->inputfilter_filepath ($f_related_item_array['attributes']['module']);
+										$f_related_item_array['attributes']['module'] = $direct_globals['basic_functions']->inputfilter_filepath ($f_related_item_array['attributes']['module']);
 										$f_continue_check = isset ($f_related_item_array['attributes']['function']);
 									}
 
 									if (($f_continue_check)&&(!strlen ($f_related_item_array['attributes']['module']))) { $f_continue_check = false; }
 
-									if (($f_continue_check)&&($direct_classes['basic_functions']->include_file ($direct_settings['path_system']."/mods/".$f_related_item_array['attributes']['module'],2)))
+									if (($f_continue_check)&&($direct_globals['basic_functions']->include_file ($direct_settings['path_system']."/mods/".$f_related_item_array['attributes']['module'],2)))
 									{
 										$f_function = "direct_mods_related_".$f_related_item_array['attributes']['function'];
 										if (function_exists ($f_function)) { $f_function ($f_rid,$f_related_item_array['value']); }
@@ -791,11 +791,11 @@ file of the default OSet
 */
 	/*#ifndef(PHP4) */public /* #*/function servicemenu ($f_menu,$f_level = 6)
 	{
-		global $direct_classes,$direct_settings;
+		global $direct_globals,$direct_settings;
 		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -output_class->servicemenu ($f_menu,$f_level)- (#echo(__LINE__)#)"); }
 
 		$f_return = false;
-		$f_menu_array = (file_exists ($direct_settings['path_data']."/settings/swg_{$f_menu}.servicemenu.xml") ? $direct_classes['basic_functions']->memcache_get_file_merged_xml ($direct_settings['path_data']."/settings/swg_{$f_menu}.servicemenu.xml") : array ());
+		$f_menu_array = (file_exists ($direct_settings['path_data']."/settings/swg_{$f_menu}.servicemenu.xml") ? $direct_globals['basic_functions']->memcache_get_file_merged_xml ($direct_settings['path_data']."/settings/swg_{$f_menu}.servicemenu.xml") : array ());
 
 		if ((is_array ($f_menu_array))&&(!empty ($f_menu_array)))
 		{
@@ -824,7 +824,7 @@ file of the default OSet
 
 					$f_right_check = false;
 					if (($f_menu_array[$f_menu_id."_guests"])&&($f_menu_array[$f_menu_id."_guests"]['value'])&&($direct_settings['user']['type'] == "gt")) { $f_right_check = true; }
-					if (($f_menu_array[$f_menu_id."_members"])&&($f_menu_array[$f_menu_id."_members"]['value'])&&(direct_class_function_check ($direct_classes['kernel'],"v_usertype_get_int"))&&($direct_classes['kernel']->v_usertype_get_int ($direct_settings['user']['type']))) { $f_right_check = true; }
+					if (($f_menu_array[$f_menu_id."_members"])&&($f_menu_array[$f_menu_id."_members"]['value'])&&(direct_class_function_check ($direct_globals['kernel'],"v_usertype_get_int"))&&($direct_globals['kernel']->v_usertype_get_int ($direct_settings['user']['type']))) { $f_right_check = true; }
 
 /*i// LICENSE_WARNING
 ----------------------------------------------------------------------------
@@ -832,11 +832,11 @@ The sWG Group Class has been published under the General Public License.
 ----------------------------------------------------------------------------
 LICENSE_WARNING_END //i*/
 
-					if ((!$f_right_check)&&($f_menu_array[$f_menu_id."_group_right"])&&(direct_class_function_check ($direct_classes['kernel'],"v_group_user_check_right")))
+					if ((!$f_right_check)&&($f_menu_array[$f_menu_id."_group_right"])&&(direct_class_function_check ($direct_globals['kernel'],"v_group_user_check_right")))
 					{
 						if (isset ($f_menu_array[$f_menu_id."_group_right"]['value']))
 						{
-							if ($f_menu_array[$f_menu_id."_group_right"]['value']) { $f_right_check = $direct_classes['kernel']->v_group_user_check_right ($f_menu_array[$f_menu_id."_group_right"]['value']); }
+							if ($f_menu_array[$f_menu_id."_group_right"]['value']) { $f_right_check = $direct_globals['kernel']->v_group_user_check_right ($f_menu_array[$f_menu_id."_group_right"]['value']); }
 						}
 						elseif (is_array ($f_menu_array[$f_menu_id."_group_right"]))
 						{
@@ -847,7 +847,7 @@ LICENSE_WARNING_END //i*/
 								if (strlen ($f_group_right_array['value'])) { $f_group_rights_array[] = $f_group_right_array['value']; }
 							}
 
-							$f_right_check = $direct_classes['kernel']->v_group_user_check_right ($f_group_rights_array);
+							$f_right_check = $direct_globals['kernel']->v_group_user_check_right ($f_group_rights_array);
 						}
 					}
 
@@ -877,14 +877,14 @@ LICENSE_WARNING_END //i*/
 */
 	/*#ifndef(PHP4) */public /* #*/function smiley_cleanup ($f_data)
 	{
-		global $direct_cachedata,$direct_classes,$direct_settings;
+		global $direct_cachedata,$direct_globals,$direct_settings;
 		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -output_class->smiley_cleanup (+f_data)- (#echo(__LINE__)#)"); }
 
 		$f_return =& $f_data;
 
 		if (!isset ($this->smilies_data))
 		{
-			$f_data_array = (file_exists ($direct_settings['path_data']."/settings/swg_smilies.xml") ? $direct_classes['basic_functions']->memcache_get_file_merged_xml ($direct_settings['path_data']."/settings/swg_smilies.xml") : NULL);
+			$f_data_array = (file_exists ($direct_settings['path_data']."/settings/swg_smilies.xml") ? $direct_globals['basic_functions']->memcache_get_file_merged_xml ($direct_settings['path_data']."/settings/swg_smilies.xml") : NULL);
 			if ($f_data_array) { $f_data_array = $this->smiley_parse_xmltree ($f_data_array); }
 			if ($f_data_array) { $this->smilies_data = $f_data_array; }
 		}
@@ -913,28 +913,28 @@ LICENSE_WARNING_END //i*/
 */
 	/*#ifndef(PHP4) */public /* #*/function smiley_decode ($f_data)
 	{
-		global $direct_cachedata,$direct_classes,$direct_settings;
+		global $direct_cachedata,$direct_globals,$direct_settings;
 		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -output_class->smiley_decode (+f_data)- (#echo(__LINE__)#)"); }
 
 		$f_return =& $f_data;
 
 		if (!isset ($this->smilies_data))
 		{
-			$f_data_array = (file_exists ($direct_settings['path_data']."/settings/swg_smilies.xml") ? $direct_classes['basic_functions']->memcache_get_file_merged_xml ($direct_settings['path_data']."/settings/swg_smilies.xml") : NULL);
+			$f_data_array = (file_exists ($direct_settings['path_data']."/settings/swg_smilies.xml") ? $direct_globals['basic_functions']->memcache_get_file_merged_xml ($direct_settings['path_data']."/settings/swg_smilies.xml") : NULL);
 			if ($f_data_array) { $f_data_array = $this->smiley_parse_xmltree ($f_data_array); }
 			if ($f_data_array) { $this->smilies_data = $f_data_array; }
 		}
 
 		if ((!empty ($f_data))&&(!empty ($this->smilies_data)))
 		{
-			$f_smilies_path = $direct_classes['basic_functions']->varfilter ($direct_settings['swg_path_smilies'],"settings");
+			$f_smilies_path = $direct_globals['basic_functions']->varfilter ($direct_settings['swg_path_smilies'],"settings");
 
 			foreach ($this->smilies_data as $f_smiley_array)
 			{
 				foreach ($f_smiley_array['codes'] as $f_smiley)
 				{
 					$f_smiley = str_replace ("&amp;","&",(direct_html_encode_special ($f_smiley)));
-					if (/*#ifndef(PHP4) */stripos/* #*//*#ifdef(PHP4):stristr:#*/($f_data,"|{$f_smiley}|") !== false) { $f_data = str_replace ("|{$f_smiley}|",("<img src='".(direct_linker_dynamic ("url1","s=cache&dsd=dfile+".$f_smilies_path.$f_smiley_array['file'],true,false))."' alt=\"{$f_smiley}\" title=\"{$f_smiley}\" style='vertical-align:middle' />"),$f_data); }
+					if (/*#ifndef(PHP4) */stripos/* #*//*#ifdef(PHP4):stristr:#*/($f_data,"|{$f_smiley}|") !== false) { $f_data = str_replace ("|{$f_smiley}|",("<img src='".(direct_linker_dynamic ("url1","s=cache;dsd=dfile+".$f_smilies_path.$f_smiley_array['file'],true,false))."' alt=\"{$f_smiley}\" title=\"{$f_smiley}\" style='vertical-align:middle' />"),$f_data); }
 				}
 			}
 		}
@@ -954,14 +954,14 @@ LICENSE_WARNING_END //i*/
 */
 	/*#ifndef(PHP4) */public /* #*/function smiley_encode ($f_data)
 	{
-		global $direct_cachedata,$direct_classes,$direct_settings;
+		global $direct_cachedata,$direct_globals,$direct_settings;
 		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -output_class->smiley_encode (+f_data)- (#echo(__LINE__)#)"); }
 
 		$f_return =& $f_data;
 
 		if (!isset ($this->smilies_data))
 		{
-			$f_data_array = (file_exists ($direct_settings['path_data']."/settings/swg_smilies.xml") ? $direct_classes['basic_functions']->memcache_get_file_merged_xml ($direct_settings['path_data']."/settings/swg_smilies.xml") : NULL);
+			$f_data_array = (file_exists ($direct_settings['path_data']."/settings/swg_smilies.xml") ? $direct_globals['basic_functions']->memcache_get_file_merged_xml ($direct_settings['path_data']."/settings/swg_smilies.xml") : NULL);
 			if ($f_data_array) { $f_data_array = $this->smiley_parse_xmltree ($f_data_array); }
 			if ($f_data_array) { $this->smilies_data = $f_data_array; }
 		}
@@ -973,7 +973,7 @@ LICENSE_WARNING_END //i*/
 				foreach ($f_smiley_array['codes'] as $f_smiley)
 				{
 					$f_smiley_preg = preg_quote ($f_smiley);
-					$f_return = preg_replace ("#( |\(|\)|\]|^)$f_smiley_preg( |\(|\)|\[|,|.|$)#im","\\1|{$f_smiley}|\\2",$f_return);
+					$f_return = preg_replace ("#( |\(|\)|\]|^)$f_smiley_preg( |\(|\)|\[|,|.|$)#m","\\1|{$f_smiley}|\\2",$f_return);
 				}
 			}
 		}
@@ -1063,7 +1063,7 @@ if (!isset ($direct_settings['swg_pages_key_next'])) { $direct_settings['swg_pag
 if (!isset ($direct_settings['swg_pages_per_list'])) { $direct_settings['swg_pages_per_list'] = 6; }
 if (!isset ($direct_settings['swg_path_related_data'])) { $direct_settings['swg_path_related_data'] = $direct_settings['path_data']."/related/"; }
 if (!isset ($direct_settings['swg_options_image'])) { $direct_settings['swg_options_image'] = false; }
-if (!isset ($direct_settings['theme_jquery_ui'])) { $direct_settings['theme_jquery_ui'] = "overcast"; }
+if (!isset ($direct_settings['theme_jquery_ui'])) { $direct_settings['theme_jquery_ui'] = "smoothness"; }
 }
 
 //j// EOF

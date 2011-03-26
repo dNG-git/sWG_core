@@ -53,7 +53,7 @@ if (!defined ("direct_product_iversion")) { exit (); }
 
 //j// Functions and classes
 
-//f// direct_linker ($f_type,$f_data,$f_ampconvert = true,$f_withuuid = true)
+//f// direct_linker ($f_type,$f_data,$f_html_encode = true,$f_withuuid = true)
 /**
 * Using "direct_linker ()" will allow you to link local sWG pages easier. You
 * may use internal links "swg.php?...", external links
@@ -65,7 +65,7 @@ if (!defined ("direct_product_iversion")) { exit (); }
 *         external ones, "form" to create hidden fields or "optical" to remove
 *         parts of a very long string.
 * @param  string $f_data Query string
-* @param  boolean $f_ampconvert True to append "amp;" to each "&" character
+* @param  boolean $f_html_encode True to append "amp;" to each "&" character
 *         (Needed for (X)HTML)
 * @param  boolean $f_withuuid True to add the current uuID string to the query
 * @uses   direct_debug()
@@ -77,10 +77,12 @@ if (!defined ("direct_product_iversion")) { exit (); }
 * @return string Ready to use URL
 * @since  v0.1.02
 */
-function direct_linker ($f_type,$f_data,$f_ampconvert = true,$f_withuuid = true)
+function direct_linker ($f_type,$f_data,$f_html_encode = true,$f_withuuid = true)
 {
-	global $direct_classes,$direct_settings;
-	if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_linker ($f_type,$f_data,+f_ampconvert,+f_withuuid)- (#echo(__LINE__)#)"); }
+	global $direct_globals,$direct_settings;
+	if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_linker ($f_type,$f_data,+f_html_encode,+f_withuuid)- (#echo(__LINE__)#)"); }
+
+	$f_html_filter = array ("<",">","&#60;","&#62;","&lt;","&gt;");
 
 	if ($f_type == "asis") { $f_return = $f_data; }
 	elseif ($f_type == "form")
@@ -90,6 +92,7 @@ Get all form data in a string like "<input type='hidden' name='lang'
 value='de' />"
 ------------------------------------------------------------------------- */
 
+		$f_html_filter = array ("&#60;","&#62;","&lt;","&gt;");
 		$f_return = "";
 
 		if (strpos ($f_data,"#") !== false)
@@ -115,10 +118,10 @@ Automatically add language, theme and uuid fields to the form
 		if (/*#ifndef(PHP4) */stripos/* #*//*#ifdef(PHP4):stristr:#*/($f_data,"lang=") === false) { $f_return .= "<input type='hidden' name='lang' value='$direct_settings[lang]' />"; }
 		if (/*#ifndef(PHP4) */stripos/* #*//*#ifdef(PHP4):stristr:#*/($f_data,"theme=") === false) { $f_return .= "<input type='hidden' name='theme' value='$direct_settings[theme]' />"; }
 
-		if ((isset ($direct_classes['input']))&&($f_withuuid))
+		if ((isset ($direct_globals['input']))&&($f_withuuid))
 		{
-			$f_uuid = $direct_classes['input']->uuid_get ();
-			if (($f_uuid)&&(!$direct_classes['kernel']->v_uuid_is_cookied ())&&($direct_classes['kernel']->v_uuid_check_usage ())) { $f_return .= "<input type='hidden' name='uuid' value='$f_uuid' />"; }
+			$f_uuid = $direct_globals['input']->uuid_get ();
+			if (($f_uuid)&&(!$direct_globals['kernel']->v_uuid_is_cookied ())&&($direct_globals['kernel']->v_uuid_check_usage ())) { $f_return .= "<input type='hidden' name='uuid' value='$f_uuid' />"; }
 		}
 	}
 	elseif ($f_type == "optical")
@@ -257,16 +260,16 @@ it if required
 
 		$f_return = direct_html_encode_special ($f_return);
 	}
-	else { $f_return = ($direct_settings['swg_shadow_url'] ? direct_linker_shadow ($f_type,$f_data,$f_withuuid) : direct_linker_dynamic ($f_type,$f_data,$f_ampconvert,$f_withuuid)); }
+	else { $f_return = ($direct_settings['swg_shadow_url'] ? direct_linker_shadow ($f_type,$f_data,$f_withuuid) : direct_linker_dynamic ($f_type,$f_data,$f_html_encode,$f_withuuid)); }
 /* -------------------------------------------------------------------------
 There are two possibilities for creating normal links - shadowing them or
 not. If shadowed, they may be look like http://localhost/swg_base64data.htm
 ------------------------------------------------------------------------- */
 
-	return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -direct_linker ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
+	return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -direct_linker ()- (#echo(__LINE__)#)",(:#*/str_replace ($f_html_filter,"",$f_return)/*#ifdef(DEBUG):),true):#*/;
 }
 
-//f// direct_linker_dynamic ($f_type,$f_data,$f_ampconvert = true,$f_withuuid = true)
+//f// direct_linker_dynamic ($f_type,$f_data,$f_html_encode = true,$f_withuuid = true)
 /**
 * Most URLs have to contain dynamic data like "theme", "lang" and "uuid". They
 * will be added automatically through this function. It will be used, if a
@@ -276,7 +279,7 @@ not. If shadowed, they may be look like http://localhost/swg_base64data.htm
 *         external ones, "form" to create hidden fields or "optical" to remove
 *         parts of a very long string.
 * @param  string $f_data Query string
-* @param  boolean $f_ampconvert True to append "amp;" to each "&" character
+* @param  boolean $f_html_encode True to append "amp;" to each "&" character
 *         (Needed for (X)HTML)
 * @param  boolean $f_withuuid True to add the current uuID string to the query
 * @uses   direct_debug()
@@ -285,10 +288,10 @@ not. If shadowed, they may be look like http://localhost/swg_base64data.htm
 * @return string Ready to use URL
 * @since  v0.1.02
 */
-function direct_linker_dynamic ($f_type,$f_data,$f_ampconvert = true,$f_withuuid = true)
+function direct_linker_dynamic ($f_type,$f_data,$f_html_encode = true,$f_withuuid = true)
 {
-	global $direct_classes,$direct_settings;
-	if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_linker_dynamic ($f_type,$f_data,+f_ampconvert,+f_withuuid)- (#echo(__LINE__)#)"); }
+	global $direct_globals,$direct_settings;
+	if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_linker_dynamic ($f_type,$f_data,+f_html_encode,+f_withuuid)- (#echo(__LINE__)#)"); }
 
 	$f_anchor = "";
 
@@ -313,11 +316,11 @@ function direct_linker_dynamic ($f_type,$f_data,$f_ampconvert = true,$f_withuuid
 		$f_data .= "theme=".$direct_settings['theme'];
 	}
 
-	if ((isset ($direct_classes['input']))&&($f_withuuid))
+	if ((isset ($direct_globals['input']))&&($f_withuuid))
 	{
-		$f_uuid = $direct_classes['input']->uuid_get ();
+		$f_uuid = $direct_globals['input']->uuid_get ();
 
-		if (($f_uuid)&&(!$direct_classes['kernel']->v_uuid_is_cookied ())&&($direct_classes['kernel']->v_uuid_check_usage ()))
+		if (($f_uuid)&&(!$direct_globals['kernel']->v_uuid_is_cookied ())&&($direct_globals['kernel']->v_uuid_check_usage ()))
 		{
 			if ($f_data) { $f_data .= ";"; }
 			$f_data .= "uuid=".$f_uuid;
@@ -328,22 +331,15 @@ function direct_linker_dynamic ($f_type,$f_data,$f_ampconvert = true,$f_withuuid
 Two types are available: url0 for relative URLs like swg.php?... and url1
 for complete URLs like http://localhost/swg.php?...
 
-Setting $f_ampconvert to 1 will create XHTML-conform URLs with &amp; instead
+Setting $f_html_encode to 1 will create XHTML-conform URLs with &amp; instead
 of & seperators
 ------------------------------------------------------------------------- */
 
-	if ($f_type == "url1")
-	{
-		$f_return = $direct_settings['iscript_req']."?".$f_data;
-		if ($f_ampconvert) { $f_return = str_replace ("&","&amp;",$f_return); }
-	}
-	else
-	{
-		$f_return = $direct_settings['iscript_url'].$f_data;
-		if ($f_ampconvert) { $f_return = str_replace ("&","&amp;",$f_return); }
-	}
+	if ($f_type == "url1") { $f_return = $direct_settings['iscript_req']."?".$f_data; }
+	else { $f_return = $direct_settings['iscript_url'].$f_data; }
 
 	if (strlen ($f_anchor)) { $f_return .= "#".$f_anchor; }
+	if ($f_html_encode) { $f_return = direct_html_encode_special ($f_return); }
 
 	return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -direct_linker_dynamic ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 }
@@ -367,8 +363,8 @@ of & seperators
 */
 function direct_linker_shadow ($f_type,$f_data,$f_withuuid = true)
 {
-	global $direct_classes,$direct_settings;
-	if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_linker_shadow ($f_type,$f_data,+f_ampconvert,+f_withuuid)- (#echo(__LINE__)#)"); }
+	global $direct_globals,$direct_settings;
+	if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_linker_shadow ($f_type,$f_data,+f_withuuid)- (#echo(__LINE__)#)"); }
 
 	$f_anchor = "";
 	$f_return = "";
@@ -394,11 +390,11 @@ function direct_linker_shadow ($f_type,$f_data,$f_withuuid = true)
 		$f_data .= "theme=".$direct_settings['theme'];
 	}
 
-	if ((isset ($direct_classes['input']))&&($f_withuuid))
+	if ((isset ($direct_globals['input']))&&($f_withuuid))
 	{
-		$f_uuid = $direct_classes['input']->uuid_get ();
+		$f_uuid = $direct_globals['input']->uuid_get ();
 
-		if (($f_uuid)&&(!$direct_classes['kernel']->v_uuid_is_cookied ())&&($direct_classes['kernel']->v_uuid_check_usage ()))
+		if (($f_uuid)&&(!$direct_globals['kernel']->v_uuid_is_cookied ())&&($direct_globals['kernel']->v_uuid_check_usage ()))
 		{
 			if ($f_data) { $f_data .= ";"; }
 			$f_data .= "uuid=".$f_uuid;
@@ -421,7 +417,7 @@ function direct_linker_shadow ($f_type,$f_data,$f_withuuid = true)
 
 	if (strlen ($f_anchor)) { $f_return .= "#".$f_anchor; }
 
-	return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -direct_linker_shadow ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
+	return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -direct_linker_shadow ()- (#echo(__LINE__)#)",(:#*/direct_html_encode_special ($f_return)/*#ifdef(DEBUG):),true):#*/;
 }
 
 //j// Script specific commands

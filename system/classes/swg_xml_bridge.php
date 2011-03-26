@@ -51,7 +51,7 @@ Testing for required classes
 ------------------------------------------------------------------------- */
 
 $g_continue_check = ((defined ("CLASS_direct_xml_bridge")) ? false : true);
-if (($g_continue_check)&&(!defined ("CLASS_direct_xml_reader"))) { $g_continue_check = ($direct_classes['basic_functions']->include_file ($direct_settings['path_system']."/classes/ext_core/xml_reader.php",1) ? defined ("CLASS_direct_xml_reader") : false); }
+if (($g_continue_check)&&(!defined ("CLASS_direct_xml_reader"))) { $g_continue_check = ($direct_globals['basic_functions']->include_file ($direct_settings['path_system']."/classes/ext_core/xml_reader.php",1) ? defined ("CLASS_direct_xml_reader") : false); }
 
 if ($g_continue_check)
 {
@@ -112,7 +112,7 @@ Mark this class as the most up-to-date one
 
 define ("CLASS_direct_xml_bridge",true);
 
-$direct_classes['@names']['xml_bridge'] = "direct_xml_bridge";
+$direct_globals['@names']['xml_bridge'] = "direct_xml_bridge";
 }
 
 //j// EOF

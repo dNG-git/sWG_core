@@ -31,13 +31,13 @@ function djs_swgDOM_css_change_px (f_id,f_css_element,f_css_value,f_duration)
 {
 	var f_jquery_object = $("#" + f_id);
 
-	if (f_css_value == '+')
+	if (f_css_value == "+")
 	{
 		f_duration = 0;
 		f_css_value = parseInt (f_jquery_object.css (f_css_element));
 		if (f_css_value) { f_css_value += 17; }
 	}
-	else if (f_css_value == '-')
+	else if (f_css_value == "-")
 	{
 		f_duration = 0;
 		f_css_value = parseInt (f_jquery_object.css (f_css_element));
@@ -61,71 +61,71 @@ function djs_swgDOM_css_change_px (f_id,f_css_element,f_css_value,f_duration)
 	}
 }
 
-if (typeof (djs_var['core_swgDOM_css_change_px_min']) == 'undefined') { djs_var['core_swgDOM_css_change_px_min'] = 111; }
+if (typeof (djs_var['core_swgDOM_css_change_px_min']) == "undefined") { djs_var['core_swgDOM_css_change_px_min'] = 111; }
 else { djs_var.core_swgDOM_css_change_px_min = parseInt (djs_var.core_swgDOM_css_change_px_min); }
 <?php
 } if ($g_block == "") {
 ?>
 function djs_swgDOM_insert_after (f_params)
 {
-	if ((typeof (f_params['data']) != 'undefined')&&(typeof (f_params['id']) != 'undefined'))
+	if ((typeof (f_params['data']) != "undefined")&&(typeof (f_params['id']) != "undefined"))
 	{
 		var f_jquery_object = djs_swgDOM_insert_prepare (f_params.data);
 		if (f_params.id != f_params.id_inserted) { f_jquery_object.attr ("id",f_params.id_inserted); }
 
 		$("#" + f_params.id).after (f_jquery_object);
-		if ((typeof (f_params['onInsert']) != 'undefined')&&(f_params.onInsert != null)) { djs_run (f_params.onInsert,f_params,false); }
+		if ((typeof (f_params['onInsert']) != "undefined")&&(f_params.onInsert != null)) { djs_run (f_params.onInsert,f_params,false); }
 
-		if ((typeof (f_params['hide']) == 'undefined')||(!f_params.hide))
+		if ((typeof (f_params['hide']) == "undefined")||(!f_params.hide))
 		{
-			if ((typeof (f_params['onInserted']) == 'undefined')||(f_params.onInserted == null)) { f_jquery_object.fadeIn ('fast'); }
-			else { f_jquery_object.fadeIn ('fast',function () { djs_run (f_params.onInserted,f_params,false); }); }
+			if ((typeof (f_params['onInserted']) == "undefined")||(f_params.onInserted == null)) { f_jquery_object.fadeIn ("fast"); }
+			else { f_jquery_object.fadeIn ("fast",function () { djs_run (f_params.onInserted,f_params,false); }); }
 		}
-		else if ((typeof (f_params['onInserted']) != 'undefined')&&(f_params.onInserted != null)) { djs_run (f_params.onInserted,f_params,false); }
+		else if ((typeof (f_params['onInserted']) != "undefined")&&(f_params.onInserted != null)) { djs_run (f_params.onInserted,f_params,false); }
 	}
 }
 
 function djs_swgDOM_insert_append (f_params)
 {
-	if ((typeof (f_params['data']) != 'undefined')&&(typeof (f_params['id']) != 'undefined'))
+	if ((typeof (f_params['data']) != "undefined")&&(typeof (f_params['id']) != "undefined"))
 	{
 		var f_jquery_object = djs_swgDOM_insert_prepare (f_params.data);
 		if (f_params.id != f_params.id_inserted) { f_jquery_object.attr ("id",f_params.id_inserted); }
 
 		$("#" + f_params.id).append (f_jquery_object);
-		if ((typeof (f_params['onInsert']) != 'undefined')&&(f_params.onInsert != null)) { djs_run (f_params.onInsert,f_params,false); }
+		if ((typeof (f_params['onInsert']) != "undefined")&&(f_params.onInsert != null)) { djs_run (f_params.onInsert,f_params,false); }
 
-		if ((typeof (f_params['hide']) == 'undefined')||(!f_params.hide))
+		if ((typeof (f_params['hide']) == "undefined")||(!f_params.hide))
 		{
-			if ((typeof (f_params['onInserted']) == 'undefined')||(f_params.onInserted == null)) { f_jquery_object.fadeIn ('fast'); }
-			else { f_jquery_object.fadeIn ('fast',function () { djs_run (f_params.onInserted,f_params,false); }); }
+			if ((typeof (f_params['onInserted']) == "undefined")||(f_params.onInserted == null)) { f_jquery_object.fadeIn ("fast"); }
+			else { f_jquery_object.fadeIn ("fast",function () { djs_run (f_params.onInserted,f_params,false); }); }
 		}
-		else if ((typeof (f_params['onInserted']) != 'undefined')&&(f_params.onInserted != null)) { djs_run (f_params.onInserted,f_params,false); }
+		else if ((typeof (f_params['onInserted']) != "undefined")&&(f_params.onInserted != null)) { djs_run (f_params.onInserted,f_params,false); }
 	}
 }
 
 function djs_swgDOM_insert_before (f_params)
 {
-	if ((typeof (f_params['data']) != 'undefined')&&(typeof (f_params['id']) != 'undefined'))
+	if ((typeof (f_params['data']) != "undefined")&&(typeof (f_params['id']) != "undefined"))
 	{
 		var f_jquery_object = djs_swgDOM_insert_prepare (f_params.data);
 		if (f_params.id != f_params.id_inserted) { f_jquery_object.attr ("id",f_params.id_inserted); }
 
 		$("#" + f_params.id).before (f_jquery_object);
-		if ((typeof (f_params['onInsert']) != 'undefined')&&(f_params.onInsert != null)) { djs_run (f_params.onInsert,f_params,false); }
+		if ((typeof (f_params['onInsert']) != "undefined")&&(f_params.onInsert != null)) { djs_run (f_params.onInsert,f_params,false); }
 
-		if ((typeof (f_params['hide']) == 'undefined')||(!f_params.hide))
+		if ((typeof (f_params['hide']) == "undefined")||(!f_params.hide))
 		{
-			if ((typeof (f_params['onInserted']) == 'undefined')||(f_params.onInserted == null)) { f_jquery_object.fadeIn ('fast'); }
-			else { f_jquery_object.fadeIn ('fast',function () { djs_run (f_params.onInserted,f_params,false); }); }
+			if ((typeof (f_params['onInserted']) == "undefined")||(f_params.onInserted == null)) { f_jquery_object.fadeIn ("fast"); }
+			else { f_jquery_object.fadeIn ("fast",function () { djs_run (f_params.onInserted,f_params,false); }); }
 		}
-		else if ((typeof (f_params['onInserted']) != 'undefined')&&(f_params.onInserted != null)) { djs_run (f_params.onInserted,f_params,false); }
+		else if ((typeof (f_params['onInserted']) != "undefined")&&(f_params.onInserted != null)) { djs_run (f_params.onInserted,f_params,false); }
 	}
 }
 
 function djs_swgDOM_insert_prepare (f_data)
 {
-	if (typeof (f_data) == 'object') { return f_data.hide (); }
+	if (typeof (f_data) == "object") { return f_data.hide (); }
 	else { return $(f_data).hide (); }
 }
 
@@ -133,28 +133,28 @@ djs_var['swgDOM_replace_cache'] = { };
 
 function djs_swgDOM_replace (f_params)
 {
-	if ((typeof (f_params['data']) != 'undefined')&&(typeof (f_params['id']) != 'undefined'))
+	if ((typeof (f_params['data']) != "undefined")&&(typeof (f_params['id']) != "undefined"))
 	{
-		var f_jquery_object = djs_swgDOM_insert_prepare (f_params.data).attr ('id',f_params.id);
+		var f_jquery_object = djs_swgDOM_insert_prepare (f_params.data).attr ("id",f_params.id);
 
-		if (typeof (f_params['id_replaced']) == 'undefined') { f_params['id_replaced'] = f_params.id; }
-		if (typeof (f_params['onReplace']) == 'undefined') { f_params['onReplace'] = null; }
-		if (typeof (f_params['onReplaced']) == 'undefined') { f_params['onReplaced'] = null; }
+		if (typeof (f_params['id_replaced']) == "undefined") { f_params['id_replaced'] = f_params.id; }
+		if (typeof (f_params['onReplace']) == "undefined") { f_params['onReplace'] = null; }
+		if (typeof (f_params['onReplaced']) == "undefined") { f_params['onReplaced'] = null; }
 
 		djs_var.swgDOM_replace_cache[f_params.id] = { id:f_params.id_replaced,jquery_object:f_jquery_object,onReplace:f_params.onReplace,onReplaced:f_params.onReplaced };
 
 		f_jquery_object = $("#" + f_params.id);
 		f_jquery_object.after ("<div id='" + f_params.id_replaced + "phdiv' style='position:absolute;top:0px;left:0px;width:1px;height:" + ($(self.document).height ()) + "px;z-index:-256'>&#0160;</div>");
-		f_jquery_object.fadeOut ('fast',djs_swgDOM_replace_with);
+		f_jquery_object.fadeOut ("fast",djs_swgDOM_replace_with);
 	}
 }
 
 function djs_swgDOM_replace_with ()
 {
 	var f_jquery_object = $(this);
-	var f_id = f_jquery_object.attr ('id');
+	var f_id = f_jquery_object.attr ("id");
 
-	if (typeof (djs_var.swgDOM_replace_cache[f_id]) != 'undefined')
+	if (typeof (djs_var.swgDOM_replace_cache[f_id]) != "undefined")
 	{
 		var f_id_new = djs_var.swgDOM_replace_cache[f_id].id;
 
@@ -163,16 +163,16 @@ function djs_swgDOM_replace_with ()
 
 		if (djs_var.swgDOM_replace_cache[f_id].onReplace != null) { djs_run (djs_var.swgDOM_replace_cache[f_id].onReplace,djs_var.swgDOM_replace_cache[f_id],false); }
 
-		if ((typeof (djs_var.swgDOM_replace_cache[f_id]['hide']) == 'undefined')||(!djs_var.swgDOM_replace_cache[f_id].hide))
+		if ((typeof (djs_var.swgDOM_replace_cache[f_id]['hide']) == "undefined")||(!djs_var.swgDOM_replace_cache[f_id].hide))
 		{
 			if (djs_var.swgDOM_replace_cache[f_id].onReplaced == null)
 			{
 				delete (djs_var.swgDOM_replace_cache[f_id]);
-				$("#" + f_id_new).fadeIn ('fast',function () { $("#" + f_id_new + "phdiv").remove (); });
+				$("#" + f_id_new).fadeIn ("fast",function () { $("#" + f_id_new + "phdiv").remove (); });
 			}
 			else
 			{
-				$("#" + f_id_new).fadeIn ('fast',function ()
+				$("#" + f_id_new).fadeIn ("fast",function ()
 				{
 					$("#" + f_id_new + "phdiv").remove ();
 					djs_run (djs_var.swgDOM_replace_cache[f_id].onReplaced,djs_var.swgDOM_replace_cache[f_id],false);
@@ -186,7 +186,7 @@ function djs_swgDOM_replace_with ()
 			delete (djs_var.swgDOM_replace_cache[f_id]);
 		}
 	}
-	else { f_jquery_object.fadeIn ('fast'); }
+	else { f_jquery_object.fadeIn ("fast"); }
 }
 <?php } ?>
 

@@ -49,7 +49,7 @@ Testing for required classes
 ------------------------------------------------------------------------- */
 
 $g_continue_check = ((defined ("CLASS_direct_file_functions")) ? false : true);
-if (($g_continue_check)&&(!defined ("CLASS_direct_file"))) { $g_continue_check = ($direct_classes['basic_functions']->include_file ($direct_settings['path_system']."/classes/ext_core/file.php",1) ? defined ("CLASS_direct_file") : false); }
+if (($g_continue_check)&&(!defined ("CLASS_direct_file"))) { $g_continue_check = ($direct_globals['basic_functions']->include_file ($direct_settings['path_system']."/classes/ext_core/file.php",1) ? defined ("CLASS_direct_file") : false); }
 
 if ($g_continue_check)
 {

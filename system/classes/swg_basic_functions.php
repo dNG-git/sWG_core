@@ -283,7 +283,7 @@ Set up the caching variables
 			{
 				$f_data = explode ("+",(trim ($f_dsd)),2);
 
-				if (isset ($f_data[1])) { $f_return[$f_data[0]] = preg_replace ("#[\\x00-\\x21]#","",(urldecode ($f_data[1]))); }
+				if (isset ($f_data[1])) { $f_return[$f_data[0]] = $this->inputfilter_basic (urldecode ($f_data[1])); }
 				elseif ($f_data[0]) { $f_return[$f_data[0]] = ""; }
 			}
 		}
@@ -292,11 +292,11 @@ Set up the caching variables
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -basic_functions_class->dsd_parse ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_basic_functions->include_file ($f_file,$f_cachelevel = 4,$f_once = true)
+	//f// direct_basic_functions->include_file ($f_file_pathname,$f_cachelevel = 4,$f_once = true)
 /**
 	* Include a file or return 'false' - process will continue.
 	*
-	* @param  string $f_file Relative path from "swg.php" to the file and
+	* @param  string $f_file_pathname Relative path from "swg.php" to the file and
 	*         filename
 	* @param  integer $f_cachelevel There are three cache levels for system files.
 	*         1 is for always needed files, 2 for often used and 3 for module
@@ -308,42 +308,42 @@ Set up the caching variables
 	* @return boolean True on successful inclusion
 	* @since  v0.1.01
 */
-	/*#ifndef(PHP4) */public /* #*/function include_file ($f_file,$f_cachelevel = 4,$f_once = true)
+	/*#ifndef(PHP4) */public /* #*/function include_file ($f_file_pathname,$f_cachelevel = 4,$f_once = true)
 	{
-		global $direct_cachedata,$direct_classes,$direct_local,$direct_settings;
-		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -basic_functions_class->include_file ($f_file,$f_cachelevel,+f_once)- (#echo(__LINE__)#)"); }
+		global $direct_cachedata,$direct_globals,$direct_local,$direct_settings;
+		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -basic_functions_class->include_file ($f_file_pathname,$f_cachelevel,+f_once)- (#echo(__LINE__)#)"); }
 
 		$f_return = false;
 
 		if ((strlen ($direct_settings['swg_memcache']))&&($direct_settings['swg_memcache_source_code']))
 		{
-			$f_pathinfo = pathinfo ($f_file);
+			$f_pathinfo = pathinfo ($f_file_pathname);
 			$f_pathinfo['basename'] = md5 ($f_pathinfo['dirname']).".".$f_pathinfo['basename'];
 			$f_memcache_check = true;
 
 			if (file_exists ($direct_settings['swg_memcache']."/".$direct_settings['swg_memcache_id'].".".$f_pathinfo['basename']))
 			{
 				$f_memcache_check = false;
-				$f_file = $direct_settings['swg_memcache']."/".$direct_settings['swg_memcache_id'].".".$f_pathinfo['basename'];
+				$f_file_pathname = $direct_settings['swg_memcache']."/".$direct_settings['swg_memcache_id'].".".$f_pathinfo['basename'];
 			}
 
 			if (($f_cachelevel <= $direct_settings['swg_memcache_source_code'])&&($f_memcache_check))
 			{
-				if (file_exists ($f_file))
+				if (file_exists ($f_file_pathname))
 				{
-					if (@copy ($f_file,$direct_settings['swg_memcache']."/".$direct_settings['swg_memcache_id'].".".$f_pathinfo['basename']))
+					if (@copy ($f_file_pathname,$direct_settings['swg_memcache']."/".$direct_settings['swg_memcache_id'].".".$f_pathinfo['basename']))
 					{
 						chmod ($direct_settings['swg_memcache']."/".$direct_settings['swg_memcache_id'].".".$f_pathinfo['basename'],0600);
-						$f_file = $direct_settings['swg_memcache']."/".$direct_settings['swg_memcache_id'].".".$f_pathinfo['basename'];
+						$f_file_pathname = $direct_settings['swg_memcache']."/".$direct_settings['swg_memcache_id'].".".$f_pathinfo['basename'];
 					}
 				}
 			}
 		}
 
-		if (file_exists ($f_file))
+		if (file_exists ($f_file_pathname))
 		{
-			if ($f_once) { include_once ($f_file); }
-			else { include ($f_file); }
+			if ($f_once) { include_once ($f_file_pathname); }
+			else { include ($f_file_pathname); }
 			$f_return = true;
 		}
 
@@ -369,7 +369,7 @@ Set up the caching variables
 
 		if (is_string ($f_data))
 		{
-			$f_data = ($this->PHP_filter_var ? (filter_var ($f_data,FILTER_SANITIZE_STRING,(FILTER_FLAG_NO_ENCODE_QUOTES | FILTER_FLAG_STRIP_LOW))) : preg_replace ("#[\\x00-\\x09]#","",$f_data));
+			$f_data = preg_replace ("#[\\x00-\\x09]#","",$f_data);
 			if (INFO_magic_quotes_input) { $this->magic_quotes_input ($f_data); }
 		}
 		else { $f_data = ""; }
@@ -603,30 +603,31 @@ Set up the caching variables
 		if ((INFO_magic_quotes_input)&&(!empty ($f_data))) { $f_data = (INFO_magic_quotes_sybase ? str_replace ("''","'",$f_data) : stripslashes ($f_data)); }
 	}
 
-	//f// direct_basic_functions->memcache_get_file ($f_file)
+	//f// direct_basic_functions->memcache_get_file ($f_file_pathname)
 /**
 	* Reads a file from the memcache or the filesystem. Certain system files are
 	* read in on each page call. These small files are stored in the memcache
 	* (ramfs on UNIX for example) to increase the read performance.
 	*
-	* @param  string $f_file The file (which may also exist in the memcache)
+	* @param  string $f_file_pathname The file (which may also exist in the
+	*         memcache)
 	* @uses   direct_debug()
 	* @uses   direct_file_get()
 	* @uses   USE_debug_reporting
 	* @return mixed Data on success; false on error
 	* @since  v0.1.02
 */
-	/*#ifndef(PHP4) */public /* #*/function memcache_get_file ($f_file)
+	/*#ifndef(PHP4) */public /* #*/function memcache_get_file ($f_file_pathname)
 	{
 		global $direct_settings;
-		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -basic_functions_class->memcache_get_file ($f_file)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -basic_functions_class->memcache_get_file ($f_file_pathname)- (#echo(__LINE__)#)"); }
 
 		$f_continue_check = true;
 		$f_return = false;
 
 		if ((strlen ($direct_settings['swg_memcache']))&&($direct_settings['swg_memcache_files']))
 		{
-			$f_pathinfo = pathinfo ($f_file);
+			$f_pathinfo = pathinfo ($f_file_pathname);
 			$f_pathinfo['basename'] = md5 ($f_pathinfo['dirname']).".".$f_pathinfo['basename'];
 
 			if (file_exists ($direct_settings['swg_memcache']."/".$direct_settings['swg_memcache_id'].".".$f_pathinfo['basename']))
@@ -637,46 +638,47 @@ Set up the caching variables
 
 			if ($f_continue_check)
 			{
-				if (file_exists ($f_file))
+				if (file_exists ($f_file_pathname))
 				{
-					if (@copy ($f_file,$direct_settings['swg_memcache']."/".$direct_settings['swg_memcache_id'].".".$f_pathinfo['basename']))
+					if (@copy ($f_file_pathname,$direct_settings['swg_memcache']."/".$direct_settings['swg_memcache_id'].".".$f_pathinfo['basename']))
 					{
 						chmod ($direct_settings['swg_memcache']."/".$direct_settings['swg_memcache_id'].".".$f_pathinfo['basename'],0600);
 						$f_return = direct_file_get ("s",$direct_settings['swg_memcache']."/".$direct_settings['swg_memcache_id'].".".$f_pathinfo['basename']);
 					}
-					else { $f_return = direct_file_get ("s",$f_file); }
+					else { $f_return = direct_file_get ("s",$f_file_pathname); }
 				}
 			}
 		}
-		elseif (file_exists ($f_file)) { $f_return = direct_file_get ("s",$f_file); }
+		elseif (file_exists ($f_file_pathname)) { $f_return = direct_file_get ("s",$f_file_pathname); }
 
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -basic_functions_class->memcache_get_file ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_basic_functions->memcache_get_file_merged_xml ($f_file)
+	//f// direct_basic_functions->memcache_get_file_merged_xml ($f_file_pathname)
 /**
 	* This function uses preparsed XML files to increase performance. Please node
 	* that these files are only readable with "serialize ()" and "unserialize ()"
 	* implementations of the PHP functions.
 	*
-	* @param  string $f_file The XML file (which may also exist in the memcache)
+	* @param  string $f_file_pathname The XML file (which may also exist in the
+	*         memcache)
 	* @uses   direct_debug()
 	* @uses   direct_file_get()
 	* @uses   USE_debug_reporting
 	* @return mixed Parsed merged XML array on success
 	* @since  v0.1.02
 */
-	/*#ifndef(PHP4) */public /* #*/function memcache_get_file_merged_xml ($f_file)
+	/*#ifndef(PHP4) */public /* #*/function memcache_get_file_merged_xml ($f_file_pathname)
 	{
-		global $direct_classes,$direct_settings;
-		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -basic_functions_class->memcache_get_file_merged_xml ($f_file)- (#echo(__LINE__)#)"); }
+		global $direct_globals,$direct_settings;
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -basic_functions_class->memcache_get_file_merged_xml ($f_file_pathname)- (#echo(__LINE__)#)"); }
 
 		$f_continue_check = true;
 		$f_return = array ();
 
 		if ((strlen ($direct_settings['swg_memcache']))&&($direct_settings['swg_memcache_merged_xml_files']))
 		{
-			$f_pathinfo = pathinfo ($f_file);
+			$f_pathinfo = pathinfo ($f_file_pathname);
 			$f_pathinfo['basename'] = md5 ($f_pathinfo['dirname']).".".$f_pathinfo['basename'];
 
 			if (file_exists ($direct_settings['swg_memcache']."/".$direct_settings['swg_memcache_id'].".".$f_pathinfo['basename']))
@@ -690,13 +692,13 @@ Set up the caching variables
 
 		if ($f_continue_check)
 		{
-			if (file_exists ($f_file))
+			if (file_exists ($f_file_pathname))
 			{
-				$f_file_data = direct_file_get ("s",$f_file);
+				$f_file_data = direct_file_get ("s",$f_file_pathname);
 
 				if ($f_file_data)
 				{
-					$f_return = $direct_classes['xml_bridge']->xml2array ($f_file_data,false);
+					$f_return = $direct_globals['xml_bridge']->xml2array ($f_file_data,false);
 
 					if ((strlen ($direct_settings['swg_memcache']))&&($direct_settings['swg_memcache_merged_xml_files'])&&($f_return))
 					{
@@ -710,12 +712,12 @@ Set up the caching variables
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -basic_functions_class->memcache_get_file_merged_xml ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_basic_functions->memcache_write_file ($f_file,$f_data,$f_type = "s0")
+	//f// direct_basic_functions->memcache_write_file ($f_file_pathname,$f_data,$f_type = "s0")
 /**
 	* Writes data to a file (and deletes the old memcache copy).
 	*
 	* @param  string $f_data Data string
-	* @param  string $f_file Target file
+	* @param  string $f_file_pathname Target file
 	* @param  string $f_type Write mode to use. Options: "r", "s", "s0" and "s1"
 	*         for ASCII (string); "a", "a0" and "a1" for ASCII (one line per array
 	*         element) and "b" for binary. Use "a0" or "s0" to save the content as
@@ -727,19 +729,19 @@ Set up the caching variables
 	* @return boolean True on success
 	* @since  v0.1.02
 */
-	/*#ifndef(PHP4) */public /* #*/function memcache_write_file ($f_data,$f_file,$f_type = "s0")
+	/*#ifndef(PHP4) */public /* #*/function memcache_write_file ($f_data,$f_file_pathname,$f_type = "s0")
 	{
 		global $direct_settings;
-		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -basic_functions_class->memcache_write_file (+f_data,$f_file,$f_type)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -basic_functions_class->memcache_write_file (+f_data,$f_file_pathname,$f_type)- (#echo(__LINE__)#)"); }
 
 		if ((strlen ($direct_settings['swg_memcache']))&&(($direct_settings['swg_memcache_files'])||($direct_settings['swg_memcache_merged_xml_files'])))
 		{
-			$f_pathinfo = pathinfo ($f_file);
+			$f_pathinfo = pathinfo ($f_file_pathname);
 			$f_pathinfo['basename'] = md5 ($f_pathinfo['dirname']).".".$f_pathinfo['basename'];
 			if (file_exists ($direct_settings['swg_memcache']."/".$direct_settings['swg_memcache_id'].".".$f_pathinfo['basename'])) { unlink ($direct_settings['swg_memcache']."/".$direct_settings['swg_memcache_id'].".".$f_pathinfo['basename']); }
 		}
 
-		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -basic_functions_class->memcache_write_file ()- (#echo(__LINE__)#)",(:#*/direct_file_write ($f_data,$f_file,$f_type)/*#ifdef(DEBUG):),true):#*/;
+		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -basic_functions_class->memcache_write_file ()- (#echo(__LINE__)#)",(:#*/direct_file_write ($f_data,$f_file_pathname,$f_type)/*#ifdef(DEBUG):),true):#*/;
 	}
 
 	//f// direct_basic_functions->mimetype_extension ($f_extension,$f_case_insensitive = false)
@@ -774,12 +776,12 @@ Set up the caching variables
 		else { return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -basic_functions_class->mimetype_extension ()- (#echo(__LINE__)#)",:#*/"application/octet-stream"/*#ifdef(DEBUG):,true):#*/; }
 	}
 
-	//f// direct_basic_functions->mimetype_icon ($f_mimetype,$f_file = "",$f_case_insensitive = false)
+	//f// direct_basic_functions->mimetype_icon ($f_mimetype,$f_file_pathname = "",$f_case_insensitive = false)
 /**
 	* Return the mimetype icon for the given mimetype.
 	*
 	* @param  string $f_mimetype Mimetype for the requested icon
-	* @param  string $f_file Mimetype icon definition file
+	* @param  string $f_file_pathname Mimetype icon definition file
 	* @param  boolean $f_case_insensitive If true the mode will be case
 	*         insensitive
 	* @uses   direct_basic_functions::$this->memcache_get_file()
@@ -789,19 +791,19 @@ Set up the caching variables
 	* @return string Identified mimetype icon path
 	* @since  v0.1.03
 */
-	/*#ifndef(PHP4) */public /* #*/function mimetype_icon ($f_mimetype,$f_file = "",$f_case_insensitive = false)
+	/*#ifndef(PHP4) */public /* #*/function mimetype_icon ($f_mimetype,$f_file_pathname = "",$f_case_insensitive = false)
 	{
 		global $direct_settings;
-		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -basic_functions_class->mimetype_icon ($f_mimetype,$f_file,+f_case_insensitive)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -basic_functions_class->mimetype_icon ($f_mimetype,$f_file_pathname,+f_case_insensitive)- (#echo(__LINE__)#)"); }
 
-		if (!$f_file) { $f_file = $direct_settings['path_data']."/settings/swg_mimetype_icons.xml"; }
-		$f_file_md5 = md5 ($f_file);
+		if (!$f_file_pathname) { $f_file_pathname = $direct_settings['path_data']."/settings/swg_mimetype_icons.xml"; }
+		$f_file_md5 = md5 ($f_file_pathname);
 		$f_return = "";
 
 		if (isset ($this->mimetype_icons_cache[$f_file_md5])) { $f_icons_array = $this->mimetype_icons_cache[$f_file_md5]; }
 		else
 		{
-			$f_xml_array = $this->memcache_get_file_merged_xml ($f_file);
+			$f_xml_array = $this->memcache_get_file_merged_xml ($f_file_pathname);
 
 			if ($f_xml_array)
 			{
@@ -829,12 +831,12 @@ Set up the caching variables
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -basic_functions_class->mimetype_icon ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_basic_functions->require_file ($f_file,$f_cachelevel = 4,$f_once = true)
+	//f// direct_basic_functions->require_file ($f_file_pathname,$f_cachelevel = 4,$f_once = true)
 /**
 	* Include a required file or initiate an error message if the file does not
 	* exist. The process will stop after printing out the error message.
 	*
-	* @param  string $f_file Relative path from "swg.php" to the file and
+	* @param  string $f_file_pathname Relative path from "swg.php" to the file and
 	*         filename
 	* @param  integer $f_cachelevel There are three cache levels for system files.
 	*         "1" is for always needed files, "2" for often used and "3" for
@@ -850,68 +852,68 @@ Set up the caching variables
 	* @return boolean True on successful inclusion
 	* @since  v0.1.01
 */
-	/*#ifndef(PHP4) */public /* #*/function require_file ($f_file,$f_cachelevel = 4,$f_once = true)
+	/*#ifndef(PHP4) */public /* #*/function require_file ($f_file_pathname,$f_cachelevel = 4,$f_once = true)
 	{
-		global $direct_cachedata,$direct_classes,$direct_local,$direct_settings;
-		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -basic_functions_class->require_file ($f_file,$f_cachelevel,+f_once)- (#echo(__LINE__)#)"); }
+		global $direct_cachedata,$direct_globals,$direct_local,$direct_settings;
+		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -basic_functions_class->require_file ($f_file_pathname,$f_cachelevel,+f_once)- (#echo(__LINE__)#)"); }
 
 		$f_return = false;
 
 		if ((strlen ($direct_settings['swg_memcache']))&&($direct_settings['swg_memcache_source_code']))
 		{
-			$f_pathinfo = pathinfo ($f_file);
+			$f_pathinfo = pathinfo ($f_file_pathname);
 			$f_pathinfo['basename'] = md5 ($f_pathinfo['dirname']).".".$f_pathinfo['basename'];
 			$f_memcache_check = true;
 
 			if (file_exists ($direct_settings['swg_memcache']."/".$direct_settings['swg_memcache_id'].".".$f_pathinfo['basename']))
 			{
 				$f_memcache_check = false;
-				$f_file = $direct_settings['swg_memcache']."/".$direct_settings['swg_memcache_id'].".".$f_pathinfo['basename'];
+				$f_file_pathname = $direct_settings['swg_memcache']."/".$direct_settings['swg_memcache_id'].".".$f_pathinfo['basename'];
 			}
 
 			if (($f_memcache_check)&&($f_cachelevel <= $direct_settings['swg_memcache_source_code']))
 			{
-				if (file_exists ($f_file))
+				if (file_exists ($f_file_pathname))
 				{
-					if (@copy ($f_file,$direct_settings['swg_memcache']."/".$direct_settings['swg_memcache_id'].".".$f_pathinfo['basename']))
+					if (@copy ($f_file_pathname,$direct_settings['swg_memcache']."/".$direct_settings['swg_memcache_id'].".".$f_pathinfo['basename']))
 					{
 						chmod ($direct_settings['swg_memcache']."/".$direct_settings['swg_memcache_id'].".".$f_pathinfo['basename'],0600);
-						$f_file = $direct_settings['swg_memcache']."/".$direct_settings['swg_memcache_id'].".".$f_pathinfo['basename'];
+						$f_file_pathname = $direct_settings['swg_memcache']."/".$direct_settings['swg_memcache_id'].".".$f_pathinfo['basename'];
 					}
 				}
 			}
 		}
 
-		if (file_exists ($f_file))
+		if (file_exists ($f_file_pathname))
 		{
-			if ($f_once) { require_once ($f_file); }
-			else { require ($f_file); }
+			if ($f_once) { require_once ($f_file_pathname); }
+			else { require ($f_file_pathname); }
 
 			return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -basic_functions_class->require_file ()- (#echo(__LINE__)#)",:#*/true/*#ifdef(DEBUG):,true):#*/;
 		}
 		else
 		{
-			trigger_error ("sWG/#echo(__FILEPATH__)# -basic_functions_class->require_file ()- (#echo(__LINE__)#) reporting: Requested file $f_file not found",E_USER_ERROR);
+			trigger_error ("sWG/#echo(__FILEPATH__)# -basic_functions_class->require_file ()- (#echo(__LINE__)#) reporting: Requested file $f_file_pathname not found",E_USER_ERROR);
 			direct_class_init ("output");
 
-			if (direct_class_function_check ($direct_classes['output'],"output_send_error"))
+			if (direct_class_function_check ($direct_globals['output'],"output_send_error"))
 			{
-				if (isset ($direct_local['lang_charset'])) { $direct_classes['output']->output_send_error ("critical","core_required_object_not_found","FATAL ERROR:<br />&quot;$f_file&quot; was not found<br />sWG/#echo(__FILEPATH__)# -basic_functions_class->require_file ()- (#echo(__LINE__)#)"); }
-				else { $direct_classes['output']->output_send_error ("critical","The system could not load a required component.<br /><br />&quot;$f_file&quot; was not found<br /><br />sWG/#echo(__FILEPATH__)# -basic_functions_class->require_file ()- (#echo(__LINE__)#)"); }
+				if (isset ($direct_local['lang_charset'])) { $direct_globals['output']->output_send_error ("critical","core_required_object_not_found","FATAL ERROR:<br />&quot;$f_file_pathname&quot; was not found","sWG/#echo(__FILEPATH__)# -basic_functions_class->require_file ()- (#echo(__LINE__)#)"); }
+				else { $direct_globals['output']->output_send_error ("critical","The system could not load a required component.<br /><br />&quot;$f_file_pathname&quot; was not found","sWG/#echo(__FILEPATH__)# -basic_functions_class->require_file ()- (#echo(__LINE__)#)"); }
 			}
 			else
 			{
-				echo ("The system could not load a required component.<br /><br />&quot;$f_file&quot; was not found<br /><br />sWG/#echo(__FILEPATH__)# -basic_functions_class->require_file ()- (#echo(__LINE__)#)");
+				echo ("The system could not load a required component.<br /><br />&quot;$f_file_pathname&quot; was not found<br /><br />sWG/#echo(__FILEPATH__)# -basic_functions_class->require_file ()- (#echo(__LINE__)#)");
 				exit ();
 			}
 		}
 	}
 
-	//f// direct_basic_functions->settings_get ($f_file,$f_required = false,$f_use_cache = true)
+	//f// direct_basic_functions->settings_get ($f_file_pathname,$f_required = false,$f_use_cache = true)
 /**
 	* Reads settings from file (XML-encoded) and adds them to $direct_settings.
 	*
-	* @param  string $f_file The file containing settings
+	* @param  string $f_file_pathname The file containing settings
 	* @param  boolean $f_required If the file is required (true) but does
 	*         not exist, emergency_mode is called.
 	* @param  boolean $f_use_cache False to read a settings file even if it has
@@ -927,32 +929,29 @@ Set up the caching variables
 	* @return boolean True on success; false on error
 	* @since  v0.1.02
 */
-	/*#ifndef(PHP4) */public /* #*/function settings_get ($f_file,$f_required = false,$f_use_cache = true)
+	/*#ifndef(PHP4) */public /* #*/function settings_get ($f_file_pathname,$f_required = false,$f_use_cache = true)
 	{
-		global $direct_classes,$direct_local,$direct_settings;
-		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -basic_functions_class->settings_get ($f_file,+f_required,+f_use_cache)- (#echo(__LINE__)#)"); }
+		global $direct_globals,$direct_local,$direct_settings;
+		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -basic_functions_class->settings_get ($f_file_pathname,+f_required,+f_use_cache)- (#echo(__LINE__)#)"); }
 
 		$f_continue_check = true;
 		$f_return = false;
 
-		if (direct_class_function_check ($direct_classes['xml_bridge'],"xml2array"))
+		if (direct_class_function_check ($direct_globals['xml_bridge'],"xml2array"))
 		{
-			if ($f_use_cache)
+			if (($f_use_cache)&&(in_array ((md5 ($f_file_pathname)),$this->settings_cache)))
 			{
-				if (in_array ((md5 ($f_file)),$this->settings_cache))
-				{
-					$f_return = true;
-					$f_continue_check = false;
-				}
+				$f_return = true;
+				$f_continue_check = false;
 			}
 
 			if ($f_continue_check)
 			{
-				$f_xml_array = $this->memcache_get_file_merged_xml ($f_file);
+				$f_xml_array = $this->memcache_get_file_merged_xml ($f_file_pathname);
 
 				if ($f_xml_array)
 				{
-					$this->settings_cache[] = md5 ($f_file);
+					$this->settings_cache[] = md5 ($f_file_pathname);
 
 					foreach ($f_xml_array as $f_key => $f_xml_node_array)
 					{
@@ -976,14 +975,14 @@ Set up the caching variables
 				{
 					direct_class_init ("output");
 
-					if (direct_class_function_check ($direct_classes['output'],"output_send_error"))
+					if (direct_class_function_check ($direct_globals['output'],"output_send_error"))
 					{
-						if (isset ($direct_local['lang_charset'])) { $direct_classes['output']->output_send_error ("critical","core_required_object_not_found","FATAL ERROR:<br />&quot;$f_file&quot; was not found<br />sWG/#echo(__FILEPATH__)# -basic_functions_class->settings_get ()- (#echo(__LINE__)#)"); }
-						else { $direct_classes['output']->output_send_error ("critical","The system could not load a required component.<br /><br />&quot;$f_file&quot; was not found<br /><br />sWG/#echo(__FILEPATH__)# -basic_functions_class->settings_get ()- (#echo(__LINE__)#)"); }
+						if (isset ($direct_local['lang_charset'])) { $direct_globals['output']->output_send_error ("critical","core_required_object_not_found","FATAL ERROR:<br />&quot;$f_file_pathname&quot; was not found","sWG/#echo(__FILEPATH__)# -basic_functions_class->settings_get ()- (#echo(__LINE__)#)"); }
+						else { $direct_globals['output']->output_send_error ("critical","The system could not load a required component.<br /><br />&quot;$f_file_pathname&quot; was not found","sWG/#echo(__FILEPATH__)# -basic_functions_class->settings_get ()- (#echo(__LINE__)#)"); }
 					}
 					else
 					{
-						echo ("The system could not load a required component.<br /><br />&quot;$f_file&quot; was not found<br /><br />sWG/#echo(__FILEPATH__)# -basic_functions_class->settings_get ()- (#echo(__LINE__)#)");
+						echo ("The system could not load a required component.<br /><br />&quot;$f_file_pathname&quot; was not found<br /><br />sWG/#echo(__FILEPATH__)# -basic_functions_class->settings_get ()- (#echo(__LINE__)#)");
 						exit ();
 					}
 				}
@@ -993,12 +992,12 @@ Set up the caching variables
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -basic_functions_class->settings_get ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_basic_functions->settings_write ($f_settings,$f_file)
+	//f// direct_basic_functions->settings_write ($f_settings,$f_file_pathname)
 /**
 	* Writes the setting array to a file (XML-encoded).
 	*
 	* @param  array $f_settings Settings array
-	* @param  string $f_file The file containing settings
+	* @param  string $f_file_pathname The file containing settings
 	* @uses   direct_basic_functions::memcache_get_file()
 	* @uses   direct_basic_functions_inline::emergency_mode()
 	* @uses   direct_class_function_check()
@@ -1010,10 +1009,10 @@ Set up the caching variables
 	* @return boolean True on success; false on error
 	* @since  v0.1.08
 */
-	/*#ifndef(PHP4) */public /* #*/function settings_write ($f_settings,$f_file)
+	/*#ifndef(PHP4) */public /* #*/function settings_write ($f_settings,$f_file_pathname)
 	{
-		global $direct_classes,$direct_settings;
-		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -basic_functions_class->settings_write (+f_settings,$f_file)- (#echo(__LINE__)#)"); }
+		global $direct_globals,$direct_settings;
+		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -basic_functions_class->settings_write (+f_settings,$f_file_pathname)- (#echo(__LINE__)#)"); }
 
 		$f_continue_check = $this->include_file ($direct_settings['path_system']."/classes/swg_xml.php");
 		if ($f_continue_check) { $f_xml_object = new direct_xml (); }
@@ -1023,7 +1022,7 @@ Set up the caching variables
 		{
 			$f_xml_object->node_add ("swg_settings_file_v1","",(array ("xmlns" => "urn:de.direct-netware.xmlns:swg.settings.v1")));
 			foreach ($f_settings as $f_setting_key => $f_setting_value) { $f_xml_object->node_add ("swg_settings_file_v1 ".(str_replace ("_"," ",$f_setting_key)),$f_setting_value,(array ("xml:space" => "preserve"))); }
-			$f_return = $this->memcache_write_file ($f_xml_object->cache_export (),$f_file);
+			$f_return = $this->memcache_write_file ($f_xml_object->cache_export (),$f_file_pathname);
 		}
 
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -basic_functions_class->settings_write ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
@@ -1190,7 +1189,7 @@ function direct_core_php_error ($f_level,$f_err_msg,$f_err_file = NULL,$f_err_no
 Mark this class as the most up-to-date one
 ------------------------------------------------------------------------- */
 
-$direct_classes['@names']['basic_functions'] = "direct_basic_functions";
+$direct_globals['@names']['basic_functions'] = "direct_basic_functions";
 define ("CLASS_direct_basic_functions",true);
 
 if (!isset ($direct_settings['swg_id'])) { $direct_settings['swg_id'] = "CVS"; }

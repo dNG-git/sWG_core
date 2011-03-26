@@ -53,7 +53,7 @@ if (!defined ("direct_product_iversion")) { exit (); }
 
 //j// Functions and classes
 
-//f// direct_file_get ($f_type,$f_file_path)
+//f// direct_file_get ($f_type,$f_file_pathname)
 /**
 * Let's work with files - use "direct_file_get ()" to get content from a local
 * file. A time check will stop the reading process before a script timeout
@@ -65,7 +65,7 @@ if (!defined ("direct_product_iversion")) { exit (); }
 *         as it is. "a1" and "s1" remove "<?php exit (); ?>" strings but
 *         whitespace characters at the start or end of the file content
 *         remain.
-* @param  string $f_file_path File path
+* @param  string $f_file_pathname File path
 * @uses   direct_debug()
 * @uses   direct_basic_functions::magic_quotes_filter()
 * @uses   direct_file_functions::close()
@@ -76,19 +76,19 @@ if (!defined ("direct_product_iversion")) { exit (); }
 * @return mixed False on error
 * @since  v0.1.01
 */
-function direct_file_get ($f_type,$f_file_path)
+function direct_file_get ($f_type,$f_file_pathname)
 {
-	global $direct_cachedata,$direct_classes;
-	if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -direct_file_get ($f_type,$f_file_path)- (#echo(__LINE__)#)"); }
+	global $direct_cachedata,$direct_globals;
+	if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -direct_file_get ($f_type,$f_file_pathname)- (#echo(__LINE__)#)"); }
 
 	$f_return = false;
 
-	if (file_exists ($f_file_path))
+	if (file_exists ($f_file_pathname))
 	{
 		$f_file = new direct_file_functions ();
 
-		if ($f_type == "b") { $f_file->open ($f_file_path,true,"rb"); }
-		else { $f_file->open ($f_file_path,true,"r"); }
+		if ($f_type == "b") { $f_file->open ($f_file_pathname,true,"rb"); }
+		else { $f_file->open ($f_file_pathname,true,"r"); }
 
 		if ($f_file->resource_check ())
 		{
@@ -102,7 +102,7 @@ function direct_file_get ($f_type,$f_file_path)
 					$f_return = "";
 					$f_file_content = str_replace ("\r","",$f_file_content);
 
-					if (INFO_magic_quotes_runtime) { $direct_classes['basic_functions']->magic_quotes_filter ($f_file_content); }
+					if (INFO_magic_quotes_runtime) { $direct_globals['basic_functions']->magic_quotes_filter ($f_file_content); }
 
 					if (($f_type != "a0")&&($f_type != "s0"))
 					{
@@ -116,17 +116,17 @@ function direct_file_get ($f_type,$f_file_path)
 			}
 		}
 	}
-	else { trigger_error ("sWG/#echo(__FILEPATH__)# -direct_file_get ()- (#echo(__LINE__)#) reporting: Failed opening $f_file_path - file does not exist",E_USER_WARNING); }
+	else { trigger_error ("sWG/#echo(__FILEPATH__)# -direct_file_get ()- (#echo(__LINE__)#) reporting: Failed opening $f_file_pathname - file does not exist",E_USER_WARNING); }
 
 	return $f_return;
 }
 
-//f// direct_file_write ($f_data,$f_file_path,$f_type = "")
+//f// direct_file_write ($f_data,$f_file_pathname,$f_type = "")
 /**
 * The following function will save given data (as $f_data) to a file.
 *
 * @param  mixed $f_data Data to write (array or string)
-* @param  string $f_file_path File path
+* @param  string $f_file_pathname File path
 * @param  string $f_type Write mode to use. Options: "r", "s", "s0" and "s1"
 *         for ASCII (string); "a", "a0" and "a1" for ASCII (one line per array
 *         element) and "b" for binary. Use "a0" or "s0" to save the content as
@@ -140,17 +140,17 @@ function direct_file_get ($f_type,$f_file_path)
 * @return boolean True on success
 * @since  v0.1.01
 */
-function direct_file_write ($f_data,$f_file_path,$f_type = "")
+function direct_file_write ($f_data,$f_file_pathname,$f_type = "")
 {
-	if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -direct_file_write (+f_data,$f_file_path,$f_type)- (#echo(__LINE__)#)"); }
+	if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -direct_file_write (+f_data,$f_file_pathname,$f_type)- (#echo(__LINE__)#)"); }
 
 	$f_file_content = (is_array ($f_data) ? implode ("\n",$f_data) : $f_data);
 	if (($f_type == "a")||($f_type == "r")||($f_type == "s")) { $f_file_content = trim ($f_file_content); }
 
 	$f_file = new direct_file_functions ();
 
-	if ($f_type == "b") { $f_file->open ($f_file_path,false,"wb"); }
-	else { $f_file->open ($f_file_path,false,"w"); }
+	if ($f_type == "b") { $f_file->open ($f_file_pathname,false,"wb"); }
+	else { $f_file->open ($f_file_pathname,false,"w"); }
 
 	if (($f_type == "a0")||($f_type == "b")||($f_type == "s0")) { $f_file->write ($f_file_content); }
 	else { $f_file->write ("<?php exit (); ?>\n".$f_file_content); }
@@ -160,7 +160,7 @@ function direct_file_write ($f_data,$f_file_path,$f_type = "")
 
 //j// Script specific commands
 
-$direct_classes['basic_functions']->require_file ($direct_settings['path_system']."/classes/swg_file_functions.php",1);
+$direct_globals['basic_functions']->require_file ($direct_settings['path_system']."/classes/swg_file_functions.php",1);
 
 //j// EOF
 ?>

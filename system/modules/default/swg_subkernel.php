@@ -123,11 +123,11 @@ Informing the system about the available function
 */
 	/*#ifndef(PHP4) */public /* #*/function subkernel_init ($f_threshold_id = "")
 	{
-		global $direct_classes;
+		global $direct_globals;
 		if (USE_debug_reporting) { direct_debug (2,"sWG/#echo(__FILEPATH__)# -kernel_class->subkernel_init ($f_threshold_id)- (#echo(__LINE__)#)"); }
 
-		$direct_classes['kernel']->v_user_init ($f_threshold_id);
-		$direct_classes['kernel']->v_group_init ();
+		$direct_globals['kernel']->v_user_init ($f_threshold_id);
+		$direct_globals['kernel']->v_group_init ();
 
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -kernel_class->subkernel_init ()- (#echo(__LINE__)#)",(:#*/array ()/*#ifdef(DEBUG):),true):#*/;
 	}
@@ -137,13 +137,13 @@ Informing the system about the available function
 Mark this class as the most up-to-date one
 ------------------------------------------------------------------------- */
 
-$direct_classes['@names']['subkernel_default'] = "direct_subkernel_default";
+$direct_globals['@names']['subkernel_default'] = "direct_subkernel_default";
 define ("CLASS_direct_subkernel_default",true);
 
 //j// Script specific commands
 
 direct_class_init ("subkernel_default");
-$direct_classes['kernel']->v_call_set ("v_subkernel_init",$direct_classes['subkernel_default'],"subkernel_init");
+$direct_globals['kernel']->v_call_set ("v_subkernel_init",$direct_globals['subkernel_default'],"subkernel_init");
 }
 
 //j// EOF

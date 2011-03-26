@@ -44,7 +44,11 @@
    <new>
     <input input="string" />
     <allowed><input input="string" /></allowed>
-    <entry><input input="string" /></entry>
+
+    <entry>
+     <input input="string" />
+	 <prerequisites><failed><input input="string" /></failed></prerequisites>
+    </entry>
    </new>
 
    <no><access>
@@ -79,6 +83,7 @@
   </information></detailed>
 
   <done>
+   <datasub><new><entry><input input="string" /></entry></new></datasub>
    <input input="string" />
 
    <status>

@@ -180,6 +180,8 @@
 <xsl value='text/xml' />
 <xwd value='image/x-xwindowdump' />
 <xyz value='chemical/x-xyz' />
+<xz value='application/x-xz' />
+<z value='application/x-compress' />
 <zip value='application/zip' />
 
 </swg_mimetype_file_v1>

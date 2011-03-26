@@ -126,13 +126,13 @@ Informing the system about the available function
 Mark this class as the most up-to-date one
 ------------------------------------------------------------------------- */
 
-$direct_classes['@names']['subkernel_developer'] = "direct_subkernel_developer";
+$direct_globals['@names']['subkernel_developer'] = "direct_subkernel_developer";
 define ("CLASS_direct_subkernel_developer",true);
 
 //j// Script specific commands
 
 direct_class_init ("subkernel_developer");
-$direct_classes['kernel']->v_call_set ("v_subkernel_init",$direct_classes['subkernel_developer'],"subkernel_init");
+$direct_globals['kernel']->v_call_set ("v_subkernel_init",$direct_globals['subkernel_developer'],"subkernel_init");
 }
 
 //j// EOF

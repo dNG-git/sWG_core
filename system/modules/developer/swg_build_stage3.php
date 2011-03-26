@@ -77,7 +77,7 @@ Check for a developer version of the sWG.
 
 $g_continue_check = ((($direct_settings['ihandler'] == "cmd")&&(file_exists ("_developer"))&&(is_dir ("_developer"))) ? true : false);
 
-if (!$direct_classes['kernel']->service_init_rboolean ()) { $g_continue_check = false; }
+if (!$direct_globals['kernel']->service_init_rboolean ()) { $g_continue_check = false; }
 if (!file_exists ("swg.php")) { $g_continue_check = false; }
 if (!file_exists ("_developer/README")) { $g_continue_check = false; }
 
@@ -88,7 +88,7 @@ Test for data/settings/swg_build_targets.php and load the XML tree
 ------------------------------------------------------------------------- */
 
 	$g_continue_check = false;
-	$g_profile = (isset ($GLOBALS['i_profile']) ? "_".($direct_classes['basic_functions']->inputfilter_filepath ($GLOBALS['i_profile'])) : "");
+	$g_profile = (isset ($GLOBALS['i_profile']) ? "_".($direct_globals['basic_functions']->inputfilter_filepath ($GLOBALS['i_profile'])) : "");
 
 	if (file_exists ($direct_settings['path_data']."/settings/swg_build_targets{$g_profile}.php"))
 	{
@@ -96,7 +96,7 @@ Test for data/settings/swg_build_targets.php and load the XML tree
 
 		if ($g_file_data)
 		{
-			$g_xml_node_array = $direct_classes['xml_bridge']->xml2array ($g_file_data,true,false);
+			$g_xml_node_array = $direct_globals['xml_bridge']->xml2array ($g_file_data,true,false);
 			$g_file_data = NULL;
 
 			if (is_array ($g_xml_node_array))
@@ -122,8 +122,8 @@ Test for data/settings/swg_build_targets.php and load the XML tree
 Include all required files for later use
 ------------------------------------------------------------------------- */
 
-	if (!$direct_classes['basic_functions']->include_file ($direct_settings['path_system']."/functions/swg_dir_functions.php")) { $g_continue_check = false; }
-	if (!$direct_classes['basic_functions']->include_file ($direct_settings['path_system']."/classes/swg_developer_builder.php")) { $g_continue_check = false; }
+	if (!$direct_globals['basic_functions']->include_file ($direct_settings['path_system']."/functions/swg_dir_functions.php")) { $g_continue_check = false; }
+	if (!$direct_globals['basic_functions']->include_file ($direct_settings['path_system']."/classes/swg_developer_builder.php")) { $g_continue_check = false; }
 	$g_builder_object = ((($g_continue_check)&&($g_pdescriptor)&&($g_pname)&&($g_source_path)) ? new direct_developer_builder () : NULL);
 
 /* -------------------------------------------------------------------------

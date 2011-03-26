@@ -50,7 +50,7 @@ Testing for required classes
 ------------------------------------------------------------------------- */
 
 $g_continue_check = ((defined ("CLASS_direct_icmd")) ? false : true);
-if (($g_continue_check)&&(!defined ("CLASS_direct_input"))) { $g_continue_check = ($direct_classes['basic_functions']->include_file ($direct_settings['path_system']."/classes/swg_ihandler.php",1) ? defined ("CLASS_direct_input") : false); }
+if (($g_continue_check)&&(!defined ("CLASS_direct_input"))) { $g_continue_check = ($direct_globals['basic_functions']->include_file ($direct_settings['path_system']."/classes/swg_ihandler.php",1) ? defined ("CLASS_direct_input") : false); }
 
 if ($g_continue_check)
 {
@@ -146,7 +146,7 @@ Set protocol specific data
 Mark this class as the most up-to-date one
 ------------------------------------------------------------------------- */
 
-$direct_classes['@names']['input'] = "direct_icmd";
+$direct_globals['@names']['input'] = "direct_icmd";
 define ("CLASS_direct_icmd",true);
 }
 

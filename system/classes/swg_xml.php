@@ -51,8 +51,8 @@ Testing for required classes
 ------------------------------------------------------------------------- */
 
 $g_continue_check = ((defined ("CLASS_direct_xml")) ? false : true);
-if (($g_continue_check)&&(!defined ("CLASS_direct_xml_reader"))) { $g_continue_check = ($direct_classes['basic_functions']->include_file ($direct_settings['path_system']."/classes/ext_core/xml_reader.php",1) ? defined ("CLASS_direct_xml_reader") : false); }
-if (($g_continue_check)&&(!defined ("CLASS_direct_xml_writer"))) { $g_continue_check = ($direct_classes['basic_functions']->include_file ($direct_settings['path_system']."/classes/ext_core/xml_writer.php",1) ? defined ("CLASS_direct_xml_writer") : false); }
+if (($g_continue_check)&&(!defined ("CLASS_direct_xml_reader"))) { $g_continue_check = ($direct_globals['basic_functions']->include_file ($direct_settings['path_system']."/classes/ext_core/xml_reader.php",1) ? defined ("CLASS_direct_xml_reader") : false); }
+if (($g_continue_check)&&(!defined ("CLASS_direct_xml_writer"))) { $g_continue_check = ($direct_globals['basic_functions']->include_file ($direct_settings['path_system']."/classes/ext_core/xml_writer.php",1) ? defined ("CLASS_direct_xml_writer") : false); }
 
 if ($g_continue_check)
 {

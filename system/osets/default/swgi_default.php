@@ -72,7 +72,7 @@ function direct_default_oset_done_job_entries_parse ($f_job_entries)
 				if ($f_jobs_array['name'] != $f_job_title)
 				{
 					$f_job_title = $f_jobs_array['name'];
-					$f_return .= "\n<p class='pageborder2{$direct_settings['theme_css_corners']} pageextracontent'><span style='font-weight:bold'>$f_job_title</span>";
+					$f_return .= "<p class='pageborder2{$direct_settings['theme_css_corners']} pageextracontent'><span style='font-weight:bold'>$f_job_title</span>";
 				}
 
 				$f_entries = "";
@@ -89,7 +89,8 @@ function direct_default_oset_done_job_entries_parse ($f_job_entries)
 					}
 				}
 
-				if ($f_entries) { $f_return .= "<br /><br />\n".$f_entries."</p>"; }
+				if ($f_entries) { $f_return .= "<br /><br />\n".$f_entries; }
+				$f_return .= "</p>";
 			}
 			else
 			{
@@ -115,7 +116,7 @@ function direct_default_oset_done_job_entries_parse ($f_job_entries)
 
 //j// Script specific commands
 
-$direct_settings['theme_css_corners'] = ((isset ($direct_settings['theme_css_corners'])) ? " ".$direct_settings['theme_css_corners'] : " ui-corner-all");
+$direct_settings['theme_css_corners'] = ((isset ($direct_settings['theme_css_corners_class'])) ? " ".$direct_settings['theme_css_corners_class'] : " ui-corner-all");
 
 //j// EOF
 ?>

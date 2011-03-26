@@ -91,7 +91,7 @@ function direct_string_translation ($f_module,$f_string)
 */
 function direct_string_id_translation ($f_module,$f_tid)
 {
-	global $direct_cachedata,$direct_classes,$direct_settings;
+	global $direct_cachedata,$direct_globals,$direct_settings;
 	if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_string_id_translation ($f_module,+f_tid)- (#echo(__LINE__)#)"); }
 
 	if (!isset ($direct_cachedata['core_string_translator_files']))
@@ -109,8 +109,8 @@ function direct_string_id_translation ($f_module,$f_tid)
 
 		if (file_exists ($direct_settings['path_data']."/lang/swg_{$f_module}.xml"))
 		{
-			$f_file_data = $direct_classes['basic_functions']->memcache_get_file ($direct_settings['path_data']."/lang/swg_{$f_module}.xml");
-			if ($f_file_data) { $direct_cachedata['core_string_translator_data'][$f_module] = $direct_classes['xml_bridge']->xml2array ($f_file_data,false); }
+			$f_file_data = $direct_globals['basic_functions']->memcache_get_file ($direct_settings['path_data']."/lang/swg_{$f_module}.xml");
+			if ($f_file_data) { $direct_cachedata['core_string_translator_data'][$f_module] = $direct_globals['xml_bridge']->xml2array ($f_file_data,false); }
 		}
 		else { $direct_cachedata['core_string_translator_data'][$f_module] = ""; }
 	}

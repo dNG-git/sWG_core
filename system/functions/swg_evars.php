@@ -70,7 +70,7 @@ if (!defined ("direct_product_iversion")) { exit (); }
 */
 function direct_evars_get ($f_data)
 {
-	global $direct_classes;
+	global $direct_globals;
 	if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -direct_evars_get (+f_data)- (#echo(__LINE__)#)"); }
 
 	$f_data = trim ($f_data);
@@ -78,7 +78,7 @@ function direct_evars_get ($f_data)
 
 	if (preg_match ("#<evars>(.+?)</evars>#si",$f_data,$f_result_array))
 	{
-		$f_result_array = $direct_classes['xml_bridge']->xml2array ($f_result_array[0],true,false);
+		$f_result_array = $direct_globals['xml_bridge']->xml2array ($f_result_array[0],true,false);
 
 		if (isset ($f_result_array['evars']))
 		{
@@ -104,8 +104,6 @@ function direct_evars_get ($f_data)
 */
 function direct_evars_get_walker ($f_xml_array)
 {
-	if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_evars_get_walker (+f_xml_array)- (#echo(__LINE__)#)"); }
-
 	$f_return = array ();
 
 	if (is_array ($f_xml_array))
@@ -121,8 +119,8 @@ function direct_evars_get_walker ($f_xml_array)
 				if ((isset ($f_xml_node_array['xml.item']))||(isset ($f_xml_node_array['xml.mtree']))) { $f_return[$f_key] = direct_evars_get_walker ($f_xml_node_array); }
 				elseif (strlen ($f_xml_node_array['tag']))
 				{
-					if ($f_mtree) { $f_return[] = (isset ($f_xml_node_array['attributes']['base64']) ? base64_decode ($f_xml_node_array['value']) : $f_xml_node_array['value']); }
-					else { $f_return[$f_xml_node_array['tag']] = (isset ($f_xml_node_array['attributes']['base64']) ? base64_decode ($f_xml_node_array['value']) : $f_xml_node_array['value']); }
+					if ($f_mtree) { $f_return[] = (isset ($f_xml_node_array['attributes'],$f_xml_node_array['attributes']['base64']) ? base64_decode ($f_xml_node_array['value']) : $f_xml_node_array['value']); }
+					else { $f_return[$f_xml_node_array['tag']] = (isset ($f_xml_node_array['attributes'],$f_xml_node_array['attributes']['base64']) ? base64_decode ($f_xml_node_array['value']) : $f_xml_node_array['value']); }
 				}
 			}
 		}
@@ -149,25 +147,25 @@ function direct_evars_get_walker ($f_xml_array)
 * @return string XML string
 * @since  v0.1.01
 */
-function direct_evars_write ($f_data,$f_binary_safe = false)
+function direct_evars_write ($f_data_array,$f_binary_safe = false)
 {
-	global $direct_classes,$direct_settings;
+	global $direct_globals,$direct_settings;
 	if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -direct_evars_write (+f_data,+f_binary_safe)- (#echo(__LINE__)#)"); }
 
-	$direct_classes['basic_functions']->include_file ($direct_settings['path_system']."/classes/swg_xml.php",2);
+	$direct_globals['basic_functions']->include_file ($direct_settings['path_system']."/classes/swg_xml.php",2);
 	$f_return = "";
 
-	if ((is_array ($f_data))&&(!empty ($f_data)))
+	if ((is_array ($f_data_array))&&(!empty ($f_data_array)))
 	{
-		$f_data = array ("evars" => $f_data);
+		$f_data_array = array ("evars" => $f_data_array);
 
 		$f_xml_object = new direct_xml ();
-		$f_xml_object->array_import ($f_data,true);
+		$f_xml_object->array_import ($f_data_array,true);
 
 		if ($f_binary_safe)
 		{
-			$f_data = direct_evars_write_base64_walker ($f_xml_object->get ());
-			$f_return = $f_xml_object->array2xml ($f_data,false);
+			$f_data_array = direct_evars_write_base64_walker ($f_xml_object->get ());
+			$f_return = $f_xml_object->array2xml ($f_data_array,false);
 		}
 		else { $f_return = $f_xml_object->cache_export (true); }
 	}
@@ -175,27 +173,25 @@ function direct_evars_write ($f_data,$f_binary_safe = false)
 	return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -direct_evars_write ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 }
 
-//f// direct_evars_write_base64_walker ($f_data)
+//f// direct_evars_write_base64_walker ($f_data_array)
 /**
 * This recursive function is used to protect binary data in a system optimized
 * for strings.
 *
-* @param  array $f_data Input array
+* @param  array $f_data_array Input array
 * @uses   direct_debug()
 * @uses   direct_evars_write_base64_walker()
 * @uses   USE_debug_reporting
 * @return array Output array (base64-encoded values if required)
 * @since  v0.1.03
 */
-function direct_evars_write_base64_walker ($f_data)
+function direct_evars_write_base64_walker ($f_data_array)
 {
-	if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_evars_write_base64_walker (+f_data)- (#echo(__LINE__)#)"); }
-
 	$f_return = array ();
 
-	if ((is_array ($f_data))&&(!empty ($f_data)))
+	if ((is_array ($f_data_array))&&(!empty ($f_data_array)))
 	{
-		foreach ($f_data as $f_key => $f_node_array)
+		foreach ($f_data_array as $f_key => $f_node_array)
 		{
 			if (isset ($f_node_array['xml.item'])) { $f_return[$f_key] = direct_evars_write_base64_walker ($f_node_array); }
 			elseif (strlen ($f_node_array['tag']))

@@ -57,11 +57,11 @@ if (!isset ($direct_settings['swg_content_modification_check'])) { $direct_setti
 
 if (USE_debug_reporting) { direct_debug (1,"sWG/#echo(__FILEPATH__)# _main_ (#echo(__LINE__)#)"); }
 
-if ($direct_classes['kernel']->service_init_default ())
+if ($direct_globals['kernel']->service_init_default ())
 {
 //j// BOA
-$g_dfile = (isset ($direct_settings['dsd']['dfile']) ? ($direct_classes['basic_functions']->inputfilter_filepath ($direct_settings['dsd']['dfile'])) : "");
-if (!$g_dfile) { $g_dfile = (isset ($direct_settings['dsd']['dyn_img']) ? ($direct_classes['basic_functions']->inputfilter_filepath ($direct_settings['dsd']['dyn_img'])) : ""); }
+$g_dfile = (isset ($direct_settings['dsd']['dfile']) ? ($direct_globals['basic_functions']->inputfilter_filepath ($direct_settings['dsd']['dfile'])) : "");
+if (!$g_dfile) { $g_dfile = (isset ($direct_settings['dsd']['dyn_img']) ? ($direct_globals['basic_functions']->inputfilter_filepath ($direct_settings['dsd']['dyn_img'])) : ""); }
 
 ob_start ();
 
@@ -90,7 +90,7 @@ if ($g_dfile)
 
 			if ($g_server_last_modified <= $g_client_last_modified)
 			{
-				$direct_classes['output']->output_header ("HTTP/1.1","HTTP/1.1 304 Not Modified",true);
+				$direct_globals['output']->output_header ("HTTP/1.1","HTTP/1.1 304 Not Modified",true);
 				$g_modification_check = false;
 			}
 		}
@@ -103,34 +103,35 @@ if (($g_continue_check)&&($g_modification_check))
 	if ($direct_settings['swg_content_modification_check'])
 	{
 		if (!isset ($g_server_last_modified)) { $g_server_last_modified = filemtime ($g_dfile); }
-		$direct_classes['output']->last_modified ($g_server_last_modified);
+		$direct_globals['output']->last_modified ($g_server_last_modified);
 	}
 
 	if (preg_match ("#^(.*?)\.php\.(css|js)$#i",$g_dfile,$g_result_array))
 	{
-		if ($direct_classes['basic_functions']->include_file ($g_dfile,2))
+		if ($direct_globals['basic_functions']->include_file ($g_dfile,2))
 		{
-			$direct_classes['output']->header (true,false);
+			$direct_globals['output']->header (true,false);
 
-			if ($g_result_array[2] == "css") { $direct_classes['output']->output_header ("Content-Type","text/css"); }
-			else { $direct_classes['output']->output_header ("Content-Type","text/javascript"); }
+			if ($g_result_array[2] == "css") { $direct_globals['output']->output_header ("Content-Type","text/css"); }
+			else { $direct_globals['output']->output_header ("Content-Type","text/javascript"); }
 
 /*#ifndef(PHP4) */
-			$direct_classes['output']->output_data = ob_get_flush ();
+			$direct_globals['output']->output_data = ob_get_flush ();
 /* #*//*#ifdef(PHP4):
-			$direct_classes['output']->output_data = ob_get_contents ();
+			$direct_globals['output']->output_data = ob_get_contents ();
 			ob_end_clean ();
 :#\n*/
 		}
 		else
 		{
-			$direct_classes['output']->header (true,false);
-			$direct_classes['output']->output_header ("HTTP/1.1","HTTP/1.1 415 Unsupported Media Type",true);
+			$direct_globals['output']->header (true,false);
+			$direct_globals['output']->output_header ("HTTP/1.1","HTTP/1.1 415 Unsupported Media Type",true);
 		}
 	}
 	elseif (preg_match ("#^(.*?)\.(css|gif|jar|jpg|jpeg|js|png|swf)$#i",$g_dfile,$g_extension_result_array))
 	{
 		$g_range_start = 0;
+		$g_range_size = 0;
 		$g_range_end = 0;
 
 		if (isset ($_SERVER['HTTP_RANGE']))
@@ -158,11 +159,11 @@ if (($g_continue_check)&&($g_modification_check))
 
 				if ($g_continue_check)
 				{
-					$direct_classes['output']->output_header ("HTTP/1.1","HTTP/1.1 206 Partial Content",true);
-					$direct_classes['output']->output_header ("Content-Range",$g_range_start."-{$g_range_end}/".$g_file_size);
+					$direct_globals['output']->output_header ("HTTP/1.1","HTTP/1.1 206 Partial Content",true);
+					$direct_globals['output']->output_header ("Content-Range",$g_range_start."-{$g_range_end}/".$g_file_size);
 
 					$g_range_size = (1 + $g_range_end - $g_range_start);
-					$direct_classes['output']->output_header ("Content-Length",$g_range_size);
+					$direct_globals['output']->output_header ("Content-Length",$g_range_size);
 				}
 			}
 		}
@@ -236,7 +237,7 @@ if (($g_continue_check)&&($g_modification_check))
 					else
 					{
 						$g_block_data = $g_file_object->read ($g_block_size);
-						if (INFO_magic_quotes_runtime) { $direct_classes['basic_functions']->magic_quotes_filter ($g_block_data); }
+						if (INFO_magic_quotes_runtime) { $direct_globals['basic_functions']->magic_quotes_filter ($g_block_data); }
 						echo $g_block_data;
 					}
 
@@ -254,7 +255,7 @@ if (($g_continue_check)&&($g_modification_check))
 					else
 					{
 						$g_block_data = $g_file_object->read (4096);
-						if (INFO_magic_quotes_runtime) { $direct_classes['basic_functions']->magic_quotes_filter ($g_block_data); }
+						if (INFO_magic_quotes_runtime) { $direct_globals['basic_functions']->magic_quotes_filter ($g_block_data); }
 						echo $g_block_data;
 					}
 				}
@@ -264,19 +265,19 @@ if (($g_continue_check)&&($g_modification_check))
 
 			if ($g_continue_check)
 			{
-				$direct_classes['output']->header (true,false);
-				$direct_classes['output']->output_header ("Content-Type",$g_file_type);
+				$direct_globals['output']->header (true,false);
+				$direct_globals['output']->output_header ("Content-Type",$g_file_type);
 /*#ifndef(PHP4) */
-				$direct_classes['output']->output_data = ob_get_flush ();
+				$direct_globals['output']->output_data = ob_get_flush ();
 /* #*//*#ifdef(PHP4):
-				$direct_classes['output']->output_data = ob_get_contents ();
+				$direct_globals['output']->output_data = ob_get_contents ();
 				ob_end_clean ();
 :#\n*/
 			}
 			else
 			{
-				$direct_classes['output']->header (true,false);
-				$direct_classes['output']->output_header ("HTTP/1.1","HTTP/1.1 504 Gateway Timeout",true);
+				$direct_globals['output']->header (true,false);
+				$direct_globals['output']->output_header ("HTTP/1.1","HTTP/1.1 504 Gateway Timeout",true);
 				ob_end_clean ();
 			}
 
@@ -284,23 +285,23 @@ if (($g_continue_check)&&($g_modification_check))
 		}
 		else
 		{
-			$direct_classes['output']->header (true,false);
-			$direct_classes['output']->output_header ("HTTP/1.1","HTTP/1.1 404 Not Found",true);
+			$direct_globals['output']->header (true,false);
+			$direct_globals['output']->output_header ("HTTP/1.1","HTTP/1.1 404 Not Found",true);
 		}
 	}
 	else
 	{
-		$direct_classes['output']->header (true,false);
-		$direct_classes['output']->output_header ("HTTP/1.1","HTTP/1.1 415 Unsupported Media Type",true);
+		$direct_globals['output']->header (true,false);
+		$direct_globals['output']->output_header ("HTTP/1.1","HTTP/1.1 415 Unsupported Media Type",true);
 	}
 }
 elseif (!$g_continue_check)
 {
-	$direct_classes['output']->header (true,false);
-	$direct_classes['output']->output_header ("HTTP/1.1","HTTP/1.1 404 Not Found",true);
+	$direct_globals['output']->header (true,false);
+	$direct_globals['output']->output_header ("HTTP/1.1","HTTP/1.1 404 Not Found",true);
 }
 
-$direct_classes['output']->output_send (NULL);
+$direct_globals['output']->output_send (NULL);
 //j// EOA
 }
 

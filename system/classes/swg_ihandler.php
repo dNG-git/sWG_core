@@ -101,7 +101,7 @@ Extend the class using old and new behavior
 */
 	/*#ifndef(PHP4) */public /* #*/function __construct ()
 	{
-		global $direct_classes,$direct_settings;
+		global $direct_globals,$direct_settings;
 		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -input_class->__construct (direct_input)- (#echo(__LINE__)#)"); }
 
 /* -------------------------------------------------------------------------
@@ -125,7 +125,7 @@ Informing the system about available functions
 Set protocol specific data
 ------------------------------------------------------------------------- */
 
-		$direct_settings['dsd'] = $direct_classes['basic_functions']->dsd_parse ($direct_settings['dsd']);
+		$direct_settings['dsd'] = $direct_globals['basic_functions']->dsd_parse ($direct_settings['dsd']);
 		$direct_settings['swg_clientsupport'] = array ();
 
 		$this->auth = NULL;
