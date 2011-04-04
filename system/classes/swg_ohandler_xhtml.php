@@ -111,6 +111,8 @@ Informing the system about available functions
 Set up some variables
 ------------------------------------------------------------------------- */
 
+		if (!isset ($direct_settings['p3p_cp'])) { $direct_settings['p3p_cp'] = ""; }
+		if (!isset ($direct_settings['p3p_url'])) { $direct_settings['p3p_url'] = ""; }
 		$f_mobile_check = isset ($_SERVER['HTTP_X_WAP_PROFILE']);
 		$this->theme = NULL;
 
@@ -290,7 +292,7 @@ Set up some variables
 Parse additional copyright information for output.
 ------------------------------------------------------------------------- */
 
-			elseif ((is_array (@$direct_settings['additional_copyright']))&&(!empty ($direct_settings['additional_copyright'])))
+			elseif ((is_array ($direct_settings['additional_copyright']))&&(!empty ($direct_settings['additional_copyright'])))
 			{
 				foreach ($direct_settings['additional_copyright'] as $f_copyright_array)
 				{

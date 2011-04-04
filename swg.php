@@ -53,7 +53,7 @@ Check and set constants to their default values if necessary.
 ------------------------------------------------------------------------- */
 
 if (!defined ("OW_error_reporting")) { define ("OW_error_reporting",true); }
-/*#ifdef(PHP4):if (!defined ("OW_magic_quotes_runtime")) { define ("OW_magic_quotes_runtime",true); }:#*/
+/*#ifdef(PHP4):if (!defined ("OW_magic_quotes_runtime")) { define ("OW_magic_quotes_runtime",true); }:#\n*/
 if (!defined ("OW_set_time_limit_custom")) { define ("OW_set_time_limit_custom",false); }
 if (!defined ("USE_backtrace")) { define ("USE_backtrace",false); }
 if (!defined ("USE_charset_html_filtering")) { define ("USE_charset_html_filtering",true); }
@@ -80,7 +80,7 @@ enviroments) as well as Magic-Quotes-Runtime and time limit and co.
 ------------------------------------------------------------------------- */
 
 if (OW_error_reporting) { error_reporting (0); }
-/*#ifdef(PHP4):if (OW_magic_quotes_runtime) { set_magic_quotes_runtime (0); }:#*/
+/*#ifdef(PHP4):if (OW_magic_quotes_runtime) { set_magic_quotes_runtime (0); }:#\n*/
 ignore_user_abort (1);
 mt_srand (/*#ifdef(PHP4):((double)microtime ()) * 1000000:#*/);
 
@@ -118,7 +118,7 @@ $direct_local = array ();
 /**
 * All settings will be saved into this array.
 */
-$direct_settings = array ("lang" => NULL,"theme" => NULL);
+$direct_settings = array ("lang" => NULL,"theme" => NULL,"swg_chmod_dirs_change" => "0750","swg_chmod_files_change" => "0640","swg_umask_change" => "0000");
 
 /*#ifndef(PHP4) */$direct_cachedata['core_debug_starttime'] = microtime (true);/* #*//*#ifdef(PHP4):$direct_cachedata['core_debug_starttime'] = time ();:#*/
 
@@ -884,7 +884,7 @@ Encode the output for smaller bandwidth connections
 
 		if ((!isset ($direct_local['lang_charset']))||(!$direct_local['lang_charset'])) { $direct_local['lang_charset'] = "UTF-8"; }
 
-		if ((USE_debug_reporting)&&((isset ($direct_settings['dsd']['debug_text']))||(isset ($direct_settings['dsd']['debug_xml']))))
+		if ((USE_debug_reporting)&&(is_array ($direct_settings['dsd']))&&((isset ($direct_settings['dsd']['debug_text']))||(isset ($direct_settings['dsd']['debug_xml']))))
 		{
 			if (isset ($direct_settings['dsd']['debug_xml']))
 			{

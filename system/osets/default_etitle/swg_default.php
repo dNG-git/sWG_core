@@ -127,12 +127,15 @@ function direct_output_oset_default_done ()
 	{
 		if ($direct_cachedata['output_jsjump'] > 0)
 		{
-$f_return .= ("\n<p id='swgjsjump_point' class='pagecontent' style='font-weight:bold;text-align:center'><span style='font-size:10px'>".(direct_local_get ("core_automated_redirection_unsupported"))."</span><br />
+$f_embedded_code = ("<p class='pagecontent' style='font-size:10px;text-align:center'>(".(direct_local_get ("core_automated_redirection","text")).")<br />
+<a href=\"{$direct_cachedata['output_pagetarget']}\" target='_self'>".(direct_local_get ("core_continue","text"))."</a></p>");
+
+$f_return .= (isset ($direct_settings['swg_clientsupport']['JSDOMManipulation']) ? $f_embedded_code : ("<p id='swgjsjump_point' class='pagecontent' style='font-weight:bold;text-align:center'><span style='font-size:10px'>".(direct_local_get ("core_automated_redirection_unsupported"))."</span><br />
 <a href=\"{$direct_cachedata['output_pagetarget']}\" target='_self'>".(direct_local_get ("core_continue"))."</a></p><script type='text/javascript'><![CDATA[
-djs_var.core_run_onload.push ({ func:'djs_swgDOM_replace',params:{ id:'swgjsjump_point',
-data:\"<p class='pagecontent' style='font-size:10px;text-align:center'>(".(direct_local_get ("core_automated_redirection","text")).")<br />\\n\" +
- \"<a href=\\\"{$direct_cachedata['output_pagetarget']}\\\" target='_self'>".(direct_local_get ("core_continue","text"))."</a></p>\"
-} });
+djs_var.core_run_onload.push ({ func:'djs_swgDOM_replace',params: { data:\"".(str_replace ('"','\"',$f_embedded_code))."\",id:'swgjsjump_point' } });
+]]></script>"));
+
+$f_return .= ("<script type='text/javascript'><![CDATA[
 self.setTimeout (\"self.location.replace (\\\"{$direct_cachedata['output_pagetarget']}\\\")\",{$direct_cachedata['output_jsjump']});
 ]]></script>");
 		}

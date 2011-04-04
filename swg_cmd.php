@@ -112,7 +112,7 @@ $direct_local = array ();
 /**
 * All settings will be saved into this array.
 */
-$direct_settings = array ("lang" => NULL,"theme" => NULL);
+$direct_settings = array ("lang" => NULL,"theme" => NULL,"swg_chmod_dirs_change" => "0750","swg_chmod_files_change" => "0640","swg_umask_change" => "0000");
 
 /*#ifndef(PHP4) */$direct_cachedata['core_debug_starttime'] = microtime (true);/* #*//*#ifdef(PHP4):$direct_cachedata['core_debug_starttime'] = time ();:#*/
 
@@ -839,7 +839,7 @@ Set "last modified" time to "0".
 		if ((!isset ($direct_local['lang_charset']))||(!$direct_local['lang_charset'])) { $direct_local['lang_charset'] = "UTF-8"; }
 		echo "<?xml version='1.0' encoding='$direct_local[lang_charset]' ?><swg xmlns='urn:de.direct-netware.xmlns:swg.v1'>";
 
-		if ((USE_debug_reporting)&&((isset ($direct_settings['dsd']['debug_text']))||(isset ($direct_settings['dsd']['debug_xml']))))
+		if ((USE_debug_reporting)&&(is_array ($direct_settings['dsd']))&&((isset ($direct_settings['dsd']['debug_text']))||(isset ($direct_settings['dsd']['debug_xml']))))
 		{
 			if (isset ($direct_settings['dsd']['debug_xml']))
 			{

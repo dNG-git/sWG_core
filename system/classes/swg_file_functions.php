@@ -90,7 +90,7 @@ Extend the class using old and new behavior
 My parent should be on my side to get the work done
 ------------------------------------------------------------------------- */
 
-		parent::__construct (@$direct_settings['swg_umask_change'],@$direct_settings['swg_chmod_files_change'],$direct_cachedata['core_time'],($direct_settings['timeout'] + $direct_settings['timeout_core']),USE_debug_reporting);
+		parent::__construct ($direct_settings['swg_umask_change'],$direct_settings['swg_chmod_files_change'],$direct_cachedata['core_time'],($direct_settings['timeout'] + $direct_settings['timeout_core']),USE_debug_reporting);
 	}
 /*#ifdef(PHP4):
 /**

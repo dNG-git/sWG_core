@@ -7,35 +7,41 @@
  * Copyright (c) 2007 Andreas Eberhard
  * Licensed under GPL (http://www.opensource.org/licenses/gpl-license.php)
  */
-(function ($) {
-	jQuery.fn.pngFix = function (settings) {
-		settings = jQuery.extend ({ blankgif: 'blank.gif' },settings);
+(function ($)
+{
+	jQuery.fn.pngFix = function (settings)
+	{
+		settings = jQuery.extend ({ blankgif:"blank.gif" },settings);
+		var pngImg;
 
-		if (jQuery.browser.msie && parseInt (jQuery.browser.version) < 7) {
-			//fix images with png-source
-			jQuery(this).find("img[src*=.png]").each (function () {
-				var bgIMG = jQuery(this).attr ('src');
-				jQuery(this).attr ('src',settings.blankgif);
-				jQuery(this).css ('filter','progid:DXImageTransform.Microsoft.AlphaImageLoader(src=\'' + bgIMG + '\', sizingMethod=\'scale\');');
-			});
+		// fix css background pngs
+		$(this).find("*").each (function ()
+		{
+			pngImg = $(this).css("background-image");
+			if (pngImg.toLowerCase().indexOf (".png") != -1) { $(this).css("background-image","none");this.runtimeStyle.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src=" + pngImg.replace (/url\((.+?)\)/gi,"$1") + ")"; }
+		});
 
-			// fix css background pngs
-			jQuery(this).find("*").each (function () {
-				var bgIMG = jQuery(this).css ('background-image');
-				if (bgIMG.indexOf (".png") != -1) {
-					var bgIMGie = bgIMG.split('url("')[1].split('")')[0];
-					jQuery(this).css ('background-image','none');
-					jQuery(this).css ('filter','progid:DXImageTransform.Microsoft.AlphaImageLoader(src=\'' + bgIMGie + '\', sizingMethod=\'scale\');');
-				}
-			});
+		//fix images with png-source
+		for (var i=0;i < document.images.length;i++)
+		{
+			pngImg = document.images[i];
 
-			//fix input with png-source
-			jQuery(this).find("input[src*=.png]").each (function () {
-				var bgIMG = jQuery(this).attr ('src');
-				jQuery(this).attr ('src',settings.blankgif);
-				jQuery(this).css ('filter','progid:DXImageTransform.Microsoft.AlphaImageLoader(src=\'' + bgIMG + '\', sizingMethod=\'scale\');');
-			});
+			if (pngImg.src.toLowerCase().indexOf (".png") != -1)
+			{
+				pngImg.runtimeStyle.width = pngImg.width + "px";
+				pngImg.runtimeStyle.height = pngImg.height + "px";
+
+				pngImg.runtimeStyle.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + pngImg.src + "')";
+				pngImg.src = settings.blankgif;
+			}
 		}
+
+		//fix input with png-source
+		$(this).find("input[src*=.png]").each (function ()
+		{
+			pngImg = $(this).attr ("src");
+			$(this).attr("src",settings.blankgif).css ("filter","progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + pngImg + "')");
+		});
 
 		return jQuery;
 	};

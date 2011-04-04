@@ -1,5 +1,6 @@
 _extras
 .*
+*.mo
 data/settings/swg_build_targets.php
 makefile.php
 nbproject
