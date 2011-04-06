@@ -958,7 +958,7 @@ Encode the output for smaller bandwidth connections
 
 				if (isset ($direct_settings['theme_xhtml_type']))
 				{
-					if (/*#ifndef(PHP4) */stripos /* #*//*#ifdef(PHP4):stristr :#*/($_SERVER['HTTP_ACCEPT'],"application/xhtml+xml") === false) { $this->output_response_xhtml_legacy ($direct_globals['output_theme']->output_data); }
+					if ((!isset ($_SERVER['HTTP_ACCEPT']))||(/*#ifndef(PHP4) */stripos /* #*//*#ifdef(PHP4):stristr :#*/($_SERVER['HTTP_ACCEPT'],"application/xhtml+xml") === false)) { $this->output_response_xhtml_legacy ($direct_globals['output_theme']->output_data); }
 				}
 				else { direct_outputenc_xhtml_cleanup ($direct_globals['output_theme']->output_data); }
 
@@ -1032,7 +1032,6 @@ $direct_settings[product_lcode_txt]
 	* @uses  direct_html_encode_special()
 	* @uses  direct_local_get()
 	* @uses  direct_output_inline::theme_page()
-	* @uses  direct_outputenc_xhtml_cleanup()
 	* @uses  direct_outputenc_xhtml_legacy()
 	* @uses  USE_debug_reporting
 	* @since v0.1.01
@@ -1067,7 +1066,7 @@ $direct_settings[product_lcode_txt]
 
 		$f_content_type = str_replace ("application/xhtml+xml","text/html",$direct_settings['theme_xhtml_type']);
 		$this->output_header ("Content-Type",$f_content_type);
-		$f_data = preg_replace (array ("#\s*<\?(.*?)\?>(.*?)<#s","#\s*\/\s*>#s","#<meta(.+?)".(preg_quote ($direct_settings['theme_xhtml_type'],"#"))."(.+?)>#si","#<(script|style)(.*?)><\!\[CDATA\[(.*?)\]\]><\/(script|style)>#si"),(array ("<",">","<meta\\1$f_content_type\\2>","<\\1\\2><!--\\3// --></\\4>")),$f_data);
+		$f_data = preg_replace (array ("#\s*<\?(.*?)\?>(.*?)<#s","#\s*\/\s*>#s","#</head>#i","#<(script|style)(.*?)><\!\[CDATA\[(.*?)\]\]><\/(script|style)>#si"),(array ("<",">","<meta http-equiv='Content-Type' content=\"$f_content_type\">\n</head>","<\\1\\2><!--\\3// --></\\4>")),$f_data);
 	}
 
 	//f// direct_output_inline->output_send ($f_title = "",$f_headers = NULL)
@@ -1174,8 +1173,7 @@ $this->output_data = ("<?xml version='1.0' encoding='$direct_local[lang_charset]
 
 		if (strlen ($direct_cachedata['output_p3purl'])) { $this->output_data .= "\n<link rel='P3Pv1' href='{$direct_cachedata['output_p3purl']}'>"; }
 
-$this->output_data .= ("\n<meta http-equiv='Content-Type' content='$direct_settings[theme_xhtml_type]' />
-<meta name='author' content='direct Netware Group' />
+$this->output_data .= ("\n<meta name='author' content='direct Netware Group' />
 <meta name='creator' content='$direct_settings[product_lcode_txt] by the direct Netware Group' />
 <meta name='description' content='$direct_settings[product_lcode_subtitle_txt]' />
 <style type='text/css'><![CDATA[
@@ -1536,12 +1534,12 @@ function direct_html_encode_special ($f_data)
 */
 function direct_outputenc_xhtml_cleanup (&$f_data,$f_content_type = NULL)
 {
-	global $direct_settings;
+	global $direct_local,$direct_settings;
 	if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -direct_outputenc_xhtml_cleanup (+f_data,+f_content_type)- (#echo(__LINE__)#)"); }
 
-	if (!isset ($f_content_type)) { $f_content_type = $direct_settings['theme_xhtml_type']; }
-	$f_html_content_type = str_replace ("application/xhtml+xml","text/html",$f_content_type);
-	$f_data = preg_replace (array ("#\s*<\?(.*?)\?>(.*?)<#s","#\s*\/\s*>#s","#<meta(.+?)".(preg_quote ($f_content_type,"#"))."(.+?)>#si","#<(script|style)(.*?)><\!\[CDATA\[(.*?)\]\]><\/(script|style)>#si"),(array ("<",">","<meta\\1$f_html_content_type\\2>","<\\1\\2><!--\\3// --></\\4>")),$f_data);
+	if ((!isset ($f_content_type))&&(isset ($direct_settings['theme_xhtml_type']))) { $f_content_type = $direct_settings['theme_xhtml_type']; }
+	$f_html_content_type = (isset ($f_content_type) ? str_replace ("application/xhtml+xml","text/html",$f_content_type) : "text/html; charset=".$direct_local['lang_charset']);
+	$f_data = preg_replace (array ("#\s*<\?(.*?)\?>(.*?)<#s","#\s*\/\s*>#s","#</head>#i","#<(script|style)(.*?)><\!\[CDATA\[(.*?)\]\]><\/(script|style)>#si"),(array ("<",">","<meta http-equiv='Content-Type' content=\"$f_html_content_type\">\n</head>","<\\1\\2><!--\\3// --></\\4>")),$f_data);
 }
 
 //j// Script specific commands

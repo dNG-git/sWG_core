@@ -12,35 +12,35 @@
 	jQuery.fn.pngFix = function (settings)
 	{
 		settings = jQuery.extend ({ blankgif:"blank.gif" },settings);
-		var pngImg;
 
-		// fix css background pngs
+		var jQueryObject;
+		var pngImgSrc;
+
 		$(this).find("*").each (function ()
 		{
-			pngImg = $(this).css("background-image");
-			if (pngImg.toLowerCase().indexOf (".png") != -1) { $(this).css("background-image","none");this.runtimeStyle.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src=" + pngImg.replace (/url\((.+?)\)/gi,"$1") + ")"; }
-		});
+			jQueryObject = $(this);
 
-		//fix images with png-source
-		for (var i=0;i < document.images.length;i++)
-		{
-			pngImg = document.images[i];
-
-			if (pngImg.src.toLowerCase().indexOf (".png") != -1)
+			switch (this.nodeName.toLowerCase ())
 			{
-				pngImg.runtimeStyle.width = pngImg.width + "px";
-				pngImg.runtimeStyle.height = pngImg.height + "px";
+			case "input":
+			case "img":
+			{
+				pngImgSrc = jQueryObject.attr ("src");
+				if ((pngImgSrc)&&(pngImgSrc.toLowerCase().indexOf (".png") != -1)) { jQueryObject.css({ "filter": "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + pngImgSrc + "')","width": this.width + "px","height": this.height + "px" }).attr ("src",settings.blankgif); }
 
-				pngImg.runtimeStyle.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + pngImg.src + "')";
-				pngImg.src = settings.blankgif;
+				break;
 			}
-		}
-
-		//fix input with png-source
-		$(this).find("input[src*=.png]").each (function ()
-		{
-			pngImg = $(this).attr ("src");
-			$(this).attr("src",settings.blankgif).css ("filter","progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + pngImg + "')");
+			default:
+			{
+				if (jQueryObject.find("a:first").length < 1)
+				{
+					pngImgSrc = jQueryObject.css ("background");
+					if ((pngImgSrc)&&(pngImgSrc.test (/url\((.+?)\)/gi))) { jQueryObject.css({ "background-image": (pngImgSrc.replace (/^(.*?)url\((.+?)\)(.*?)$/gi,"$1 $3")),"filter": "progid:DXImageTransform.Microsoft.AlphaImageLoader(src=" + pngImgSrc.replace (/url\((.+?)\)/gi,"$1") + ",sizingMethod='scale')" }); }
+					pngImgSrc = jQueryObject.css ("background-image");
+					if ((pngImgSrc)&&(pngImgSrc.toLowerCase().indexOf (".png") != -1)) { jQueryObject.css({ "background-image": "none","filter": "progid:DXImageTransform.Microsoft.AlphaImageLoader(src=" + pngImgSrc.replace (/url\((.+?)\)/gi,"$1") + ",sizingMethod='scale')" }); }
+				}
+			}
+			}
 		});
 
 		return jQuery;

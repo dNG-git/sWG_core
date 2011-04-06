@@ -191,11 +191,10 @@ Looks like the user is using a visible proxy - save whole IP information
 ------------------------------------------------------------------------- */
 
 			$direct_settings['user_ip_name'] = $direct_settings['user_ip'];
+			$direct_settings['user_ip_proxy'] = $f_proxy_ip;
 
 			$f_proxy_ip = str_replace (array (" ",","),(array ("",": ")),$f_proxy_ip);
 			$direct_settings['user_ip'] = $f_proxy_ip.": ".$direct_settings['user_ip'];
-
-			if ((!isset ($_SERVER['HTTPS']))||(!$_SERVER['HTTPS'])) { $direct_cachedata['output_warning'][] = array ("title" => direct_local_get ("core_user_warning","text"),"text" => direct_local_get ("core_user_warning_proxy")); }
 		}
 		else
 		{
