@@ -94,6 +94,8 @@ Parse input line again but this time consider all $_SERVER['argv'] entries.
 		{
 			$f_argv = $_SERVER['argv'];
 			$f_iline = "";
+
+			$direct_settings['iscript_req'] = $f_argv[0];
 			unset ($f_argv[0]);
 
 			foreach ($f_argv as $f_argv_entry)

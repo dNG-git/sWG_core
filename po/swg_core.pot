@@ -2,8 +2,8 @@
 #,fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: v0.1.00\n"
-"POT-Creation-Date: 2011-04-04 11:12+0000\n"
+"Project-Id-Version: v0.1.09\n"
+"POT-Creation-Date: 2011-04-27 07:07+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -12,642 +12,642 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural= n == 1 ? 0 : n == 2 ? 1 : 2 \n"
 
-# core_access_rights_insufficient
+msgctxt "core_access_rights_insufficient"
 msgid "Sorry, but you do not have sufficient rights to execute the current task successfully. Please log in using an account with proper permission if applicable."
 msgstr ""
 
-# core_apply
+msgctxt "core_apply"
 msgid "Apply"
 msgstr ""
 
-# core_automated_redirection
+msgctxt "core_automated_redirection"
 msgid "You will be redirected automatically"
 msgstr ""
 
-# core_automated_redirection_unsupported
+msgctxt "core_automated_redirection_unsupported"
 msgid "Automated redirection is not supported by your current application and settings used."
 msgstr ""
 
-# core_back
+msgctxt "core_back"
 msgid "Back"
 msgstr ""
 
-# core_cancel
+msgctxt "core_cancel"
 msgid "Cancel"
 msgstr ""
 
-# core_close
+msgctxt "core_close"
 msgid "Close"
 msgstr ""
 
-# core_continue
+msgctxt "core_continue"
 msgid "Click here to continue"
 msgstr ""
 
-# core_datasub_allowed
+msgctxt "core_datasub_allowed"
 msgid "Allow additional content links"
 msgstr ""
 
-# core_datasub_error_1
+msgctxt "core_datasub_error_1"
 msgid "core_datasub_error_1: Unfortunately your current application and settings used do not support loading dynamic content. Please "
 msgstr ""
 
-# core_datasub_error_2
+msgctxt "core_datasub_error_2"
 msgid "core_datasub_error_2: click here"
 msgstr ""
 
-# core_datasub_error_3
+msgctxt "core_datasub_error_3"
 msgid "core_datasub_error_3:  to view it."
 msgstr ""
 
-# core_datasub_hide
+msgctxt "core_datasub_hide"
 msgid "Minimize additional content link list"
 msgstr ""
 
-# core_datasub_last_entry_0_1
+msgctxt "core_datasub_last_entry_0_1"
 msgid "core_datasub_last_entry_0_1: This entry has been added on "
 msgstr ""
 
-# core_datasub_last_entry_0_2
+msgctxt "core_datasub_last_entry_0_2"
 msgid "core_datasub_last_entry_0_2: ."
 msgstr ""
 
-# core_datasub_last_entry_1_1
+msgctxt "core_datasub_last_entry_1_1"
 msgid "core_datasub_last_entry_1_1: This entry was added on "
 msgstr ""
 
-# core_datasub_last_entry_1_2
+msgctxt "core_datasub_last_entry_1_2"
 msgid "core_datasub_last_entry_1_2:  by "
 msgstr ""
 
-# core_datasub_last_entry_1_3
+msgctxt "core_datasub_last_entry_1_3"
 msgid "core_datasub_last_entry_1_3: ."
 msgstr ""
 
-# core_datasub_loading
+msgctxt "core_datasub_loading"
 msgid "Please wait a moment. Loading dynamic data."
 msgstr ""
 
-# core_datasub_new_allowed
+msgctxt "core_datasub_new_allowed"
 msgid "Allow new links to additional content"
 msgstr ""
 
-# core_datasub_new_entry_prerequisites_failed
+msgctxt "core_datasub_new_entry_prerequisites_failed"
 msgid "Not all prerequisites are fulfilled to complete the process."
 msgstr ""
 
-# core_datasub_new_entry
+msgctxt "core_datasub_new_entry"
 msgid "Link new entry"
 msgstr ""
 
-# core_datasub_new
+msgctxt "core_datasub_new"
 msgid "This entry has been added after your last visit."
 msgstr ""
 
-# core_datasub_no_access_title
+msgctxt "core_datasub_no_access_title"
 msgid "Access denied"
 msgstr ""
 
-# core_datasub_no_access
+msgctxt "core_datasub_no_access"
 msgid "Unfortunately you aren't allowed to access this entry."
 msgstr ""
 
-# core_datasub_request_content
+msgctxt "core_datasub_request_content"
 msgid "Click here to view the whole content"
 msgstr ""
 
-# core_datasub_title_attachments
+msgctxt "core_datasub_title_attachments"
 msgid "Attachements"
 msgstr ""
 
-# core_datasub_title_default
+msgctxt "core_datasub_title_default"
 msgid "Additional content"
 msgstr ""
 
-# core_datasub_title_downloads
+msgctxt "core_datasub_title_downloads"
 msgid "Downloads"
 msgstr ""
 
-# core_datasub_title_link_attachments
+msgctxt "core_datasub_title_link_attachments"
 msgid "Click here to view available attachements"
 msgstr ""
 
-# core_datasub_title_link_default
+msgctxt "core_datasub_title_link_default"
 msgid "Click here to view additional content"
 msgstr ""
 
-# core_datasub_title_link_downloads
+msgctxt "core_datasub_title_link_downloads"
 msgid "Click here to view available downloads"
 msgstr ""
 
-# core_datasub_title_link_links
+msgctxt "core_datasub_title_link_links"
 msgid "Click here to view available links"
 msgstr ""
 
-# core_datasub_title_links
+msgctxt "core_datasub_title_links"
 msgid "Links"
 msgstr ""
 
-# core_datasub_type
+msgctxt "core_datasub_type"
 msgid "Additional content type"
 msgstr ""
 
-# core_detailed_information_hide
+msgctxt "core_detailed_information_hide"
 msgid "Hide more detailed information"
 msgstr ""
 
-# core_detailed_information_show
+msgctxt "core_detailed_information_show"
 msgid "Show more detailed information"
 msgstr ""
 
-# core_detailed_information
+msgctxt "core_detailed_information"
 msgid "More detailed information"
 msgstr ""
 
-# core_done_datasub_new_entry
+msgctxt "core_done_datasub_new_entry"
 msgid "The process to link a new entry has been completed."
 msgstr ""
 
-# core_done_status_completed
+msgctxt "core_done_status_completed"
 msgid "Completed"
 msgstr ""
 
-# core_done_status_error
+msgctxt "core_done_status_error"
 msgid "Error"
 msgstr ""
 
-# core_done
+msgctxt "core_done"
 msgid "Confirmation"
 msgstr ""
 
-# core_error_fatal
+msgctxt "core_error_fatal"
 msgid "Critical error message"
 msgstr ""
 
-# core_error
+msgctxt "core_error"
 msgid "Error message"
 msgstr ""
 
-# core_filter_search
+msgctxt "core_filter_search"
 msgid "Filter list"
 msgstr ""
 
-# core_filter
+msgctxt "core_filter"
 msgid "Filter"
 msgstr ""
 
-# core_forgotten_password
+msgctxt "core_forgotten_password"
 msgid "Forgotten password?"
 msgstr ""
 
-# core_guest
+msgctxt "core_guest"
 msgid "Guest account"
 msgstr ""
 
-# core_helper_password_1
+msgctxt "core_helper_password_1"
 msgid "core_helper_password_1: The administration defined a minimal length of "
 msgstr ""
 
-# core_helper_password_2
+msgctxt "core_helper_password_2"
 msgid "core_helper_password_2:  characters for the password. The more characters you use, the more secure is your password. We recommend additionally to mix numbers and special characters with your password and not to use your user name or any part of your e-Mail address."
 msgstr ""
 
-# core_helper_username_1
+msgctxt "core_helper_username_1"
 msgid "core_helper_username_1: User names are valid with a length between "
 msgstr ""
 
-# core_helper_username_2
+msgctxt "core_helper_username_2"
 msgid "core_helper_username_2:  and 100 characters. Letters, numbers and spaces are allowed. Additionally you can use the following characters: ! $ %  / ( )  { } [ ] ? @ * ~ # , . - ; _"
 msgstr ""
 
-# swg_lang_file_v1_core_lastvisit_reset
+msgctxt "swg_lang_file_v1_core_lastvisit_reset"
 msgid "Remove all \"new\" markers"
 msgstr ""
 
-# core_level_up
+msgctxt "core_level_up"
 msgid "Go up one level"
 msgstr ""
 
-# core_loading_ajax
+msgctxt "core_loading_ajax"
 msgid "Please wait. Loading new information for the current document."
 msgstr ""
 
-# core_loading
+msgctxt "core_loading"
 msgid "Loading ..."
 msgstr ""
 
-# core_login
+msgctxt "core_login"
 msgid "Log In"
 msgstr ""
 
-# core_login_with_authorized_account
+msgctxt "core_login_with_authorized_account"
 msgid "Log in again using different access data"
 msgstr ""
 
-# core_logout
+msgctxt "core_logout"
 msgid "Log Out"
 msgstr ""
 
-# core_menu_empty
+msgctxt "core_menu_empty"
 msgid "No options available"
 msgstr ""
 
-# core_message_by_administration
+msgctxt "core_message_by_administration"
 msgid "This e-Mail has been sent to you by the administration."
 msgstr ""
 
-# core_message_by_request
+msgctxt "core_message_by_request"
 msgid "This e-Mail has been directly requested by you or it has been generated automatically while using a function."
 msgstr ""
 
-# core_message_by_user
+msgctxt "core_message_by_user"
 msgid "This e-Mail has been sent to you by a third party. Please use the following, verified sender information for contacting."
 msgstr ""
 
-# core_message_from
+msgctxt "core_message_from"
 msgid "Sender"
 msgstr ""
 
-# core_message_to
+msgctxt "core_message_to"
 msgid "Recipient"
 msgstr ""
 
-# core_message
+msgctxt "core_message"
 msgid "Message"
 msgstr ""
 
-# core_no
+msgctxt "core_no"
 msgid "No"
 msgstr ""
 
-# core_one_line_link
+msgctxt "core_one_line_link"
 msgid "Please note that maybe some programs show the URL written above using more than one line. To complete the task successfully, the link should be combined line-by-line and accessed afterwards."
 msgstr ""
 
-# core_options
+msgctxt "core_options"
 msgid "Options"
 msgstr ""
 
-# core_pages
+msgctxt "core_pages"
 msgid "Pages"
 msgstr ""
 
-# core_password
+msgctxt "core_password"
 msgid "Password"
 msgstr ""
 
-# core_preview
+msgctxt "core_preview"
 msgid "Preview"
 msgstr ""
 
-# core_rate
+msgctxt "core_rate"
 msgid "Rate"
 msgstr ""
 
-# core_rating
+msgctxt "core_rating"
 msgid "Rating"
 msgstr ""
 
-# core_redirect
+msgctxt "core_redirect"
 msgid "Redirection"
 msgstr ""
 
-# core_redirect_url
+msgctxt "core_redirect_url"
 msgid "New URL"
 msgstr ""
 
-# core_redirector_permalink
+msgctxt "core_redirector_permalink"
 msgid "Permalink"
 msgstr ""
 
-# core_registration
+msgctxt "core_registration"
 msgid "Register an account"
 msgstr ""
 
-# core_save
+msgctxt "core_save"
 msgid "Save"
 msgstr ""
 
-# core_search
+msgctxt "core_search"
 msgid "Search"
 msgstr ""
 
-# core_security_information_ip_changed
+msgctxt "core_security_information_ip_changed"
 msgid "Changed IP since your last page request"
 msgstr ""
 
-# core_security_information_proxy
+msgctxt "core_security_information_proxy"
 msgid "Proxy server identified"
 msgstr ""
 
-# core_security_information
+msgctxt "core_security_information"
 msgid "Security information"
 msgstr ""
 
-# core_service_list_empty
+msgctxt "core_service_list_empty"
 msgid "Currently there are no functions available or you may have not proper permission to access restricted functions."
 msgstr ""
 
-# core_service_list
+msgctxt "core_service_list"
 msgid "Available functions"
 msgstr ""
 
-# core_system_message
+msgctxt "core_system_message"
 msgid "System information"
 msgstr ""
 
-# swg_lang_file_v1_core
+msgctxt "swg_lang_file_v1_core"
 msgid ""
 msgstr ""
 
-# core_text
+msgctxt "core_text"
 msgid "Text"
 msgstr ""
 
-# core_time
+msgctxt "core_time"
 msgid "Time"
 msgstr ""
 
-# core_timezone_gmt
+msgctxt "core_timezone_gmt"
 msgid "GMT"
 msgstr ""
 
-# core_title
+msgctxt "core_title"
 msgid "Title"
 msgstr ""
 
-# core_title_validation_required
+msgctxt "core_title_validation_required"
 msgid "Validation required"
 msgstr ""
 
-# core_try_again
+msgctxt "core_try_again"
 msgid "Try again"
 msgstr ""
 
-# core_unable_to_proceed
+msgctxt "core_unable_to_proceed"
 msgid "The WebGine is unable to continue. Please contact the administration."
 msgstr ""
 
-# core_unknown
+msgctxt "core_unknown"
 msgid "Unknown"
 msgstr ""
 
-# core_unlimited
+msgctxt "core_unlimited"
 msgid "Unlimited"
 msgstr ""
 
-# core_user_current
+msgctxt "core_user_current"
 msgid "Current user"
 msgstr ""
 
-# core_user_warning_ip
+msgctxt "core_user_warning_ip"
 msgid "Since your last visit using this login the IP has changed."
 msgstr ""
 
-# core_user_warning_proxy
+msgctxt "core_user_warning_proxy"
 msgid "The connection to this page has been established using a proxy. Proxies are able to record transfered data including login information."
 msgstr ""
 
-# core_user_warning
+msgctxt "core_user_warning"
 msgid "Account information"
 msgstr ""
 
-# core_userbox_guest_1_1
+msgctxt "core_userbox_guest_1_1"
 msgid "core_userbox_guest_1_1: Welcome guest, please click "
 msgstr ""
 
-# core_userbox_guest_1_2
+msgctxt "core_userbox_guest_1_2"
 msgid "core_userbox_guest_1_2: here"
 msgstr ""
 
-# core_userbox_guest_1_3
+msgctxt "core_userbox_guest_1_3"
 msgid "core_userbox_guest_1_3:  to log in or "
 msgstr ""
 
-# core_userbox_guest_1_4
+msgctxt "core_userbox_guest_1_4"
 msgid "core_userbox_guest_1_4: create"
 msgstr ""
 
-# core_userbox_guest_1_5
+msgctxt "core_userbox_guest_1_5"
 msgid "core_userbox_guest_1_5:  a new account."
 msgstr ""
 
-# core_userbox_guest_2_1
+msgctxt "core_userbox_guest_2_1"
 msgid "core_userbox_guest_2_1: Welcome guest, please click "
 msgstr ""
 
-# core_userbox_guest_2_2
+msgctxt "core_userbox_guest_2_2"
 msgid "core_userbox_guest_2_2: here"
 msgstr ""
 
-# core_userbox_guest_2_3
+msgctxt "core_userbox_guest_2_3"
 msgid "core_userbox_guest_2_3:  to log in."
 msgstr ""
 
-# core_userbox_member_1
+msgctxt "core_userbox_member_1"
 msgid "core_userbox_member_1: Welcome back, "
 msgstr ""
 
-# core_userbox_member_2
+msgctxt "core_userbox_member_2"
 msgid "core_userbox_member_2: ."
 msgstr ""
 
-# core_userbox_unread_pms_0
+msgctxt "core_userbox_unread_pms_0"
 msgid "core_userbox_unread_pms_0: There are no new private messages available."
 msgstr ""
 
-# core_userbox_unread_pms_1_1
+msgctxt "core_userbox_unread_pms_1_1"
 msgid "core_userbox_unread_pms_1_1: There is "
 msgstr ""
 
-# core_userbox_unread_pms_1_2
+msgctxt "core_userbox_unread_pms_1_2"
 msgid "core_userbox_unread_pms_1_2: one"
 msgstr ""
 
-# core_userbox_unread_pms_1_3
+msgctxt "core_userbox_unread_pms_1_3"
 msgid "core_userbox_unread_pms_1_3:  new private message available."
 msgstr ""
 
-# core_userbox_unread_pms_2_1
+msgctxt "core_userbox_unread_pms_2_1"
 msgid "core_userbox_unread_pms_2_1: There are "
 msgstr ""
 
-# core_userbox_unread_pms_2_2
+msgctxt "core_userbox_unread_pms_2_2"
 msgid "core_userbox_unread_pms_2_2:  new private messages available."
 msgstr ""
 
-# core_username
+msgctxt "core_username"
 msgid "User name"
 msgstr ""
 
-# core_usertype_administrator
+msgctxt "core_usertype_administrator"
 msgid "Administrator"
 msgstr ""
 
-# core_usertype_banned
+msgctxt "core_usertype_banned"
 msgid "Banned member"
 msgstr ""
 
-# core_usertype_deleted
+msgctxt "core_usertype_deleted"
 msgid "Deleted member"
 msgstr ""
 
-# core_usertype_external
+msgctxt "core_usertype_external"
 msgid "Externally verified user"
 msgstr ""
 
-# core_usertype_locked
+msgctxt "core_usertype_locked"
 msgid "Locked member"
 msgstr ""
 
-# core_usertype_main_moderator
+msgctxt "core_usertype_main_moderator"
 msgid "Main moderator"
 msgstr ""
 
-# core_usertype_member_special
+msgctxt "core_usertype_member_special"
 msgid "Special member"
 msgstr ""
 
-# core_usertype_member
+msgctxt "core_usertype_member"
 msgid "Member"
 msgstr ""
 
-# core_usertype_moderator
+msgctxt "core_usertype_moderator"
 msgid "Moderator"
 msgstr ""
 
-# core_usertype
+msgctxt "core_usertype"
 msgid "User group"
 msgstr ""
 
-# core_validation_required
+msgctxt "core_validation_required"
 msgid "You have selected a task for processing that needs a validated e-Mail address. This step is a safety measure and should protect against abuse of available functions. We apologise for any inconvenience."
 msgstr ""
 
-# core_yes
+msgctxt "core_yes"
 msgid "Yes"
 msgstr ""
 
-# datetime_dtconnect
+msgctxt "datetime_dtconnect"
 msgid " at "
 msgstr ""
 
-# datetime_longdate_1
+msgctxt "datetime_longdate_1"
 msgid "datetime_longdate_1: dS "
 msgstr ""
 
-# datetime_longdate_2
+msgctxt "datetime_longdate_2"
 msgid "datetime_longdate_2:  Y"
 msgstr ""
 
-# datetime_longdate_month_10
+msgctxt "datetime_longdate_month_10"
 msgid "datetime_longdate_month_10: October"
 msgstr ""
 
-# datetime_longdate_month_11
+msgctxt "datetime_longdate_month_11"
 msgid "datetime_longdate_month_11: November"
 msgstr ""
 
-# datetime_longdate_month_12
+msgctxt "datetime_longdate_month_12"
 msgid "datetime_longdate_month_12: December"
 msgstr ""
 
-# datetime_longdate_month_1
+msgctxt "datetime_longdate_month_1"
 msgid "datetime_longdate_month_1: January"
 msgstr ""
 
-# datetime_longdate_month_2
+msgctxt "datetime_longdate_month_2"
 msgid "datetime_longdate_month_2: February"
 msgstr ""
 
-# datetime_longdate_month_3
+msgctxt "datetime_longdate_month_3"
 msgid "datetime_longdate_month_3: March"
 msgstr ""
 
-# datetime_longdate_month_4
+msgctxt "datetime_longdate_month_4"
 msgid "datetime_longdate_month_4: April"
 msgstr ""
 
-# datetime_longdate_month_5
+msgctxt "datetime_longdate_month_5"
 msgid "datetime_longdate_month_5: May"
 msgstr ""
 
-# datetime_longdate_month_6
+msgctxt "datetime_longdate_month_6"
 msgid "datetime_longdate_month_6: June"
 msgstr ""
 
-# datetime_longdate_month_7
+msgctxt "datetime_longdate_month_7"
 msgid "datetime_longdate_month_7: July"
 msgstr ""
 
-# datetime_longdate_month_8
+msgctxt "datetime_longdate_month_8"
 msgid "datetime_longdate_month_8: August"
 msgstr ""
 
-# datetime_longdate_month_9
+msgctxt "datetime_longdate_month_9"
 msgid "datetime_longdate_month_9: September"
 msgstr ""
 
-# datetime_shortdate
+msgctxt "datetime_shortdate"
 msgid "m/d/Y"
 msgstr ""
 
-# datetime_time
+msgctxt "datetime_time"
 msgid "H:i"
 msgstr ""
 
-# errors_core_access_denied
+msgctxt "errors_core_access_denied"
 msgid "Access to the restricted function has been denied by the system."
 msgstr ""
 
-# errors_core_credits_insufficient
+msgctxt "errors_core_credits_insufficient"
 msgid "Unfortunately you do not have enough credits to continue this task."
 msgstr ""
 
-# errors_core_daemon_eid_invalid
+msgctxt "errors_core_daemon_eid_invalid"
 msgid "The specified service entry ID is invalid."
 msgstr ""
 
-# errors_core_daemon_unavailable
+msgctxt "errors_core_daemon_unavailable"
 msgid "The service application is currently not available."
 msgstr ""
 
-# errors_core_database_error
+msgctxt "errors_core_database_error"
 msgid "The WebGine encountered an database communication error and is unable complete the current task."
 msgstr ""
 
-# errors_core_datasub_eid_invalid
+msgctxt "errors_core_datasub_eid_invalid"
 msgid "The specified ID is invalid."
 msgstr ""
 
-# errors_core_redirector_link_not_found
+msgctxt "errors_core_redirector_link_not_found"
 msgid "The provided redirect ID is invalid or no longer available."
 msgstr ""
 
-# errors_core_required_object_not_found
+msgctxt "errors_core_required_object_not_found"
 msgid "The system was unable to load a required component."
 msgstr ""
 
-# errors_core_service_inactive
+msgctxt "errors_core_service_inactive"
 msgid "Access to the deactivated service has been denied by the system."
 msgstr ""
 
-# errors_core_tid_invalid
+msgctxt "errors_core_tid_invalid"
 msgid "The specified task ID is invalid."
 msgstr ""
 
-# errors_core_unconfigured
+msgctxt "errors_core_unconfigured"
 msgid "Welcome to a sWG driven website! Unfortunately the administration has not configured the system to show a custom home page. Please visit again in some days."
 msgstr ""
 
-# errors_core_unknown_error
+msgctxt "errors_core_unknown_error"
 msgid "The WebGine encountered an unknown error and is unable complete the current task."
 msgstr ""
 
-# errors_core_unsupported_command
+msgctxt "errors_core_unsupported_command"
 msgid "The WebGine has been accessed using an unknown command."
 msgstr ""
 
-# errors_core_username_unknown
+msgctxt "errors_core_username_unknown"
 msgid "The defined user name was not found in our database."
 msgstr ""

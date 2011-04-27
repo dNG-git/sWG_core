@@ -73,18 +73,14 @@ function direct_evars_get ($f_data)
 	global $direct_globals;
 	if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -direct_evars_get (+f_data)- (#echo(__LINE__)#)"); }
 
-	$f_data = trim ($f_data);
 	$f_return = array ();
 
-	if (preg_match ("#<evars>(.+?)</evars>#si",$f_data,$f_result_array))
-	{
-		$f_result_array = $direct_globals['xml_bridge']->xml2array ($f_result_array[0],true,false);
+	$f_data = $direct_globals['xml_bridge']->xml2array (trim ($f_data),true,false);
 
-		if (isset ($f_result_array['evars']))
-		{
-			$f_result_array = direct_evars_get_walker ($f_result_array['evars']);
-			if (!empty ($f_result_array)) { $f_return = $f_result_array; }
-		}
+	if (($f_data)&&(isset ($f_data['evars'])))
+	{
+		$f_data = direct_evars_get_walker ($f_data['evars']);
+		if (!empty ($f_data)) { $f_return = $f_data; }
 	}
 
 	return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -direct_evars_get ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;

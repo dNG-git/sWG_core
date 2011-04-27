@@ -111,6 +111,8 @@ function direct_local_get_xml_translation (&$f_xml_node_array,$f_tag,$f_extract_
 
 	if ((is_array ($f_xml_node_array))&&(is_string ($f_tag)))
 	{
+		$f_node_array = NULL;
+
 		if (isset ($f_xml_node_array[$f_tag]/*#ifndef(PHP4) */,/* #*//*#ifdef(PHP4):) && isset (:#*/$f_xml_node_array[$f_tag]['xml.item'])) { $f_node_array = $f_xml_node_array[$f_tag]; }
 		elseif (isset ($f_xml_node_array['xml.item']))
 		{

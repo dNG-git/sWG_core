@@ -508,25 +508,35 @@ $f_return .= ("<tr>
 </tr>");
 		}
 
+		$f_services_count = count ($direct_cachedata['output_services']);
+
 		foreach ($direct_cachedata['output_services'] as $f_service_array)
 		{
-			if (isset ($f_right_switch))
+			if ($f_services_count > 1)
 			{
-				if ($f_right_switch)
+				if (isset ($f_right_switch))
 				{
-					$f_return .= "</td>\n<td class='pagebg' style='width:50%;padding:$direct_settings[theme_td_padding];text-align:left;vertical-align:middle'>";
-					$f_right_switch = false;
+					if ($f_right_switch)
+					{
+						$f_return .= "</td>\n<td class='pagebg' style='width:50%;padding:$direct_settings[theme_td_padding];text-align:left;vertical-align:middle'>";
+						$f_right_switch = false;
+					}
+					else
+					{
+						$f_return .= "</td>\n</tr><tr>\n<td class='pagebg' style='width:50%;padding:$direct_settings[theme_td_padding];text-align:left;vertical-align:middle'>";
+						$f_right_switch = true;
+					}
 				}
 				else
 				{
-					$f_return .= "</td>\n</tr><tr>\n<td class='pagebg' style='width:50%;padding:$direct_settings[theme_td_padding];text-align:left;vertical-align:middle'>";
+					$f_return .= "<tr>\n<td class='pagebg' style='width:50%;padding:$direct_settings[theme_td_padding];text-align:left;vertical-align:middle'>";
 					$f_right_switch = true;
 				}
 			}
 			else
 			{
-				$f_return .= "<tr>\n<td class='pagebg' style='width:50%;padding:$direct_settings[theme_td_padding];text-align:left;vertical-align:middle'>";
-				$f_right_switch = true;
+				$f_return .= "<tr>\n<td colspan='2' class='pagebg' style='padding:$direct_settings[theme_td_padding];text-align:left;vertical-align:middle'>";
+				$f_right_switch = false;
 			}
 
 			if ($f_service_array[0]) { $f_service_array[0] = "<img src='{$f_service_array[0]}' alt='{$f_service_array[1]}' title='{$f_service_array[1]}' style='float:left;padding:0px 5px' />"; }

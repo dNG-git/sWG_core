@@ -292,7 +292,7 @@ Set up some variables
 Parse additional copyright information for output.
 ------------------------------------------------------------------------- */
 
-			elseif ((is_array ($direct_settings['additional_copyright']))&&(!empty ($direct_settings['additional_copyright'])))
+			elseif ((isset ($direct_settings['additional_copyright']))&&(is_array ($direct_settings['additional_copyright']))&&(!empty ($direct_settings['additional_copyright'])))
 			{
 				foreach ($direct_settings['additional_copyright'] as $f_copyright_array)
 				{

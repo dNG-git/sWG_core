@@ -838,9 +838,22 @@ Set "last modified" time to "0".
 		if ((!isset ($direct_local['lang_charset']))||(!$direct_local['lang_charset'])) { $direct_local['lang_charset'] = "UTF-8"; }
 		echo "<?xml version='1.0' encoding='$direct_local[lang_charset]' ?><swg xmlns='urn:de.direct-netware.xmlns:swg.v1'>";
 
-		if ((USE_debug_reporting)&&(is_array ($direct_settings['dsd']))&&((isset ($direct_settings['dsd']['debug_text']))||(isset ($direct_settings['dsd']['debug_xml']))))
+		if (is_array ($direct_settings['dsd']))
 		{
-			if (isset ($direct_settings['dsd']['debug_xml']))
+			$f_debug_inline = isset ($direct_settings['dsd']['debug_inline']);
+			$f_debug_text = isset ($direct_settings['dsd']['debug_text']);
+			$f_debug_xml = isset ($direct_settings['dsd']['debug_xml']);
+		}
+		else
+		{
+			$f_debug_inline = false;
+			$f_debug_text = false;
+			$f_debug_xml = false;
+		}
+
+		if ((USE_debug_reporting)&&(($f_debug_text)||($f_debug_xml)))
+		{
+			if ($f_debug_xml)
 			{
 				if ((is_array ($direct_cachedata['core_debug']))&&(!empty ($direct_cachedata['core_debug'])))
 				{
@@ -884,7 +897,7 @@ Set "last modified" time to "0".
 
 			echo "<title><![CDATA[".(str_replace ("]]>","]]]]><![CDATA[>",$f_title))."]]></title>";
 
-			if (isset ($direct_settings['dsd']['debug_inline']))
+			if ($f_debug_inline)
 			{
 				echo "<debug>";
 
@@ -919,7 +932,7 @@ Set "last modified" time to "0".
 
 		if (USE_debug_reporting)
 		{
-			if (!isset ($direct_settings['dsd']['debug_text'])) { echo "<!--\n"; }
+			if (!$f_debug_text) { echo "<!--\n"; }
 
 echo ("Delivered page after: ".($f_debug_endtime - $direct_cachedata['core_debug_starttime'])."
 Debug checkpoints reached: ".(count ($direct_cachedata['core_debug']))."
@@ -927,7 +940,7 @@ Errors: ".(count ($direct_cachedata['core_error'])));
 
 			if (function_exists ("memory_get_usage")) { echo "\nMemory in use: ".(memory_get_usage (true))." bytes"; }
 
-			if (isset ($direct_settings['dsd']['debug_text']))
+			if ($f_debug_text)
 			{
 echo ("\n\nDebug checkpoint list:
 ".(implode ("\n",$direct_cachedata['core_debug']))."
@@ -937,7 +950,7 @@ Error list:
 			}
 
 			echo "\n\n$direct_settings[product_lcode_txt] $direct_settings[product_version] ($direct_settings[product_buildid])\nhttp://www.direct-netware.de/redirect.php?$direct_settings[product_icode]";
-			if (!isset ($direct_settings['dsd']['debug_text'])) { echo "\n// -->"; }
+			if (!$f_debug_text) { echo "\n// -->"; }
 		}
 		elseif (isset ($f_title))
 		{
@@ -1070,6 +1083,27 @@ $f_error</p>$f_extra_data
 		exit ();
 :#\n*/
 	}
+
+	//f// direct_output_inline->theme_page ($f_title)
+/**
+	* Prepare an output for a XHTML encoded page with the standard sWG design.
+	*
+	* @param string $f_title Valid XHTML page title
+	* @uses  direct_debug()
+	* @uses  USE_debug_reporting
+	* @since v0.1.01
+*/
+	/*#ifndef(PHP4) */public /* #*/function theme_page ($f_title)
+	{
+		global $direct_globals,$direct_local,$direct_settings;
+		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -output_class(inline)->theme_page ($f_title)- (#echo(__LINE__)#)"); }
+
+		if ((!isset ($direct_local['lang_iso_domain']))||(!$direct_local['lang_iso_domain'])) { $direct_local['lang_iso_domain'] = "en"; }
+		$direct_settings['theme_xhtml_type'] = "application/xhtml+xml; charset=".$direct_local['lang_charset'];
+
+		$direct_globals['output']->output_header ("Content-Type",$direct_settings['theme_xhtml_type']);
+                $this->output_data = $direct_globals['output']->output_content;
+	}
 }
 
 /* -------------------------------------------------------------------------
@@ -1127,7 +1161,7 @@ Search for the requested class ...
 /**
 * Check for a specific function of a specific class.
 *
-* @param  string $f_class Object where the function should exist
+* @param  object $f_class Object where the function should exist
 * @param  string $f_function Name of the function
 * @uses   direct_virtual_class::v_call_check()
 * @uses   direct_debug()

@@ -884,9 +884,22 @@ Encode the output for smaller bandwidth connections
 
 		if ((!isset ($direct_local['lang_charset']))||(!$direct_local['lang_charset'])) { $direct_local['lang_charset'] = "UTF-8"; }
 
-		if ((USE_debug_reporting)&&(is_array ($direct_settings['dsd']))&&((isset ($direct_settings['dsd']['debug_text']))||(isset ($direct_settings['dsd']['debug_xml']))))
+		if (is_array ($direct_settings['dsd']))
 		{
-			if (isset ($direct_settings['dsd']['debug_xml']))
+			$f_debug_inline = isset ($direct_settings['dsd']['debug_inline']);
+			$f_debug_text = isset ($direct_settings['dsd']['debug_text']);
+			$f_debug_xml = isset ($direct_settings['dsd']['debug_xml']);
+		}
+		else
+		{
+			$f_debug_inline = false;
+			$f_debug_text = false;
+			$f_debug_xml = false;
+		}
+
+		if ((USE_debug_reporting)&&(($f_debug_text)||($f_debug_xml)))
+		{
+			if ($f_debug_xml)
 			{
 				$this->output_headers['Content-Type'] = "text/xml; charset=".$direct_local['lang_charset'];
 				echo "<?xml version='1.0' encoding='$direct_local[lang_charset]' ?><swg>";
@@ -938,7 +951,7 @@ Encode the output for smaller bandwidth connections
 				}
 				else { $f_title = direct_html_encode_special ($direct_settings['swg_title_txt']); }
 
-				if (isset ($direct_settings['dsd']['debug_inline']))
+				if ($f_debug_inline)
 				{
 					if ((USE_debug_reporting)&&(is_array ($direct_cachedata['core_debug']))&&(!empty ($direct_cachedata['core_debug'])))
 					{
@@ -958,7 +971,7 @@ Encode the output for smaller bandwidth connections
 
 				if (isset ($direct_settings['theme_xhtml_type']))
 				{
-					if ((!isset ($_SERVER['HTTP_ACCEPT']))||(/*#ifndef(PHP4) */stripos /* #*//*#ifdef(PHP4):stristr :#*/($_SERVER['HTTP_ACCEPT'],"application/xhtml+xml") === false)) { $this->output_response_xhtml_legacy ($direct_globals['output_theme']->output_data); }
+					if ((isset ($_SERVER['HTTP_ACCEPT']))&&(/*#ifndef(PHP4) */stripos /* #*//*#ifdef(PHP4):stristr :#*/($_SERVER['HTTP_ACCEPT'],"application/xhtml+xml") === false)) { $this->output_response_xhtml_legacy ($direct_globals['output_theme']->output_data); }
 				}
 				else { direct_outputenc_xhtml_cleanup ($direct_globals['output_theme']->output_data); }
 
@@ -982,7 +995,7 @@ Encode the output for smaller bandwidth connections
 		{
 			if (USE_debug_reporting)
 			{
-				if (!isset ($direct_settings['dsd']['debug_text'])) { echo "<!--\n"; }
+				if (!$f_debug_text) { echo "<!--\n"; }
 
 echo ("Delivered page after: ".($f_debug_endtime - $direct_cachedata['core_debug_starttime'])."
 Debug checkpoints reached: ".(count ($direct_cachedata['core_debug']))."
@@ -990,7 +1003,7 @@ Errors: ".(count ($direct_cachedata['core_error'])));
 
 				if (function_exists ("memory_get_usage")) { echo "\nMemory in use: ".(memory_get_usage (true))." bytes"; }
 
-				if (isset ($direct_settings['dsd']['debug_text']))
+				if ($f_debug_text)
 				{
 echo ("\n\nDebug checkpoint list:
 ".(implode ("\n",$direct_cachedata['core_debug']))."
@@ -1000,7 +1013,7 @@ Error list:
 				}
 
 				echo "\n\n$direct_settings[product_lcode_txt] $direct_settings[product_version] ($direct_settings[product_buildid])\nhttp://www.direct-netware.de/redirect.php?$direct_settings[product_icode]";
-				if (!isset ($direct_settings['dsd']['debug_text'])) { echo "\n// -->"; }
+				if (!$f_debug_text) { echo "\n// -->"; }
 			}
 			else
 			{
@@ -1159,7 +1172,7 @@ $f_error</p>$f_extra_data
 	{
 		global $direct_cachedata,$direct_globals,$direct_local,$direct_settings;
 		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -output_class(inline)->theme_page ($f_title)- (#echo(__LINE__)#)"); }
-	
+
 		if ((!isset ($direct_local['lang_iso_domain']))||(!$direct_local['lang_iso_domain'])) { $direct_local['lang_iso_domain'] = "en"; }
 		$direct_settings['theme_xhtml_type'] = "application/xhtml+xml; charset=".$direct_local['lang_charset'];
 
@@ -1189,9 +1202,8 @@ a:focus { text-decoration:underline }
 body { margin:0px;padding:0px 19px;background-color:#6A6A6A }
 body { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;font-style:normal;font-weight:normal }
 form { margin:0px;padding:0px }
+h1, h2, h3, h4, h5, h6 { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:14px;font-style:normal;font-weight:bold }
 img { border:none }
-input.file { width:90%;text-align:center;background-color:#F5F5F5 }
-input.file { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;color:#000000 }
 table { margin:0px;table-layout:fixed;border:none;border-collapse:collapse;border-spacing:0px }
 td { padding:0px }
 
@@ -1222,6 +1234,7 @@ td { padding:0px }
 .pagecontentselect { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;color:#222222 }
 .pagecontenttextarea { border:1px solid #C0C0C0;background-color:#F5F5F5 }
 .pagecontenttextarea { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;color:#222222 }
+
 .pagecontenttitle { border:1px solid #193879;background-color:#375A9D;padding:5px }
 .pagecontenttitle { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold;color:#DDDDDD }
 .pagecontenttitle a, .pagecontenttitle a:link, .pagecontenttitle a:active, .pagecontenttitle a:visited, .pagecontenttitle a:hover, .pagecontenttitle a:focus { color:#FFFFFF }
@@ -1241,6 +1254,11 @@ td { padding:0px }
 .pagehighlightborder2 { border:1px solid #FF0000;background-color:#FBF6CD;padding:4px }
 
 .pagehr { height:1px;overflow:hidden;border-top:1px solid #193879 }
+
+.pageservicemenubg { border:1px solid #D9D9DA;padding:5px }
+.pageservicemenucontent { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:10px;color:#222222 }
+.pageservicemenucontent a, .pageservicemenucontent a:link, .pageservicemenucontent a:visited { color:#000000;text-decoration:underline }
+.pageservicemenucontent a:active, .pageservicemenucontent a:hover, .pageservicemenucontent a:focus { color:#444444;text-decoration:none }
 
 .pagetitlecellbg { background-color:#375A9D }
 .pagetitlecellcontent { display:block;padding:3px }
@@ -1341,7 +1359,7 @@ Search for the requested class ...
 /**
 * Check for a specific function of a specific class.
 *
-* @param  string $f_class Object where the function should exist
+* @param  object $f_class Object where the function should exist
 * @param  string $f_function Name of the function
 * @uses   direct_virtual_class::v_call_check()
 * @uses   direct_debug()

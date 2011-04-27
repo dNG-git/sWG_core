@@ -191,10 +191,10 @@ Looks like the user is using a visible proxy - save whole IP information
 ------------------------------------------------------------------------- */
 
 			$direct_settings['user_ip_name'] = $direct_settings['user_ip'];
-			$direct_settings['user_ip_proxy'] = $f_proxy_ip;
 
 			$f_proxy_ip = str_replace (array (" ",","),(array ("",": ")),$f_proxy_ip);
-			$direct_settings['user_ip'] = $f_proxy_ip.": ".$direct_settings['user_ip'];
+			$direct_settings['user_ip'] = substr ($f_proxy_ip.": ".$direct_settings['user_ip'],-100);
+			$direct_settings['user_ip_proxy'] = $f_proxy_ip;
 		}
 		else
 		{
