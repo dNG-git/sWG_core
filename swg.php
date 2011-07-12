@@ -1190,7 +1190,7 @@ $this->output_data .= ("\n<meta name='author' content='direct Netware Group' />
 <meta name='creator' content='$direct_settings[product_lcode_txt] by the direct Netware Group' />
 <meta name='description' content='$direct_settings[product_lcode_subtitle_txt]' />
 <style type='text/css'><![CDATA[
-p, td { cursor:default }
+p, td, th { cursor:default }
 
 a { cursor:pointer }
 a:link { text-decoration:underline }
@@ -1202,10 +1202,10 @@ a:focus { text-decoration:underline }
 body { margin:0px;padding:0px 19px;background-color:#6A6A6A }
 body { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;font-style:normal;font-weight:normal }
 form { margin:0px;padding:0px }
-h1, h2, h3, h4, h5, h6 { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:14px;font-style:normal;font-weight:bold }
+h1, h2, h3, h4, h5, h6 { margin:0px;font-family:Verdana,Arial,Helvetica,sans-serif;font-size:14px;font-style:normal;font-weight:bold }
 img { border:none }
 table { margin:0px;table-layout:fixed;border:none;border-collapse:collapse;border-spacing:0px }
-td { padding:0px }
+td, th { padding:0px }
 
 .designcopyrightbg { background-color:#808080 }
 .designcopyrightcontent { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:10px;color:#DDDDDD }
@@ -1216,7 +1216,7 @@ td { padding:0px }
 .designpagebg *:last-child { margin-bottom:0px }
 
 .designtitlebg { background-image:url($direct_settings[iscript_url]a=cache;dsd=dfile+swg_bg.png);background-repeat:repeat-x;background-color:#FFFFFF }
-.designtitlecontent { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;color:#000000 }
+.designtitlecontent { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;font-weight:normal;color:#000000 }
 
 .pagebg { background-color:#FFFFFF }
 
@@ -1276,9 +1276,9 @@ internal sWG page theme
 <div style='width:19px;height:1px;margin-top:1px;background-color:#193879'></div>
 </div><div style='width:100%;height:10px;background-color:#000000'></div><table style='width:100%'>
 <thead><tr>
-<td class='designtitlebg' style='height:85px;padding:5px 15px;text-align:right;vertical-align:middle'><div style='float:left'><a href='http://www.direct-netware.de/redirect.php?$direct_settings[product_icode]' target='_blank'><img src='$direct_settings[iscript_url]a=cache;dsd=dfile+swg_logo.png' width='75' height='75' alt='$direct_settings[product_lcode_txt]' title='$direct_settings[product_lcode_txt]' /></a></div>
+<th class='designtitlebg' style='height:85px;padding:5px 15px;text-align:right;vertical-align:middle'><div style='float:left'><a href='http://www.direct-netware.de/redirect.php?$direct_settings[product_icode]' target='_blank'><img src='$direct_settings[iscript_url]a=cache;dsd=dfile+swg_logo.png' width='75' height='75' alt='$direct_settings[product_lcode_txt]' title='$direct_settings[product_lcode_txt]' /></a></div>
 <p class='designtitlecontent'><span style='font-size:24px'>$direct_settings[product_lcode_html]</span><br />
-$direct_settings[product_lcode_subtitle_html]</p></td>
+$direct_settings[product_lcode_subtitle_html]</p></th>
 </tr></thead><tbody><tr>
 <td class='designpagebg' style='padding:10px 12px;text-align:left;vertical-align:middle'>");
 

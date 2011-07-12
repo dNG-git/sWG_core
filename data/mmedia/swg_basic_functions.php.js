@@ -116,12 +116,12 @@ function djs_dialog (f_id,f_params)
 		if (typeof (f_params['id']) == "undefined")
 		{
 			f_id = "swg" + (Math.random().toString().replace (/\./g,"_")) + "d";
-			$("body").append ("<div id='" + f_id + "' style='display:none'></div>");
+			jQuery("body").append ("<div id='" + f_id + "' style='display:none'></div>");
 		}
 		else
 		{
 			f_id = f_params.id + "d";
-			$("#" + f_params.id).append ("<div id='" + f_id + "' style='display:none'></div>");
+			jQuery("#" + f_params.id).append ("<div id='" + f_id + "' style='display:none'></div>");
 		}
 	}
 
@@ -129,15 +129,21 @@ function djs_dialog (f_id,f_params)
 	{
 		if (typeof (f_params['url']) != "undefined")
 		{
-			f_self = $(self);
+			f_self = jQuery(self);
 
-			if (typeof (f_params['title']) == "undefined") { djs_swgDOM_insert_append ({ data:"<iframe src=\"" + (f_params.url.replace (/\&/g,"&amp;")) + "\" class='ui-widget ui-state-highlight' style='width:100%;height:100%'></iframe>",id:f_id,onInserted:{ func:"djs_dialog_view",params:{ draggable:false,id:f_id,height:(f_self.height () * 0.95),modal:true,resizable:false,title:"<?php echo direct_local_get ("core_detailed_information","text"); ?>",width:(f_self.width () * 0.95) } } }); }
-			else { djs_swgDOM_insert_append ({ data:"<iframe src=\"" + (f_params.url.replace (/\&/g,"&amp;")) + "\" class='ui-widget ui-state-highlight' style='width:100%;height:100%'></iframe>",id:f_id,onInserted:{ func:"djs_dialog_view",params:{ draggable:false,id:f_id,height:(f_self.height () * 0.95),modal:true,resizable:false,title:f_params.title,width:(f_self.width () * 0.95) } } }); }
+			if (typeof (f_params['width']) == "undefined") { f_params['width'] = (f_self.width () * 0.95); }
+			else { f_params['width'] = (f_self.width () * f_params.width); }
+
+			if (typeof (f_params['height']) == "undefined") { f_params['height'] = (f_self.height () * 0.95); }
+			else { f_params['height'] = (f_self.height () * f_params.height); }
+
+			if (typeof (f_params['title']) == "undefined") { djs_swgDOM_insert_append ({ data:"<iframe src=\"" + (f_params.url.replace (/\&/g,"&amp;")) + "\" class='ui-widget ui-state-highlight' style='width:100%;height:100%'></iframe>",id:f_id,onInserted:{ func:"djs_dialog_view",params:{ draggable:false,id:f_id,height:f_params.height,modal:true,resizable:false,title:"<?php echo direct_local_get ("core_detailed_information","text"); ?>",width:f_params.width } } }); }
+			else { djs_swgDOM_insert_append ({ data:"<iframe src=\"" + (f_params.url.replace (/\&/g,"&amp;")) + "\" class='ui-widget ui-state-highlight' style='width:100%;height:100%'></iframe>",id:f_id,onInserted:{ func:"djs_dialog_view",params:{ draggable:false,id:f_id,height:f_params.height,modal:true,resizable:false,title:f_params.title,width:f_params.width } } }); }
 		}
 		else
 		{
-			if (f_params == null) { f_params = { width:($(self).width () * djs_var.core_dialog_width) }; }
-			else if (typeof (f_params['width']) == "undefined") { f_params['width'] = ($(self).width () * djs_var.core_dialog_width); }
+			if (f_params == null) { f_params = { width:(jQuery(self).width () * djs_var.core_dialog_width) }; }
+			else if (typeof (f_params['width']) == "undefined") { f_params['width'] = (jQuery(self).width () * djs_var.core_dialog_width); }
 
 			f_params.id = f_id;
 			djs_dialog_view (f_params);
@@ -154,8 +160,8 @@ function djs_dialog_view (f_params)
 {
 	if (typeof (f_params['id']) != "undefined")
 	{
-		if ((typeof (f_params['buttons']) == "undefined")&&((typeof (f_params['window_closeable']) == "undefined")||(f_params['window_closeable']))) { f_params['buttons'] = { "<?php echo direct_local_get ("core_close","text"); ?>": function () { $(this).dialog ("close"); } } }
-		$("#" + f_params.id).dialog(f_params).bind ("dialogclose",function () { $("#" + f_params.id).remove (); });
+		if ((typeof (f_params['buttons']) == "undefined")&&((typeof (f_params['window_closeable']) == "undefined")||(f_params['window_closeable']))) { f_params['buttons'] = { "<?php echo direct_local_get ("core_close","text"); ?>": function () { jQuery(this).dialog ("close"); } } }
+		jQuery("#" + f_params.id).dialog(f_params).bind ("dialogclose",function () { jQuery("#" + f_params.id).remove (); });
 	}
 }
 <?php
@@ -165,7 +171,7 @@ djs_var['core_html5_progress_ready'] = false;
 
 function djs_html5_progress (f_jquery_object)
 {
-	if (f_jquery_object == null) { f_jquery_object = $("progress"); }
+	if (f_jquery_object == null) { f_jquery_object = jQuery("progress"); }
 	else { f_jquery_object = f_jquery_object.find ("progress"); }
 
 	var f_jquery_check = false;
@@ -188,7 +194,7 @@ function djs_html5_progress (f_jquery_object)
 	{
 		f_jquery_object.each (function ()
 		{
-			var f_jquery_object = $(this);
+			var f_jquery_object = jQuery(this);
 			var f_jquery_progressbar = f_jquery_object.parent ()
 			var f_jquery_value = f_jquery_object.attr ("value");
 
@@ -208,8 +214,6 @@ function djs_load_functions (f_params)
 	if (typeof (f_params['block']) == "undefined") { djs_swgAJAX ({ async:false,cache:true,dataType:"script",url0:"<?php echo "s=cache;dsd=dfile+$direct_settings[path_mmedia]/[file]++dbid+".$direct_settings['product_buildid']; ?>".replace (/\[file\]/g,f_params.file) }); }
 	else { djs_swgAJAX ({ async:false,cache:true,dataType:"script",url0:"<?php echo "s=cache;dsd=dfile+$direct_settings[path_mmedia]/[file]++dblock+[block]++dbid+".$direct_settings['product_buildid']; ?>".replace(/\[file\]/g,f_params.file).replace (/\[block\]/g,f_params.block) }); }
 }
-
-djs_var['core_run_onload'] = [ ];
 
 function djs_run (f_params,f_perm_params,f_is_perm_params)
 {
@@ -234,11 +238,7 @@ function djs_run (f_params,f_perm_params,f_is_perm_params)
 	}
 }
 
-function djs_run_onload ()
-{
-	djs_var.core_run_onload.unshift ({ func:"djs_browsersupport_set",params:null });
-	for (var f_i = 0;f_i < djs_var.core_run_onload.length;f_i++) { djs_run (djs_var.core_run_onload[f_i]); }
-}
+jQuery (function () { djs_run ({ func:"djs_browsersupport_set",params:null }); });
 <?php } ?>
 
 //j// EOF

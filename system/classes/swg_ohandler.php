@@ -208,7 +208,7 @@ Set up some variables
 		global $direct_settings;
 		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -output_class->css_header (+f_ajaxloading,+f_helper)- (#echo(__LINE__)#)"); }
 
-		$this->header_elements ("<link href='$direct_settings[path_mmedia]/ext_jquery/themes/$direct_settings[theme_jquery_ui]/jquery-ui-1.8.11.css' rel='stylesheet' type='text/css' />");
+		$this->header_elements ("<link href='$direct_settings[path_mmedia]/ext_jquery/themes/$direct_settings[theme_jquery_ui]/jquery-ui-1.8.14.css' rel='stylesheet' type='text/css' />");
 		if ($f_ajaxloading) { $this->header_elements ("<link href='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+data/mmedia/swg_output_ajaxloading.php.css",true,false))."' rel='stylesheet' type='text/css' />"); }
 		if ($f_helper) { $this->header_elements ("<link href='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+data/mmedia/swg_output_helper.php.css",true,false))."' rel='stylesheet' type='text/css' />"); }
 	}
@@ -271,7 +271,6 @@ Set up some variables
 		global $direct_settings;
 		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -output_class->js_header ()- (#echo(__LINE__)#)"); }
 
-		$this->header_elements ("<script src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_mmedia]/ext_jquery/jquery-1.5.2.min.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'></script><!-- // jQuery library // -->");
 		$this->header_elements ("<script src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_mmedia]/swg_AJAX.php.js++dbid+".$direct_settings['product_buildid'],true,true))."' type='text/javascript'></script><!-- // Asynchronous JavaScript and XML // -->");
 		$this->header_elements ("<script src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_mmedia]/swg_DOM.php.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'></script><!-- // jQuery based DOM // -->");
 
@@ -279,16 +278,17 @@ Set up some variables
 		{
 $this->header_elements ("<script src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_mmedia]/ext_jquery/jquery.pngFix.min.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'></script><!-- // jQuery pngFix library // -->
 <script type='text/javascript'><![CDATA[
-$(self.document).bind ('ready',(function ()
+jQuery(function ()
 {
-	$(self.document).pngFix ({ blankgif:'".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_mmedia]/ext_jquery/jquery.pngFix.gif",true,false))."' })
+	jQuery(self.document).pngFix ({ blankgif:'".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_mmedia]/ext_jquery/jquery.pngFix.gif",true,false))."' })
 }));
 ]]></script>");
 		}
 
 		$this->header_elements ("<script src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_mmedia]/swg_basic_functions.php.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'></script><!-- // Basic javascript helper functions // -->","",true);
 
-$this->header_elements ("<script type='text/javascript'><![CDATA[
+$this->header_elements ("<script src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_mmedia]/ext_jquery/jquery-1.6.2.min.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'></script><!-- // jQuery library // -->
+<script type='text/javascript'><![CDATA[
 if (typeof (djs_var) == 'undefined') { var djs_var = [ ]; }
 ]]></script>","",true);
 	}
@@ -313,7 +313,7 @@ if (typeof (djs_var) == 'undefined') { var djs_var = [ ]; }
 		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -output_class->js_helper (+f_text,$f_url,$f_close_onload)- (#echo(__LINE__)#)"); }
 
 $this->header_elements ("<script type='text/javascript'><![CDATA[
-djs_var.core_run_onload.push ({ func:'djs_load_functions',params: { file:'swg_output_helper.php.js' } });
+jQuery (function () { djs_run ({ func:'djs_load_functions',params: { file:'swg_output_helper.php.js' } }); });
 ]]></script>");
 
 		$f_js_helper_id = ("swghelp".$this->js_helper_element);
@@ -321,9 +321,20 @@ djs_var.core_run_onload.push ({ func:'djs_load_functions',params: { file:'swg_ou
 		$f_close_onload = ($f_close_onload ? "true" : "false");
 		if (strlen ($f_url)) { $f_text = "<a href=\"$f_url\" target='_blank'>$f_text</a>"; }
 
-$f_return = ("<div id='$f_js_helper_id' class='pagehelperbg' style='position:relative;width:75%;margin:auto;text-align:justify'><div class='pagehelpericon'><img src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_mmedia]/swg_output_helper.png",true,false))."' width='32' height='32' alt=\"".(direct_local_get ("core_detailed_information"))."\" title=\"".(direct_local_get ("core_detailed_information"))."\" /></div><span class='pagehelpercontent'>$f_text</span></div><script type='text/javascript'><![CDATA[
-djs_var.core_run_onload.push ({ func:'djs_core_helper_init',params:{ id:'$f_js_helper_id',hide:$f_close_onload } });
+		$f_embedded_code = "<div id='$f_js_helper_id' class='pagehelperbg' style='position:relative;width:75%;margin:auto;text-align:justify'><div class='pagehelpericon'><img src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_mmedia]/swg_output_helper.png",true,false))."' width='32' height='32' alt=\"".(direct_local_get ("core_detailed_information"))."\" title=\"".(direct_local_get ("core_detailed_information"))."\" /></div><span class='pagehelpercontent'>$f_text</span></div>";
+
+		if ((isset ($direct_settings['swg_clientsupport']['JSDOMManipulation']))&&($f_close_onload))
+		{
+$f_return = ("<div id='$f_js_helper_id'><a href=\"javascript:djs_core_helper_show('$f_js_helper_id')\">".(direct_local_get ("core_detailed_information_show"))."</a></div><script type='text/javascript'><![CDATA[
+jQuery (function () { djs_var.core_output_helper_cache['$f_js_helper_id'] = jQuery (\"".(str_replace ('"','\"',$f_embedded_code))."\"); });
 ]]></script>");
+		}
+		else
+		{
+$f_return = ($f_embedded_code."<script type='text/javascript'><![CDATA[
+jQuery (function () { djs_run ({ func:'djs_core_helper_init',params:{ id:'$f_js_helper_id',hide:$f_close_onload } }); });
+]]></script>");
+		}
 
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -output_class->js_helper ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
@@ -421,7 +432,7 @@ djs_var.core_run_onload.push ({ func:'djs_core_helper_init',params:{ id:'$f_js_h
 */
 	/*#ifndef(PHP4) */public /* #*/function options_insert ($f_level,$f_menu,$f_url,$f_title,$f_image,$f_urlmode = "asis")
 	{
-		global $direct_settings;
+		global $direct_cachedata,$direct_settings;
 		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -output_class->options_insert ($f_level,$f_menu,$f_url,$f_title,$f_image,$f_urlmode)- (#echo(__LINE__)#)"); }
 
 		$f_return = false;
@@ -434,6 +445,7 @@ djs_var.core_run_onload.push ({ func:'djs_core_helper_init',params:{ id:'$f_js_h
 			if (!isset ($this->menus[$f_menu])) { $this->menus[$f_menu] = array (); }
 			if (!isset ($this->menus[$f_menu][$f_level])) { $this->menus[$f_menu][$f_level] = array (); }
 			$f_image = ((($f_image)&&($direct_settings['swg_options_image'])) ? $f_image : "");
+			if (strpos ($f_url,"[source]") !== false) { $f_url = str_replace ("[source]",($direct_cachedata['page_this'] ? urlencode (base64_encode ($direct_cachedata['page_this'])) : ""),$f_url); }
 			if ($f_urlmode != "asis") { $f_url = direct_linker ($f_urlmode,$f_url); }
 
 $this->menus[$f_menu][$f_level][] = array (
@@ -560,6 +572,24 @@ file of the default OSet
 
 		$f_oset = $this->oset_callable ($f_module,$f_obj);
 		return /*#ifdef(DEBUG):direct_debug (9,"sWG/#echo(__FILEPATH__)# -output_class->oset_content ()- (#echo(__LINE__)#)",:#*/(is_callable ($f_oset) ? $f_oset () : "")/*#ifdef(DEBUG):,true):#*/;
+	}
+
+	//f// direct_output_inline->output_send ($f_title = "",$f_headers = NULL)
+/**
+	* This function is used for later multi-level delivery. Only the final
+	* node actually sends data to the requesting client.
+	*
+	* @param string $f_title Valid XHTML page title
+	* @uses  direct_output_inline::output_response()
+	* @uses  USE_debug_reporting
+	* @since v0.1.08
+*/
+	/*#ifndef(PHP4) */public /* #*/function output_send ($f_title = "",$f_headers = NULL)
+	{
+		global $direct_settings;
+
+		if ((isset ($direct_settings['user_ip_proxy']))&&((!isset ($_SERVER['HTTPS']))||(!$_SERVER['HTTPS']))) { $this->warning (direct_local_get ("core_user_warning","text"),(direct_local_get ("core_user_warning_proxy","text"))); }
+		parent::output_send ($f_title,$f_headers);
 	}
 
 	//f// direct_output->pages_generator ($f_uri,$f_pages,$f_cpage = "",$f_with_lastnext_keys = true)
@@ -778,24 +808,6 @@ file of the default OSet
 		}
 
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -output_class->related_manager ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
-	}
-
-	//f// direct_output_inline->output_send ($f_title = "",$f_headers = NULL)
-/**
-	* This function is used for later multi-level delivery. Only the final
-	* node actually sends data to the requesting client.
-	*
-	* @param string $f_title Valid XHTML page title
-	* @uses  direct_output_inline::output_response()
-	* @uses  USE_debug_reporting
-	* @since v0.1.08
-*/
-	/*#ifndef(PHP4) */public /* #*/function output_send ($f_title = "",$f_headers = NULL)
-	{
-		global $direct_settings;
-
-		if ((isset ($direct_settings['user_ip_proxy']))&&((!isset ($_SERVER['HTTPS']))||(!$_SERVER['HTTPS']))) { $this->warning (direct_local_get ("core_user_warning","text"),(direct_local_get ("core_user_warning_proxy","text"))); }
-		parent::output_send ($f_title,$f_headers);
 	}
 
 	//f// direct_output->servicemenu ($f_menu,$f_level = 6)

@@ -296,7 +296,7 @@ function direct_output_oset_default_embedded_ajax_error_critical ()
 	if (!empty ($direct_cachedata['core_debug_backtrace']))
 	{
 		$f_backtrace_array = array_map ("direct_html_encode_special",$direct_cachedata['core_debug_backtrace']);
-		$f_return .= "\n<p class='pagecontenttitle{$direct_settings['theme_css_corners']}'>Backtrace</p><ul class='pagecontent' style='text-align:left;font-size:10px'>\n<li>".(implode ("</li>\n<li>",$f_backtrace_array))."</li></ul>";
+		$f_return .= "\n<p class='pagecontenttitle{$direct_settings['theme_css_corners']}'>Backtrace</p>\n<ul class='pagecontent' style='text-align:left;font-size:10px'>\n<li>".(implode ("</li>\n<li>",$f_backtrace_array))."</li></ul>";
 	}
 
 	$f_return .= "</div>";
@@ -331,7 +331,7 @@ function direct_output_oset_default_embedded_ajax_error_fatal ()
 	if (!empty ($direct_cachedata['core_debug_backtrace']))
 	{
 		$f_backtrace_array = array_map ("direct_html_encode_special",$direct_cachedata['core_debug_backtrace']);
-		$f_return .= "\n<p class='pagecontenttitle{$direct_settings['theme_css_corners']}'>Backtrace</p><ul class='pagecontent' style='text-align:left;font-size:10px'>\n<li>".(implode ("</li>\n<li>",$f_backtrace_array))."</li></ul>";
+		$f_return .= "\n<p class='pagecontenttitle{$direct_settings['theme_css_corners']}'>Backtrace</p>\n<ul class='pagecontent' style='text-align:left;font-size:10px'>\n<li>".(implode ("</li>\n<li>",$f_backtrace_array))."</li></ul>";
 	}
 
 	if (USE_debug_reporting)
@@ -339,13 +339,13 @@ function direct_output_oset_default_embedded_ajax_error_fatal ()
 		if (!empty ($direct_cachedata['core_debug']))
 		{
 			$f_debug_array = array_map ("direct_html_encode_special",$direct_cachedata['core_debug']);
-			$f_return .= "\n<p class='pagecontenttitle{$direct_settings['theme_css_corners']}'>Debug checkpoint list</p><ul class='pagecontent' style='text-align:left;font-size:10px'>\n<li>".(implode ("</li>\n<li>",$f_debug_array))."</li></ul>";
+			$f_return .= "\n<p class='pagecontenttitle{$direct_settings['theme_css_corners']}'>Debug checkpoint list</p>\n<ul class='pagecontent' style='text-align:left;font-size:10px'>\n<li>".(implode ("</li>\n<li>",$f_debug_array))."</li></ul>";
 		}
 
 		if (!empty ($direct_cachedata['core_error']))
 		{
 			$f_error_array = array_map ("direct_html_encode_special",$direct_cachedata['core_error']);
-			$f_return .= "\n<p class='pagecontenttitle{$direct_settings['theme_css_corners']}'>Error list</p><ul class='pagecontent' style='text-align:left;font-size:10px'>\n<li>".(implode ("</li>\n<li>",$f_error_array))."</li></ul>";
+			$f_return .= "\n<p class='pagecontenttitle{$direct_settings['theme_css_corners']}'>Error list</p>\n<ul class='pagecontent' style='text-align:left;font-size:10px'>\n<li>".(implode ("</li>\n<li>",$f_error_array))."</li></ul>";
 		}
 	}
 
@@ -378,7 +378,7 @@ $f_return = ("<div><p class='pagecontenttitle{$direct_settings['theme_css_corner
 	if (!empty ($direct_cachedata['core_debug_backtrace']))
 	{
 		$f_backtrace_array = array_map ("direct_html_encode_special",$direct_cachedata['core_debug_backtrace']);
-		$f_return .= "\n<p class='pagecontenttitle{$direct_settings['theme_css_corners']}'>Backtrace</p><ul class='pagecontent' style='text-align:left;font-size:10px'>\n<li>".(implode ("</li>\n<li>",$f_backtrace_array))."</li></ul>";
+		$f_return .= "\n<p class='pagecontenttitle{$direct_settings['theme_css_corners']}'>Backtrace</p>\n<ul class='pagecontent' style='text-align:left;font-size:10px'>\n<li>".(implode ("</li>\n<li>",$f_backtrace_array))."</li></ul>";
 	}
 
 	$f_return .= "</div>";
@@ -413,7 +413,7 @@ function direct_output_oset_default_embedded_ajax_error_standard ()
 	if (!empty ($direct_cachedata['core_debug_backtrace']))
 	{
 		$f_backtrace_array = array_map ("direct_html_encode_special",$direct_cachedata['core_debug_backtrace']);
-		$f_return .= "\n<p class='pagecontenttitle{$direct_settings['theme_css_corners']}'>Backtrace</p><ul class='pagecontent' style='font-size:10px'>\n<li>".(implode ("</li>\n<li>",$f_backtrace_array))."</li></ul>";
+		$f_return .= "\n<p class='pagecontenttitle{$direct_settings['theme_css_corners']}'>Backtrace</p>\n<ul class='pagecontent' style='font-size:10px'>\n<li>".(implode ("</li>\n<li>",$f_backtrace_array))."</li></ul>";
 	}
 
 	$f_return .= "</div>";
@@ -435,7 +435,7 @@ function direct_output_oset_default_embedded_done ()
 	if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_output_oset_default_embedded_done ()- (#echo(__LINE__)#)"); }
 
 	$f_title = ($direct_cachedata['output_job'] ? (direct_local_get ("core_done")).": ".$direct_cachedata['output_job'] : direct_local_get ("core_done"));
-	$f_return = "<p class='pagecontenttitle{$direct_settings['theme_css_corners']}'>$f_title</p>\n<p class='pagecontent'>{$direct_cachedata['output_job_desc']}</p>";
+	$f_return = "<h1 class='pagecontenttitle{$direct_settings['theme_css_corners']}'>$f_title</h1>\n<p class='pagecontent'>{$direct_cachedata['output_job_desc']}</p>";
 
 	if (isset ($direct_cachedata['output_pagetarget']))
 	{
@@ -446,7 +446,7 @@ $f_embedded_code = ("<p class='pagecontent' style='font-size:10px;text-align:cen
 
 $f_return .= (isset ($direct_settings['swg_clientsupport']['JSDOMManipulation']) ? $f_embedded_code : ("<p id='swgjsjump_point' class='pagecontent' style='font-weight:bold;text-align:center'><span style='font-size:10px'>".(direct_local_get ("core_automated_redirection_unsupported"))."</span><br />
 <a href=\"{$direct_cachedata['output_pagetarget']}\" target='_self'>".(direct_local_get ("core_continue"))."</a></p><script type='text/javascript'><![CDATA[
-djs_var.core_run_onload.push ({ func:'djs_swgDOM_replace',params: { data:\"".(str_replace ('"','\"',$f_embedded_code))."\",id:'swgjsjump_point' } });
+jQuery (function () { djs_run ({ func:'djs_swgDOM_replace',params: { data:\"".(str_replace ('"','\"',$f_embedded_code))."\",id:'swgjsjump_point' } }); });
 ]]></script>"));
 
 $f_return .= ("<script type='text/javascript'><![CDATA[
@@ -475,9 +475,9 @@ function direct_output_oset_default_embedded_done_extended ()
 
 	$f_title = ($direct_cachedata['output_job'] ? (direct_local_get ("core_done")).": ".$direct_cachedata['output_job'] : direct_local_get ("core_done"));
 
-$f_return = ("<p class='pagecontenttitle{$direct_settings['theme_css_corners']}'>$f_title</p>
+$f_return = ("<h1 class='pagecontenttitle{$direct_settings['theme_css_corners']}'>$f_title</h1>
 <p class='pagecontent'>{$direct_cachedata['output_job_desc']}</p>
-<p class='pagecontenttitle' style='font-size:10px'>".(direct_local_get ("core_detailed_information"))."</p>
+<h2 class='pagecontenttitle' style='font-size:10px'>".(direct_local_get ("core_detailed_information"))."</h2>
 <p class='pagecontent' style='font-size:10px'>{$direct_cachedata['output_job_extension']}</p>");
 
 	if (isset ($direct_cachedata['output_pagetarget'])) { $f_return .= "\n<p class='pagecontent' style='font-weight:bold;text-align:center'><a href=\"{$direct_cachedata['output_pagetarget']}\" target='_self'>".(direct_local_get ("core_continue"))."</a></p>"; }
@@ -499,14 +499,14 @@ function direct_output_oset_default_embedded_error_critical ()
 	global $direct_cachedata,$direct_settings;
 	if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_output_oset_default_embedded_error_critical ()- (#echo(__LINE__)#)"); }
 
-	$f_return = "<p class='pagecontenttitle{$direct_settings['theme_css_corners']}'>".(direct_local_get ("core_error"))."</p>\n<p class='pagecontent'>{$direct_cachedata['output_error']}</p>";
+	$f_return = "<h1 class='pagecontenttitle{$direct_settings['theme_css_corners']}'>".(direct_local_get ("core_error"))."</h1>\n<p class='pagecontent'>{$direct_cachedata['output_error']}</p>";
 	if ($direct_cachedata['output_error_extradata']) { $f_return .= "\n<p class='pagecontent' style='font-size:11px'>{$direct_cachedata['output_error_extradata']}</p>"; }
 	$f_return .= "\n<p class='pagecontent' style='text-align:center'>".(direct_local_get ("core_unable_to_proceed"))."</p>";
 
 	if (!empty ($direct_cachedata['core_debug_backtrace']))
 	{
 		$f_backtrace_array = array_map ("direct_html_encode_special",$direct_cachedata['core_debug_backtrace']);
-		$f_return .= ("\n<p class='pagecontenttitle{$direct_settings['theme_css_corners']}'>Backtrace</p><ul class='pagecontent' style='text-align:left;font-size:10px'>\n<li>".(implode ("</li>\n<li>",$f_backtrace_array))."</li></ul>");
+		$f_return .= ("\n<h2 class='pagecontenttitle{$direct_settings['theme_css_corners']}'>Backtrace</h2>\n<ul class='pagecontent' style='text-align:left;font-size:10px'>\n<li>".(implode ("</li>\n<li>",$f_backtrace_array))."</li></ul>");
 	}
 
 	return $f_return;
@@ -526,7 +526,7 @@ function direct_output_oset_default_embedded_error_fatal ()
 	global $direct_cachedata,$direct_settings;
 	if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_output_oset_default_embedded_error_fatal ()- (#echo(__LINE__)#)"); }
 
-	$f_return = "<p class='pagecontenttitle{$direct_settings['theme_css_corners']}'>".(direct_local_get ("core_error_fatal"))."</p>\n<p class='pagecontent'>{$direct_cachedata['output_error']}</p>";
+	$f_return = "<h1 class='pagecontenttitle{$direct_settings['theme_css_corners']}'>".(direct_local_get ("core_error_fatal"))."</h1>\n<p class='pagecontent'>{$direct_cachedata['output_error']}</p>";
 	if ($direct_cachedata['output_error_extradata']) { $f_return .= "\n<p class='pagecontent' style='font-size:11px'>{$direct_cachedata['output_error_extradata']}</p>"; }
 
 	if ($direct_cachedata['output_link_back'])
@@ -540,7 +540,7 @@ function direct_output_oset_default_embedded_error_fatal ()
 	if (!empty ($direct_cachedata['core_debug_backtrace']))
 	{
 		$f_backtrace_array = array_map ("direct_html_encode_special",$direct_cachedata['core_debug_backtrace']);
-		$f_return .= ("\n<p class='pagecontenttitle{$direct_settings['theme_css_corners']}'>Backtrace</p><ul class='pagecontent' style='text-align:left;font-size:10px'>\n<li>".(implode ("</li>\n<li>",$f_backtrace_array))."</li></ul>");
+		$f_return .= ("\n<h2 class='pagecontenttitle{$direct_settings['theme_css_corners']}'>Backtrace</h2>\n<ul class='pagecontent' style='text-align:left;font-size:10px'>\n<li>".(implode ("</li>\n<li>",$f_backtrace_array))."</li></ul>");
 	}
 
 	if (USE_debug_reporting)
@@ -548,13 +548,13 @@ function direct_output_oset_default_embedded_error_fatal ()
 		if (!empty ($direct_cachedata['core_debug']))
 		{
 			$f_debug_array = array_map ("direct_html_encode_special",$direct_cachedata['core_debug']);
-			$f_return .= ("\n<p class='pagecontenttitle{$direct_settings['theme_css_corners']}'>Debug checkpoint list</p><ul class='pagecontent' style='text-align:left;font-size:10px'>\n<li>".(implode ("</li>\n<li>",$f_debug_array))."</li></ul>");
+			$f_return .= ("\n<h2 class='pagecontenttitle{$direct_settings['theme_css_corners']}'>Debug checkpoint list</h2>\n<ul class='pagecontent' style='text-align:left;font-size:10px'>\n<li>".(implode ("</li>\n<li>",$f_debug_array))."</li></ul>");
 		}
 
 		if (!empty ($direct_cachedata['core_error']))
 		{
 			$f_error_array = array_map ("direct_html_encode_special",$direct_cachedata['core_error']);
-			$f_return .= ("\n<p class='pagecontenttitle{$direct_settings['theme_css_corners']}'>Error list</p><ul class='pagecontent' style='text-align:left;font-size:10px'>\n<li>".(implode ("</li>\n<li>",$f_error_array))."</li></ul>");
+			$f_return .= ("\n<h2 class='pagecontenttitle{$direct_settings['theme_css_corners']}'>Error list</h2>\n<ul class='pagecontent' style='text-align:left;font-size:10px'>\n<li>".(implode ("</li>\n<li>",$f_error_array))."</li></ul>");
 		}
 	}
 
@@ -576,7 +576,7 @@ function direct_output_oset_default_embedded_error_standard ()
 	global $direct_cachedata,$direct_settings;
 	if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_output_oset_default_embedded_error_standard ()- (#echo(__LINE__)#)"); }
 
-	$f_return = "<p class='pagecontenttitle{$direct_settings['theme_css_corners']}'>".(direct_local_get ("core_error"))."</p>\n<p class='pagecontent'>{$direct_cachedata['output_error']}</p>";
+	$f_return = "<h1 class='pagecontenttitle{$direct_settings['theme_css_corners']}'>".(direct_local_get ("core_error"))."</h1>\n<p class='pagecontent'>{$direct_cachedata['output_error']}</p>";
 	if ($direct_cachedata['output_error_extradata']) { $f_return .= "\n<p class='pagecontent' style='font-size:11px'>{$direct_cachedata['output_error_extradata']}</p>"; }
 
 	if ($direct_cachedata['output_link_back'])
@@ -590,7 +590,7 @@ function direct_output_oset_default_embedded_error_standard ()
 	if (!empty ($direct_cachedata['core_debug_backtrace']))
 	{
 		$f_backtrace_array = array_map ("direct_html_encode_special",$direct_cachedata['core_debug_backtrace']);
-		$f_return .= ("\n<p class='pagecontenttitle{$direct_settings['theme_css_corners']}'>Backtrace</p><ul class='pagecontent' style='text-align:left;font-size:10px'>\n<li>".(implode ("</li>\n<li>",$f_backtrace_array))."</li></ul>");
+		$f_return .= ("\n<h2 class='pagecontenttitle{$direct_settings['theme_css_corners']}'>Backtrace</h2>\n<ul class='pagecontent' style='text-align:left;font-size:10px'>\n<li>".(implode ("</li>\n<li>",$f_backtrace_array))."</li></ul>");
 	}
 
 	return $f_return;
@@ -614,7 +614,7 @@ if (isset ($direct_globals['@names']['output_formbuilder']))
 
 		if (!isset ($direct_globals['output_formbuilder'])) { direct_class_init ("output_formbuilder"); }
 
-		$f_return = "<p class='pagecontenttitle{$direct_settings['theme_css_corners']}'>{$direct_cachedata['output_formtitle']}</p>\n";
+		$f_return = "<h1 class='pagecontenttitle{$direct_settings['theme_css_corners']}'>{$direct_cachedata['output_formtitle']}</h1>\n";
 		$f_form_id = uniqid ("swg");
 
 		if (($direct_cachedata['output_credits_information'])||($direct_cachedata['output_credits_payment_data']))
@@ -622,15 +622,17 @@ if (isset ($direct_globals['@names']['output_formbuilder']))
 			$f_return .= "<p class='pagehighlightborder2{$direct_settings['theme_css_corners']} pagecontent' style='text-align:left'>";
 			if ($direct_cachedata['output_credits_information']) { $f_return .= $direct_cachedata['output_credits_information']; }
 			if ($direct_cachedata['output_credits_payment_data']) { $f_return .= ($direct_cachedata['output_credits_information'] ? "<br />\n<span style='font-size:10px'>{$direct_cachedata['output_credits_payment_data']}</span>" : $direct_cachedata['output_credits_payment_data']); }
-			$f_return .= "</p>";
+			$f_return .= "</p>\n";
 		}
 
-$f_return .= ($direct_settings['iscript_form']." name='swg_form' id='swg_form'>".(direct_linker ("form",$direct_cachedata['output_formtarget'])).($direct_globals['output_formbuilder']->form_get ($direct_cachedata['output_formelements']))."
-<p class='pagecontent' style='text-align:center'><input type='submit' id='$f_form_id' value=\"{$direct_cachedata['output_formbutton']}\" class='pagecontentinputbutton' /><script type='text/javascript'><![CDATA[
-djs_var.core_run_onload.push ({ func:'djs_formbuilder_init',params: { id:'$f_form_id',type:'button' } });\n");
+$f_return .= ($direct_settings['iscript_form']." name='$f_form_id' id='$f_form_id'>".(direct_linker ("form",$direct_cachedata['output_formtarget'])).($direct_globals['output_formbuilder']->form_get ($direct_cachedata['output_formelements']))."
+<p class='pagecontent' style='text-align:center'><input type='submit' id='{$f_form_id}b' value=\"{$direct_cachedata['output_formbutton']}\" class='pagecontentinputbutton' /><script type='text/javascript'><![CDATA[
+jQuery (function ()
+{
+	djs_run ({ func:'djs_formbuilder_init',params: { id:'{$f_form_id}b',type:'button' } });\n");
 
-		if (isset ($direct_cachedata['output_formsupport_ajax_dialog'])) { $f_return .= "djs_var.core_run_onload.push ({ func:'djs_formbuilder_init',params: { id:'swg_form',id_button:'$f_form_id',type:'form' } });\n"; }
-		$f_return .= "]]></script></p></form>";
+		if (isset ($direct_cachedata['output_formsupport_ajax_dialog'])) { $f_return .= "\tdjs_run ({ func:'djs_formbuilder_init',params: { id:'$f_form_id',id_button:'{$f_form_id}b',type:'form' } });\n"; }
+		$f_return .= "});\n]]></script></p></form>";
 
 /*i// LICENSE_WARNING
 ----------------------------------------------------------------------------
@@ -641,7 +643,7 @@ LICENSE_WARNING_END //i*/
 		if ((isset ($direct_cachedata['output_formiview_id']))&&(isset ($direct_cachedata['output_formiview_url'])))
 		{
 			$direct_globals['basic_functions']->require_file ($direct_settings['path_system']."/osets/$direct_settings[theme_oset]/swgi_datalinker_iview.php");
-			if (isset ($direct_cachedata['output_formiview_title'])) { $f_return .= "\n<p class='pagecontenttitle{$direct_settings['theme_css_corners']}'>{$direct_cachedata['output_formiview_title']}</p>"; }
+			if (isset ($direct_cachedata['output_formiview_title'])) { $f_return .= "\n<h1 class='pagecontenttitle{$direct_settings['theme_css_corners']}'>{$direct_cachedata['output_formiview_title']}</h1>"; }
 			$f_return .= "\n".(direct_datalinker_oset_iview_url ($direct_cachedata['output_formiview_url'],$direct_cachedata['output_formiview_id'],true));
 		}
 
@@ -671,22 +673,24 @@ LICENSE_WARNING_END //i*/
 			$f_oset = "direct_".$direct_cachedata['output_preview_function'];
 
 			$f_return = $f_oset ();
-			$f_return .= "<p class='pagecontenttitle{$direct_settings['theme_css_corners']}'>{$direct_cachedata['output_formtitle']}</p>";
+			$f_return .= "<h1 class='pagecontenttitle{$direct_settings['theme_css_corners']}'>{$direct_cachedata['output_formtitle']}</h1>\n";
 
 			if (($direct_cachedata['output_credits_information'])||($direct_cachedata['output_credits_payment_data']))
 			{
 				$f_return .= "<p class='pagehighlightborder2{$direct_settings['theme_css_corners']} pagecontent' style='text-align:left'>";
 				if ($direct_cachedata['output_credits_information']) { $f_return .= $direct_cachedata['output_credits_information']; }
 				if ($direct_cachedata['output_credits_payment_data']) { $f_return .= ($direct_cachedata['output_credits_information'] ? "<br />\n<span style='font-size:10px'>{$direct_cachedata['output_credits_payment_data']}</span>" : $direct_cachedata['output_credits_payment_data']); }
-				$f_return .= "</p>";
+				$f_return .= "</p>\n";
 			}
 
-$f_return .= ($direct_settings['iscript_form']." name='swg_form' id='swg_form'>".(direct_linker ("form",$direct_cachedata['output_formtarget'])).($direct_globals['output_formbuilder']->form_get ($direct_cachedata['output_formelements']))."
-<p class='pagecontent' style='text-align:center'><input type='submit' id='$f_form_id' value=\"{$direct_cachedata['output_formbutton']}\" class='pagecontentinputbutton' /><script type='text/javascript'><![CDATA[
-djs_var.core_run_onload.push ({ func:'djs_formbuilder_init',params: { id:'$f_form_id',type:'button' } });\n");
+$f_return .= ($direct_settings['iscript_form']." name='$f_form_id' id='$f_form_id'>".(direct_linker ("form",$direct_cachedata['output_formtarget'])).($direct_globals['output_formbuilder']->form_get ($direct_cachedata['output_formelements']))."
+<p class='pagecontent' style='text-align:center'><input type='submit' id='{$f_form_id}b' value=\"{$direct_cachedata['output_formbutton']}\" class='pagecontentinputbutton' /><script type='text/javascript'><![CDATA[
+jQuery (function ()
+{
+	djs_run ({ func:'djs_formbuilder_init',params: { id:'{$f_form_id}b',type:'button' } });\n");
 
-			if (isset ($direct_cachedata['output_formsupport_ajax_dialog'])) { $f_return .= "djs_var.core_run_onload.push ({ func:'djs_formbuilder_init',params: { id:'swg_form',id_button:'$f_form_id',type:'form' } });\n"; }
-			$f_return .= "]]></script></p></form>";
+			if (isset ($direct_cachedata['output_formsupport_ajax_dialog'])) { $f_return .= "\tdjs_run ({ func:'djs_formbuilder_init',params: { id:'$f_form_id',id_button:'{$f_form_id}b',type:'form' } });\n"; }
+			$f_return .= "});\n]]></script></p></form>";
 		}
 
 /*i// LICENSE_WARNING
@@ -698,7 +702,7 @@ LICENSE_WARNING_END //i*/
 		if ((isset ($direct_cachedata['output_formiview_id']))&&(isset ($direct_cachedata['output_formiview_url'])))
 		{
 			$direct_globals['basic_functions']->require_file ($direct_settings['path_system']."/osets/$direct_settings[theme_oset]/swgi_datalinker_iview.php");
-			if (isset ($direct_cachedata['output_formiview_title'])) { $f_return .= "\n<p class='pagecontenttitle{$direct_settings['theme_css_corners']}'>{$direct_cachedata['output_formiview_title']}</p>"; }
+			if (isset ($direct_cachedata['output_formiview_title'])) { $f_return .= "\n<h1 class='pagecontenttitle{$direct_settings['theme_css_corners']}'>{$direct_cachedata['output_formiview_title']}</h1>"; }
 			$f_return .= "\n".(direct_datalinker_oset_iview_url ($direct_cachedata['output_formiview_url'],$direct_cachedata['output_formiview_id'],true));
 		}
 

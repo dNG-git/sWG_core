@@ -19,53 +19,6 @@ sWG/#echo(__FILEPATH__)#
 ----------------------------------------------------------------------------
 NOTE_END //n*/
 
-<?php
-$g_block = (isset ($direct_settings['dsd']['dblock']) ? $direct_settings['dsd']['dblock'] : "");
-if ($g_block == "djs_swgDOM_attr_change_int") {
-?>
-function djs_swgDOM_attr_change_int (f_id,f_attr_element,f_attr_value) { $("#" + f_id).attr (f_attr_element,f_attr_value); }
-<?php
-} if ($g_block == "djs_swgDOM_css_change_px") {
-?>
-function djs_swgDOM_css_change_px (f_id,f_css_element,f_css_value,f_duration)
-{
-	var f_jquery_object = $("#" + f_id);
-
-	if (f_css_value == "+")
-	{
-		f_duration = 0;
-		f_css_value = parseInt (f_jquery_object.css (f_css_element));
-		if (f_css_value) { f_css_value += 17; }
-	}
-	else if (f_css_value == "-")
-	{
-		f_duration = 0;
-		f_css_value = parseInt (f_jquery_object.css (f_css_element));
-		if ((f_css_value)&&(f_css_value > djs_var.core_swgDOM_css_change_px_min)) { f_css_value -= 17; }
-	}
-	else
-	{
-		if (f_duration == null) { f_duration = 1000; }
-		f_css_value = parseInt (f_css_value);
-	}
-
-	if ((f_css_value)&&(f_jquery_object != null))
-	{
-		if (f_duration)
-		{
-			f_anim_object = { };
-			f_anim_object[f_css_element] = f_css_value + "px";
-			f_jquery_object.animate (f_anim_object,f_duration);
-		}
-		else { f_jquery_object.css (f_css_element,f_css_value + "px"); }
-	}
-}
-
-if (typeof (djs_var['core_swgDOM_css_change_px_min']) == "undefined") { djs_var['core_swgDOM_css_change_px_min'] = 111; }
-else { djs_var.core_swgDOM_css_change_px_min = parseInt (djs_var.core_swgDOM_css_change_px_min); }
-<?php
-} if ($g_block == "") {
-?>
 function djs_swgDOM_insert_after (f_params)
 {
 	if ((typeof (f_params['data']) != "undefined")&&(typeof (f_params['id']) != "undefined"))
@@ -73,7 +26,7 @@ function djs_swgDOM_insert_after (f_params)
 		var f_jquery_object = djs_swgDOM_insert_prepare (f_params.data);
 		if (f_params.id != f_params.id_inserted) { f_jquery_object.attr ("id",f_params.id_inserted); }
 
-		$("#" + f_params.id).after (f_jquery_object);
+		jQuery("#" + f_params.id).after (f_jquery_object);
 		if ((typeof (f_params['onInsert']) != "undefined")&&(f_params.onInsert != null)) { djs_run (f_params.onInsert,f_params,false); }
 
 		if ((typeof (f_params['hide']) == "undefined")||(!f_params.hide))
@@ -92,7 +45,7 @@ function djs_swgDOM_insert_append (f_params)
 		var f_jquery_object = djs_swgDOM_insert_prepare (f_params.data);
 		if (f_params.id != f_params.id_inserted) { f_jquery_object.attr ("id",f_params.id_inserted); }
 
-		$("#" + f_params.id).append (f_jquery_object);
+		jQuery("#" + f_params.id).append (f_jquery_object);
 		if ((typeof (f_params['onInsert']) != "undefined")&&(f_params.onInsert != null)) { djs_run (f_params.onInsert,f_params,false); }
 
 		if ((typeof (f_params['hide']) == "undefined")||(!f_params.hide))
@@ -111,7 +64,7 @@ function djs_swgDOM_insert_before (f_params)
 		var f_jquery_object = djs_swgDOM_insert_prepare (f_params.data);
 		if (f_params.id != f_params.id_inserted) { f_jquery_object.attr ("id",f_params.id_inserted); }
 
-		$("#" + f_params.id).before (f_jquery_object);
+		jQuery("#" + f_params.id).before (f_jquery_object);
 		if ((typeof (f_params['onInsert']) != "undefined")&&(f_params.onInsert != null)) { djs_run (f_params.onInsert,f_params,false); }
 
 		if ((typeof (f_params['hide']) == "undefined")||(!f_params.hide))
@@ -126,7 +79,7 @@ function djs_swgDOM_insert_before (f_params)
 function djs_swgDOM_insert_prepare (f_data)
 {
 	if (typeof (f_data) == "object") { return f_data.hide (); }
-	else { return $(f_data).hide (); }
+	else { return jQuery(f_data).hide (); }
 }
 
 djs_var['swgDOM_replace_cache'] = { };
@@ -140,54 +93,47 @@ function djs_swgDOM_replace (f_params)
 		if (typeof (f_params['id_replaced']) == "undefined") { f_params['id_replaced'] = f_params.id; }
 		if (typeof (f_params['onReplace']) == "undefined") { f_params['onReplace'] = null; }
 		if (typeof (f_params['onReplaced']) == "undefined") { f_params['onReplaced'] = null; }
+		if (typeof (f_params['speed']) == "undefined") { f_params['speed'] = "fast"; }
 
-		djs_var.swgDOM_replace_cache[f_params.id] = { id:f_params.id_replaced,jquery_object:f_jquery_object,onReplace:f_params.onReplace,onReplaced:f_params.onReplaced };
+		djs_var.swgDOM_replace_cache[f_params.id] = { id:f_params.id_replaced,jquery_object:f_jquery_object,onReplace:f_params.onReplace,onReplaced:f_params.onReplaced,speed:f_params.speed };
 
-		f_jquery_object = $("#" + f_params.id);
-		f_jquery_object.after ("<div id='" + f_params.id_replaced + "phdiv' style='position:absolute;top:0px;left:0px;width:1px;height:" + ($(self.document).height ()) + "px;z-index:-256'>&#0160;</div>");
-		f_jquery_object.fadeOut ("fast",djs_swgDOM_replace_with);
+		jQuery("body").append ("<div id='" + f_params.id_replaced + "phdiv' style='position:absolute;top:0px;left:0px;width:1px;height:" + (jQuery(self.document).height ()) + "px;z-index:-256'>&#0160;</div>");
+		jQuery("#" + f_params.id).fadeOut (f_params.speed,djs_swgDOM_replace_with);
 	}
 }
 
 function djs_swgDOM_replace_with ()
 {
-	var f_jquery_object = $(this);
+	var f_jquery_object = jQuery(this);
 	var f_id = f_jquery_object.attr ("id");
 
 	if (typeof (djs_var.swgDOM_replace_cache[f_id]) != "undefined")
 	{
-		var f_id_new = djs_var.swgDOM_replace_cache[f_id].id;
+		var f_params = djs_var.swgDOM_replace_cache[f_id];
 
-		if (f_id == f_id_new) { f_jquery_object.replaceWith (djs_var.swgDOM_replace_cache[f_id].jquery_object); }
-		else { f_jquery_object.replaceWith (djs_var.swgDOM_replace_cache[f_id].jquery_object.attr ("id",f_id_new)); }
+		delete (djs_var.swgDOM_replace_cache[f_id]);
+		var f_id_new = f_params.id;
 
-		if (djs_var.swgDOM_replace_cache[f_id].onReplace != null) { djs_run (djs_var.swgDOM_replace_cache[f_id].onReplace,djs_var.swgDOM_replace_cache[f_id],false); }
+		if (f_id == f_id_new) { f_jquery_object.replaceWith (f_params.jquery_object); }
+		else { f_jquery_object.replaceWith (f_params.jquery_object.attr ("id",f_id_new)); }
 
-		if ((typeof (djs_var.swgDOM_replace_cache[f_id]['hide']) == "undefined")||(!djs_var.swgDOM_replace_cache[f_id].hide))
+		if (f_params.onReplace != null) { djs_run (f_params.onReplace,f_params,false); }
+
+		if ((typeof (f_params['hide']) == "undefined")||(!f_params.hide))
 		{
-			if (djs_var.swgDOM_replace_cache[f_id].onReplaced == null)
-			{
-				delete (djs_var.swgDOM_replace_cache[f_id]);
-				$("#" + f_id_new).fadeIn ("fast",function () { $("#" + f_id_new + "phdiv").remove (); });
-			}
+			if (f_params.onReplaced == null) { jQuery("#" + f_id_new).fadeIn (f_params.speed,function () { jQuery("#" + f_id_new + "phdiv").remove (); }); }
 			else
 			{
-				$("#" + f_id_new).fadeIn ("fast",function ()
+				jQuery("#" + f_id_new).fadeIn (f_params.speed,function ()
 				{
-					$("#" + f_id_new + "phdiv").remove ();
-					djs_run (djs_var.swgDOM_replace_cache[f_id].onReplaced,djs_var.swgDOM_replace_cache[f_id],false);
-					delete (djs_var.swgDOM_replace_cache[f_id]);
+					jQuery("#" + f_id_new + "phdiv").remove ();
+					djs_run (f_params.onReplaced,f_params,false);
 				});
 			}
 		}
-		else if (djs_var.swgDOM_replace_cache[f_id].onReplaced != null)
-		{
-			djs_run (djs_var.swgDOM_replace_cache[f_id].onReplaced,djs_var.swgDOM_replace_cache[f_id],false);
-			delete (djs_var.swgDOM_replace_cache[f_id]);
-		}
+		else if (f_params.onReplaced != null) { djs_run (f_params.onReplaced,f_params,false); }
 	}
 	else { f_jquery_object.fadeIn ("fast"); }
 }
-<?php } ?>
 
 //j// EOF
