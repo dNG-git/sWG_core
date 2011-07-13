@@ -102,7 +102,7 @@ Test for data/settings/swg_build_targets.php and load the XML tree
 
 			if (is_array ($g_xml_node_array))
 			{
-				if (isset ($g_xml_node_array['swg_build_file_v1']['stage2']['xml.item']['attributes']['source']/*#ifndef(PHP4) */,/* #*//*#ifdef(PHP4):) && isset (:#*/$g_xml_node_array['swg_build_file_v1']['stage2']['xml.item']['attributes']['swgversion']))
+				if (isset ($g_xml_node_array['swg_build_file_v1']/*#ifndef(PHP4) */,/* #*//*#ifdef(PHP4):) && isset (:#*/$g_xml_node_array['swg_build_file_v1']['stage2']/*#ifndef(PHP4) */,/* #*//*#ifdef(PHP4):) && isset (:#*/$g_xml_node_array['swg_build_file_v1']['stage2']['xml.item']['attributes']['source']/*#ifndef(PHP4) */,/* #*//*#ifdef(PHP4):) && isset (:#*/$g_xml_node_array['swg_build_file_v1']['stage2']['xml.item']['attributes']['swgversion']))
 				{
 					$g_xml_node_array = $g_xml_node_array['swg_build_file_v1']['stage2'];
 

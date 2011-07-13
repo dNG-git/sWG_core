@@ -102,9 +102,9 @@ Test for data/settings/swg_build_targets.php and load the XML tree
 			if (is_array ($g_xml_node_array))
 			{
 				$g_module = (isset ($direct_settings['dsd']['tmodule']) ? (preg_replace ("#[\/\\\?:@\=\&\. \+]#i","",$direct_settings['dsd']['tmodule'])) : "");
-				if ($g_module) { $g_xml_node_array = $g_xml_node_array['swg_build_file_v1']['stage3'][$g_module]; }
+				if (($g_module)&&(isset ($g_xml_node_array['swg_build_file_v1']/*#ifndef(PHP4) */,/* #*//*#ifdef(PHP4):) && isset (:#*/$g_xml_node_array['swg_build_file_v1']['stage3']/*#ifndef(PHP4) */,/* #*//*#ifdef(PHP4):) && isset (:#*/$g_xml_node_array['swg_build_file_v1']['stage3'][$g_module]))) { $g_xml_node_array = $g_xml_node_array['swg_build_file_v1']['stage3'][$g_module]; }
 
-				if (isset ($g_xml_node_array['xml.item']['attributes']['source']/*#ifndef(PHP4) */,/* #*//*#ifdef(PHP4):) && isset (:#*/$g_xml_node_array['xml.item']['attributes']['swgversion']/*#ifndef(PHP4) */,/* #*//*#ifdef(PHP4):) && isset (:#*/$g_xml_node_array['xml.item']['attributes']['pdescriptor']/*#ifndef(PHP4) */,/* #*//*#ifdef(PHP4):) && isset (:#*/$g_xml_node_array['xml.item']['attributes']['pname']))
+				if (isset ($g_xml_node_array['xml.item']/*#ifndef(PHP4) */,/* #*//*#ifdef(PHP4):) && isset (:#*/$g_xml_node_array['xml.item']['attributes']['source']/*#ifndef(PHP4) */,/* #*//*#ifdef(PHP4):) && isset (:#*/$g_xml_node_array['xml.item']['attributes']['swgversion']/*#ifndef(PHP4) */,/* #*//*#ifdef(PHP4):) && isset (:#*/$g_xml_node_array['xml.item']['attributes']['pdescriptor']/*#ifndef(PHP4) */,/* #*//*#ifdef(PHP4):) && isset (:#*/$g_xml_node_array['xml.item']['attributes']['pname']))
 				{
 					$g_swg_version = $g_xml_node_array['xml.item']['attributes']['swgversion'];
 					$g_swg_iversion = $g_xml_node_array['xml.item']['attributes']['swgiversion'];
