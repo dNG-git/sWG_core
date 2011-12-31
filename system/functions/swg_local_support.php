@@ -54,7 +54,6 @@ if (!defined ("direct_product_iversion")) { exit (); }
 
 //j// Functions and classes
 
-//f// direct_local_get ($f_string_id,$f_handling = "html")
 /**
 * This function is used to provide a localised data.
 *
@@ -80,14 +79,13 @@ function direct_local_get ($f_string_id,$f_handling = "html")
 	{
 		if (isset ($direct_local[$f_string_id."_universal"])) { $f_return = $direct_local[$f_string_id."_universal"]; }
 		elseif (isset ($direct_local[$f_string_id."_text"])) { $f_return = $direct_local[$f_string_id."_text"]; }
-	
+
 		if ($f_handling == "text_quoted") { $f_return = str_replace ('"','\"',$f_return); }
 	}
 
 	return $f_return;
 }
 
-//f// direct_local_get_xml_translation ($f_xml_node_array,$f_tag,$f_extract_string = false,$f_extract_language = "")
 /**
 * Parses a XML node splitting its content into a "@global" English and
 * multiple additional language elements.
@@ -156,7 +154,6 @@ function direct_local_get_xml_translation (&$f_xml_node_array,$f_tag,$f_extract_
 	return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -direct_local_get_xml_translation ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 }
 
-//f// direct_local_integration ($f_module,$f_dlang = "en",$f_force = false,$f_lang_forced = NULL)
 /**
 * Integrate a translation module into the current program context.
 *

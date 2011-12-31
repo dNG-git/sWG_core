@@ -57,7 +57,6 @@ if (!defined ("direct_product_iversion")) { exit (); }
 
 if (!@function_exists ("array_map"))
 {
-	//f// array_map ()
 /**
 	* "array_map ()" has been added (the first time) to PHP 4.0.6.
 	*
@@ -90,7 +89,6 @@ if (!@function_exists ("array_map"))
 
 if (!@function_exists ("call_user_func"))
 {
-	//f// call_user_func ()
 /**
 	* "call_user_func ()" is not available on Quercus (Resin 3.0.21). WARNING!
 	* This function might be a security risk for your system.
@@ -146,7 +144,6 @@ if (!@function_exists ("call_user_func"))
 :#*/
 if (!@function_exists ("mb_convert_encoding"))
 {
-	//f// mb_convert_encoding ($f_data,$f_to,$f_from = NULL)
 /**
 	* "mb_convert_encoding ()" is an optional function to handle multibyte
 	* strings. This implementation does only call "utf8_encode ()" and
@@ -176,7 +173,6 @@ if (!@function_exists ("mb_convert_encoding"))
 
 if (!@function_exists ("mb_internal_encoding"))
 {
-	//f// mb_internal_encoding ($f_encoding = "")
 /**
 	* "mb_internal_encoding ()" is an optional function to handle multibyte
 	* strings. This implementation is NOT compatible with multibyte strings and
@@ -197,7 +193,6 @@ if (!@function_exists ("mb_internal_encoding"))
 
 if (!@function_exists ("mb_send_mail"))
 {
-	//f// mb_send_mail ($f_recipients,$f_subject,$f_email_content,$f_email_headers = NULL,$f_email_parameters = NULL)
 /**
 	* "mb_send_mail ()" is an optional function to handle multibyte strings. This
 	* implementation is NOT compatible with multibyte strings and things will
@@ -222,7 +217,6 @@ if (!@function_exists ("mb_send_mail"))
 
 if (!@function_exists ("mb_strlen"))
 {
-	//f// mb_strlen ($f_data,$f_encoding = "")
 /**
 	* "mb_strlen ()" is an optional function to handle multibyte strings. This
 	* implementation is NOT compatible with multibyte strings and things will
@@ -242,7 +236,6 @@ if (!@function_exists ("mb_strlen"))
 
 if (!@function_exists ("mb_strpos"))
 {
-	//f// mb_strpos ($f_data,$f_search_value,$f_offset = NULL,$f_encoding = "")
 /**
 	* "mb_strpos ()" is an optional function to handle multibyte strings. This
 	* implementation is NOT compatible with multibyte strings and things will
@@ -265,7 +258,6 @@ if (!@function_exists ("mb_strpos"))
 
 if (!@function_exists ("mb_substr"))
 {
-	//f// mb_substr ($f_data,$f_offset,$f_length = NULL,$f_encoding = "")
 /**
 	* "mb_substr ()" is an optional function to handle multibyte strings. This
 	* implementation is NOT compatible with multibyte strings and things will
@@ -290,7 +282,6 @@ if (!@function_exists ("mb_substr"))
 
 if (!@function_exists ("md5_file"))
 {
-	//f// md5_file ($f_fileaddr)
 /**
 	* "md5_file ()" has been added (the first time) to PHP 4.2.0. The optional
 	* parameter for "raw" output (available since PHP 5.0.0) is not supported.
@@ -315,7 +306,6 @@ if (!@function_exists ("md5_file"))
 :#*/
 if (!@function_exists ("property_exists"))
 {
-	//f// property_exists ($f_class,$f_property)
 /**
 	* "property_exists ()" has been added (the first time) to PHP 5.1.0.
 	*
@@ -345,7 +335,6 @@ property_exists  ( mixed $class  , string $property  )
 
 if (!@function_exists ("scandir"))
 {
-	//f// scandir ($f_dir,$f_sorting_reverse = 0)
 /**
 	* "scandir ()" has been added (the first time) to PHP 5.0.0. The optional
 	* parameter to define a context stream is not supported.
@@ -385,7 +374,6 @@ if (!@function_exists ("scandir"))
 
 if (!@function_exists ("mysql_real_escape_string"))
 {
-	//f// mysql_real_escape_string ($f_data,$f_rp = "unused")
 /**
 	* "mysql_real_escape_string ()" has been added (the first time) to PHP 4.3.0
 	*
@@ -404,7 +392,6 @@ if (!@function_exists ("mysql_real_escape_string"))
 
 if (!@function_exists ("stream_set_blocking"))
 {
-	//f// stream_set_blocking ($f_rp,$f_mode)
 /**
 	* "stream_set_blocking ()" has been added (the first time) to PHP 4.3.0
 	* It's former name was "socket_set_blocking ()". This function is not
@@ -429,7 +416,6 @@ if (!@function_exists ("stream_set_blocking"))
 
 if (!@function_exists ("stream_set_timeout"))
 {
-	//f// stream_set_timeout ($f_rp,$f_sec,$f_msec = 0)
 /**
 	* "stream_set_timeout ()" has been added (the first time) to PHP 4.3.0
 	* It's former name was "socket_set_timeout ()". This function is not

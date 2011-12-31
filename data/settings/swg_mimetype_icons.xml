@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<swg_mimetype_icons_file_v1 xmlns="urn:de.direct-netware.xmlns:swg.mimetype_icons.v1">
+<swg_mimetype_icons_file_v1 xmlns="urn:de-direct-netware-xmlns:swg.mimetype_icons.v1">
 
 <icon mimetype='application/java-archive' image='mimetype_archive.png' />
 <icon mimetype='application/pdf' image='mimetype_document.png' />

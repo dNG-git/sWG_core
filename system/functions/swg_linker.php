@@ -53,7 +53,6 @@ if (!defined ("direct_product_iversion")) { exit (); }
 
 //j// Functions and classes
 
-//f// direct_linker ($f_type,$f_data,$f_html_encode = true,$f_withuuid = true)
 /**
 * Using "direct_linker ()" will allow you to link local sWG pages easier. You
 * may use internal links "swg.php?...", external links
@@ -260,7 +259,7 @@ it if required
 
 		$f_return = direct_html_encode_special ($f_return);
 	}
-	else { $f_return = ($direct_settings['swg_shadow_url'] ? direct_linker_shadow ($f_type,$f_data,$f_withuuid) : direct_linker_dynamic ($f_type,$f_data,$f_html_encode,$f_withuuid)); }
+	else { $f_return = (($direct_settings['ihandler'] == "shadow") ? direct_linker_shadow ($f_type,$f_data,$f_withuuid) : direct_linker_dynamic ($f_type,$f_data,$f_html_encode,$f_withuuid)); }
 /* -------------------------------------------------------------------------
 There are two possibilities for creating normal links - shadowing them or
 not. If shadowed, they may be look like http://localhost/swg_base64data.htm
@@ -269,7 +268,6 @@ not. If shadowed, they may be look like http://localhost/swg_base64data.htm
 	return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -direct_linker ()- (#echo(__LINE__)#)",(:#*/str_replace ($f_html_filter,"",$f_return)/*#ifdef(DEBUG):),true):#*/;
 }
 
-//f// direct_linker_dynamic ($f_type,$f_data,$f_html_encode = true,$f_withuuid = true)
 /**
 * Most URLs have to contain dynamic data like "theme", "lang" and "uuid". They
 * will be added automatically through this function. It will be used, if a
@@ -344,7 +342,6 @@ of & seperators
 	return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -direct_linker_dynamic ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 }
 
-//f// direct_linker_shadow ($f_type,$f_data,$f_withuuid = true)
 /**
 * Most URLs have to contain dynamic data like "theme", "lang" and "uuid". They
 * will be added automatically through this function. Furthermore
@@ -361,7 +358,7 @@ of & seperators
 * @return string Ready to use URL
 * @since  v0.1.02
 */
-function direct_linker_shadow ($f_type,$f_data,$f_withuuid = true)
+function direct_linker_shadow ($f_type,$f_data,$f_withuuid = true,$f_lang = true,$f_theme = true)
 {
 	global $direct_globals,$direct_settings;
 	if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_linker_shadow ($f_type,$f_data,+f_withuuid)- (#echo(__LINE__)#)"); }
@@ -378,13 +375,13 @@ function direct_linker_shadow ($f_type,$f_data,$f_withuuid = true)
 		}
 	}
 
-	if (/*#ifndef(PHP4) */stripos/* #*//*#ifdef(PHP4):stristr:#*/($f_data,"lang=") === false)
+	if (($f_lang)&&(/*#ifndef(PHP4) */stripos/* #*//*#ifdef(PHP4):stristr:#*/($f_data,"lang=") === false))
 	{
 		if ($f_data) { $f_data .= ";"; }
 		$f_data .= "lang=".$direct_settings['lang'];
 	}
 
-	if (/*#ifndef(PHP4) */stripos/* #*//*#ifdef(PHP4):stristr:#*/($f_data,"theme=") === false)
+	if (($f_theme)&&(/*#ifndef(PHP4) */stripos/* #*//*#ifdef(PHP4):stristr:#*/($f_data,"theme=") === false))
 	{
 		if ($f_data) { $f_data .= ";"; }
 		$f_data .= "theme=".$direct_settings['theme'];
@@ -408,7 +405,7 @@ function direct_linker_shadow ($f_type,$f_data,$f_withuuid = true)
 		foreach ($f_variables_array as $f_variable)
 		{
 			$f_variable_array = explode ("=",$f_variable,2);
-			if (!empty ($f_variable_array)) { $f_return .= "/{$f_variable_array[0]}-".(urlencode ($f_variable_array[1])); }
+			if (!empty ($f_variable_array)) { $f_return .= "/{$f_variable_array[0]}-".$f_variable_array[1]; }
 		}
 	}
 

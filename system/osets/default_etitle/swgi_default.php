@@ -44,7 +44,6 @@ all development packets)
 
 //j// Functions and classes
 
-//f// direct_default_oset_done_job_entries_parse ($f_job_entries)
 /**
 * direct_datacenter_oset_object_parse ()
 *
@@ -83,7 +82,7 @@ function direct_default_oset_done_job_entries_parse ($f_job_entries)
 					if (isset ($f_entry_array['status']))
 					{
 						if ($f_entries) { $f_entries .= "<br />\n"; }
-						$f_entries .= "<span style='font-weight:bold'><img src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_themes]/$direct_settings[theme]/status_icon_{$f_entry_array['status']}.png",true,false))."' border='0' alt='".(direct_local_get ("core_done_status_".$f_entry_array['status']))."' title='".(direct_local_get ("core_done_status_".$f_entry_array['status']))."' style='vertical-align:middle' /> ".(direct_local_get ("core_done_status_".$f_entry_array['status']));
+						$f_entries .= "<span style='font-weight:bold'><img src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_themes]/$direct_settings[theme]/status_icon_{$f_entry_array['status']}.png",true,false))."' alt='".(direct_local_get ("core_done_status_".$f_entry_array['status']))."' title='".(direct_local_get ("core_done_status_".$f_entry_array['status']))."' style='vertical-align:middle' /> ".(direct_local_get ("core_done_status_".$f_entry_array['status']));
 						$f_entries .= (isset ($f_entry_array['identifier']) ? ":</span> {$f_entry_array['identifier']}" : "</span>");
 						if (isset ($f_entry_array['details'])) { $f_entries .= " <span style='font-size:10px'>({$f_entry_array['details']})</span>"; }
 					}
@@ -100,7 +99,7 @@ function direct_default_oset_done_job_entries_parse ($f_job_entries)
 				{
 					if (isset ($f_entry_array['status']))
 					{
-						$f_return .= "<p class='pageborder2{$direct_settings['theme_css_corners']} pageextracontent'><span style='font-weight:bold'><img src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_themes]/$direct_settings[theme]/status_icon_{$f_entry_array['status']}.png",true,false))."' border='0' alt='".(direct_local_get ("core_done_status_".$f_entry_array['status']))."' title='".(direct_local_get ("core_done_status_".$f_entry_array['status']))."' style='vertical-align:middle' /> ".(direct_local_get ("core_done_status_".$f_entry_array['status']));
+						$f_return .= "<p class='pageborder2{$direct_settings['theme_css_corners']} pageextracontent'><span style='font-weight:bold'><img src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_themes]/$direct_settings[theme]/status_icon_{$f_entry_array['status']}.png",true,false))."' alt='".(direct_local_get ("core_done_status_".$f_entry_array['status']))."' title='".(direct_local_get ("core_done_status_".$f_entry_array['status']))."' style='vertical-align:middle' /> ".(direct_local_get ("core_done_status_".$f_entry_array['status']));
 						$f_return .= (isset ($f_entry_array['identifier']) ? ":</span> {$f_entry_array['identifier']}" : "</span>");
 						if (isset ($f_entry_array['name'])) { $f_return .= " <span style='font-weight:bold'>({$f_entry_array['name']})</span></p>"; }
 						if (isset ($f_entry_array['details'])) { $f_return .= " <span style='font-size:10px'>({$f_entry_array['details']})</span>"; }

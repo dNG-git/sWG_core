@@ -55,7 +55,6 @@ if (($g_continue_check)&&(!defined ("CLASS_direct_xml_reader"))) { $g_continue_c
 
 if ($g_continue_check)
 {
-//c// direct_xml_bridge
 /**
 * This class provides a bridge between the sWG and XML to read XML on the fly.
 *
@@ -74,7 +73,6 @@ class direct_xml_bridge extends direct_xml_reader
 Extend the class using old and new behavior
 ------------------------------------------------------------------------- */
 
-	//f// direct_xml_bridge->__construct () and direct_xml_bridge->direct_xml_bridge ()
 /**
 	* Constructor (PHP5) __construct (direct_xml_bridge)
 	*

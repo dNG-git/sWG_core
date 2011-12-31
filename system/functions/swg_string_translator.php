@@ -53,30 +53,30 @@ if (!defined ("direct_product_iversion")) { exit (); }
 
 //j// Functions and classes
 
-//f// direct_string_translation ($f_module,$f_string)
 /**
 * Translates a given string into the user language or default one if possible.
 *
 * @param  string $f_module Module for available translation data
 * @param  string $f_string String to translate
+* @param  boolean $f_string_is_en True if given string is the English translation
 * @uses   direct_debug()
 * @uses   direct_string_id_translation()
 * @uses   USE_debug_reporting
 * @return string Translated or original string
 * @since  v0.1.01
 */
-function direct_string_translation ($f_module,$f_string)
+function direct_string_translation ($f_module,$f_string,$f_string_is_en = true,$f_lang = NULL)
 {
 	global $direct_settings;
-	if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_string_translation ($f_module,+f_string)- (#echo(__LINE__)#)"); }
+	if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_string_translation ($f_module,+f_string,+f_string_is_en,+f_lang)- (#echo(__LINE__)#)"); }
 
-	$f_return = (($direct_settings['lang'] == "en") ? $f_string : direct_string_id_translation ($f_module,(md5 ($f_string))));
+	if (!isset ($f_lang)) { $f_lang = $direct_settings['lang']; }
+	$f_return = ((($f_string_is_en)&&($f_lang == "en")) ? $f_string : direct_string_id_translation ($f_module,(md5 ($f_string)),$f_lang));
 	if (!$f_return) { $f_return = $f_string; }
 
 	return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -direct_string_translation ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 }
 
-//f// direct_string_id_translation ($f_module,$f_tid)
 /**
 * Returns a translation in the user or default language for the given ID.
 *
@@ -89,10 +89,10 @@ function direct_string_translation ($f_module,$f_string)
 * @return mixed Translated string or false if it is not translatable
 * @since  v0.1.03
 */
-function direct_string_id_translation ($f_module,$f_tid)
+function direct_string_id_translation ($f_module,$f_tid,$f_lang = NULL)
 {
 	global $direct_cachedata,$direct_globals,$direct_settings;
-	if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_string_id_translation ($f_module,+f_tid)- (#echo(__LINE__)#)"); }
+	if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_string_id_translation ($f_module,+f_tid,+f_lang)- (#echo(__LINE__)#)"); }
 
 	if (!isset ($direct_cachedata['core_string_translator_files']))
 	{
@@ -100,6 +100,7 @@ function direct_string_id_translation ($f_module,$f_tid)
 		$direct_cachedata['core_string_translator_files'] = array ();
 	}
 
+	if (!isset ($f_lang)) { $f_lang = $direct_settings['lang']; }
 	$f_module = preg_replace ("#[;\/\\\?:@\=\&\. \+]#i","",$f_module);
 	$f_return = false;
 
@@ -126,7 +127,7 @@ function direct_string_id_translation ($f_module,$f_tid)
 			{
 				if ((isset ($f_xml_node_array[1]['attributes']['tid']))&&($f_xml_node_array[1]['attributes']['tid'] == $f_tid))
 				{
-					if (strpos ($f_xml_node_array[0],"swg_lang_file_v1_{$direct_settings['lang']}_") !== false) { $f_lang_result = $f_xml_node_array[1]['attributes']['translation']; }
+					if (strpos ($f_xml_node_array[0],"swg_lang_file_v1_{$f_lang}_") !== false) { $f_lang_result = $f_xml_node_array[1]['attributes']['translation']; }
 					if (strpos ($f_xml_node_array[0],"swg_lang_file_v1_{$direct_settings['swg_lang']}_") !== false) { $f_result_swg_lang = $f_xml_node_array[1]['attributes']['translation']; }
 				}
 			}
@@ -136,7 +137,7 @@ function direct_string_id_translation ($f_module,$f_tid)
 				{
 					if ((isset ($f_xml_sub_node_array['attributes']['tid']))&&($f_xml_sub_node_array['attributes']['tid'] == $f_tid))
 					{
-						if (strpos ($f_xml_node_array[0],"swg_lang_file_v1_{$direct_settings['lang']}_") !== false) { $f_lang_result = $f_xml_sub_node_array['attributes']['translation']; }
+						if (strpos ($f_xml_node_array[0],"swg_lang_file_v1_{$f_lang}_") !== false) { $f_lang_result = $f_xml_sub_node_array['attributes']['translation']; }
 						if (strpos ($f_xml_node_array[0],"swg_lang_file_v1_{$direct_settings['swg_lang']}_") !== false) { $f_result_swg_lang = $f_xml_sub_node_array['attributes']['translation']; }
 					}
 				}

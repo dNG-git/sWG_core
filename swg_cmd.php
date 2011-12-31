@@ -224,7 +224,6 @@ $direct_settings['timeout_lightmode'] = 3600;
 
 if (file_exists ($direct_settings['path_system']."/functions/swg_phpback.php")) { include_once ($direct_settings['path_system']."/functions/swg_phpback.php"); }
 
-//c// direct_virtual_class
 /**
 * This is the root for all other classes and provides our "Virtual Binding"
 * functionality.
@@ -248,7 +247,6 @@ class direct_virtual_class
 Construct the class using old and new behavior
 ------------------------------------------------------------------------- */
 
-	//f// direct_virtual_class->__construct () and direct_virtual_class->direct_virtual_class ()
 /**
 	* Constructor (PHP5) __construct (direct_virtual_class)
 	*
@@ -283,7 +281,6 @@ Informing the system about available functions
 *\/
 	function direct_virtual_class () { $this->__construct (); }
 :#\n*/
-	//f// direct_virtual_class->__destruct ()
 /**
 	* Destructor (PHP5) __destruct (direct_virtual_class)
 	*
@@ -299,10 +296,8 @@ This clone function is not defined because we are happy with PHP's default
 behavior
 ------------------------------------------------------------------------- */
 
-	//f// direct_virtual_class->__clone ()
 	// Run PHP-internal function __clone () { ... }
 
-	//f// direct_virtual_class->debug ($f_exit = false,$f_data = "")
 /**
 	* This operation prints $this->dvar to the browser (and exists) or to
 	* $direct_cachedata['core_debug'].
@@ -334,7 +329,6 @@ $direct_cachedata['output_warning'][] = array ("title" => direct_html_encode_spe
 		}
 	}
 
-	//f// direct_virtual_class->debug_walker ($f_data)
 /**
 	* Recursively read, convert and return given input data.
 	*
@@ -362,7 +356,6 @@ $direct_cachedata['output_warning'][] = array ("title" => direct_html_encode_spe
 		return /*#ifdef(DEBUG):direct_debug (9,"sWG/#echo(__FILEPATH__)# -virtual_class->debug_walker ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_virtual_class->v_call ()
 /**
 	* The sWG provides a method called "Virtual Binding" to add non class methods
 	* or functions virtually to the object. This method is used to call these
@@ -399,7 +392,6 @@ $direct_cachedata['output_warning'][] = array ("title" => direct_html_encode_spe
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -virtual_class->v_call ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_virtual_class->v_call_check ($f_function,$f_virtual_type = false)
 /**
 	* Check if a method exists.
 	*
@@ -429,7 +421,6 @@ $direct_cachedata['output_warning'][] = array ("title" => direct_html_encode_spe
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -virtual_class->v_call_check ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_virtual_class->v_call_get ($f_function)
 /**
 	* Returns the callable array or false if it is either a invalid function name
 	* or not allowed to be a "Virtual Binding".
@@ -447,7 +438,6 @@ $direct_cachedata['output_warning'][] = array ("title" => direct_html_encode_spe
 		return ($this->v_call_check ($f_function,true) ? $this->functions[$f_function] : false);
 	}
 
-	//f// direct_virtual_class->v_call_rref ()
 /**
 	* This method is similar to v_call but will return a reference to the
 	* resulting object.
@@ -489,7 +479,6 @@ $direct_cachedata['output_warning'][] = array ("title" => direct_html_encode_spe
 		return $f_return;
 	}
 
-	//f// direct_virtual_class->v_call_set ($f_function_virtual,&$f_object,$f_function)
 /**
 	* Sets and overwrites a "Virtual Binding".
 	*
@@ -526,7 +515,6 @@ Define this class
 
 define ("CLASS_direct_virtual_class",true);
 
-//c// direct_basic_functions_inline
 /**
 * The following class is our namespace for basic (inline) functions.
 *
@@ -545,7 +533,6 @@ class direct_basic_functions_inline extends direct_virtual_class
 Extend the class using old and new behavior
 ------------------------------------------------------------------------- */
 
-//f// direct_basic_functions_inline->__construct () and direct_basic_functions_inline->direct_basic_functions_inline ()
 /**
 	* Constructor (PHP5) __construct (direct_basic_functions_inline)
 	*
@@ -578,7 +565,6 @@ Informing the system about available functions
 *\/
 	function direct_basic_functions_inline () { $this->__construct (); }
 :#\n*/
-	//f// direct_basic_functions_inline->iline_parse ($f_iline = NULL)
 /**
 	* We are trying to catch all errors - even semi-fatal ones. For that reason
 	* we provide the emergency mode function that does not require an active theme
@@ -632,7 +618,6 @@ Mark this class as the most up-to-date one
 $direct_globals['@names']['basic_functions'] = "direct_basic_functions_inline";
 define ("CLASS_direct_basic_functions_inline",true);
 
-//c// direct_output_inline
 /**
 * The following class is the basic (inline) output system, giving everybody
 * functions for headers and the internal sWG page theme.
@@ -648,6 +633,10 @@ define ("CLASS_direct_basic_functions_inline",true);
 */
 class direct_output_inline extends direct_virtual_class
 {
+/**
+	* @var integer $last_modified Variable to save the oset data
+*/
+	/*#ifndef(PHP4) */public/* #*//*#ifdef(PHP4):var:#*/ $last_modified;
 /**
 	* @var string $output_content Variable containing the content
 */
@@ -673,7 +662,6 @@ class direct_output_inline extends direct_virtual_class
 Extend the class using old and new behavior
 ------------------------------------------------------------------------- */
 
-	//f// direct_output_inline->__construct () and direct_output_inline->direct_output_inline ()
 /**
 	* Constructor (PHP5) __construct (direct_output_inline)
 	*
@@ -722,7 +710,6 @@ Set "last modified" time to "0".
 *\/
 	function direct_output_inline () { $this->__construct (); }
 :#*/
-	//f// direct_output_inline->header ($f_cacheing = false,$f_withgzip = true,$f_p3purl = "",$f_p3pcp = "")
 /**
 	* Important headers will be created here. This includes caching, cookies, the
 	* compression setting and information about P3P.
@@ -751,7 +738,7 @@ Set "last modified" time to "0".
 		else
 		{
 			$f_headers = array ("Cache-Control" => "no-cache, must-revalidate","Pragma" => "no-cache");
-			$f_expires = gmdate ("D, d M Y H:i:s",($direct_cachedata['core_time'] - 2419200));
+			$f_expires = gmdate ("D, d M Y H:i:s",$direct_cachedata['core_time']);
 			if (!$this->last_modified) { $f_last_modified = gmdate ("D, d M Y H:i:s",$direct_cachedata['core_time']); }
 		}
 
@@ -768,7 +755,6 @@ Set "last modified" time to "0".
 		$this->output_headers = array_merge ($this->output_headers,$f_headers);
 	}
 
-	//f// direct_output_inline->last_modified ($f_timestamp)
 /**
 	* Set's a custom "last modified" header entry for the upcoming output.
 	*
@@ -783,23 +769,34 @@ Set "last modified" time to "0".
 		$this->last_modified = $f_timestamp;
 	}
 
-	//f// direct_output_inline->output_header ($f_name = "",$f_value = NULL,$f_name_as_key = false)
 /**
 	* Returns or sets a header.
 	*
 	* @param string $f_name Header name
 	* @param mixed $f_value Header value as string or array
 	* @param boolean $f_name_as_key True if the name is used as a key
+	* @param boolean $f_value_append True if headers should be appended
 	* @uses  USE_debug_reporting
 	* @since v0.1.08
 */
-	/*#ifndef(PHP4) */public /* #*/function output_header ($f_name = "",$f_value = NULL,$f_name_as_key = false)
+	/*#ifndef(PHP4) */public /* #*/function output_header ($f_name = "",$f_value = NULL,$f_name_as_key = false,$f_value_append = false)
 	{
+		$f_return = NULL;
+
 		if (isset ($f_value))
 		{
 			if ($f_name_as_key)
 			{
-				if (isset ($this->output_headers_indexed[$f_name])) { $this->output_headers[$this->output_headers_indexed[$f_name]] = $f_value; }
+				if (isset ($this->output_headers_indexed[$f_name]))
+				{
+					if ($f_value_append)
+					{
+						if (is_array ($this->output_headers[$this->output_headers_indexed[$f_name]])) { $f_value = array_merge ($this->output_headers[$this->output_headers_indexed[$f_name]],(array ($f_value))); }
+						else { $f_value = array ($this->output_headers[$this->output_headers_indexed[$f_name]],$f_value); }
+					}
+
+					$this->output_headers[$this->output_headers_indexed[$f_name]] = $f_value;
+				}
 				else
 				{
 					$this->output_headers[$this->output_headers_index] = $f_value;
@@ -808,14 +805,19 @@ Set "last modified" time to "0".
 				}
 			}
 			elseif (is_array ($f_value)) { $this->output_headers[$f_name] = ((count ($f_value) > 1) ? $f_value : array_pop ($f_value)); }
+			elseif (($f_value_append)&&(isset ($this->output_headers[$f_name])))
+			{
+				if (is_array ($this->output_headers[$f_name])) { $f_value = array_merge ($this->output_headers[$f_name],(array ($f_value))); }
+				else { $f_value = array ($this->output_headers[$f_name],$f_value); }
+			}
 			else { $this->output_headers[$f_name] = $f_value; }
 		}
-		elseif (isset ($this->output_headers[$f_name])) { return $this->output_headers[$f_name]; }
-		elseif (($f_name_as_key)&&(isset ($this->output_headers_indexed[$f_name]))) { return $this->output_headers[$this->output_headers_indexed[$f_name]]; }
-		else { return NULL; }
+		elseif (isset ($this->output_headers[$f_name])) { $f_return = $this->output_headers[$f_name]; }
+		elseif (($f_name_as_key)&&(isset ($this->output_headers_indexed[$f_name]))) { $f_return = $this->output_headers[$this->output_headers_indexed[$f_name]]; }
+
+		return $f_return;
 	}
 
-	//f// direct_output_inline->output_response ($f_title = "",$f_headers = NULL)
 /**
 	* This function will actually send the prepared content and debug information
 	* to user.
@@ -836,7 +838,7 @@ Set "last modified" time to "0".
 		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -output_class(inline)->output_response (+f_title,+f_headers)- (#echo(__LINE__)#)"); }
 
 		if ((!isset ($direct_local['lang_charset']))||(!$direct_local['lang_charset'])) { $direct_local['lang_charset'] = "UTF-8"; }
-		echo "<?xml version='1.0' encoding='$direct_local[lang_charset]' ?><swg xmlns='urn:de.direct-netware.xmlns:swg.v1'>";
+		echo "<?xml version='1.0' encoding='$direct_local[lang_charset]' ?><swg xmlns='urn:de-direct-netware-xmlns:swg.v1'>";
 
 		if (is_array ($direct_settings['dsd']))
 		{
@@ -914,7 +916,7 @@ Set "last modified" time to "0".
 				echo "</debug>";
 			}
 
-			if (function_exists ($this->output_data)) { $this->output_data (); }
+			if ((isset ($this->output_data))&&(function_exists ($this->output_data))) { $this->output_data (); }
 			$this->output_response_headers ();
 
 			$this->output_content = "<data><![CDATA[".(str_replace ("]]>","]]]]><![CDATA[>",$this->output_content))."]]></data>";
@@ -963,7 +965,6 @@ $direct_settings[product_lcode_txt]
 		echo "</swg>";
 	}
 
-	//f// direct_output_inline->output_response_data (&$f_data)
 /**
 	* Send the content of a page.
 	*
@@ -972,7 +973,6 @@ $direct_settings[product_lcode_txt]
 */
 	/*#ifndef(PHP4) */protected /* #*/function output_response_data (&$f_data) { echo $f_data; }
 
-	//f// direct_output_inline->output_response_headers ()
 /**
 	* This function will actually send the prepared headers to user.
 	*
@@ -1008,7 +1008,6 @@ $direct_settings[product_lcode_txt]
 		echo "</headers>";
 	}
 
-	//f// direct_output_inline->output_send ($f_title = "",$f_headers = NULL)
 /**
 	* This function is used for later multi-level delivery. Only the final
 	* node actually sends data to the requesting client.
@@ -1020,7 +1019,6 @@ $direct_settings[product_lcode_txt]
 */
 	/*#ifndef(PHP4) */public /* #*/function output_send ($f_title = "",$f_headers = NULL) { $this->output_response ($f_title,$f_headers); }
 
-	//f// direct_output_inline->output_send_error ($f_type,$f_error,$f_extra_data = "",$f_error_position = "")
 /**
 	* We are trying to catch all errors - even semi-fatal ones. For that reason
 	* we provide the emergency mode function that does not require an active theme
@@ -1034,6 +1032,7 @@ $direct_settings[product_lcode_txt]
 	* @param string $f_error_position Position where the error occurred
 	* @uses  direct_class_init()
 	* @uses  direct_debug()
+	* @uses  direct_output_inline::header()
 	* @uses  direct_output_inline::output_send()
 	* @uses  USE_debug_reporting
 	* @since v0.1.01
@@ -1084,7 +1083,6 @@ $f_error</p>$f_extra_data
 :#\n*/
 	}
 
-	//f// direct_output_inline->theme_page ($f_title)
 /**
 	* Prepare an output for a XHTML encoded page with the standard sWG design.
 	*
@@ -1102,7 +1100,7 @@ $f_error</p>$f_extra_data
 		$direct_settings['theme_xhtml_type'] = "application/xhtml+xml; charset=".$direct_local['lang_charset'];
 
 		$direct_globals['output']->output_header ("Content-Type",$direct_settings['theme_xhtml_type']);
-                $this->output_data = $direct_globals['output']->output_content;
+		$this->output_data = $direct_globals['output']->output_content;
 	}
 }
 
@@ -1114,7 +1112,6 @@ $direct_globals['@names']['output'] = "direct_output_inline";
 $direct_globals['@names']['output_theme'] = "direct_output_inline";
 define ("CLASS_direct_output_inline",true);
 
-//f// __autoload ($f_class)
 /**
 * PHP's "__autoload ()"-function will be used to load additional, missing
 * classes if they are matching our default name convention.
@@ -1157,7 +1154,6 @@ Search for the requested class ...
 	}
 }
 
-//f// direct_class_function_check (&$f_class,$f_function)
 /**
 * Check for a specific function of a specific class.
 *
@@ -1177,7 +1173,6 @@ function direct_class_function_check (&$f_class,$f_function)
 	else { return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -direct_class_function_check ()- (#echo(__LINE__)#)",:#*/false/*#ifdef(DEBUG):,true):#*/; }
 }
 
-//f// direct_class_init ($f_class,$f_force_reinit = false)
 /**
 * Initiate a specified class.
 *
@@ -1213,7 +1208,6 @@ function direct_class_init ($f_class,$f_force_reinit = false)
 	return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -direct_class_init ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 }
 
-//f// direct_debug ($f_debuglevel,$f_description,$f_value = "",$f_value_parsing = false)
 /**
 * Handles debug information on various levels.
 *
@@ -1250,7 +1244,6 @@ function direct_debug ($f_debuglevel,$f_description,$f_value = "",$f_value_parsi
 	return $f_value;
 }
 
-//f// direct_debug_value ($f_value)
 /**
 * Creates a string for all known value types.
 *
@@ -1316,7 +1309,6 @@ function direct_debug_value ($f_value)
 	return $f_return;
 }
 
-//f// direct_html_encode_special ($f_data)
 /**
 * Runs htmlspecialchars with or without a specified system charset.
 *
@@ -1332,16 +1324,15 @@ function direct_html_encode_special ($f_data)
 {
 	global $direct_local,$direct_settings;
 
-	if ($direct_settings['swg_force_local_handling'] != "text")/*#ifndef(PHP4) */
+	if ((!isset ($direct_settings['swg_force_local_handling']))||($direct_settings['swg_force_local_handling'] != "text"))/*#ifndef(PHP4) */
 	{
-		if (USE_charset_html_filtering) { return htmlspecialchars ($f_data,ENT_COMPAT,$direct_local['lang_charset']); }
+		if ((USE_charset_html_filtering)&&(isset ($direct_local['lang_charset']))) { return htmlspecialchars ($f_data,ENT_COMPAT,$direct_local['lang_charset']); }
 		elseif (USE_html_charset) { return htmlspecialchars ($f_data,ENT_COMPAT,USE_html_charset); }
 		else /* #*/ { return htmlspecialchars ($f_data); }
 /*#ifndef(PHP4) */
 	} /* #\n*/
 }
 
-///f// direct_outputenc_xhtml_cleanup (&$f_data,$f_content_type)
 /**
 * If the theme is not compatible with XHTML, we need to convert the
 * <script>-content of sWG provided JavaScript functions.
@@ -1476,8 +1467,8 @@ Create instances of required classes
 /*#ifndef(PHP4) */
 	if (empty ($g_service_error))
 	{
-		if (isset ($g_error)) { $g_error = array ("core_unknown_error","FATAL ERROR:<br />Unknown exception catched: ".$g_error,"The WebGine has catched an unknown error.<br /><br />Unknown exception catched:".$g_error,"sWG/#echo(__FILEPATH__)# _main_ (#echo(__LINE__)#)"); }
-		else { $g_error = array ("core_unsupported_command","FATAL ERROR: Request terminated","The WebGine has been accessed using an unknown command.<br /><br />Request terminated<br /><br />sWG/#echo(__FILEPATH__)# _main_ (#echo(__LINE__)#)"); }
+		if (isset ($g_error)) { $g_error = array ("core_unknown_error","FATAL ERROR:<br />Unknown exception catched: ".$g_error,"The WebGine has catched an unknown error.<br /><br />Unknown exception catched: ".$g_error,"sWG/#echo(__FILEPATH__)# _main_ (#echo(__LINE__)#)"); }
+		else { $g_error = array ("core_unsupported_command","FATAL ERROR: Request terminated","The WebGine has been accessed using an unknown command.<br /><br />Request terminated","sWG/#echo(__FILEPATH__)# _main_ (#echo(__LINE__)#)"); }
 	}
 	else { $g_error = $g_service_error; }
 

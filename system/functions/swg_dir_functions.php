@@ -54,7 +54,6 @@ if (!defined ("direct_product_iversion")) { exit (); }
 
 //j// Functions and classes
 
-//f// direct_dir_create ($f_dir_path,$f_recursive = true,$f_timeout = -1)
 /**
 * Creates a directory (or returns the status of direct_dir_is_writable if it
 * exists). Use slashes - even on Microsoft(R) Windows(R) machines.
@@ -123,7 +122,6 @@ $direct_cachedata['core_dir_functions_data'][$f_dir_id] = array (
 	return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -direct_dir_create ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 }
 
-//f// direct_dir_exists ($f_dir_path)
 /**
 * Check if a directory exist and is readable for the current PHP process.
 *
@@ -182,7 +180,6 @@ function direct_dir_exists ($f_dir_path)
 	return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -direct_dir_exists ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 }
 
-//f// direct_dir_is_readable ($f_dir_path)
 /**
 * Check if a directory is readable for the current PHP process.
 *
@@ -205,7 +202,6 @@ function direct_dir_is_readable ($f_dir_path)
 	return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -direct_dir_is_readable ()- (#echo(__LINE__)#)",:#*/$direct_cachedata['core_dir_functions_data'][$f_dir_id]['readable']/*#ifdef(DEBUG):,true):#*/;
 }
 
-//f// direct_dir_is_writable ($f_dir_path)
 /**
 * Check if a directory is writable for the current PHP process.
 *
@@ -230,7 +226,6 @@ function direct_dir_is_writable ($f_dir_path)
 	return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -direct_dir_is_writable ()- (#echo(__LINE__)#)",:#*/$direct_cachedata['core_dir_functions_data'][$f_dir_id]['writable']/*#ifdef(DEBUG):,true):#*/;
 }
 
-//f// direct_dir_remove ($f_dir_path,$f_recursive = true,$f_timeout = -1)
 /**
 * Removes a directory optionally including all subfolders and -files. Use
 * slashes - even on Microsoft(R) Windows(R) machines.

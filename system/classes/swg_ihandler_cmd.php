@@ -54,7 +54,6 @@ if (($g_continue_check)&&(!defined ("CLASS_direct_input"))) { $g_continue_check 
 
 if ($g_continue_check)
 {
-//c// direct_icmd
 /**
 * "direct_icmd" fetches and provides input related data.
 *
@@ -73,7 +72,6 @@ class direct_icmd extends direct_input
 Extend the class using old and new behavior
 ------------------------------------------------------------------------- */
 
-	//f// direct_icmd->__construct () and direct_icmd->direct_icmd ()
 /**
 	* Constructor (PHP5) __construct (direct_icmd)
 	*

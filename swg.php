@@ -23,10 +23,6 @@ NOTE_END //n*/
 * This is the main PHP file for the secured WebGine. It will secure inputs,
 * handle emergency modes and control classes and functions.
 *
-* Current PHP requirement: >= PHP 4.1.0
-* Reason: we are working with superglobal variables like $_SERVER
-* - swg.php
-*
 * @internal  We are using phpDocumentor to automate the documentation process
 *            for creating the Developer's Manual. All sections including
 *            these special comments will be removed from the release source
@@ -243,7 +239,6 @@ $direct_settings['timeout_lightmode'] = floor ($direct_settings['timeout'] - ($d
 
 if (file_exists ($direct_settings['path_system']."/functions/swg_phpback.php")) { include_once ($direct_settings['path_system']."/functions/swg_phpback.php"); }
 
-//c// direct_virtual_class
 /**
 * This is the root for all other classes and provides our "Virtual Binding"
 * functionality.
@@ -267,7 +262,6 @@ class direct_virtual_class
 Construct the class using old and new behavior
 ------------------------------------------------------------------------- */
 
-	//f// direct_virtual_class->__construct () and direct_virtual_class->direct_virtual_class ()
 /**
 	* Constructor (PHP5) __construct (direct_virtual_class)
 	*
@@ -302,7 +296,6 @@ Informing the system about available functions
 *\/
 	function direct_virtual_class () { $this->__construct (); }
 :#\n*/
-	//f// direct_virtual_class->__destruct ()
 /**
 	* Destructor (PHP5) __destruct (direct_virtual_class)
 	*
@@ -318,10 +311,8 @@ This clone function is not defined because we are happy with PHP's default
 behavior
 ------------------------------------------------------------------------- */
 
-	//f// direct_virtual_class->__clone ()
 	// Run PHP-internal function __clone () { ... }
 
-	//f// direct_virtual_class->debug ($f_exit = false,$f_data = "")
 /**
 	* This operation prints $this->dvar to the browser (and exists) or to
 	* $direct_cachedata['core_debug'].
@@ -354,7 +345,6 @@ $direct_cachedata['output_warning'][] = array ("title" => direct_html_encode_spe
 		}
 	}
 
-	//f// direct_virtual_class->debug_walker ($f_data)
 /**
 	* Recursively read, convert and return given input data.
 	*
@@ -382,7 +372,6 @@ $direct_cachedata['output_warning'][] = array ("title" => direct_html_encode_spe
 		return /*#ifdef(DEBUG):direct_debug (9,"sWG/#echo(__FILEPATH__)# -virtual_class->debug_walker ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_virtual_class->v_call ()
 /**
 	* The sWG provides a method called "Virtual Binding" to add non class methods
 	* or functions virtually to the object. This method is used to call these
@@ -419,7 +408,6 @@ $direct_cachedata['output_warning'][] = array ("title" => direct_html_encode_spe
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -virtual_class->v_call ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_virtual_class->v_call_check ($f_function,$f_virtual_type = false)
 /**
 	* Check if a method exists.
 	*
@@ -449,7 +437,6 @@ $direct_cachedata['output_warning'][] = array ("title" => direct_html_encode_spe
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -virtual_class->v_call_check ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_virtual_class->v_call_get ($f_function)
 /**
 	* Returns the callable array or false if it is either a invalid function name
 	* or not allowed to be a "Virtual Binding".
@@ -467,7 +454,6 @@ $direct_cachedata['output_warning'][] = array ("title" => direct_html_encode_spe
 		return ($this->v_call_check ($f_function,true) ? $this->functions[$f_function] : false);
 	}
 
-	//f// direct_virtual_class->v_call_rref ()
 /**
 	* This method is similar to v_call but will return a reference to the
 	* resulting object.
@@ -509,7 +495,6 @@ $direct_cachedata['output_warning'][] = array ("title" => direct_html_encode_spe
 		return $f_return;
 	}
 
-	//f// direct_virtual_class->v_call_set ($f_function_virtual,&$f_object,$f_function)
 /**
 	* Sets and overwrites a "Virtual Binding".
 	*
@@ -546,7 +531,6 @@ Define this class
 
 define ("CLASS_direct_virtual_class",true);
 
-//c// direct_basic_functions_inline
 /**
 * The following class is our namespace for basic (inline) functions.
 *
@@ -565,7 +549,6 @@ class direct_basic_functions_inline extends direct_virtual_class
 Extend the class using old and new behavior
 ------------------------------------------------------------------------- */
 
-//f// direct_basic_functions_inline->__construct () and direct_basic_functions_inline->direct_basic_functions_inline ()
 /**
 	* Constructor (PHP5) __construct (direct_basic_functions_inline)
 	*
@@ -598,7 +581,6 @@ Informing the system about available functions
 *\/
 	function direct_basic_functions_inline () { $this->__construct (); }
 :#\n*/
-	//f// direct_basic_functions_inline->iline_parse ($f_iline = NULL)
 /**
 	* We are trying to catch all errors - even semi-fatal ones. For that reason
 	* we provide the emergency mode function that does not require an active theme
@@ -639,7 +621,6 @@ Mark this class as the most up-to-date one
 $direct_globals['@names']['basic_functions'] = "direct_basic_functions_inline";
 define ("CLASS_direct_basic_functions_inline",true);
 
-//c// direct_output_inline
 /**
 * The following class is the basic (inline) output system, giving everybody
 * functions for headers and the internal sWG page theme.
@@ -684,7 +665,6 @@ class direct_output_inline extends direct_virtual_class
 Extend the class using old and new behavior
 ------------------------------------------------------------------------- */
 
-	//f// direct_output_inline->__construct () and direct_output_inline->direct_output_inline ()
 /**
 	* Constructor (PHP5) __construct (direct_output_inline)
 	*
@@ -733,7 +713,6 @@ Set "last modified" time to "0".
 *\/
 	function direct_output_inline () { $this->__construct (); }
 :#*/
-	//f// direct_output_inline->header ($f_cacheing = false,$f_withgzip = true,$f_p3purl = "",$f_p3pcp = "")
 /**
 	* Important headers will be created here. This includes caching, cookies, the
 	* compression setting and information about P3P.
@@ -762,7 +741,7 @@ Set "last modified" time to "0".
 		else
 		{
 			$f_headers = array ("Cache-Control" => "no-cache, must-revalidate","Pragma" => "no-cache");
-			$f_expires = gmdate ("D, d M Y H:i:s",($direct_cachedata['core_time'] - 2419200));
+			$f_expires = gmdate ("D, d M Y H:i:s",$direct_cachedata['core_time']);
 			if (!$this->last_modified) { $f_last_modified = gmdate ("D, d M Y H:i:s",$direct_cachedata['core_time']); }
 		}
 
@@ -803,7 +782,6 @@ Encode the output for smaller bandwidth connections
 		$this->output_headers = array_merge ($this->output_headers,$f_headers);
 	}
 
-	//f// direct_output_inline->last_modified ($f_timestamp)
 /**
 	* Set's a custom "last modified" header entry for the upcoming output.
 	*
@@ -818,7 +796,6 @@ Encode the output for smaller bandwidth connections
 		$this->last_modified = $f_timestamp;
 	}
 
-	//f// direct_output_inline->output_header ($f_name = "",$f_value = NULL,$f_name_as_key = false,$f_value_append = false)
 /**
 	* Returns or sets a header.
 	*
@@ -831,6 +808,31 @@ Encode the output for smaller bandwidth connections
 */
 	/*#ifndef(PHP4) */public /* #*/function output_header ($f_name = "",$f_value = NULL,$f_name_as_key = false,$f_value_append = false)
 	{
+		$f_return = NULL;
+
+		if (($f_name_as_key)&&($f_name == "HTTP/1.1")&&($_SERVER['SERVER_PROTOCOL'] == "HTTP/1.0"))
+		{
+			switch ($f_value)
+			{
+			case "HTTP/1.1 203 Non-Authoritative Information":
+			{
+				$f_value = "HTTP/1.0 200 OK";
+				break 1;
+			}
+			case "HTTP/1.1 303 See Other":
+			{
+				$f_value = "HTTP/1.0 302 Found";
+				break 1;
+			}
+			case "HTTP/1.1 307 Temporary Redirect":
+			{
+				$f_value = "HTTP/1.0 302 Found";
+				break 1;
+			}
+			default: { $f_value = str_replace ("HTTP/1.1","HTTP/1.0",$f_value); }
+			}
+		}
+
 		if (isset ($f_value))
 		{
 			if ($f_name_as_key)
@@ -853,14 +855,19 @@ Encode the output for smaller bandwidth connections
 				}
 			}
 			elseif (is_array ($f_value)) { $this->output_headers[$f_name] = ((count ($f_value) > 1) ? $f_value : array_pop ($f_value)); }
+			elseif (($f_value_append)&&(isset ($this->output_headers[$f_name])))
+			{
+				if (is_array ($this->output_headers[$f_name])) { $f_value = array_merge ($this->output_headers[$f_name],(array ($f_value))); }
+				else { $f_value = array ($this->output_headers[$f_name],$f_value); }
+			}
 			else { $this->output_headers[$f_name] = $f_value; }
 		}
-		elseif (isset ($this->output_headers[$f_name])) { return $this->output_headers[$f_name]; }
-		elseif (($f_name_as_key)&&(isset ($this->output_headers_indexed[$f_name]))) { return $this->output_headers[$this->output_headers_indexed[$f_name]]; }
-		else { return NULL; }
+		elseif (isset ($this->output_headers[$f_name])) { $f_return = $this->output_headers[$f_name]; }
+		elseif (($f_name_as_key)&&(isset ($this->output_headers_indexed[$f_name]))) { $f_return = $this->output_headers[$this->output_headers_indexed[$f_name]]; }
+
+		return $f_return;
 	}
 
-	//f// direct_output_inline->output_response ($f_title = "",$f_headers = NULL)
 /**
 	* This function will actually send the prepared content and debug information
 	* to user.
@@ -966,7 +973,7 @@ Encode the output for smaller bandwidth connections
 
 				if (is_array ($f_headers)) { $this->output_headers = array_merge ($this->output_headers,$f_headers); }
 
-				if (function_exists ($this->output_data)) { $this->output_data (); }
+				if ((isset ($this->output_data))&&(function_exists ($this->output_data))) { $this->output_data (); }
 				else { $direct_globals['output_theme']->theme_page ($f_title); }
 
 				if (isset ($direct_settings['theme_xhtml_type']))
@@ -1027,7 +1034,6 @@ $direct_settings[product_lcode_txt]
 		ob_end_flush ();
 	}
 
-	//f// direct_output_inline->output_response_data (&$f_data)
 /**
 	* Send the content of a page.
 	*
@@ -1036,7 +1042,6 @@ $direct_settings[product_lcode_txt]
 */
 	/*#ifndef(PHP4) */protected /* #*/function output_response_data (&$f_data) { echo $f_data; }
 
-	//f// direct_output_inline->output_response_headers ()
 /**
 	* This function will actually send the prepared headers to user.
 	*
@@ -1053,6 +1058,8 @@ $direct_settings[product_lcode_txt]
 	{
 		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -output_class(inline)->output_response_headers ()- (#echo(__LINE__)#)"); }
 
+		if ((!isset ($this->output_headers_indexed['HTTP/1.1']))&&($_SERVER['SERVER_PROTOCOL'] == "HTTP/1.0")) { header ("HTTP/1.0 200 OK"); }
+
 		foreach ($this->output_headers as $f_header_name => $f_header_value)
 		{
 			if (is_int ($f_header_name)) { header ($f_header_value); }
@@ -1064,7 +1071,6 @@ $direct_settings[product_lcode_txt]
 		}
 	}
 
-	//f// direct_output_inline->output_response_xhtml_legacy (&$f_data)
 /**
 	* The sWG uses XHTML by default. If the browser does not support XHTML we need
 	* to switch to a legacy HTML (quirks) mode.
@@ -1082,7 +1088,6 @@ $direct_settings[product_lcode_txt]
 		$f_data = preg_replace (array ("#\s*<\?(.*?)\?>(.*?)<#s","#\s*\/\s*>#s","#</head>#i","#<(script|style)(.*?)><\!\[CDATA\[(.*?)\]\]><\/(script|style)>#si"),(array ("<",">","<meta http-equiv='Content-Type' content=\"$f_content_type\">\n</head>","<\\1\\2><!--\\3// --></\\4>")),$f_data);
 	}
 
-	//f// direct_output_inline->output_send ($f_title = "",$f_headers = NULL)
 /**
 	* This function is used for later multi-level delivery. Only the final
 	* node actually sends data to the requesting client.
@@ -1094,7 +1099,6 @@ $direct_settings[product_lcode_txt]
 */
 	/*#ifndef(PHP4) */public /* #*/function output_send ($f_title = "",$f_headers = NULL) { $this->output_response ($f_title,$f_headers); }
 
-	//f// direct_output_inline->output_send_error ($f_type,$f_error,$f_extra_data = "",$f_error_position = "")
 /**
 	* We are trying to catch all errors - even semi-fatal ones. For that reason
 	* we provide the emergency mode function that does not require an active theme
@@ -1159,7 +1163,6 @@ $f_error</p>$f_extra_data
 :#\n*/
 	}
 
-	//f// direct_output_inline->theme_page ($f_title)
 /**
 	* Prepare an output for a XHTML encoded page with the standard sWG design.
 	*
@@ -1276,9 +1279,9 @@ internal sWG page theme
 <div style='width:19px;height:1px;margin-top:1px;background-color:#193879'></div>
 </div><div style='width:100%;height:10px;background-color:#000000'></div><table style='width:100%'>
 <thead><tr>
-<th class='designtitlebg' style='height:85px;padding:5px 15px;text-align:right;vertical-align:middle'><div style='float:left'><a href='http://www.direct-netware.de/redirect.php?$direct_settings[product_icode]' target='_blank'><img src='$direct_settings[iscript_url]a=cache;dsd=dfile+swg_logo.png' width='75' height='75' alt='$direct_settings[product_lcode_txt]' title='$direct_settings[product_lcode_txt]' /></a></div>
-<p class='designtitlecontent'><span style='font-size:24px'>$direct_settings[product_lcode_html]</span><br />
-$direct_settings[product_lcode_subtitle_html]</p></th>
+<th class='designtitlebg' style='height:85px;padding:5px 15px;text-align:right;vertical-align:middle'><a href='http://www.direct-netware.de/redirect.php?$direct_settings[product_icode]' target='_blank' style='float:left'><img src='$direct_settings[iscript_url]a=cache;dsd=dfile+swg_logo.png' width='75' height='75' alt='$direct_settings[product_lcode_txt]' title='$direct_settings[product_lcode_txt]' /></a>
+<span class='designtitlecontent'><span style='font-size:24px'>$direct_settings[product_lcode_html]</span><br />
+$direct_settings[product_lcode_subtitle_html]</span></th>
 </tr></thead><tbody><tr>
 <td class='designpagebg' style='padding:10px 12px;text-align:left;vertical-align:middle'>");
 
@@ -1312,7 +1315,6 @@ $direct_globals['@names']['output'] = "direct_output_inline";
 $direct_globals['@names']['output_theme'] = "direct_output_inline";
 define ("CLASS_direct_output_inline",true);
 
-//f// __autoload ($f_class)
 /**
 * PHP's "__autoload ()"-function will be used to load additional, missing
 * classes if they are matching our default name convention.
@@ -1355,7 +1357,6 @@ Search for the requested class ...
 	}
 }
 
-//f// direct_class_function_check (&$f_class,$f_function)
 /**
 * Check for a specific function of a specific class.
 *
@@ -1375,7 +1376,6 @@ function direct_class_function_check (&$f_class,$f_function)
 	else { return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -direct_class_function_check ()- (#echo(__LINE__)#)",:#*/false/*#ifdef(DEBUG):,true):#*/; }
 }
 
-//f// direct_class_init ($f_class,$f_force_reinit = false)
 /**
 * Initiate a specified class.
 *
@@ -1411,7 +1411,6 @@ function direct_class_init ($f_class,$f_force_reinit = false)
 	return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -direct_class_init ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 }
 
-//f// direct_debug ($f_debuglevel,$f_description,$f_value = "",$f_value_parsing = false)
 /**
 * Handles debug information on various levels.
 *
@@ -1448,7 +1447,6 @@ function direct_debug ($f_debuglevel,$f_description,$f_value = "",$f_value_parsi
 	return $f_value;
 }
 
-//f// direct_debug_value ($f_value)
 /**
 * Creates a string for all known value types.
 *
@@ -1514,7 +1512,6 @@ function direct_debug_value ($f_value)
 	return $f_return;
 }
 
-//f// direct_html_encode_special ($f_data)
 /**
 * Runs htmlspecialchars with or without a specified system charset.
 *
@@ -1530,16 +1527,15 @@ function direct_html_encode_special ($f_data)
 {
 	global $direct_local,$direct_settings;
 
-	if ($direct_settings['swg_force_local_handling'] != "text")/*#ifndef(PHP4) */
+	if ((!isset ($direct_settings['swg_force_local_handling']))||($direct_settings['swg_force_local_handling'] != "text"))/*#ifndef(PHP4) */
 	{
-		if (USE_charset_html_filtering) { return htmlspecialchars ($f_data,ENT_COMPAT,$direct_local['lang_charset']); }
+		if ((USE_charset_html_filtering)&&(isset ($direct_local['lang_charset']))) { return htmlspecialchars ($f_data,ENT_COMPAT,$direct_local['lang_charset']); }
 		elseif (USE_html_charset) { return htmlspecialchars ($f_data,ENT_COMPAT,USE_html_charset); }
 		else /* #*/ { return htmlspecialchars ($f_data); }
 /*#ifndef(PHP4) */
 	} /* #\n*/
 }
 
-//f// direct_outputenc_xhtml_cleanup (&$f_data,$f_content_type)
 /**
 * If the theme is not compatible with XHTML, we need to convert the
 * <script>-content of sWG provided JavaScript functions.
@@ -1598,8 +1594,7 @@ The base64-encoded sWG logo
 /*n// NOTE
 ----------------------------------------------------------------------------
 We are using images created by the "Tango Desktop Project"
-(C) Creative Commons Attribution Share-Alike license
-Thanks for your work (Latest update: 12/10/06)
+Thanks for your work (Latest update: 08/02/11)
 ----------------------------------------------------------------------------
 NOTE_END //n*/
 

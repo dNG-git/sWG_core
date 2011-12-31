@@ -54,7 +54,6 @@ if (!defined ("direct_product_iversion")) { exit (); }
 
 //j// Functions and classes
 
-//f// direct_evars_get ($f_data)
 /**
 * To receive all data (key-value pairs) from evars, use "direct_evars_get ()".
 * This function needs for its recursive job a helper function.
@@ -86,7 +85,6 @@ function direct_evars_get ($f_data)
 	return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -direct_evars_get ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 }
 
-//f// direct_evars_get_walker ($f_xml_array)
 /**
 * This is a helper function for "direct_evars_get ()" to convert an XML array
 * recursively.
@@ -125,7 +123,6 @@ function direct_evars_get_walker ($f_xml_array)
 	return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -direct_evars_get_walker ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 }
 
-//f// direct_evars_write ($f_data,$f_binary_safe = false)
 /**
 * To save all data from $f_data as an evars-string, call
 * "direct_evars_write ()". The helper function will encode relevant data with
@@ -169,7 +166,6 @@ function direct_evars_write ($f_data_array,$f_binary_safe = false)
 	return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -direct_evars_write ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 }
 
-//f// direct_evars_write_base64_walker ($f_data_array)
 /**
 * This recursive function is used to protect binary data in a system optimized
 * for strings.

@@ -51,7 +51,6 @@ Testing for required classes
 
 if (!defined ("CLASS_direct_data_handler"))
 {
-//c// direct_data_handler
 /**
 * This is an abstract data holder doing nothing.
 *
@@ -75,7 +74,6 @@ class direct_data_handler extends direct_virtual_class
 Extend the class using old and new behavior
 ------------------------------------------------------------------------- */
 
-	//f// direct_data_handler->__construct () and direct_data_handler->direct_data_handler ()
 /**
 	* Constructor (PHP5) __construct (direct_data_handler)
 	*
@@ -108,7 +106,6 @@ Informing the system about available functions
 *\/
 	function direct_data_handler () { $this->__construct (); }
 :#\n*/
-	//f// direct_data_handler->__destruct ()
 /**
 	* Destructor (PHP5) __destruct (direct_data_handler)
 	*
@@ -116,7 +113,6 @@ Informing the system about available functions
 */
 	/*#ifndef(PHP4) */public /* #*/function __destruct () { $this->data = NULL; }
 
-	//f// direct_data_handler->get ()
 /**
 	* This operation just gives back the content of $this->data.
 	*
@@ -131,7 +127,6 @@ Informing the system about available functions
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -data_handler->get ()- (#echo(__LINE__)#)",:#*/(isset ($this->data) ? $this->data : false)/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_data_handler->get ()
 /**
 	* This operation fills $this->data with $f_data.
 	*

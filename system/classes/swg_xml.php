@@ -56,7 +56,6 @@ if (($g_continue_check)&&(!defined ("CLASS_direct_xml_writer"))) { $g_continue_c
 
 if ($g_continue_check)
 {
-//c// direct_xml
 /**
 * This class extends the bridge between the sWG and XML to work with XML and
 * create valid documents.
@@ -76,7 +75,6 @@ class direct_xml extends direct_xml_writer
 Extend the class using old and new behavior
 ------------------------------------------------------------------------- */
 
-	//f// direct_xml->__construct () and direct_xml->direct_xml ()
 /**
 	* Constructor (PHP5) __construct (direct_xml)
 	*

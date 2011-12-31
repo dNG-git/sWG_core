@@ -55,7 +55,6 @@ if (!defined ("direct_product_iversion")) { exit (); }
 
 //j// Functions and classes
 
-//c// direct_kernel_system
 /**
 * Now we will introduce the default kernel not including user specific
 * identifications (but we are trying to get the real IP address).
@@ -84,7 +83,6 @@ class direct_kernel_system extends direct_virtual_class
 Extend the class using old and new behavior
 ------------------------------------------------------------------------- */
 
-	//f// direct_kernel_system->__construct () and direct_kernel_system->direct_kernel_system ()
 /**
 	* Constructor (PHP5) __construct (direct_kernel_system)
 	*
@@ -125,6 +123,7 @@ Informing the system about available functions
 		$this->functions['v_group_user_check_right'] = array ();
 		$this->functions['v_subkernel_init'] = array ();
 		$this->functions['v_user_check'] = array ();
+		$this->functions['v_user_check_password'] = array ();
 		$this->functions['v_user_get'] = array ();
 		$this->functions['v_user_init'] = array ();
 		$this->functions['v_user_insert'] = array ();
@@ -155,7 +154,6 @@ Set up kernel variables
 *\/
 	function direct_kernel_system () { $this->__construct (); }
 :#*/
-	//f// direct_kernel_system->basekernel_init ()
 /**
 	* Receiving basic data about the user and starting up the system.
 	*
@@ -219,7 +217,6 @@ available right now
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -kernel_class->basekernel_init ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_kernel_system->kernel_modules_load ()
 /**
 	* The kernel is extentible via kernel modules. A settings file containing a
 	* list of subkernels that should be loaded before initiating the kernel is
@@ -310,7 +307,6 @@ well as everything else that is required to be able to use the
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -kernel_class->kernel_modules_load ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_kernel_system->service_https ($f_https_required,$f_url)
 /**
 	* Check and redirect the user if a https connection is required for the
 	* requested service.
@@ -374,7 +370,6 @@ well as everything else that is required to be able to use the
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -kernel_class->service_https ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_kernel_system->service_init ($f_threshold_id = "")
 /**
 	* Initiates a service and returns an array containing error details if
 	* applicable.
@@ -405,7 +400,6 @@ well as everything else that is required to be able to use the
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -kernel_class->service_init ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_kernel_system->service_init_default ($f_threshold_id = "")
 /**
 	* Initiates a service and returns a boolean for the status. If an error
 	* occured it automatically shows it calling direct_error_functions methods.
@@ -444,7 +438,6 @@ well as everything else that is required to be able to use the
 		return /*#ifdef(DEBUG):direct_debug (9,"sWG/#echo(__FILEPATH__)# -kernel_class->service_init_default ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_kernel_system->service_init_rboolean ($f_threshold_id = "")
 /**
 	* Initiates a service and returns a boolean for the status.
 	*
@@ -465,7 +458,6 @@ well as everything else that is required to be able to use the
 		return /*#ifdef(DEBUG):direct_debug (9,"sWG/#echo(__FILEPATH__)# -kernel_class->service_init_rboolean ()- (#echo(__LINE__)#)",:#*/(empty ($f_error_data) ? true : false)/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_kernel_system->service_load ()
 /**
 	* Loads the required files to start a service or redirect the user.
 	*
@@ -536,11 +528,10 @@ well as everything else that is required to be able to use the
 			$f_module = implode ("/",$f_module_data);
 
 			if (file_exists ($direct_settings['path_system']."/modules/$direct_settings[m]/".$f_module)) { $direct_globals['basic_functions']->include_file ($direct_settings['path_system']."/modules/$direct_settings[m]/".$f_module,4); }
-			else { $direct_globals['output']->output_send_error ("fatal","core_required_object_not_found","FATAL ERROR: &quot;$direct_settings[path_system]/modules/$direct_settings[m]/$f_module&quot; was not found","sWG/#echo(__FILEPATH__)# -kernel_class->service_load ()- (#echo(__LINE__)#)"); }
+			else { $direct_globals['output']->output_send_error ("fatal","core_required_object_not_found","FATAL ERROR: &quot;system/modules/$direct_settings[m]/$f_module&quot; was not found","sWG/#echo(__FILEPATH__)# -kernel_class->service_load ()- (#echo(__LINE__)#)"); }
 		}
 	}
 
-	//f// direct_kernel_system->subkernel_load ()
 /**
 	* Loads the required file(s) to integrate a module subkernel into the sWG
 	* kernel system.
@@ -564,11 +555,10 @@ well as everything else that is required to be able to use the
 			$direct_settings['s'] = "sysm";
 			$direct_settings['a'] = "merror";
 
-			if (!$direct_globals['basic_functions']->include_file ($direct_settings['path_system']."/modules/default/swg_subkernel.php",4)) { $this->prekernel_error = array ("core_required_object_not_found","FATAL ERROR: &quot;$direct_settings[path_system]/modules/default/swg_subkernel.php&quot; was not found","sWG/#echo(__FILEPATH__)# -kernel_class->subkernel_load ()- (#echo(__LINE__)#)"); }
+			if (!$direct_globals['basic_functions']->include_file ($direct_settings['path_system']."/modules/default/swg_subkernel.php",4)) { $this->prekernel_error = array ("core_required_object_not_found","FATAL ERROR: &quot;system/modules/default/swg_subkernel.php&quot; was not found","sWG/#echo(__FILEPATH__)# -kernel_class->subkernel_load ()- (#echo(__LINE__)#)"); }
 		}
 	}
 
-	//f// direct_kernel_system->v_group_init ()
 /**
 	* "Virtual Binding" for "group_init ()"
 	*
@@ -586,7 +576,6 @@ well as everything else that is required to be able to use the
 		return ($f_call ? $f_call[0]->{$f_call[1]} () : false);
 	}
 
-	//f// direct_kernel_system->v_group_right_check ($f_gid,$f_rights,$f_explicit = false)
 /**
 	* "Virtual Binding" for "group_right_check ()"
 	*
@@ -607,7 +596,6 @@ well as everything else that is required to be able to use the
 		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_gid,$f_rights,$f_explicit) : false);
 	}
 
-	//f// direct_kernel_system->v_group_right_write ($f_objid,$f_rid,$f_right,$f_setup)
 /**
 	* "Virtual Binding" for "group_right_write ()"
 	*
@@ -629,7 +617,6 @@ well as everything else that is required to be able to use the
 		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_objid,$f_rid,$f_right,$f_setup) : false);
 	}
 
-	//f// direct_kernel_system->v_group_rights_get ($f_gid)
 /**
 	* "Virtual Binding" for "group_rights_get ()"
 	*
@@ -648,7 +635,6 @@ well as everything else that is required to be able to use the
 		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_gid) : array ());
 	}
 
-	//f// direct_kernel_system->v_group_user_check_group ($f_gid,$f_all = false)
 /**
 	* "Virtual Binding" for "group_user_check_group ()"
 	*
@@ -668,7 +654,6 @@ well as everything else that is required to be able to use the
 		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_gid,$f_all) : false);
 	}
 
-	//f// direct_kernel_system->v_group_user_check_right ($f_rights,$f_explicit = false)
 /**
 	* "Virtual Binding" for "group_user_check_right ()"
 	*
@@ -688,7 +673,6 @@ well as everything else that is required to be able to use the
 		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_rights,$f_explicit) : false);
 	}
 
-	//f// direct_kernel_system->v_group_user_get_groups ()
 /**
 	* "Virtual Binding" for "group_user_get_groups ()"
 	*
@@ -706,7 +690,6 @@ well as everything else that is required to be able to use the
 		return ($f_call ? $f_call[0]->{$f_call[1]} () : array ());
 	}
 
-	//f// direct_kernel_system->v_group_user_get_rights ()
 /**
 	* "Virtual Binding" for "group_user_get_rights ()"
 	*
@@ -724,7 +707,6 @@ well as everything else that is required to be able to use the
 		return ($f_call ? $f_call[0]->{$f_call[1]} () : array ());
 	}
 
-	//f// direct_kernel_system->v_subkernel_init ($f_threshold_id = "")
 /**
 	* "Virtual Binding" for "subkernel_init ()"
 	*
@@ -750,7 +732,6 @@ well as everything else that is required to be able to use the
 		}
 	}
 
-	//f// direct_kernel_system->v_user_check ($f_userid,$f_username = "",$f_all = false)
 /**
 	* "Virtual Binding" for "user_check ()"
 	*
@@ -771,7 +752,25 @@ well as everything else that is required to be able to use the
 		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_userid,$f_username,$f_all) : false);
 	}
 
-	//f// direct_kernel_system->v_user_get ($f_userid,$f_username = "",$f_all = false,$f_overwrite = false)
+/**
+	* "Virtual Binding" for "user_check_password ()"
+	*
+	* @param  string $f_userid User ID
+	* @param  string $f_password Supplied password
+	* @uses   direct_debug()
+	* @uses   direct_virtual_class::v_call_get()
+	* @uses   USE_debug_reporting
+	* @return boolean True if the supplied password is correct
+	* @since  v0.1.05
+*/
+	/*#ifndef(PHP4) */public /* #*/function v_user_check_password ($f_userid,$f_password)
+	{
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_user_check_password ($f_userid,+f_password)- (#echo(__LINE__)#)"); }
+
+		$f_call = $this->v_call_get ("v_user_check_password");
+		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_userid,$f_password) : false);
+	}
+
 /**
 	* "Virtual Binding" for "user_get ()"
 	*
@@ -793,7 +792,6 @@ well as everything else that is required to be able to use the
 		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_userid,$f_username,$f_all,$f_overwrite) : false);
 	}
 
-	//f// direct_kernel_system->v_user_init ($f_threshold_id = "")
 /**
 	* "Virtual Binding" for "user_init ()"
 	*
@@ -814,7 +812,6 @@ well as everything else that is required to be able to use the
 		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_threshold_id) : false);
 	}
 
-	//f// direct_kernel_system->v_user_parse ($f_userid = "",$f_data = "",$f_prefix = "")
 /**
 	* "Virtual Binding" for "user_parse ()"
 	*
@@ -835,7 +832,6 @@ well as everything else that is required to be able to use the
 		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_userid,$f_data,$f_prefix) : false);
 	}
 
-	//f// direct_kernel_system->v_user_insert ($f_userid = "",$f_data = "",$f_use_current_data = true)
 /**
 	* "Virtual Binding" for "user_insert ()"
 	*
@@ -857,7 +853,6 @@ well as everything else that is required to be able to use the
 		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_userid,$f_data,$f_use_current_data) : false);
 	}
 
-	//f// direct_kernel_system->v_user_update ($f_userid = "",$f_data = "",$f_use_current_data = true)
 /**
 	* "Virtual Binding" for "user_update ()"
 	*
@@ -879,7 +874,6 @@ well as everything else that is required to be able to use the
 		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_userid,$f_data,$f_use_current_data) : false);
 	}
 
-	//f// direct_kernel_system->v_user_write_kernel ($f_userid)
 /**
 	* "Virtual Binding" for "user_write_kernel ()"
 	*
@@ -898,7 +892,6 @@ well as everything else that is required to be able to use the
 		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_userid) : false);
 	}
 
-	//f// direct_kernel_system->v_usertype_get_int ($f_data = 0)
 /**
 	* "Virtual Binding" for "usertype_get_int ()"
 	*
@@ -917,7 +910,6 @@ well as everything else that is required to be able to use the
 		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_data) : 0);
 	}
 
-	//f// direct_kernel_system->v_uuid_check_usage ()
 /**
 	* "Virtual Binding" for "uuid_check_usage ()"
 	*
@@ -935,7 +927,6 @@ well as everything else that is required to be able to use the
 		return ($f_call ? $f_call[0]->{$f_call[1]} () : false);
 	}
 
-	//f// direct_kernel_system->v_uuid_cookie_load ()
 /**
 	* "Virtual Binding" for "uuid_cookie_load ()"
 	*
@@ -953,7 +944,6 @@ well as everything else that is required to be able to use the
 		return ($f_call ? $f_call[0]->{$f_call[1]} () : false);
 	}
 
-	//f// direct_kernel_system->v_uuid_cookie_save ()
 /**
 	* "Virtual Binding" for "uuid_cookie_save ()"
 	*
@@ -971,7 +961,6 @@ well as everything else that is required to be able to use the
 		return ($f_call ? $f_call[0]->{$f_call[1]} () : false);
 	}
 
-	//f// direct_kernel_system->v_uuid_get ($f_type,$f_cookie_mode = false)
 /**
 	* "Virtual Binding" for "uuid_get ()"
 	*
@@ -992,7 +981,6 @@ well as everything else that is required to be able to use the
 		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_type,$f_cookie_mode) : false);
 	}
 
-	//f// direct_kernel_system->v_uuid_init ($f_uuid = NULL)
 /**
 	* "Virtual Binding" for "uuid_init ()"
 	*
@@ -1011,7 +999,6 @@ well as everything else that is required to be able to use the
 		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_uuid) : false);
 	}
 
-	//f// direct_kernel_system->v_uuid_is_cookied ()
 /**
 	* "Virtual Binding" for "uuid_is_cookied ()"
 	*
@@ -1029,7 +1016,6 @@ well as everything else that is required to be able to use the
 		return ($f_call ? $f_call[0]->{$f_call[1]} () : false);
 	}
 
-	//f// direct_kernel_system->v_uuid_write ($f_data,$f_cookie_mode = "")
 /**
 	* "Virtual Binding" for "uuid_write ()"
 	*

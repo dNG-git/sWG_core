@@ -53,7 +53,6 @@ if (($g_continue_check)&&(!defined ("CLASS_direct_output"))) { $g_continue_check
 
 if ($g_continue_check)
 {
-//c// direct_oxhtml
 /**
 * "direct_oxhtml" is responsible for formatting content and displaying
 * it.
@@ -82,7 +81,6 @@ class direct_oxhtml extends direct_output
 Extend the class using old and new behavior
 ------------------------------------------------------------------------- */
 
-	//f// direct_oxhtml->__construct () and direct_oxhtml->direct_oxhtml ()
 /**
 	* Constructor (PHP5) __construct (direct_oxhtml)
 	*
@@ -146,7 +144,6 @@ Set up some variables
 *\/
 	function direct_oxhtml () { $this->__construct (); }
 :#*/
-	//f// direct_oxhtml->backtrace_get ($f_data = NULL,$f_handling = "text")
 /**
 	* Parse a given backtrace array (or try to load one via "debug_backtrace").
 	*
@@ -168,7 +165,6 @@ Set up some variables
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -output_class->backtrace_get ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_oxhtml->options_insert ($f_level,$f_menu,$f_url,$f_title,$f_image,$f_urlmode = "asis")
 /**
 	* Adds an item to a specified menu container
 	*
@@ -193,7 +189,6 @@ Set up some variables
 		return /*#ifdef(DEBUG):direct_debug (9,"sWG/#echo(__FILEPATH__)# -output_class->options_insert ()- (#echo(__LINE__)#)",(:#*/parent::options_insert ($f_level,$f_menu,$f_url,$f_title,$f_image,$f_urlmode)/*#ifdef(DEBUG):),true):#*/;
 	}
 
-	//f// direct_oxhtml->options_generator ($f_type,$f_menu,$f_seperator = "")
 /**
 	* Creates XHTML 1.0 code for the given menu using the specified type
 	*
@@ -218,38 +213,39 @@ Set up some variables
 		{
 			ksort ($this->menus[$f_menu]);
 
-			foreach ($this->menus[$f_menu] as $f_menu_array)
+			foreach ($this->menus[$f_menu] as $f_menu_level => $f_menu_array)
 			{
-				foreach ($f_menu_array as $f_menu_item_array)
+				foreach ($f_menu_array as $f_menu_item_id => $f_menu_item_array)
 				{
+					$f_menu_item = "";
 					$f_menu_item_array['url'] = str_replace ('"',"",$f_menu_item_array['url']);
-					if (($direct_settings['swg_options_image'])&&($f_menu_item_array['image'])) { $f_menu_item_array['image'] = "<img src='{$f_menu_item_array['image']}' alt='' title='' style='vertical-align:middle' />"; }
+					if ($f_menu_item_array['image']) { $f_menu_item_array['image'] = "<img src='{$f_menu_item_array['image']}' alt='' title='' style='vertical-align:middle' />"; }
 
 					if (($f_type == "v")||($f_type == "ve"))
 					{
-						if ($f_menu_item_array['title'])
-						{
-							if ($f_return) { $f_return .= ($f_seperator ? $f_seperator : "<span class='pagehide'><br /></span>\n"); }
-							$f_return .= $f_menu_item_array['image']."<a href=\"{$f_menu_item_array['url']}\">".$f_menu_item_array['title']."</a>";
-						}
-						else
-						{
-							if ($f_return) { $f_return .= ($f_seperator ? $f_seperator : "<br />\n"); }
-							$f_return .= "<a href=\"{$f_menu_item_array['url']}\">{$f_menu_item_array['image']}</a>";
-						}
+						if (($f_return)||(!$f_seperator)) { $f_menu_item .= ($f_seperator ? $f_seperator : "<li>"); }
+						$f_menu_item .= ($f_menu_item_array['title'] ? $f_menu_item_array['image']."<a href=\"{$f_menu_item_array['url']}\">".$f_menu_item_array['title']."</a>" : "<a href=\"{$f_menu_item_array['url']}\">{$f_menu_item_array['image']}</a>");
+						if (!$f_seperator) { $f_menu_item .= "</li>"; }
 					}
 					else
 					{
 						if ($f_menu_item_array['title'])
 						{
-							if ($f_return) { $f_return .= ($f_seperator ? $f_seperator : ", "); }
-							$f_return .= $f_menu_item_array['image']."<a href=\"{$f_menu_item_array['url']}\">".$f_menu_item_array['title']."</a>";
+							if ($f_return) { $f_menu_item .= ($f_seperator ? $f_seperator : ", "); }
+							$f_menu_item .= $f_menu_item_array['image']."<a href=\"{$f_menu_item_array['url']}\">".$f_menu_item_array['title']."</a>";
 						}
 						else
 						{
-							if ($f_return) { $f_return .= ($f_seperator ? $f_seperator : " "); }
-							$f_return .= "<a href=\"{$f_menu_item_array['url']}\">{$f_menu_item_array['image']}</a>";
+							if ($f_return) { $f_menu_item .= ($f_seperator ? $f_seperator : " "); }
+							$f_menu_item .= "<a href=\"{$f_menu_item_array['url']}\">{$f_menu_item_array['image']}</a>";
 						}
+					}
+
+					if ($f_menu_item)
+					{
+$f_return .= ((($f_menu_item_array['type'] == "javascript")&&(!isset ($direct_settings['swg_clientsupport']['JSDOMManipulation']))) ? ("<span id='swg_core_menu_{$f_menu}_{$f_menu_level}_{$f_menu_item_id}_point' style='display:none'><!-- iPoint // --></span><script type='text/javascript'><![CDATA[
+jQuery (function () { djs_swgDOM_replace ({ animate: false,data: \"<span>".(str_replace ('"','\"',$f_menu_item))."</span>\",id: 'swg_core_menu_{$f_menu}_{$f_menu_level}_{$f_menu_item_id}_point' }); });
+]]></script>") : $f_menu_item);
 					}
 				}
 			}
@@ -260,7 +256,6 @@ Set up some variables
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -output_class->options_generator ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_oxhtml->output_response ($f_title = "",$f_headers = NULL)
 /**
 	* This function will actually send the prepared content and debug information
 	* to user.
@@ -278,6 +273,9 @@ Set up some variables
 	{
 		global $direct_cachedata,$direct_globals,$direct_settings;
 		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -output_class->output_response (+f_title,+f_headers)- (#echo(__LINE__)#)"); }
+
+		if (($direct_cachedata['page_this'])&&($direct_settings['swg_shadow_url'])) { $this->header_elements ("<link href=\"".(direct_linker_shadow ("url1",$direct_cachedata['page_this'],false,false,false))."\" rel='canonical' />","link_rel_canonical"); }
+		if (($direct_globals['kernel']->v_uuid_check_usage ())&&(!$direct_globals['kernel']->v_uuid_is_cookied ())) { $this->header_elements ("<meta name='ROBOTS' content='NOINDEX,NOFOLLOW' />","robots"); }
 
 		if (!$direct_settings['swg_force_notheme'])
 		{
@@ -304,10 +302,11 @@ Parse additional copyright information for output.
 			}
 		}
 
+		if ((isset ($direct_settings['theme_additional_css']))&&(file_exists ($direct_settings['theme_additional_css']))) { $this->header_elements ("<link href='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+".$direct_settings['theme_additional_css'],true,false))."' rel='stylesheet' type='text/css' />","link_stylesheet_theme_additional_css"); }
+
 		parent::output_response ($f_title,$f_headers);
 	}
 
-	//f// direct_oxhtml->output_send_error ($f_type,$f_error,$f_extra_data = "",$f_error_position = "")
 /**
 	* There are 4 different types of errors. The behavior of
 	* "output_send_error ()" ranges from a simple error message (continuing
@@ -344,6 +343,7 @@ Parse additional copyright information for output.
 		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -output_class->output_send_error ($f_type,$f_error,+f_extra_data,$f_error_position)- (#echo(__LINE__)#)"); }
 
 		$f_continue_check = true;
+		$this->header_elements ("<meta name='ROBOTS' content='NOINDEX,NOFOLLOW' />","robots");
 
 		if (!function_exists ("direct_linker")) { $direct_globals['basic_functions']->require_file ($direct_settings['path_system']."/functions/swg_linker.php"); }
 
@@ -417,7 +417,6 @@ Parse additional copyright information for output.
 :#\n*/
 	}
 
-	//f// direct_oxhtml->redirect ($f_url,$f_use_current_url = false)
 /**
 	* We need some header outputs for redirecting, that's why there exists this
 	* function
@@ -429,7 +428,7 @@ Parse additional copyright information for output.
 	* @uses   USE_debug_reporting
 	* @since  v0.1.02
 */
-	/*#ifndef(PHP4) */public /* #*/function redirect ($f_url,$f_use_current_url = false)
+	/*#ifndef(PHP4) */public /* #*/function redirect ($f_url,$f_use_current_url = true)
 	{
 		global $direct_cachedata;
 		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -output_class->redirect ($f_url,+f_use_current_url)- (#echo(__LINE__)#)"); }
@@ -437,18 +436,26 @@ Parse additional copyright information for output.
 		$direct_cachedata['output_pagetarget'] = direct_html_encode_special ($f_url);
 		$direct_cachedata['output_redirect'] = (function_exists ("direct_linker") ? direct_linker ("optical",$direct_cachedata['output_pagetarget']) : $direct_cachedata['output_pagetarget']);
 
-		$this->oset ("default","redirect");
-		$this->header ($f_use_current_url);
-		$this->options_flush (true);
-		$this->output_header ("HTTP/1.1","HTTP/1.1 302 Found",true);
+		if ($f_use_current_url)
+		{
+			$this->output_header ("HTTP/1.1","HTTP/1.1 303 See Other",true);
+			$this->header (false);
+		}
+		else
+		{
+			$this->output_header ("HTTP/1.1","HTTP/1.1 301 Moved Permanently",true);
+			$this->header (true);
+		}
+
 		$this->output_header ("Location",$f_url);
+		$this->options_flush (true);
+		$this->oset ("default","redirect");
 		$this->theme_page (direct_local_get ("core_redirect"));
 		$this->output_send ();
 
 		$direct_cachedata['core_service_activated'] = true;
 	}
 
-	//f// direct_oxhtml->theme_subtype ($f_subtype)
 /**
 	* Define and try to load a theme subtype
 	*

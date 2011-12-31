@@ -53,7 +53,6 @@ if (($g_continue_check)&&(!defined ("CLASS_direct_input"))) { $g_continue_check 
 
 if ($g_continue_check)
 {
-//c// direct_ihttp
 /**
 * "direct_ihttp" fetches and provides input related data for a HTTP
 * conenction.
@@ -73,7 +72,6 @@ class direct_ihttp extends direct_input
 Extend the class using old and new behavior
 ------------------------------------------------------------------------- */
 
-	//f// direct_ihttp->__construct () and direct_ihttp->direct_ihttp ()
 /**
 	* Constructor (PHP5) __construct (direct_ihttp)
 	*

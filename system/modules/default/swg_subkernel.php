@@ -59,7 +59,6 @@ Testing for required classes
 
 if (!defined ("CLASS_direct_subkernel_default"))
 {
-//c// direct_subkernel_default
 /**
 * Subkernel for: default
 *
@@ -78,7 +77,6 @@ class direct_subkernel_default extends direct_virtual_class
 Extend the class using old and new behavior
 ------------------------------------------------------------------------- */
 
-	//f// direct_subkernel_default->__construct () and direct_subkernel_default->direct_subkernel_default ()
 /**
 	* Constructor (PHP5) __construct (direct_subkernel_default)
 	*
@@ -110,7 +108,6 @@ Informing the system about the available function
 *\/
 	function direct_subkernel_default () { $this->__construct (); }
 :#*/
-	//f// direct_subkernel_default->subkernel_init ($f_threshold_id = "")
 /**
 	* Running subkernel specific checkups.
 	*

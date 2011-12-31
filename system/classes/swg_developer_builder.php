@@ -56,7 +56,6 @@ if (($g_continue_check)&&(!function_exists ("direct_dir_exists"))) { $g_continue
 
 if ($g_continue_check)
 {
-//c// direct_developer_builder
 /**
 * This wrapper class extends "ext_core/file.php" and sets our default
 * parameters.
@@ -110,7 +109,6 @@ class direct_developer_builder extends direct_php_builder
 Extend the class using old and new behavior
 ------------------------------------------------------------------------- */
 
-	//f// direct_developer_builder->__construct () and direct_developer_builder->direct_developer_builder ()
 /**
 	* Constructor (PHP5) __construct (direct_developer_builder)
 	*
@@ -152,7 +150,6 @@ Set up additional variables
 	* @since v0.1.08
 	function direct_developer_builder () { $this->__construct (); }
 :#*/
-	//f// direct_developer_builder->file_write ($f_file_content,$f_file_path,$f_file_mode = "w+b")
 /**
 	* Write the given file to the defined location. Create subdirectories if
 	* needed.
@@ -175,7 +172,6 @@ Set up additional variables
 		else { return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -developer_builder_class->file_write ()- (#echo(__LINE__)#)",:#*/false/*#ifdef(DEBUG):,true):#*/; }
 	}
 
-	//f// direct_developer_builder->get_package_xml ()
 /**
 	* Gets the package XML object for the current output position.
 	*
@@ -219,7 +215,7 @@ $f_package_array = array (
 					{
 						if (!isset ($f_file_data))
 						{
-							$f_return->node_add ("swg_packages_file_v1","",(array ("xmlns" => "urn:de.direct-netware.xmlns:swg.packages.v1")));
+							$f_return->node_add ("swg_packages_file_v1","",(array ("xmlns" => "urn:de-direct-netware-xmlns:swg.packages.v1")));
 							$f_return->node_add ("swg_packages_file_v1 phpexit","<?php exit (); ?>");
 						}
 
@@ -233,7 +229,6 @@ $f_package_array = array (
 		return $f_return;
 	}
 
-	//f// direct_developer_builder->get_variable ($f_name)
 /**
 	* Gets the variable content with the given name.
 	*
@@ -265,7 +260,6 @@ $f_package_array = array (
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -developer_builder_class->get_variable ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_developer_builder->make_all ()
 /**
 	* Parse and rewrite all directories and files given as include definitions.
 	*
@@ -350,7 +344,6 @@ $f_package_array = array (
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -developer_builder_class->make_all ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_developer_builder->set_include ($f_include)
 /**
 	* Add "include" definitions for directories and files.
 	*
@@ -376,7 +369,6 @@ $f_package_array = array (
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -developer_builder_class->set_include ()- (#echo(__LINE__)#)",:#*/(((count ($this->dir_array))||(count ($this->file_array))) ? true : false)/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_developer_builder->set_target_metadata ($f_package,$f_name,$f_level,$f_version,$f_iversion = NULL)
 /**
 	* Set output specific metadata for output.
 	*
@@ -408,7 +400,6 @@ $f_package_array = array (
 		$this->output_iversion = $f_iversion;
 	}
 
-	//f// direct_developer_builder->target_check ()
 /**
 	* Check the targets defined in the given XML array and cache settings for
 	* later use.

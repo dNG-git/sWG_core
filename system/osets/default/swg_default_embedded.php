@@ -44,7 +44,6 @@ all development packets)
 
 //j// Functions and classes
 
-//f// direct_output_oset_default_embedded_ajax_aphandler ()
 /**
 * direct_output_oset_default_embedded_ajax_aphandler ()
 *
@@ -78,204 +77,6 @@ $f_return .= ("\n<p class='pageextracontent' style='font-size:11px'><span style=
 	return $f_return;
 }
 
-//f// direct_output_oset_default_embedded_ajax_dialog_done ()
-/**
-* direct_output_oset_default_embedded_ajax_done ()
-*
-* @uses   direct_debug()
-* @uses   USE_debug_reporting
-* @return string Valid XHTML code
-* @since  v0.1.08
-*/
-function direct_output_oset_default_embedded_ajax_dialog_done ()
-{
-	global $direct_cachedata,$direct_settings;
-	if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_output_oset_default_embedded_ajax_dialog_done ()- (#echo(__LINE__)#)"); }
-
-	if (!isset ($direct_cachedata['output_ajax_width'])) { $direct_cachedata['output_ajax_width'] = "s"; }
-	$f_return = "<p>{$direct_cachedata['output_job_desc']}</p>";
-
-	if (isset ($direct_cachedata['output_pagetarget']))
-	{
-		if (!isset ($direct_cachedata['output_ajax_window_closeable'])) { $direct_cachedata['output_ajax_window_closeable'] = false; }
-
-		if ($direct_cachedata['output_jsjump'] > 0)
-		{
-			if (!isset ($direct_cachedata['output_ajax_window_modal'])) { $direct_cachedata['output_ajax_window_modal'] = false; }
-
-$f_return = ("<div>$f_return\n<p style='font-size:10px;text-align:center'>".(direct_local_get ("core_automated_redirection"))."<br />
-<a href=\"{$direct_cachedata['output_pagetarget']}\" target='_self'>".(direct_local_get ("core_continue"))."</a></p><script type='text/javascript'><![CDATA[
-self.setTimeout (\"self.location.href = \\\"{$direct_cachedata['output_pagetarget']}\\\"\",{$direct_cachedata['output_jsjump']});
-]]></script></div>");
-		}
-		else { $f_return = "<div>$f_return\n<p style='font-weight:bold;text-align:center'><a href=\"{$direct_cachedata['output_pagetarget']}\" target='_self'>".(direct_local_get ("core_continue"))."</a></p></div>"; }
-	}
-
-	return $f_return;
-}
-
-//f// direct_output_oset_default_embedded_ajax_dialog_done_extended ()
-/**
-* direct_output_oset_default_embedded_ajax_dialog_done_extended ()
-*
-* @uses   direct_debug()
-* @uses   USE_debug_reporting
-* @return string Valid XHTML code
-* @since  v0.1.08
-*/
-function direct_output_oset_default_embedded_ajax_dialog_done_extended ()
-{
-	global $direct_cachedata,$direct_settings;
-	if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_output_oset_default_embedded_ajax_dialog_done_extended ()- (#echo(__LINE__)#)"); }
-
-	if (!isset ($direct_cachedata['output_ajax_width'])) { $direct_cachedata['output_ajax_width'] = "m"; }
-
-	$f_return = "<div><p>{$direct_cachedata['output_job_desc']}</p>";
-	if (isset ($direct_cachedata['output_job_entries'])) { $f_return .= direct_default_oset_done_job_entries_parse ($direct_cachedata['output_job_entries']); }
-
-	if (isset ($direct_cachedata['output_pagetarget']))
-	{
-		if (!isset ($direct_cachedata['output_ajax_window_closeable'])) { $direct_cachedata['output_ajax_window_closeable'] = false; }
-		$f_return .= "\n<p style='font-weight:bold;text-align:center'><a href=\"{$direct_cachedata['output_pagetarget']}\" target='_self'>".(direct_local_get ("core_continue"))."</a></p>";
-	}
-
-	$f_return .= "</div>";
-	return $f_return;
-}
-
-//f// direct_output_oset_default_embedded_ajax_dialog_error_login ()
-/**
-* direct_output_oset_default_error_login ()
-*
-* @uses   direct_debug()
-* @uses   USE_debug_reporting
-* @return string Valid XHTML code
-* @since  v0.1.06
-*/
-function direct_output_oset_default_embedded_ajax_dialog_error_login ()
-{
-	global $direct_cachedata,$direct_settings;
-	if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_output_oset_default_embedded_ajax_dialog_error_login ()- (#echo(__LINE__)#)"); }
-
-	if (!isset ($direct_cachedata['output_ajax_window_closeable'])) { $direct_cachedata['output_ajax_window_closeable'] = false; }
-
-$f_return = ("<div><p>{$direct_cachedata['output_error']}</p>
-<p class='ui-state-error{$direct_settings['theme_css_corners']}' style='padding:$direct_settings[theme_td_padding];font-size:11px'><span style='font-weight:bold'>".(direct_local_get ("core_user_current")).":</span> {$direct_cachedata['output_current_user']}</p>
-<p>".(direct_local_get ("core_access_rights_insufficient"))."</p>
-<p style='font-weight:bold;text-align:center'><a href=\"{$direct_cachedata['output_link_login']}\" target='_self'>".(direct_local_get ("core_login_with_authorized_account"))."</a></p>");
-
-	if ($direct_cachedata['output_error_extradata']) { $f_return .= "\n<p style='font-size:11px'>{$direct_cachedata['output_error_extradata']}</p>"; }
-
-	if (!empty ($direct_cachedata['core_debug_backtrace']))
-	{
-		if (!isset ($direct_cachedata['output_ajax_width'])) { $direct_cachedata['output_ajax_width'] = "l"; }
-
-		$f_backtrace_array = array_map ("direct_html_encode_special",$direct_cachedata['core_debug_backtrace']);
-		$f_return .= ("\n<p class='ui-state-highlight{$direct_settings['theme_css_corners']}' style='padding:$direct_settings[theme_td_padding]'>Backtrace</p><ul style='text-align:left;font-size:10px'>\n<li>".(implode ("</li>\n<li>",$f_backtrace_array))."</li></ul>");
-	}
-	elseif (!isset ($direct_cachedata['output_ajax_width'])) { $direct_cachedata['output_ajax_width'] = "m"; }
-
-	$f_return .= "</div>";
-	return $f_return;
-}
-
-//f// direct_output_oset_default_embedded_ajax_dialog_error_standard ()
-/**
-* direct_output_oset_default_embedded_ajax_dialog_error_standard ()
-*
-* @uses   direct_debug()
-* @uses   USE_debug_reporting
-* @return string Valid XHTML code
-* @since  v0.1.08
-*/
-function direct_output_oset_default_embedded_ajax_dialog_error_standard ()
-{
-	global $direct_cachedata,$direct_settings;
-	if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_output_oset_default_embedded_ajax_dialog_error_standard ()- (#echo(__LINE__)#)"); }
-
-	if ((!isset ($direct_cachedata['output_ajax_window_closeable']))&&(($direct_cachedata['output_link_back'])||($direct_cachedata['output_link_retry']))) { $direct_cachedata['output_ajax_window_closeable'] = false; }
-
-	$f_return = "<div><p>{$direct_cachedata['output_error']}</p>";
-	if ($direct_cachedata['output_error_extradata']) { $f_return .= "\n<p style='font-size:11px'>{$direct_cachedata['output_error_extradata']}</p>"; }
-
-	if ($direct_cachedata['output_link_back'])
-	{
-		$f_return .= "\n<p style='text-align:center'><span style='font-weight:bold'><a href=\"{$direct_cachedata['output_link_back']}\" target='_self'>".(direct_local_get ("core_back"))."</a></span>";
-		if ($direct_cachedata['output_link_retry']) { $f_return .= "<br />\n<a href=\"{$direct_cachedata['output_link_retry']}\" target='_self'>".(direct_local_get ("core_try_again"))."</a>"; }
-		$f_return .= "</p>";
-	}
-	elseif ($direct_cachedata['output_link_retry']) { $f_return .= "\n<p style='font-weight:bold;text-align:center'><a href=\"{$direct_cachedata['output_link_retry']}\" target='_self'>".(direct_local_get ("core_try_again"))."</a></p>"; }
-
-	if (!empty ($direct_cachedata['core_debug_backtrace']))
-	{
-		if (!isset ($direct_cachedata['output_ajax_width'])) { $direct_cachedata['output_ajax_width'] = "l"; }
-
-		$f_backtrace_array = array_map ("direct_html_encode_special",$direct_cachedata['core_debug_backtrace']);
-		$f_return .= ("\n<p class='ui-state-highlight{$direct_settings['theme_css_corners']}' style='padding:$direct_settings[theme_td_padding]'>Backtrace</p><ul style='text-align:left;font-size:10px'>\n<li>".(implode ("</li>\n<li>",$f_backtrace_array))."</li></ul>");
-	}
-	elseif (!isset ($direct_cachedata['output_ajax_width'])) { $direct_cachedata['output_ajax_width'] = "m"; }
-
-	$f_return .= "</div>";
-	return $f_return;
-}
-
-if (isset ($direct_globals['@names']['output_formbuilder']))
-{
-	//f// direct_output_oset_default_embedded_ajax_dialog_form_preview ()
-/**
-	* direct_output_oset_default_embedded_ajax_dialog_form_preview ()
-	*
-	* @uses   direct_debug()
-	* @uses   USE_debug_reporting
-	* @return string Valid XHTML code
-	* @since  v0.1.08
-*/
-	function direct_output_oset_default_embedded_ajax_dialog_form_preview ()
-	{
-		global $direct_cachedata,$direct_globals,$direct_settings;
-		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_output_oset_default_form_preview ()- (#echo(__LINE__)#)"); }
-
-		$direct_globals['basic_functions']->require_file ($direct_settings['path_system']."/osets/$direct_settings[theme_oset]/$direct_cachedata[output_preview_function_file].php");
-
-		$f_oset = "direct_".$direct_cachedata['output_preview_function'];
-		$f_return = ((function_exists ($f_oset)) ? "<div>".($f_oset ())."</div>" : "");
-
-		return $f_return;
-	}
-
-	//f// direct_output_oset_default_embedded_ajax_dialog_form_results ()
-/**
-	* direct_output_oset_default_embedded_form ()
-	*
-	* @uses   direct_debug()
-	* @uses   USE_debug_reporting
-	* @return string Valid XHTML code
-	* @since  v0.1.08
-*/
-	function direct_output_oset_default_embedded_ajax_dialog_form_results ()
-	{
-		global $direct_cachedata,$direct_globals,$direct_settings;
-		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_output_oset_default_embedded_ajax_dialog_form_results ()- (#echo(__LINE__)#)"); }
-
-		if (!isset ($direct_cachedata['output_ajax_width'])) { $direct_cachedata['output_ajax_width'] = "m"; }
-		if (!isset ($direct_globals['output_formbuilder'])) { direct_class_init ("output_formbuilder"); }
-
-		$f_return = "<div>";
-
-		if (($direct_cachedata['output_credits_information'])||($direct_cachedata['output_credits_payment_data']))
-		{
-			$f_return .= "<p class='pagehighlightborder2{$direct_settings['theme_css_corners']} pagecontent' style='text-align:left'>";
-			if ($direct_cachedata['output_credits_information']) { $f_return .= $direct_cachedata['output_credits_information']; }
-			if ($direct_cachedata['output_credits_payment_data']) { $f_return .= ($direct_cachedata['output_credits_information'] ? "<br />\n<span style='font-size:10px'>{$direct_cachedata['output_credits_payment_data']}</span>" : $direct_cachedata['output_credits_payment_data']); }
-			$f_return .= "</p>";
-		}
-
-		$f_return .= ($direct_globals['output_formbuilder']->form_get_results ($direct_cachedata['output_formelements']))."</div>";
-		return $f_return;
-	}
-}
-
-//f// direct_output_oset_default_embedded_ajax_error_critical ()
 /**
 * direct_output_oset_default_embedded_ajax_error_critical ()
 *
@@ -303,7 +104,6 @@ function direct_output_oset_default_embedded_ajax_error_critical ()
 	return $f_return;
 }
 
-//f// direct_output_oset_default_embedded_ajax_error_fatal ()
 /**
 * direct_output_oset_default_embedded_ajax_error_fatal ()
 *
@@ -353,7 +153,6 @@ function direct_output_oset_default_embedded_ajax_error_fatal ()
 	return $f_return;
 }
 
-//f// direct_output_oset_default_embedded_ajax_error_login ()
 /**
 * direct_output_oset_default_embedded_ajax_error_login ()
 *
@@ -385,7 +184,6 @@ $f_return = ("<div><p class='pagecontenttitle{$direct_settings['theme_css_corner
 	return $f_return;
 }
 
-//f// direct_output_oset_default_embedded_ajax_error_standard ()
 /**
 * direct_output_oset_default_embedded_ajax_error_standard ()
 *
@@ -420,7 +218,41 @@ function direct_output_oset_default_embedded_ajax_error_standard ()
 	return $f_return;
 }
 
-//f// direct_output_oset_default_embedded_done ()
+/**
+* direct_output_oset_default_embedded_ajax_selection_list ()
+*
+* @uses   direct_debug()
+* @uses   USE_debug_reporting
+* @return string Valid XHTML code
+* @since  v0.1.09
+*/
+function direct_output_oset_default_embedded_ajax_selection_list ()
+{
+	global $direct_cachedata,$direct_globals,$direct_settings;
+	if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_output_oset_default_embedded_ajax_selection_list ()- (#echo(__LINE__)#)"); }
+
+	$f_return = (((isset ($direct_cachedata['output_selection_title_hidden']))&&($direct_cachedata['output_selection_title_hidden'])) ? "<div>" : "<div><p class='pagecontenttitle{$direct_settings['theme_css_corners']}'>{$direct_cachedata['output_selection_title']}</p>\n");
+	$f_return .= "<p class='pagecontent'>";
+
+	if (empty ($direct_cachedata['output_selection_list'])) { $f_return .= direct_local_get ("core_selection_list_empty"); }
+	else
+	{
+		$f_first_check = true;
+
+		foreach ($direct_cachedata['output_selection_list'] as $f_selected_id => $f_selected_title)
+		{
+			if ($f_first_check) { $f_first_check = false; }
+			else { $f_return .= ", "; }
+
+			$f_return .= $f_selected_title;
+		}
+	}
+
+	$f_return .= " (<a href=\"javascript:djs_swgAJAX_replace_url0('swgAJAX_embed_{$direct_cachedata['output_tid']}_point','{$direct_cachedata['output_selector_url']}')\">".(direct_local_get ("core_selector_activate"))."</a>)</p></div>";
+
+	return $f_return;
+}
+
 /**
 * direct_output_oset_default_embedded_done ()
 *
@@ -446,7 +278,7 @@ $f_embedded_code = ("<p class='pagecontent' style='font-size:10px;text-align:cen
 
 $f_return .= (isset ($direct_settings['swg_clientsupport']['JSDOMManipulation']) ? $f_embedded_code : ("<p id='swgjsjump_point' class='pagecontent' style='font-weight:bold;text-align:center'><span style='font-size:10px'>".(direct_local_get ("core_automated_redirection_unsupported"))."</span><br />
 <a href=\"{$direct_cachedata['output_pagetarget']}\" target='_self'>".(direct_local_get ("core_continue"))."</a></p><script type='text/javascript'><![CDATA[
-jQuery (function () { djs_run ({ func:'djs_swgDOM_replace',params: { data:\"".(str_replace ('"','\"',$f_embedded_code))."\",id:'swgjsjump_point' } }); });
+jQuery (function () { djs_swgDOM_replace ({ data:\"".(str_replace ('"','\"',$f_embedded_code))."\",id:'swgjsjump_point' }); });
 ]]></script>"));
 
 $f_return .= ("<script type='text/javascript'><![CDATA[
@@ -459,7 +291,6 @@ self.setTimeout (\"self.location.replace (\\\"{$direct_cachedata['output_pagetar
 	return $f_return;
 }
 
-//f// direct_output_oset_default_embedded_done_extended ()
 /**
 * direct_output_oset_default_embedded_done_extended ()
 *
@@ -485,7 +316,6 @@ $f_return = ("<h1 class='pagecontenttitle{$direct_settings['theme_css_corners']}
 	return $f_return;
 }
 
-//f// direct_output_oset_default_embedded_error_critical ()
 /**
 * direct_output_oset_default_embedded_error_critical ()
 *
@@ -512,7 +342,6 @@ function direct_output_oset_default_embedded_error_critical ()
 	return $f_return;
 }
 
-//f// direct_output_oset_default_embedded_error_fatal ()
 /**
 * direct_output_oset_default_embedded_error_fatal ()
 *
@@ -562,7 +391,6 @@ function direct_output_oset_default_embedded_error_fatal ()
 	return $f_return;
 }
 
-//f// direct_output_oset_default_embedded_error_standard ()
 /**
 * direct_output_oset_default_embedded_error_standard ()
 *
@@ -598,7 +426,6 @@ function direct_output_oset_default_embedded_error_standard ()
 
 if (isset ($direct_globals['@names']['output_formbuilder']))
 {
-	//f// direct_output_oset_default_embedded_form ()
 /**
 	* direct_output_oset_default_embedded_form ()
 	*
@@ -629,9 +456,9 @@ $f_return .= ($direct_settings['iscript_form']." name='$f_form_id' id='$f_form_i
 <p class='pagecontent' style='text-align:center'><input type='submit' id='{$f_form_id}b' value=\"{$direct_cachedata['output_formbutton']}\" class='pagecontentinputbutton' /><script type='text/javascript'><![CDATA[
 jQuery (function ()
 {
-	djs_run ({ func:'djs_formbuilder_init',params: { id:'{$f_form_id}b',type:'button' } });\n");
+	djs_formbuilder_init ({ id:'{$f_form_id}b',type:'button' });\n");
 
-		if (isset ($direct_cachedata['output_formsupport_ajax_dialog'])) { $f_return .= "\tdjs_run ({ func:'djs_formbuilder_init',params: { id:'$f_form_id',id_button:'{$f_form_id}b',type:'form' } });\n"; }
+		if (isset ($direct_cachedata['output_formsupport_ajax_dialog'])) { $f_return .= "\tdjs_formbuilder_init ({ id:'$f_form_id',id_button:'{$f_form_id}b',type:'form' });\n"; }
 		$f_return .= "});\n]]></script></p></form>";
 
 /*i// LICENSE_WARNING
@@ -650,7 +477,6 @@ LICENSE_WARNING_END //i*/
 		return $f_return;
 	}
 
-	//f// direct_output_oset_default_embedded_form_preview ()
 /**
 	* direct_output_oset_default_embedded_form_preview ()
 	*
@@ -687,9 +513,9 @@ $f_return .= ($direct_settings['iscript_form']." name='$f_form_id' id='$f_form_i
 <p class='pagecontent' style='text-align:center'><input type='submit' id='{$f_form_id}b' value=\"{$direct_cachedata['output_formbutton']}\" class='pagecontentinputbutton' /><script type='text/javascript'><![CDATA[
 jQuery (function ()
 {
-	djs_run ({ func:'djs_formbuilder_init',params: { id:'{$f_form_id}b',type:'button' } });\n");
+	djs_formbuilder_init ({ id:'{$f_form_id}b',type:'button' });\n");
 
-			if (isset ($direct_cachedata['output_formsupport_ajax_dialog'])) { $f_return .= "\tdjs_run ({ func:'djs_formbuilder_init',params: { id:'$f_form_id',id_button:'{$f_form_id}b',type:'form' } });\n"; }
+			if (isset ($direct_cachedata['output_formsupport_ajax_dialog'])) { $f_return .= "\tdjs_formbuilder_init ({ id:'$f_form_id',id_button:'{$f_form_id}b',type:'form' });\n"; }
 			$f_return .= "});\n]]></script></p></form>";
 		}
 
@@ -708,6 +534,75 @@ LICENSE_WARNING_END //i*/
 
 		return $f_return;
 	}
+
+/**
+	* direct_output_oset_default_embedded_options ()
+	*
+	* @uses   direct_debug()
+	* @uses   USE_debug_reporting
+	* @return string Valid XHTML code
+	* @since  v0.1.08
+*/
+	function direct_output_oset_default_embedded_options ()
+	{
+		global $direct_cachedata,$direct_globals,$direct_settings;
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_output_oset_default_embedded_options ()- (#echo(__LINE__)#)"); }
+
+		if (!isset ($direct_globals['output_formbuilder'])) { direct_class_init ("output_formbuilder"); }
+
+		if (isset ($direct_cachedata['output_formelements']))
+		{
+			$f_form_id = uniqid ("swg");
+		
+$f_return = ("<h1>".(direct_local_get ("core_options"))."</h1>
+{$direct_settings['iscript_form']} name='$f_form_id' id='$f_form_id'>".(direct_linker ("form",$direct_cachedata['output_formtarget'])).($direct_globals['output_formbuilder']->form_get ($direct_cachedata['output_formelements']))."
+<p class='pagecontent' style='text-align:center'><input type='submit' id='{$f_form_id}b' value=\"".(direct_local_get ("core_continue","text"))."\" class='pagecontentinputbutton' /><script type='text/javascript'><![CDATA[
+jQuery (function ()
+{
+	djs_load_functions ({ file:'swg_formbuilder.php.js' });
+	djs_formbuilder_init ({ id:'{$f_form_id}b',type:'button' });\n");
+
+			if (isset ($direct_cachedata['output_formsupport_ajax_dialog'])) { $f_return .= "\tdjs_formbuilder_init ({ id:'$f_form_id',id_button:'{$f_form_id}b',type:'form' });\n"; }
+			$f_return .= "});\n]]></script></p></form>";
+		}
+
+		return $f_return;
+	}
+}
+
+/**
+* direct_output_oset_default_embedded_selection_list ()
+*
+* @uses   direct_debug()
+* @uses   USE_debug_reporting
+* @return string Valid XHTML code
+* @since  v0.1.09
+*/
+function direct_output_oset_default_embedded_selection_list ()
+{
+	global $direct_cachedata,$direct_globals,$direct_settings;
+	if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_output_oset_default_embedded_selection_list ()- (#echo(__LINE__)#)"); }
+
+	$f_return = (((isset ($direct_cachedata['output_selection_title_hidden']))&&($direct_cachedata['output_selection_title_hidden'])) ? "" : "<h1 class='pagecontenttitle{$direct_settings['theme_css_corners']}'>{$direct_cachedata['output_selection_title']}</h1>\n");
+	$f_return .= "<p class='pagecontent'>";
+
+	if (empty ($direct_cachedata['output_selection_list'])) { $f_return .= direct_local_get ("core_selection_list_empty"); }
+	else
+	{
+		$f_first_check = true;
+
+		foreach ($direct_cachedata['output_selection_list'] as $f_selected_id => $f_selected_title)
+		{
+			if ($f_first_check) { $f_first_check = false; }
+			else { $f_return .= ", "; }
+
+			$f_return .= $f_selected_title;
+		}
+	}
+
+	$f_return .= " (<a href=\"".(direct_linker_dynamic ("url0",$direct_cachedata['output_selector_url']))."\" target='_self'>".(direct_local_get ("core_selector_activate"))."</a>)</p>";
+
+	return $f_return;
 }
 
 //j// Script specific commands

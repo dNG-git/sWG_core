@@ -1,4 +1,4 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <swg_settings_file_v1>
-<theme_output_page_title value="" />
+<theme><output><page><title value="" /></page></output></theme>
 </swg_settings_file_v1>

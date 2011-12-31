@@ -51,7 +51,6 @@ Testing for required classes
 
 if (defined ("CLASS_direct_basic_functions_inline"))
 {
-//c// direct_basic_functions
 /**
 * Currently we have only really basic functions - now we want to introduce
 * some more.
@@ -90,7 +89,6 @@ class direct_basic_functions extends direct_basic_functions_inline
 Extend the class using old and new behavior
 ------------------------------------------------------------------------- */
 
-	//f// direct_basic_functions->__construct () and direct_basic_functions->direct_basic_functions ()
 /**
 	* Constructor (PHP5) __construct (direct_basic_functions)
 	*
@@ -149,7 +147,6 @@ Set up the caching variables
 *\/
 	function direct_basic_functions () { $this->__construct (); }
 :#\n*/
-	//f// direct_basic_functions->__destruct ()
 /**
 	* Destructor (PHP5) __destruct (direct_basic_functions)
 	*
@@ -157,7 +154,6 @@ Set up the caching variables
 */
 	/*#ifndef(PHP4) */public /* #*/function __destruct () { restore_error_handler (); }
 
-	//f// direct_basic_functions->backtrace_get ($f_data = NULL)
 /**
 	* Parse a given backtrace array (or try to load one via "debug_backtrace").
 	*
@@ -193,7 +189,6 @@ Set up the caching variables
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -basic_functions_class->backtrace_get ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_basic_functions->datetime ($f_type,$f_date,$f_cutz,$f_dtconnector,$f_dtconnector = "")
 /**
 	* First of all, we want to provide a function to format a date (including
 	* local time settings).
@@ -216,45 +211,48 @@ Set up the caching variables
 	{
 		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -basic_functions_class->datetime ($f_type,$f_date,$f_cutz,$f_dtconnector)- (#echo(__LINE__)#)"); }
 
-		if (!empty ($f_cutz)) { $f_date += (3600 * $f_cutz); }
+		if ($f_date)
+		{
+			if (!empty ($f_cutz)) { $f_date += (3600 * $f_cutz); }
 
-		switch ($f_type)
-		{
-		case "longdate":
-		{
-			$f_month = gmdate ("n",$f_date);
-			$f_return = (gmdate (direct_local_get ("datetime_longdate_1"),$f_date)).(direct_local_get ("datetime_longdate_month_".$f_month)).(gmdate (direct_local_get ("datetime_longdate_2"),$f_date));
+			switch ($f_type)
+			{
+			case "longdate":
+			{
+				$f_month = gmdate ("n",$f_date);
+				$f_return = (gmdate (direct_local_get ("datetime_longdate_1"),$f_date)).(direct_local_get ("datetime_longdate_month_".$f_month)).(gmdate (direct_local_get ("datetime_longdate_2"),$f_date));
 
-			break 1;
-		}
-		case "longdate&time":
-		{
-			$f_month = gmdate ("n",$f_date);
-			$f_return = (gmdate (direct_local_get ("datetime_longdate_1"),$f_date)).(direct_local_get ("datetime_longdate_month_".$f_month)).(gmdate (direct_local_get ("datetime_longdate_2"),$f_date)).$f_dtconnector.(gmdate (direct_local_get ("datetime_time"),$f_date));
+				break 1;
+			}
+			case "longdate&time":
+			{
+				$f_month = gmdate ("n",$f_date);
+				$f_return = (gmdate (direct_local_get ("datetime_longdate_1"),$f_date)).(direct_local_get ("datetime_longdate_month_".$f_month)).(gmdate (direct_local_get ("datetime_longdate_2"),$f_date)).$f_dtconnector.(gmdate (direct_local_get ("datetime_time"),$f_date));
 
-			break 1;
-		}
-		case "shortdate":
-		{
-			$f_return = gmdate (direct_local_get ("datetime_shortdate"),$f_date);
-			break 1;
-		}
-		case "shortdate&time":
-		{
-			$f_return = (gmdate (direct_local_get ("datetime_shortdate"),$f_date)).$f_dtconnector.(gmdate (direct_local_get ("datetime_time"),$f_date));
-			break 1;
-		}
-		default: { $f_return = gmdate (direct_local_get ("datetime_time"),$f_date); }
-		}
+				break 1;
+			}
+			case "shortdate":
+			{
+				$f_return = gmdate (direct_local_get ("datetime_shortdate"),$f_date);
+				break 1;
+			}
+			case "shortdate&time":
+			{
+				$f_return = (gmdate (direct_local_get ("datetime_shortdate"),$f_date)).$f_dtconnector.(gmdate (direct_local_get ("datetime_time"),$f_date));
+				break 1;
+			}
+			default: { $f_return = gmdate (direct_local_get ("datetime_time"),$f_date); }
+			}
 
-		$f_return .= " ".(direct_local_get ("core_timezone_gmt"));
-		if ($f_cutz < 0) { $f_return .= $f_cutz; }
-		if ($f_cutz > 0) { $f_return .= "+".$f_cutz; }
+			$f_return .= " ".(direct_local_get ("core_timezone_gmt"));
+			if ($f_cutz < 0) { $f_return .= $f_cutz; }
+			if ($f_cutz > 0) { $f_return .= "+".$f_cutz; }
+		}
+		else { $f_return = direct_local_get ("core_unknown"); }
 
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -basic_functions_class->datetime ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_basic_functions->dsd_parse ($f_data)
 /**
 	* DSD stands for dynamic service data and should be used for transfering
 	* IDs for news, topics, ... All data will be encoded using addslashes -
@@ -292,7 +290,6 @@ Set up the caching variables
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -basic_functions_class->dsd_parse ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_basic_functions->include_file ($f_file_pathname,$f_cachelevel = 4,$f_once = true)
 /**
 	* Include a file or return 'false' - process will continue.
 	*
@@ -350,7 +347,6 @@ Set up the caching variables
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -basic_functions_class->include_file ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_basic_functions->inputfilter_basic ($f_data)
 /**
 	* There are some persons out there that may want to inject data like NULL
 	* characters into our system. The function "inputfilter_basic ()" will
@@ -377,7 +373,6 @@ Set up the caching variables
 		return $f_data;
 	}
 
-	//f// direct_basic_functions->inputfilter_email ($f_data)
 /**
 	* Checks a eMail address if it's valid (RFC822) and returns the (unfolded)
 	* address if it is.
@@ -488,7 +483,6 @@ Set up the caching variables
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -basic_functions_class->inputfilter_email ()- (#echo(__LINE__)#)",:#*/($f_continue_check ? $f_data : "")/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_basic_functions->inputfilter_filepath ($f_data,$f_uprefs_allowed)
 /**
 	* File pathes should never contain target definitions like directory
 	* traversals. We will filter them using "inputfilter_filepath ()".
@@ -522,7 +516,6 @@ Set up the caching variables
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -basic_functions_class->inputfilter_filepath ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_basic_functions->inputfilter_number ($f_data)
 /**
 	* Convert to a number-only format.
 	*
@@ -546,7 +539,6 @@ Set up the caching variables
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -basic_functions_class->inputfilter_number ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_basic_functions->magic_quotes_filter (&$f_data,$f_force = false)
 /**
 	* Unfortunately we are unable to stop Magic-Quotes-Runtime completely or
 	* sometimes it should add slashes to incoming data. The following function
@@ -584,7 +576,6 @@ Set up the caching variables
 		}
 	}
 
-	//f// direct_basic_functions->magic_quotes_input (&$f_data)
 /**
 	* Incoming variables may contain additional slashes as an increasing step for
 	* security. Our function "magic_quotes_input ()" will remove these
@@ -603,7 +594,6 @@ Set up the caching variables
 		if ((INFO_magic_quotes_input)&&(!empty ($f_data))) { $f_data = (INFO_magic_quotes_sybase ? str_replace ("''","'",$f_data) : stripslashes ($f_data)); }
 	}
 
-	//f// direct_basic_functions->memcache_get_file ($f_file_pathname)
 /**
 	* Reads a file from the memcache or the filesystem. Certain system files are
 	* read in on each page call. These small files are stored in the memcache
@@ -654,7 +644,6 @@ Set up the caching variables
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -basic_functions_class->memcache_get_file ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_basic_functions->memcache_get_file_merged_xml ($f_file_pathname)
 /**
 	* This function uses preparsed XML files to increase performance. Please node
 	* that these files are only readable with "serialize ()" and "unserialize ()"
@@ -712,7 +701,6 @@ Set up the caching variables
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -basic_functions_class->memcache_get_file_merged_xml ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_basic_functions->memcache_write_file ($f_file_pathname,$f_data,$f_type = "s0")
 /**
 	* Writes data to a file (and deletes the old memcache copy).
 	*
@@ -744,7 +732,6 @@ Set up the caching variables
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -basic_functions_class->memcache_write_file ()- (#echo(__LINE__)#)",(:#*/direct_file_write ($f_data,$f_file_pathname,$f_type)/*#ifdef(DEBUG):),true):#*/;
 	}
 
-	//f// direct_basic_functions->mimetype_extension ($f_extension,$f_case_insensitive = false)
 /**
 	* Identify a mimetype via the given extension. Warning: Extensions may be
 	* altered. Take the needed steps to check the magic string.
@@ -776,7 +763,6 @@ Set up the caching variables
 		else { return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -basic_functions_class->mimetype_extension ()- (#echo(__LINE__)#)",:#*/"application/octet-stream"/*#ifdef(DEBUG):,true):#*/; }
 	}
 
-	//f// direct_basic_functions->mimetype_icon ($f_mimetype,$f_file_pathname = "",$f_case_insensitive = false)
 /**
 	* Return the mimetype icon for the given mimetype.
 	*
@@ -831,7 +817,6 @@ Set up the caching variables
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -basic_functions_class->mimetype_icon ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_basic_functions->require_file ($f_file_pathname,$f_cachelevel = 4,$f_once = true)
 /**
 	* Include a required file or initiate an error message if the file does not
 	* exist. The process will stop after printing out the error message.
@@ -909,7 +894,6 @@ Set up the caching variables
 		}
 	}
 
-	//f// direct_basic_functions->settings_get ($f_file_pathname,$f_required = false,$f_use_cache = true)
 /**
 	* Reads settings from file (XML-encoded) and adds them to $direct_settings.
 	*
@@ -992,7 +976,6 @@ Set up the caching variables
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -basic_functions_class->settings_get ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_basic_functions->settings_write ($f_settings,$f_file_pathname)
 /**
 	* Writes the setting array to a file (XML-encoded).
 	*
@@ -1020,7 +1003,7 @@ Set up the caching variables
 
 		if (($f_continue_check)&&(is_array ($f_settings))&&($f_xml_object))
 		{
-			$f_xml_object->node_add ("swg_settings_file_v1","",(array ("xmlns" => "urn:de.direct-netware.xmlns:swg.settings.v1")));
+			$f_xml_object->node_add ("swg_settings_file_v1","",(array ("xmlns" => "urn:de-direct-netware-xmlns:swg.settings.v1")));
 			foreach ($f_settings as $f_setting_key => $f_setting_value) { $f_xml_object->node_add ("swg_settings_file_v1 ".(str_replace ("_"," ",$f_setting_key)),$f_setting_value,(array ("xml:space" => "preserve"))); }
 			$f_return = $this->memcache_write_file ($f_xml_object->cache_export (),$f_file_pathname);
 		}
@@ -1028,7 +1011,6 @@ Set up the caching variables
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -basic_functions_class->settings_write ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_basic_functions->tmd5 ($f_data,$f_bytemix = "")
 /**
 	* To increase security we are using two additional steps for MD5. All
 	* strings will be divided into three parts and reverted to make attacks
@@ -1091,7 +1073,6 @@ it together to our result.
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -basic_functions_class->tmd5 ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_basic_functions->varfilter ($f_data,$f_type = "output")
 /**
 	* This function provides access to system wide information saved in variables.
 	*
@@ -1115,7 +1096,7 @@ it together to our result.
 		{
 			foreach ($f_result_array as $f_var_array)
 			{
-				$f_var_array[1] = preg_replace ("#(\W+)#i","",$f_var_array[1]);
+				$f_var_array[1] = preg_replace ("#(\W+)#","",$f_var_array[1]);
 
 				if ($f_var_array[1])
 				{
@@ -1149,7 +1130,6 @@ it together to our result.
 	}
 }
 
-//f// direct_core_php_error ($f_level,$f_err_msg,$f_err_file = NULL,$f_err_no = NULL,$f_err_context = NULL)
 /**
 * Define a error handler for "trigger_error ()" and "E_USER_NOTICE",
 * "E_USER_WARNING" as well as "E_USER_ERROR".

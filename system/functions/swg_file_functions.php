@@ -53,7 +53,6 @@ if (!defined ("direct_product_iversion")) { exit (); }
 
 //j// Functions and classes
 
-//f// direct_file_get ($f_type,$f_file_pathname)
 /**
 * Let's work with files - use "direct_file_get ()" to get content from a local
 * file. A time check will stop the reading process before a script timeout
@@ -121,7 +120,6 @@ function direct_file_get ($f_type,$f_file_pathname)
 	return $f_return;
 }
 
-//f// direct_file_write ($f_data,$f_file_pathname,$f_type = "")
 /**
 * The following function will save given data (as $f_data) to a file.
 *

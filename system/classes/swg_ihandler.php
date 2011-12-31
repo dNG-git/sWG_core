@@ -51,7 +51,6 @@ Testing for required classes
 
 if (!defined ("CLASS_direct_input"))
 {
-//c// direct_ihttp
 /**
 * The "direct_ihandler" is mainly an interface specification.
 *
@@ -91,7 +90,6 @@ class direct_input extends direct_virtual_class
 Extend the class using old and new behavior
 ------------------------------------------------------------------------- */
 
-	//f// direct_input->__construct () and direct_input->direct_input ()
 /**
 	* Constructor (PHP5) __construct (direct_input)
 	*
@@ -141,7 +139,6 @@ Set protocol specific data
 *\/
 	function direct_input () { $this->__construct (); }
 :#*/
-	//f// direct_input->auth_get ()
 /**
 	* Return the authentification protocol identified through protocol specific
 	* ways.
@@ -151,7 +148,6 @@ Set protocol specific data
 */
 	/*#ifndef(PHP4) */public /* #*/function auth_get () { return $this->auth; }
 
-	//f// direct_input->pass_get ()
 /**
 	* Return a password identified through protocol specific ways.
 	*
@@ -160,7 +156,6 @@ Set protocol specific data
 */
 	/*#ifndef(PHP4) */public /* #*/function pass_get () { return $this->pass; }
 
-	//f// direct_input->uuid_get ()
 /**
 	* Return a UUID identified through protocol specific ways.
 	*
@@ -169,7 +164,6 @@ Set protocol specific data
 */
 	/*#ifndef(PHP4) */public /* #*/function uuid_get () { return $this->uuid; }
 
-	//f// direct_input->uuid_set ($f_uuid)
 /**
 	* Set the defined UUID.
 	*
@@ -183,7 +177,6 @@ Set protocol specific data
 		$this->uuid = $f_uuid;
 	}
 
-	//f// direct_input->user_get ()
 /**
 	* Return a user name identified through protocol specific ways.
 	*
@@ -192,7 +185,6 @@ Set protocol specific data
 */
 	/*#ifndef(PHP4) */public /* #*/function user_get () { return $this->user; }
 
-	//f// direct_input->user_set ($f_user)
 /**
 	* Set the defined user name.
 	*

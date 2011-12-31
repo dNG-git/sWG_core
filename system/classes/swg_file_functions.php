@@ -53,7 +53,6 @@ if (($g_continue_check)&&(!defined ("CLASS_direct_file"))) { $g_continue_check =
 
 if ($g_continue_check)
 {
-//c// direct_file_functions
 /**
 * This wrapper class extends "ext_core/file.php" and sets our default
 * parameters.
@@ -73,7 +72,6 @@ class direct_file_functions extends direct_file
 Extend the class using old and new behavior
 ------------------------------------------------------------------------- */
 
-	//f// direct_file_functions->__construct () and direct_file_functions->direct_file_functions ()
 /**
 	* Constructor (PHP5) __construct (direct_file_functions)
 	*

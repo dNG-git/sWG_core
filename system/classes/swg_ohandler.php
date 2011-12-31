@@ -54,7 +54,6 @@ if (!defined ("CLASS_direct_output_inline")) { $g_continue_check = false; }
 
 if ($g_continue_check)
 {
-//c// direct_output
 /**
 * "direct_output" is responsible for formatting content and displaying
 * it.
@@ -107,7 +106,6 @@ class direct_output extends direct_output_inline
 Extend the class using old and new behavior
 ------------------------------------------------------------------------- */
 
-	//f// direct_output->__construct () and direct_output->direct_output ()
 /**
 	* Constructor (PHP5) __construct (direct_output)
 	*
@@ -167,7 +165,6 @@ Set up some variables
 *\/
 	function direct_output () { $this->__construct (); }
 :#*/
-	//f// direct_output->backtrace_get ($f_data = NULL,$f_handling = "text")
 /**
 	* Parse a given backtrace array (or try to load one via "debug_backtrace").
 	*
@@ -190,7 +187,6 @@ Set up some variables
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -output_class->backtrace_get ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_output->css_header ($f_ajaxloading = true,$f_helper = true)
 /**
 	* Adds standard CSS definitions to the list of output (X)HTML headers
 	*
@@ -205,15 +201,12 @@ Set up some variables
 */
 	/*#ifndef(PHP4) */public /* #*/function css_header ($f_ajaxloading = true,$f_helper = true)
 	{
-		global $direct_settings;
 		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -output_class->css_header (+f_ajaxloading,+f_helper)- (#echo(__LINE__)#)"); }
 
-		$this->header_elements ("<link href='$direct_settings[path_mmedia]/ext_jquery/themes/$direct_settings[theme_jquery_ui]/jquery-ui-1.8.14.css' rel='stylesheet' type='text/css' />");
-		if ($f_ajaxloading) { $this->header_elements ("<link href='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+data/mmedia/swg_output_ajaxloading.php.css",true,false))."' rel='stylesheet' type='text/css' />"); }
-		if ($f_helper) { $this->header_elements ("<link href='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+data/mmedia/swg_output_helper.php.css",true,false))."' rel='stylesheet' type='text/css' />"); }
+		if ($f_ajaxloading) { $this->header_elements ("<link href='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+data/mmedia/swg_output_ajaxloading.php.css",true,false))."' rel='stylesheet' type='text/css' />","link_stylesheet_output_ajaxloading"); }
+		if ($f_helper) { $this->header_elements ("<link href='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+data/mmedia/swg_output_helper.php.css",true,false))."' rel='stylesheet' type='text/css' />","link_stylesheet_output_helper"); }
 	}
 
-	//f// direct_output->header_elements ($f_data = "",$f_id = "",$f_unshift = False)
 /**
 	* Creates a JavaScript section including all functions required by the sWG.
 	*
@@ -239,7 +232,6 @@ Set up some variables
 		else { return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -output_class->header_elements ()- (#echo(__LINE__)#)",(:#*/implode ("\n",$this->output_additional_header)/*#ifdef(DEBUG):),true):#*/; }
 	}
 
-	//f// direct_output->header_sent ($f_id)
 /**
 	* Checks if a header ID was added to the output.
 	*
@@ -255,7 +247,6 @@ Set up some variables
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -output_class->header_sent ()- (#echo(__LINE__)#)",(:#*/isset ($this->output_additional_header[$f_id])/*#ifdef(DEBUG):),true):#*/;
 	}
 
-	//f// direct_output->js_header ()
 /**
 	* Adds a JavaScript section including all functions required by the sWG to the
 	* list of output (X)HTML headers.
@@ -268,32 +259,20 @@ Set up some variables
 */
 	/*#ifndef(PHP4) */public /* #*/function js_header ()
 	{
-		global $direct_settings;
+		global $direct_globals,$direct_settings;
 		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -output_class->js_header ()- (#echo(__LINE__)#)"); }
 
-		$this->header_elements ("<script src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_mmedia]/swg_AJAX.php.js++dbid+".$direct_settings['product_buildid'],true,true))."' type='text/javascript'></script><!-- // Asynchronous JavaScript and XML // -->");
-		$this->header_elements ("<script src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_mmedia]/swg_DOM.php.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'></script><!-- // jQuery based DOM // -->");
+		$f_uuid_check = ((($direct_globals['kernel']->v_uuid_check_usage ())&&(!$direct_globals['kernel']->v_uuid_is_cookied ())) ? true : false);
+		$this->header_elements ("<script src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_mmedia]/swg_AJAX.php.js++dbid+".$direct_settings['product_buildid'],true,$f_uuid_check))."' type='text/javascript'></script><!-- // Asynchronous JavaScript and XML // -->","script_ajax");
+		$this->header_elements ("<script src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_mmedia]/swg_DOM.php.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'></script><!-- // jQuery based DOM // -->","script_dom");
+		$this->header_elements ("<script src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_mmedia]/swg_basic_functions.php.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'></script><!-- // Basic javascript helper functions // -->","script_basic_functions",true);
 
-		if ((isset ($_SERVER['HTTP_USER_AGENT']))&&(preg_match ("#msie (\d)\.#i",$_SERVER['HTTP_USER_AGENT'],$f_result_array))&&($f_result_array[1] < 7))
-		{
-$this->header_elements ("<script src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_mmedia]/ext_jquery/jquery.pngFix.min.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'></script><!-- // jQuery pngFix library // -->
-<script type='text/javascript'><![CDATA[
-jQuery(function ()
-{
-	jQuery(self.document).pngFix ({ blankgif:'".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_mmedia]/ext_jquery/jquery.pngFix.gif",true,false))."' })
-}));
-]]></script>");
-		}
-
-		$this->header_elements ("<script src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_mmedia]/swg_basic_functions.php.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'></script><!-- // Basic javascript helper functions // -->","",true);
-
-$this->header_elements ("<script src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_mmedia]/ext_jquery/jquery-1.6.2.min.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'></script><!-- // jQuery library // -->
+$this->header_elements ("<script src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_mmedia]/ext_jquery/jquery-1.7.1.min.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'></script><!-- // jQuery library // -->
 <script type='text/javascript'><![CDATA[
 if (typeof (djs_var) == 'undefined') { var djs_var = [ ]; }
-]]></script>","",true);
+]]></script>","script_jquery",true);
 	}
 
-	//f// direct_output->js_helper ($f_text,$f_url = "",$f_close_onload = true)
 /**
 	* Returns valid XHTML 1.0 code for a dynamic helper box (using JavaScript to
 	* open / close it)
@@ -313,12 +292,11 @@ if (typeof (djs_var) == 'undefined') { var djs_var = [ ]; }
 		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -output_class->js_helper (+f_text,$f_url,$f_close_onload)- (#echo(__LINE__)#)"); }
 
 $this->header_elements ("<script type='text/javascript'><![CDATA[
-jQuery (function () { djs_run ({ func:'djs_load_functions',params: { file:'swg_output_helper.php.js' } }); });
-]]></script>");
+jQuery (function () { djs_load_functions ({ file:'swg_output_helper.php.js' }); });
+]]></script>","script_output_helper");
 
 		$f_js_helper_id = ("swghelp".$this->js_helper_element);
 		$this->js_helper_element++;
-		$f_close_onload = ($f_close_onload ? "true" : "false");
 		if (strlen ($f_url)) { $f_text = "<a href=\"$f_url\" target='_blank'>$f_text</a>"; }
 
 		$f_embedded_code = "<div id='$f_js_helper_id' class='pagehelperbg' style='position:relative;width:75%;margin:auto;text-align:justify'><div class='pagehelpericon'><img src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_mmedia]/swg_output_helper.png",true,false))."' width='32' height='32' alt=\"".(direct_local_get ("core_detailed_information"))."\" title=\"".(direct_local_get ("core_detailed_information"))."\" /></div><span class='pagehelpercontent'>$f_text</span></div>";
@@ -331,15 +309,16 @@ jQuery (function () { djs_var.core_output_helper_cache['$f_js_helper_id'] = jQue
 		}
 		else
 		{
+			$f_close_onload = ($f_close_onload ? "true" : "false");
+
 $f_return = ($f_embedded_code."<script type='text/javascript'><![CDATA[
-jQuery (function () { djs_run ({ func:'djs_core_helper_init',params:{ id:'$f_js_helper_id',hide:$f_close_onload } }); });
+jQuery (function () { djs_core_helper_init ({ id:'$f_js_helper_id',hide:$f_close_onload }); });
 ]]></script>");
 		}
 
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -output_class->js_helper ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_output->options_check ($f_menu)
 /**
 	* Checks if a menu container has content
 	*
@@ -355,7 +334,6 @@ jQuery (function () { djs_run ({ func:'djs_core_helper_init',params:{ id:'$f_js_
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -output_class->options_check ()- (#echo(__LINE__)#)",(:#*/isset ($this->menus[$f_menu])/*#ifdef(DEBUG):),true):#*/;
 	}
 
-	//f// direct_output->options_flush ($f_all = false)
 /**
 	* Flushs the content of menu containers
 	*
@@ -383,7 +361,6 @@ jQuery (function () { djs_run ({ func:'djs_core_helper_init',params:{ id:'$f_js_
 		}
 	}
 
-	//f// direct_output->options_flush_unprotect ($f_menu)
 /**
 	* Removes the protection of a menu container
 	*
@@ -398,7 +375,6 @@ jQuery (function () { djs_run ({ func:'djs_core_helper_init',params:{ id:'$f_js_
 		$this->menus_protected[$f_menu] = false;
 	}
 
-	//f// direct_output->options_generator ($f_type,$f_menu,$f_seperator = "")
 /**
 	* Creates XHTML 1.0 code for the given menu using the specified type
 	*
@@ -414,7 +390,6 @@ jQuery (function () { djs_run ({ func:'djs_core_helper_init',params:{ id:'$f_js_
 */
 	/*#ifndef(PHP4) */public /* #*/function options_generator ($f_type,$f_menu,$f_seperator = "") { }
 
-	//f// direct_output->options_insert ($f_level,$f_menu,$f_url,$f_title,$f_image,$f_urlmode = "asis")
 /**
 	* Adds an item to a specified menu container
 	*
@@ -446,11 +421,14 @@ jQuery (function () { djs_run ({ func:'djs_core_helper_init',params:{ id:'$f_js_
 			if (!isset ($this->menus[$f_menu][$f_level])) { $this->menus[$f_menu][$f_level] = array (); }
 			$f_image = ((($f_image)&&($direct_settings['swg_options_image'])) ? $f_image : "");
 			if (strpos ($f_url,"[source]") !== false) { $f_url = str_replace ("[source]",($direct_cachedata['page_this'] ? urlencode (base64_encode ($direct_cachedata['page_this'])) : ""),$f_url); }
-			if ($f_urlmode != "asis") { $f_url = direct_linker ($f_urlmode,$f_url); }
+
+			if ($f_urlmode == "javascript") { $f_url = "javascript:".$f_url; }
+			elseif ($f_urlmode != "asis") { $f_url = direct_linker ($f_urlmode,$f_url); }
 
 $this->menus[$f_menu][$f_level][] = array (
 "url" => $f_url,
 "title" => $f_title,
+"type" => (($f_urlmode == "javascript") ? "javascript" : "link"),
 "image" => $f_image
 );
 
@@ -461,7 +439,6 @@ $this->menus[$f_menu][$f_level][] = array (
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -output_class->options_insert ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_output->oset ($f_module,$f_obj)
 /**
 	* Load an OSet element for output (output_content)
 	*
@@ -495,7 +472,6 @@ $this->menus[$f_menu][$f_level][] = array (
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -output_class->oset ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_output->oset_callable ($f_module,$f_obj,$f_include = false)
 /**
 	* Return the OSet callable.
 	*
@@ -514,47 +490,41 @@ $this->menus[$f_menu][$f_level][] = array (
 		global $direct_globals,$direct_settings;
 		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -output_class->oset_content ($f_module,$f_obj)- (#echo(__LINE__)#)"); }
 
+/* -------------------------------------------------------------------------
+We are supporting subdirectories. Split it and get relevant module data!
+------------------------------------------------------------------------- */
+
+		if (strpos ($f_module,"/") === false) { $f_oset_file = ($f_include ? "swgi_$f_module.php" : "swg_$f_module.php"); }
+		else
+		{
+			$f_oset_file = substr (strrchr ($f_module,"/"),1);
+			$f_oset_file = preg_replace ("#[;\/\\\?:@\=\&\.\+]#i","",$f_oset_file);
+
+			$f_oset_path = preg_quote ($f_oset_file);
+			$f_oset_path = preg_replace ("#\/$f_oset_path$#","",$f_module);
+			$f_oset_path = preg_replace ("#[;\?:@\=\&\.\+]#i","",$f_oset_path);
+
+			$f_oset_file = ($f_include ? $f_oset_path."/swgi_{$f_oset_file}.php" : $f_oset_path."/swg_{$f_oset_file}.php");
+			$f_module = str_replace ("/","_",$f_module);
+		}
+
 		$f_oset = ($f_include ? "direct_{$f_module}_oset_".$f_obj : "direct_output_oset_{$f_module}_".$f_obj);
 		$f_return = "";
 
 		if (!function_exists ($f_oset))
 		{
 /* -------------------------------------------------------------------------
-We are supporting subdirectories. Split it and get relevant module data!
-------------------------------------------------------------------------- */
-
-			if (strpos ($f_module,"/") === false) { $f_oset_file = ($f_include ? "swgi_$f_module.php" : "swg_$f_module.php"); }
-			else
-			{
-				$f_oset_file = substr (strrchr ($f_module,"/"),1);
-				$f_oset_file = preg_replace ("#[;\/\\\?:@\=\&\.\+]#i","",$f_oset_file);
-
-				$f_oset_path = preg_quote ($f_oset_file);
-				$f_oset_path = preg_replace ("#\/$f_oset_path$#","",$f_module);
-				$f_oset_path = preg_replace ("#[;\?:@\=\&\.\+]#i","",$f_oset_path);
-
-				$f_oset_file = ($f_include ? $f_oset_path."/swgi_{$f_oset_file}.php" : $f_oset_path."/swg_{$f_oset_file}.php");
-				$f_module = str_replace ("/","_",$f_module);
-			}
-
-/* -------------------------------------------------------------------------
 The next step is to get the file if available ... otherwise try to catch the
 file of the default OSet
 ------------------------------------------------------------------------- */
 
-			if ((!$direct_globals['basic_functions']->include_file ($direct_settings['path_system']."/osets/{$this->oset}/".$f_oset_file))&&($direct_settings['swg_theme_oset']))
-			{
-				$this->oset = $direct_settings['swg_theme_oset'];
-				$direct_globals['basic_functions']->require_file ($direct_settings['path_system']."/osets/{$this->oset}/".$f_oset_file);
-			}
-
+			if ((!$direct_globals['basic_functions']->include_file ($direct_settings['path_system']."/osets/{$this->oset}/".$f_oset_file))&&($direct_settings['swg_theme_oset'])) { $direct_globals['basic_functions']->require_file ($direct_settings['path_system']."/osets/{$direct_settings['swg_theme_oset']}/".$f_oset_file); }
 			$direct_globals['basic_functions']->settings_get ($direct_settings['path_system']."/osets/{$this->oset}/swg_oset_up.xml");
 		}
 
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -output_class->oset_content ()- (#echo(__LINE__)#)",:#*/(function_exists ($f_oset) ? $f_oset : NULL)/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_output->oset_content ($f_module,$f_obj)
 /**
 	* Load an OSet element and return it.
 	*
@@ -574,7 +544,6 @@ file of the default OSet
 		return /*#ifdef(DEBUG):direct_debug (9,"sWG/#echo(__FILEPATH__)# -output_class->oset_content ()- (#echo(__LINE__)#)",:#*/(is_callable ($f_oset) ? $f_oset () : "")/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_output_inline->output_send ($f_title = "",$f_headers = NULL)
 /**
 	* This function is used for later multi-level delivery. Only the final
 	* node actually sends data to the requesting client.
@@ -592,7 +561,20 @@ file of the default OSet
 		parent::output_send ($f_title,$f_headers);
 	}
 
-	//f// direct_output->pages_generator ($f_uri,$f_pages,$f_cpage = "",$f_with_lastnext_keys = true)
+/**
+	* Set an alternative OSet.
+	*
+	* @param  string $f_oset OSet name
+	* @uses   direct_debug()
+	* @uses   USE_debug_reporting
+	* @since  v0.1.09
+*/
+	/*#ifndef(PHP4) */public /* #*/function oset_set ($f_oset)
+	{
+		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -output_class->oset_set ($f_oset)- (#echo(__LINE__)#)"); }
+		$this->oset = $f_oset;
+	}
+
 /**
 	* Return a complete page list (XHTML) using the given paramters
 	*
@@ -686,7 +668,6 @@ file of the default OSet
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -output_class->pages_generator ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_output->redirect ($f_url,$f_use_current_url = false)
 /**
 	* We need some header outputs for redirecting, that's why there exists this
 	* function
@@ -698,9 +679,8 @@ file of the default OSet
 	* @uses   USE_debug_reporting
 	* @since  v0.1.02
 */
-	/*#ifndef(PHP4) */public /* #*/function redirect ($f_url,$f_use_current_url = false) { }
+	/*#ifndef(PHP4) */public /* #*/function redirect ($f_url,$f_use_current_url = true) { }
 
-	//f// direct_output->related_manager ($f_rid,$f_exec_mode = "post_module_service_action",$f_no_traverse = false)
 /**
 	* Find and execute content related materials in a defined mode for a defined
 	* ID.
@@ -771,7 +751,8 @@ file of the default OSet
 						{
 							$f_continue_check = false;
 
-							if (isset ($f_related_item_array['attributes']['related_mode']))
+							if (isset ($this->related_manager_data[$f_related_id."_".$f_exec_mode])) { $f_continue_check = false; }
+							elseif (isset ($f_related_item_array['attributes']['related_mode']))
 							{
 								if ($f_exec_mode == $f_related_item_array['attributes']['related_mode']) { $f_continue_check = true; }
 							}
@@ -779,6 +760,7 @@ file of the default OSet
 
 							if ($f_continue_check)
 							{
+								$this->related_manager_data[$f_related_id."_".$f_exec_mode] = true;
 								$f_related_id = preg_replace ("#swg_settings_file_v(\d+)_#i","",$f_related_id);
 
 								if (isset ($f_related_item_array['attributes']['related_controller']))
@@ -799,7 +781,7 @@ file of the default OSet
 										if (function_exists ($f_function)) { $f_function ($f_rid,$f_related_item_array['value']); }
 									}
 								}
-								elseif (!isset ($direct_settings[$f_related_id])) { $direct_settings[$f_related_id] = $f_related_item_array['value']; }
+								elseif (!isset ($direct_settings[$f_related_id])) { $direct_settings[$f_related_id] = $direct_globals['basic_functions']->varfilter ($f_related_item_array['value'],"settings"); }
 							}
 						}
 					}
@@ -810,7 +792,6 @@ file of the default OSet
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -output_class->related_manager ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_output->servicemenu ($f_menu,$f_level = 6)
 /**
 	* Reads a service menu from a file and adds it to the cache
 	*
@@ -898,7 +879,6 @@ LICENSE_WARNING_END //i*/
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -output_class->servicemenu ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_output->smiley_cleanup ($f_data)
 /**
 	* Converts smiley codes of the given string to plain text
 	*
@@ -933,7 +913,6 @@ LICENSE_WARNING_END //i*/
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -output_class->smiley_cleanup ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_output->smiley_decode ($f_data)
 /**
 	* Smiley codes are rewritten using XHTML "img" tags
 	*
@@ -975,7 +954,6 @@ LICENSE_WARNING_END //i*/
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -output_class->smiley_decode ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_output->smiley_encode ($f_data)
 /**
 	* Converts smilies to recognisable codes
 	*
@@ -1014,7 +992,6 @@ LICENSE_WARNING_END //i*/
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -output_class->smiley_encode ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_output->smiley_parse_xmltree ($f_xml_array)
 /**
 	* Converts an XML array tree into a smiley code array
 	*
@@ -1057,7 +1034,6 @@ LICENSE_WARNING_END //i*/
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -output_class->smiley_parse_xmltree ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
-	//f// direct_output->warning ($f_title,$f_text)
 /**
 	* Use this function to generate a warning to be displayed later on.
 	*
@@ -1096,7 +1072,6 @@ if (!isset ($direct_settings['swg_pages_key_next'])) { $direct_settings['swg_pag
 if (!isset ($direct_settings['swg_pages_per_list'])) { $direct_settings['swg_pages_per_list'] = 6; }
 if (!isset ($direct_settings['swg_path_related_data'])) { $direct_settings['swg_path_related_data'] = $direct_settings['path_data']."/related/"; }
 if (!isset ($direct_settings['swg_options_image'])) { $direct_settings['swg_options_image'] = false; }
-if (!isset ($direct_settings['theme_jquery_ui'])) { $direct_settings['theme_jquery_ui'] = "smoothness"; }
 }
 
 //j// EOF

@@ -50,7 +50,6 @@ Testing for required classes
 
 if (!defined ("CLASS_direct_subkernel_developer"))
 {
-//c// direct_subkernel_developer
 /**
 * Subkernel for: developer
 *
@@ -69,7 +68,6 @@ class direct_subkernel_developer extends direct_virtual_class
 Extend the class using old and new behavior
 ------------------------------------------------------------------------- */
 
-	//f// direct_subkernel_developer->__construct () and direct_subkernel_developer->direct_subkernel_developer ()
 /**
 	* Constructor (PHP5) __construct (direct_subkernel_developer)
 	*
@@ -101,7 +99,6 @@ Informing the system about the available function
 *\/
 	function direct_subkernel_developer () { $this->__construct (); }
 :#*/
-	//f// direct_subkernel_developer->subkernel_init ($f_threshold_id = "")
 /**
 	* Running subkernel specific checkups.
 	*
