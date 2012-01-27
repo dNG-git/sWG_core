@@ -99,7 +99,7 @@ part
 * Everything that should be cached for output or used on other places of an
 * script may use this variable.
 */
-$direct_cachedata = array ("core_cookies" => array (),"core_debug" => array (),"core_error" => array (),"core_service_activated" => false,"core_time" => time (),"output_warning" => array ());
+$direct_cachedata = array ("core_cookies" => array (),"core_debug" => array (),"core_error" => array (),"core_service_activated" => false,"output_warning" => array ());
 /**
 * $direct_globals is mainly for internal use. It contains a list of initiated
 * classes and their current full names.
@@ -114,6 +114,7 @@ $direct_local = array ();
 */
 $direct_settings = array ("lang" => NULL,"theme" => NULL,"swg_chmod_dirs_change" => "0750","swg_chmod_files_change" => "0640","swg_umask_change" => "0000");
 
+$direct_cachedata['core_time'] = (isset ($_SERVER['REQUEST_TIME']) ? $_SERVER['REQUEST_TIME'] : time ());
 /*#ifndef(PHP4) */$direct_cachedata['core_debug_starttime'] = microtime (true);/* #*//*#ifdef(PHP4):$direct_cachedata['core_debug_starttime'] = time ();:#*/
 
 /* -------------------------------------------------------------------------
