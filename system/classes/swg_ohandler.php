@@ -654,14 +654,14 @@ file of the default OSet
 					else { $f_return .= ", <a href=\"".(direct_linker ($f_uri_type,$f_uri."page+".$f_i))."\">$f_i</a>"; }
 				}
 
-				if ($f_page_last < $f_pages) { $f_return .= (($f_uri_type == "asis") ? ", ... (<a href=\"".(str_replace ("[page]",$f_pages,$f_uri))."\">$f_pages</a>)" : ", ... (<a href=\"".(direct_linker ($f_uri_type,$f_uri."page+$f_pages"))."\">$f_pages</a>)"); }
+				if ($f_page_last < $f_pages) { $f_return .= ", ... (<a href=\"".(($f_uri_type == "asis") ? str_replace ("[page]",$f_pages,$f_uri) : direct_linker ($f_uri_type,$f_uri."page+$f_pages"))."\">$f_pages</a>)"; }
 			}
 
 			if ($f_return != "")
 			{
-				if (($f_with_lastnext_keys)&&($f_cpage > 1)) { $f_return = (($f_uri_type == "asis") ? "<a href=\"".(str_replace ("[page]",($f_cpage - 1),$f_uri))."\">$direct_settings[swg_pages_key_last]</a> ".$f_return : "<a href=\"".(direct_linker ($f_uri_type,$f_uri."page+".($f_cpage - 1)))."\">$direct_settings[swg_pages_key_last]</a> ".$f_return); }
-				if (($f_with_lastnext_keys)&&($f_pages > 1)&&($f_cpage != $f_pages)) { $f_return .= (($f_uri_type == "asis") ? " <a href=\"".(str_replace ("[page]",($f_cpage + 1),$f_uri))."\">$direct_settings[swg_pages_key_next]</a>" : " <a href=\"".(direct_linker ($f_uri_type,$f_uri."page+".($f_cpage + 1)))."\">$direct_settings[swg_pages_key_next]</a>"); }
-				$f_return = "<span style='font-weight:bold'>".(direct_local_get ("core_pages")).":</span> ".$f_return;
+				if (($f_with_lastnext_keys)&&($f_cpage > 1)) { $f_return = "<a href=\"".(($f_uri_type == "asis") ? str_replace ("[page]",($f_cpage - 1),$f_uri) : direct_linker ($f_uri_type,$f_uri."page+".($f_cpage - 1)))."\">$direct_settings[swg_pages_key_last]</a> ".$f_return; }
+				if (($f_with_lastnext_keys)&&($f_pages > 1)&&($f_cpage != $f_pages)) { $f_return .= " <a href=\"".(($f_uri_type == "asis") ? str_replace ("[page]",($f_cpage + 1),$f_uri) : direct_linker ($f_uri_type,$f_uri."page+".($f_cpage + 1)))."\">$direct_settings[swg_pages_key_next]</a>"; }
+				$f_return = "<strong>".(direct_local_get ("core_pages")).":</strong> ".$f_return;
 			}
 		}
 

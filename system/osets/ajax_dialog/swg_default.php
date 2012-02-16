@@ -73,7 +73,7 @@ $f_return = ("<div>$f_return\n<p style='font-size:10px;text-align:center'>".(dir
 self.setTimeout (\"self.location.href = \\\"{$direct_cachedata['output_pagetarget']}\\\"\",{$direct_cachedata['output_jsjump']});
 ]]></script></div>");
 		}
-		else { $f_return = "<div>$f_return\n<p style='font-weight:bold;text-align:center'><a href=\"{$direct_cachedata['output_pagetarget']}\" target='_self'>".(direct_local_get ("core_continue"))."</a></p></div>"; }
+		else { $f_return = "<div>$f_return\n<p style='text-align:center'><strong><a href=\"{$direct_cachedata['output_pagetarget']}\" target='_self'>".(direct_local_get ("core_continue"))."</a></strong></p></div>"; }
 	}
 
 	return $f_return;
@@ -100,7 +100,7 @@ function direct_output_oset_default_done_extended ()
 	if (isset ($direct_cachedata['output_pagetarget']))
 	{
 		if (!isset ($direct_cachedata['output_ajax_window_closeable'])) { $direct_cachedata['output_ajax_window_closeable'] = false; }
-		$f_return .= "\n<p style='font-weight:bold;text-align:center'><a href=\"{$direct_cachedata['output_pagetarget']}\" target='_self'>".(direct_local_get ("core_continue"))."</a></p>";
+		$f_return .= "\n<p style='text-align:center'><strong><a href=\"{$direct_cachedata['output_pagetarget']}\" target='_self'>".(direct_local_get ("core_continue"))."</a></strong></p>";
 	}
 
 	$f_return .= "</div>";
@@ -123,9 +123,9 @@ function direct_output_oset_default_error_login ()
 	if (!isset ($direct_cachedata['output_ajax_window_closeable'])) { $direct_cachedata['output_ajax_window_closeable'] = false; }
 
 $f_return = ("<div><p>{$direct_cachedata['output_error']}</p>
-<p class='ui-state-error{$direct_settings['theme_css_corners']}' style='padding:$direct_settings[theme_td_padding];font-size:11px'><span style='font-weight:bold'>".(direct_local_get ("core_user_current")).":</span> {$direct_cachedata['output_current_user']}</p>
+<p class='ui-state-error{$direct_settings['theme_css_corners']}' style='padding:$direct_settings[theme_td_padding];font-size:11px'><strong>".(direct_local_get ("core_user_current")).":</strong> {$direct_cachedata['output_current_user']}</p>
 <p>".(direct_local_get ("core_access_rights_insufficient"))."</p>
-<p style='font-weight:bold;text-align:center'><a href=\"{$direct_cachedata['output_link_login']}\" target='_self'>".(direct_local_get ("core_login_with_authorized_account"))."</a></p>");
+<p style='text-align:center'><strong><a href=\"{$direct_cachedata['output_link_login']}\" target='_self'>".(direct_local_get ("core_login_with_authorized_account"))."</a></strong></p>");
 
 	if ($direct_cachedata['output_error_extradata']) { $f_return .= "\n<p style='font-size:11px'>{$direct_cachedata['output_error_extradata']}</p>"; }
 
@@ -162,11 +162,11 @@ function direct_output_oset_default_error_standard ()
 
 	if ($direct_cachedata['output_link_back'])
 	{
-		$f_return .= "\n<p style='text-align:center'><span style='font-weight:bold'><a href=\"{$direct_cachedata['output_link_back']}\" target='_self'>".(direct_local_get ("core_back"))."</a></span>";
+		$f_return .= "\n<p style='text-align:center'><strong><a href=\"{$direct_cachedata['output_link_back']}\" target='_self'>".(direct_local_get ("core_back"))."</a></strong>";
 		if ($direct_cachedata['output_link_retry']) { $f_return .= "<br />\n<a href=\"{$direct_cachedata['output_link_retry']}\" target='_self'>".(direct_local_get ("core_try_again"))."</a>"; }
 		$f_return .= "</p>";
 	}
-	elseif ($direct_cachedata['output_link_retry']) { $f_return .= "\n<p style='font-weight:bold;text-align:center'><a href=\"{$direct_cachedata['output_link_retry']}\" target='_self'>".(direct_local_get ("core_try_again"))."</a></p>"; }
+	elseif ($direct_cachedata['output_link_retry']) { $f_return .= "\n<p style='text-align:center'><strong><a href=\"{$direct_cachedata['output_link_retry']}\" target='_self'>".(direct_local_get ("core_try_again"))."</a></strong></p>"; }
 
 	if (!empty ($direct_cachedata['core_debug_backtrace']))
 	{

@@ -56,7 +56,7 @@ function djs_swgAJAX_init (f_params)
 var f_jquery_object = jQuery("#swgAJAX_loading_point").replaceWith (
 jQuery("<div id='swgAJAX_loading' style='position:absolute;display:none;width:250px;height:125px;top:0px;left:0px;z-index:256'><div class='ui-dialog-content ui-widget-content ui-corner-bottom' style='position:fixed;width:250px;height:125px;padding:2px 5px'><table style='cursor:wait;height:115px'>\n" +
 "<tbody><tr>\n" +
-"<td class='pageajaxloadingbg' style='text-align:center;vertical-align:middle'><p class='pageajaxloadingcontent' style='font-weight:bold'><?php echo direct_local_get ("core_loading","text"); ?></p>\n" +
+"<td class='pageajaxloadingbg' style='text-align:center;vertical-align:middle'><p class='pageajaxloadingcontent'><strong><?php echo direct_local_get ("core_loading","text"); ?></strong></p>\n" +
 "<p class='pageajaxloadingcontent'><?php echo direct_local_get ("core_loading_ajax","text"); ?></p></td>\n" +
 "</tr></tbody>\n" +
 "</table></div></div>").on("ajaxStop",djs_swgAJAX_event_hide_soon).on("ajaxStart",djs_swgAJAX_event_show).on ("click",djs_swgAJAX_event_hide)

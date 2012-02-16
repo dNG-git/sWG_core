@@ -30,7 +30,7 @@
  </theme>
 
  <title>
-  <html><![CDATA[<span style='font-style:italic'>direct</span> Netware Group - Initial Installation]]></html>
+  <html><![CDATA[<em>direct</em> Netware Group - Initial Installation]]></html>
   <txt value="direct Netware Group - Initial Installation" />
  </title>
 

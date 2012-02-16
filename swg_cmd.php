@@ -194,12 +194,12 @@ Production related information - please do not remove
 $direct_settings['product_buildid'] = "#echo(sWGcoreBuildID)#";
 $direct_settings['product_icode'] = "swg";
 $direct_settings['product_iversion'] = "#echo(sWGcoreIVersion)#";
-$direct_settings['product_lcode_html'] = "secured <span style='font-weight:bold'>WebGine</span>";
+$direct_settings['product_lcode_html'] = "secured <b>WebGine</b>";
 $direct_settings['product_lcode_htmltitle'] = "secured WebGine";
 $direct_settings['product_lcode_txt'] = "secured WebGine";
 $direct_settings['product_lcode_subtitle_html'] = "net-based application engine";
 $direct_settings['product_lcode_subtitle_txt'] = "net-based application engine";
-$direct_settings['product_scode_html'] = "<span style='font-weight:bold'>sWG</span>";
+$direct_settings['product_scode_html'] = "<b>sWG</b>";
 $direct_settings['product_scode_txt'] = "sWG";
 $direct_settings['product_version'] = "#echo(sWGcoreVersion)#";
 
@@ -1053,8 +1053,8 @@ $direct_settings[product_lcode_txt]
 		}
 		elseif ((USE_debug_reporting)&&($f_error_position)) { $f_extra_data = "\n<p class='pagecontent' style='text-align:center;font-size:10px'>$f_error_position</p>"; }
 
-$direct_globals['output']->output_content = ("<p class='pagecontent' style='text-align:center'><span style='font-weight:bold'>$direct_settings[product_lcode_html]</span> $direct_settings[product_version]</p>
-<p class='pagecontent' style='text-align:center'><span style='font-weight:bold;color:#FF0000'>Entering emergency mode:</span><br />
+$direct_globals['output']->output_content = ("<p class='pagecontent' style='text-align:center'><strong>$direct_settings[product_lcode_html]</strong> $direct_settings[product_version]</p>
+<p class='pagecontent' style='text-align:center'><strong style='color:#FF0000'>Entering emergency mode:</strong><br />
 $f_error</p>$f_extra_data
 <p class='pagecontent' style='text-align:center;font-size:10px'>If this seems to be a bug then please <a href='http://www.direct-netware.de/redirect.php?$direct_settings[product_icode];itracker;bug' target='_blank'>report</a> it.</p>");
 
@@ -1063,13 +1063,13 @@ $f_error</p>$f_extra_data
 			if (!empty ($direct_cachedata['core_debug']))
 			{
 				$f_data = array_map ("direct_html_encode_special",$direct_cachedata['core_debug']);
-				$direct_globals['output']->output_content .= ("\n<p class='pagecontent' style='text-align:center;font-size:10px'><span style='font-weight:bold'>Debug Data List:</span><br />\n".(implode ("<br />\n",$f_data))."</p>");
+				$direct_globals['output']->output_content .= ("\n<p class='pagecontent' style='text-align:center;font-size:10px'><strong>Debug Data List:</strong><br />\n".(implode ("<br />\n",$f_data))."</p>");
 			}
 
 			if (!empty ($direct_cachedata['core_error']))
 			{
 				$f_data = array_map ("direct_html_encode_special",$direct_cachedata['core_error']);
-				$direct_globals['output']->output_content .= ("\n<p class='pagecontent' style='text-align:center;font-size:10px'><span style='font-weight:bold'>Error List:</span><br />\n".(implode ("<br />\n",$f_data))."</p>");
+				$direct_globals['output']->output_content .= ("\n<p class='pagecontent' style='text-align:center;font-size:10px'><strong>Error List:</strong><br />\n".(implode ("<br />\n",$f_data))."</p>");
 			}
 		}
 
@@ -1379,14 +1379,14 @@ Create instances of required classes
 Show me the credits - please do not remove
 ------------------------------------------------------------------------- */
 
-$direct_globals['output']->output_content = ("<p class='pagecontent' style='text-align:center'><span style='font-weight:bold'>$direct_settings[product_lcode_html]</span> $direct_settings[product_version] - <span style='font-weight:bold'>Program information</span></p>
-<p class='pagecontent' style='text-align:center;font-weight:bold'>About the developers</p>
-<p class='pagecontent' style='text-align:center;font-size:10px'><span style='font-weight:bold'>Developer:</span> <a href='http://www.direct-netware.de/redirect.php?web;en' target='_blank'><span style='font-style:italic'>direct</span> Netware Group</a><br />
-<span style='font-weight:bold'>Copyright holder:</span> <a href='http://www.direct-netware.de' target='_blank'><span style='font-style:italic'>direct</span> Netware Group</a> - All rights reserved</p>
-<p class='pagecontent' style='text-align:center;font-weight:bold'>About the $direct_settings[product_lcode_html]</p>
-<p class='pagecontent' style='text-align:center;font-size:10px'><span style='font-weight:bold'>Program version:</span> $direct_settings[product_version]<br />
-<span style='font-weight:bold'>Build-ID:</span> $direct_settings[product_buildid]<br />
-<span style='font-weight:bold'>Interlinking-ID:</span> <a href='http://www.direct-netware.de/redirect.php?$direct_settings[product_icode]' target='_blank'>$direct_settings[product_icode]</a></p>");
+$direct_globals['output']->output_content = ("<p class='pagecontent' style='text-align:center'><strong>$direct_settings[product_lcode_html]</strong> $direct_settings[product_version] - <strong>Program information</strong></p>
+<p class='pagecontent' style='text-align:center'><strong>About the developers</strong></p>
+<p class='pagecontent' style='text-align:center;font-size:10px'><strong>Developer:</strong> <a href='http://www.direct-netware.de/redirect.php?web;en' target='_blank'><em>direct</em> Netware Group</a><br />
+<strong>Copyright holder:</strong> <a href='http://www.direct-netware.de' target='_blank'><em>direct</em> Netware Group</a> - All rights reserved</p>
+<p class='pagecontent' style='text-align:center'><strong>About the $direct_settings[product_lcode_html]</strong></p>
+<p class='pagecontent' style='text-align:center;font-size:10px'><strong>Program version:</strong> $direct_settings[product_version]<br />
+<strong>Build-ID:</strong> $direct_settings[product_buildid]<br />
+<strong>Interlinking-ID:</strong> <a href='http://www.direct-netware.de/redirect.php?$direct_settings[product_icode]' target='_blank'>$direct_settings[product_icode]</a></p>");
 
 /* -------------------------------------------------------------------------
 Show me the basic settings
@@ -1414,10 +1414,10 @@ Show me the system configuration (in debug mode) - thank you
 
 	if (USE_debug_reporting)
 	{
-$direct_globals['output']->output_content .= ("<p class='pagecontent' style='text-align:center;font-weight:bold'>About the server</p>
-<p class='pagecontent' style='text-align:center;font-size:10px'><span style='font-weight:bold'>Installed PHP version:</span> ").PHP_VERSION.(" [Zend Engine ").(zend_version ()).("]<br />
-<span style='font-weight:bold'>Running operation system:</span> ").PHP_OS.(" [").(php_uname ()).("]<br />
-<span style='font-weight:bold'>Activated PHP extensions:</span> $g_loaded_extensions</p>");
+$direct_globals['output']->output_content .= ("<p class='pagecontent' style='text-align:center'><strong>About the server</strong></p>
+<p class='pagecontent' style='text-align:center;font-size:10px'><strong>Installed PHP version:</strong> ").PHP_VERSION.(" [Zend Engine ").(zend_version ()).("]<br />
+<strong>Running operation system:</strong> ").PHP_OS.(" [").(php_uname ()).("]<br />
+<strong>Activated PHP extensions:</strong> $g_loaded_extensions</p>");
 	}
 
 	direct_class_init ("output_theme");

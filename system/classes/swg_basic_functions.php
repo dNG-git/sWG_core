@@ -353,19 +353,21 @@ Set up the caching variables
 	* remove these characters.
 	*
 	* @param  string $f_data Input string
+	* @param  boolean $f_tab_allowed Accept TABs
 	* @uses   direct_basic_functions::magic_quotes_input()
 	* @uses   direct_debug()
 	* @uses   USE_debug_reporting
 	* @return string Filtered string
 	* @since  v0.1.01
 */
-	/*#ifndef(PHP4) */public /* #*/function inputfilter_basic ($f_data)
+	/*#ifndef(PHP4) */public /* #*/function inputfilter_basic ($f_data,$f_tab_allowed = false)
 	{
 		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -basic_functions_class->inputfilter_basic (+f_data)- (#echo(__LINE__)#)"); }
 
 		if (is_string ($f_data))
 		{
-			$f_data = preg_replace ("#[\\x00-\\x09]#","",$f_data);
+			$f_preg_expr = ($f_tab_allowed ? "#[\\x00-\\x08]#" : "#[\\x00-\\x09]#");
+			$f_data = preg_replace ($f_preg_expr,"",$f_data);
 			if (INFO_magic_quotes_input) { $this->magic_quotes_input ($f_data); }
 		}
 		else { $f_data = ""; }
