@@ -2,8 +2,8 @@
 #,fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: v1.0.9\n"
-"POT-Creation-Date: 2011-12-22 08:22+0000\n"
+"Project-Id-Version: v1.0.10\n"
+"POT-Creation-Date: 2012-06-02 06:31+0000\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"

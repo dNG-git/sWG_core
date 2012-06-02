@@ -87,10 +87,14 @@ function djs_swgDOM_insert_before (f_params)
 
 function djs_swgDOM_insert_prepare (f_data,f_hide)
 {
-	if (typeof (f_data) != "object") { f_data = jQuery (f_data); }
+	try
+	{
+		if ((typeof (f_data) != "object")||("nodeName" in f_data)) { f_data = jQuery (f_data); }
+		if ((f_hide === null)||(f_hide)) { f_data.hide (); }
+	}
+	catch (f_handled_exception) { f_data = jQuery (); }
 
-	if ((f_hide === null)||(f_hide)) { return f_data.hide (); }
-	else { return f_data; }
+	return f_data;
 }
 
 djs_var['swgDOM_replace_cache'] = { };

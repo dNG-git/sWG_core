@@ -15,8 +15,8 @@ for a particular purpose.
 ----------------------------------------------------------------------------
 http://www.direct-netware.de/redirect.php?licenses;w3c
 ----------------------------------------------------------------------------
-sWGcoreVersion
-sWG/system/modules/default/swg_sysm.php
+#echo(__LINE__)#
+sWG/#echo(__FILEPATH__)#
 ----------------------------------------------------------------------------
 NOTE_END //n*/
 /**
@@ -32,7 +32,6 @@ NOTE_END //n*/
 * @copyright  (C) direct Netware Group - All rights reserved
 * @package    sWG_core
 * @subpackage default
-* @uses       direct_product_iversion
 * @since      v0.1.01
 * @license    http://www.direct-netware.de/redirect.php?licenses;w3c
 *             W3C (R) Software License
@@ -60,24 +59,24 @@ switch ($direct_settings['a'])
 //j// $direct_settings['a'] == "merror"
 case "merror":
 {
-	if (USE_debug_reporting) { direct_debug (1,"sWG/system/modules/default/swg_sysm.php _a=merror_ (63)"); }
+	if (USE_debug_reporting) { direct_debug (1,"sWG/#echo(__FILEPATH__)# _a=merror_ (#echo(__LINE__)#)"); }
 
-	$direct_globals['basic_functions']->include_file ($direct_settings['path_system']."/modules/default/swgi_custom_merror.php");
+	$direct_globals['basic_functions']->includeFile ($direct_settings['path_system']."/modules/default/swgi_custom_merror.php");
 	break 1;
 }
 //j// $direct_settings['a'] == "munconfigured"
 case "munconfigured":
 {
-	if (USE_debug_reporting) { direct_debug (1,"sWG/system/modules/default/swg_sysm.php _a=munconfigured_ (71)"); }
+	if (USE_debug_reporting) { direct_debug (1,"sWG/#echo(__FILEPATH__)# _a=munconfigured_ (#echo(__LINE__)#)"); }
 
 	$direct_cachedata['page_this'] = "";
 	$direct_cachedata['page_backlink'] = "m=cp";
 	$direct_cachedata['page_homelink'] = "m=cp";
 
-	if ($direct_globals['kernel']->service_init_default ())
+	if ($direct_globals['kernel']->serviceInitDefault ())
 	{
 	//j// BOA
-	$direct_globals['output']->output_send_error ("login","core_unconfigured","","sWG/system/modules/default/swg_sysm.php _a=munconfigured_ (80)");
+	$direct_globals['output']->outputSendError ("login","core_unconfigured","","sWG/#echo(__FILEPATH__)# _a=munconfigured_ (#echo(__LINE__)#)");
 	//j// EOA
 	}
 
@@ -87,16 +86,16 @@ case "munconfigured":
 //j// $direct_settings['a'] == "unknown"
 case "unknown":
 {
-	if (USE_debug_reporting) { direct_debug (1,"sWG/system/modules/default/swg_sysm.php _a=unknown_ (90)"); }
+	if (USE_debug_reporting) { direct_debug (1,"sWG/#echo(__FILEPATH__)# _a=unknown_ (#echo(__LINE__)#)"); }
 
 	$direct_cachedata['page_this'] = "";
 	$direct_cachedata['page_backlink'] = "";
 	$direct_cachedata['page_homelink'] = "";
 
-	if ($direct_globals['kernel']->service_init_default ())
+	if ($direct_globals['kernel']->serviceInitDefault ())
 	{
 	//j// BOA
-	$direct_globals['output']->output_send_error ("standard","core_unknown_error","FATAL ERROR:<br />Request terminated","sWG/system/modules/default/swg_sysm.php _a=unknown_ (99)");
+	$direct_globals['output']->outputSendError ("standard","core_unknown_error","FATAL ERROR:<br />Request terminated","sWG/#echo(__FILEPATH__)# _a=unknown_ (#echo(__LINE__)#)");
 	//j// EOA
 	}
 

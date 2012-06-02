@@ -20,9 +20,8 @@ sWG/#echo(__FILEPATH__)#
 ----------------------------------------------------------------------------
 NOTE_END //n*/
 /**
-* XML (Extensible Markup Language) is the easiest way to use a descriptive
-* language for controlling applications locally and world wide. This file
-* contains the "wrapper" for "ext_core/xml_writer.php".
+* OOP (Object Oriented Programming) requires an abstract data
+* handling. The sWG is OO (where it makes sense).
 *
 * @internal   We are using phpDocumentor to automate the documentation process
 *             for creating the Developer's Manual. All sections including
@@ -33,11 +32,15 @@ NOTE_END //n*/
 * @author     direct Netware Group
 * @copyright  (C) direct Netware Group - All rights reserved
 * @package    sWG_core
-* @subpackage xml
-* @since      v0.1.05
+* @subpackage basic_functions
+* @since      v0.1.03
 * @license    http://www.direct-netware.de/redirect.php?licenses;w3c
 *             W3C (R) Software License
 */
+/*#ifdef(PHP5n) */
+
+namespace dNG\sWG;
+/* #\n*/
 
 /* -------------------------------------------------------------------------
 All comments will be removed in the "production" packages (they will be in
@@ -46,69 +49,97 @@ all development packets)
 
 //j// Functions and classes
 
-/* -------------------------------------------------------------------------
-Testing for required classes
-------------------------------------------------------------------------- */
-
-$g_continue_check = ((defined ("CLASS_direct_xml")) ? false : true);
-if (($g_continue_check)&&(!defined ("CLASS_direct_xml_reader"))) { $g_continue_check = ($direct_globals['basic_functions']->include_file ($direct_settings['path_system']."/classes/ext_core/xml_reader.php",1) ? defined ("CLASS_direct_xml_reader") : false); }
-if (($g_continue_check)&&(!defined ("CLASS_direct_xml_writer"))) { $g_continue_check = ($direct_globals['basic_functions']->include_file ($direct_settings['path_system']."/classes/ext_core/xml_writer.php",1) ? defined ("CLASS_direct_xml_writer") : false); }
-
-if ($g_continue_check)
+if (!defined ("CLASS_directDataHandler"))
 {
 /**
-* This class extends the bridge between the sWG and XML to work with XML and
-* create valid documents.
+* This is an abstract data holder doing nothing.
 *
 * @author     direct Netware Group
 * @copyright  (C) direct Netware Group - All rights reserved
 * @package    sWG_core
-* @subpackage xml
-* @uses       CLASS_direct_xml_writer
-* @since      v0.1.05
+* @subpackage basic_functions
+* @since      v0.1.03
 * @license    http://www.direct-netware.de/redirect.php?licenses;w3c
 *             W3C (R) Software License
 */
-class direct_xml extends direct_xml_writer
+class directDataHandler extends directVirtualClass
 {
+/**
+	* @var mixed $data Container for class-wide usable data
+*/
+	/*#ifndef(PHP4) */protected/* #*//*#ifdef(PHP4):var:#*/ $data;
+
 /* -------------------------------------------------------------------------
 Extend the class using old and new behavior
 ------------------------------------------------------------------------- */
 
 /**
-	* Constructor (PHP5) __construct (direct_xml)
+	* Constructor (PHP5) __construct (directDataHandler)
 	*
-	* @uses  direct_debug()
-	* @uses  USE_debug_reporting
 	* @since v0.1.03
 */
 	/*#ifndef(PHP4) */public /* #*/function __construct ()
 	{
-		global $direct_cachedata,$direct_local,$direct_settings;
-		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -xml_handler->__construct (direct_xml)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -dataHandler->__construct (directDataHandler)- (#echo(__LINE__)#)"); }
 
 /* -------------------------------------------------------------------------
 My parent should be on my side to get the work done
 ------------------------------------------------------------------------- */
 
-		if (isset ($direct_local['lang_charset'])) { parent::__construct ($direct_local['lang_charset'],$direct_cachedata['core_time'],($direct_settings['timeout'] + $direct_settings['timeout_core']),$direct_settings['path_system']."/classes/ext_core",USE_debug_reporting); }
-		else { parent::__construct ("UTF-8",$direct_cachedata['core_time'],($direct_settings['timeout'] + $direct_settings['timeout_core']),$direct_settings['path_system']."/classes/ext_core",USE_debug_reporting); }
+		parent::__construct ();
+
+/* -------------------------------------------------------------------------
+Informing the system about available functions 
+------------------------------------------------------------------------- */
+
+		$this->functions['get'] = true;
+		$this->functions['set'] = true;
 	}
 /*#ifdef(PHP4):
 /**
-	* Constructor (PHP4) direct_xml (direct_xml)
+	* Constructor (PHP4) directDataHandler
 	*
 	* @since v0.1.03
 *\/
-	function direct_xml () { $this->__construct (); }
+	function directDataHandler () { $this->__construct (); }
 :#\n*/
+/**
+	* Destructor (PHP5) __destruct (directDataHandler)
+	*
+	* @since v0.1.07
+*/
+	/*#ifndef(PHP4) */public /* #*/function __destruct () { $this->data = NULL; }
+
+/**
+	* This operation just gives back the content of $this->data.
+	*
+	* @return mixed Returns the saved data
+	* @since  v0.1.03
+*/
+	/*#ifndef(PHP4) */public /* #*/function get ()
+	{
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -dataHandler->get ()- (#echo(__LINE__)#)"); }
+		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -dataHandler->get ()- (#echo(__LINE__)#)",:#*/(isset ($this->data) ? $this->data : false)/*#ifdef(DEBUG):,true):#*/;
+	}
+
+/**
+	* This operation fills $this->data with $f_data.
+	*
+	* @param mixed $f_data Data to be saved
+	* @since v0.1.03
+*/
+	/*#ifndef(PHP4) */public /* #*/function set ($f_data)
+	{
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -dataHandler->set (+f_data)- (#echo(__LINE__)#)"); }
+		$this->data = $f_data;
+	}
 }
 
 /* -------------------------------------------------------------------------
 Mark this class as the most up-to-date one
 ------------------------------------------------------------------------- */
 
-define ("CLASS_direct_xml",true);
+define ("CLASS_directDataHandler",true);
 }
 
 //j// EOF

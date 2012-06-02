@@ -32,7 +32,6 @@ NOTE_END //n*/
 * @copyright  (C) direct Netware Group - All rights reserved
 * @package    sWG_core
 * @subpackage basic_functions
-* @uses       direct_product_iversion
 * @since      v0.1.01
 * @license    http://www.direct-netware.de/redirect.php?licenses;w3c
 *             W3C (R) Software License
@@ -59,9 +58,6 @@ if (!defined ("direct_product_iversion")) { exit (); }
 * @param  string $f_module Module for available translation data
 * @param  string $f_string String to translate
 * @param  boolean $f_string_is_en True if given string is the English translation
-* @uses   direct_debug()
-* @uses   direct_string_id_translation()
-* @uses   USE_debug_reporting
 * @return string Translated or original string
 * @since  v0.1.01
 */
@@ -82,10 +78,6 @@ function direct_string_translation ($f_module,$f_string,$f_string_is_en = true,$
 *
 * @param  string $f_module Module for available translation data
 * @param  string $f_tid Translation identifier
-* @uses   direct_basic_functions::memcache_get_file()
-* @uses   direct_debug()
-* @uses   direct_xml_bridge::xml2array()
-* @uses   USE_debug_reporting
 * @return mixed Translated string or false if it is not translatable
 * @since  v0.1.03
 */
@@ -110,7 +102,7 @@ function direct_string_id_translation ($f_module,$f_tid,$f_lang = NULL)
 
 		if (file_exists ($direct_settings['path_data']."/lang/swg_{$f_module}.xml"))
 		{
-			$f_file_data = $direct_globals['basic_functions']->memcache_get_file ($direct_settings['path_data']."/lang/swg_{$f_module}.xml");
+			$f_file_data = $direct_globals['basic_functions']->memcacheGetFile ($direct_settings['path_data']."/lang/swg_{$f_module}.xml");
 			if ($f_file_data) { $direct_cachedata['core_string_translator_data'][$f_module] = $direct_globals['xml_bridge']->xml2array ($f_file_data,false); }
 		}
 		else { $direct_cachedata['core_string_translator_data'][$f_module] = ""; }

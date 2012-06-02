@@ -20,7 +20,9 @@ sWG/#echo(__FILEPATH__)#
 ----------------------------------------------------------------------------
 NOTE_END //n*/
 /**
-* Subkernel for: default
+* XML (Extensible Markup Language) is the easiest way to use a descriptive
+* language for controlling applications locally and world wide. This file
+* contains the "wrapper" for "ext_core/xml_writer.php".
 *
 * @internal   We are using phpDocumentor to automate the documentation process
 *             for creating the Developer's Manual. All sections including
@@ -31,14 +33,17 @@ NOTE_END //n*/
 * @author     direct Netware Group
 * @copyright  (C) direct Netware Group - All rights reserved
 * @package    sWG_core
-* @subpackage default
-* @since      v0.1.01
+* @subpackage xml
+* @since      v0.1.05
 * @license    http://www.direct-netware.de/redirect.php?licenses;w3c
 *             W3C (R) Software License
 */
+/*#ifdef(PHP5n) */
 
+namespace dNG\sWG;
+/* #*/
 /*#use(direct_use) */
-use dNG\sWG\directVirtualClass;
+use dNG\directXmlWriter;
 /* #\n*/
 
 /* -------------------------------------------------------------------------
@@ -46,96 +51,60 @@ All comments will be removed in the "production" packages (they will be in
 all development packets)
 ------------------------------------------------------------------------- */
 
-//j// Basic configuration
-
-/* -------------------------------------------------------------------------
-Direct calls will be honored with an "exit ()"
-------------------------------------------------------------------------- */
-
-if (!defined ("direct_product_iversion")) { exit (); }
-
 //j// Functions and classes
 
-if (!defined ("CLASS_directSubkernelDefault"))
+if (!defined ("CLASS_directXml"))
 {
 /**
-* Subkernel for: default
+* This class extends the bridge between the sWG and XML to work with XML and
+* create valid documents.
 *
 * @author     direct Netware Group
 * @copyright  (C) direct Netware Group - All rights reserved
 * @package    sWG_core
-* @subpackage default
+* @subpackage xml
 * @since      v0.1.05
 * @license    http://www.direct-netware.de/redirect.php?licenses;w3c
 *             W3C (R) Software License
 */
-class directSubkernelDefault extends directVirtualClass
+class directXml extends directXmlWriter
 {
 /* -------------------------------------------------------------------------
 Extend the class using old and new behavior
 ------------------------------------------------------------------------- */
 
 /**
-	* Constructor (PHP5) __construct (directSubkernelDefault)
+	* Constructor (PHP5) __construct (directXml)
 	*
-	* @since v0.1.05
+	* @since v0.1.03
 */
 	/*#ifndef(PHP4) */public /* #*/function __construct ()
 	{
-		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -kernel->__construct (directSubkernelDefault)- (#echo(__LINE__)#)"); }
+		global $direct_cachedata,$direct_local,$direct_settings;
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -xml->__construct (directXml)- (#echo(__LINE__)#)"); }
 
 /* -------------------------------------------------------------------------
 My parent should be on my side to get the work done
 ------------------------------------------------------------------------- */
 
-		parent::__construct ();
-
-/* -------------------------------------------------------------------------
-Informing the system about the available function
-------------------------------------------------------------------------- */
-
-		$this->functions['subkernelInit'] = true;
+		if (isset ($direct_local['lang_charset'])) { parent::__construct ($direct_local['lang_charset'],$direct_cachedata['core_time'],($direct_settings['timeout'] + $direct_settings['timeout_core']),$direct_settings['path_system']."/classes/dNG",USE_debug_reporting); }
+		else { parent::__construct ("UTF-8",$direct_cachedata['core_time'],($direct_settings['timeout'] + $direct_settings['timeout_core']),$direct_settings['path_system']."/classes/dNG",USE_debug_reporting); }
 	}
 /*#ifdef(PHP4):
 /**
-	* Constructor (PHP4) directSubkernelDefault
+	* Constructor (PHP4) directXml
 	*
-	* @since v0.1.05
+	* @since v0.1.03
 *\/
-	function directSubkernelDefault () { $this->__construct (); }
-:#*/
-/**
-	* Running subkernel specific checkups.
-	*
-	* @param  string $f_threshold_id This parameter is used to determine if
-	*         a request to write data is below the threshold (timeout).
-	* @return array Returned array contains error details if applicable
-	* @since  v0.1.05
-*/
-	/*#ifndef(PHP4) */public /* #*/function subkernelInit ($f_threshold_id = "")
-	{
-		global $direct_globals;
-		if (USE_debug_reporting) { direct_debug (2,"sWG/#echo(__FILEPATH__)# -kernel->subkernelInit ($f_threshold_id)- (#echo(__LINE__)#)"); }
-
-		$direct_globals['kernel']->vUserInit ($f_threshold_id);
-		$direct_globals['kernel']->vGroupInit ();
-
-		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -kernel->subkernelInit ()- (#echo(__LINE__)#)",(:#*/array ()/*#ifdef(DEBUG):),true):#*/;
-	}
+	function directXml () { $this->__construct (); }
+:#\n*/
 }
 
 /* -------------------------------------------------------------------------
 Mark this class as the most up-to-date one
 ------------------------------------------------------------------------- */
 
-define ("CLASS_directSubkernelDefault",true);
-
-//j// Script specific commands
-
-$direct_globals['@names']['subkernel_default'] = 'directSubkernelDefault';
-
-direct_class_init ("subkernel_default");
-$direct_globals['kernel']->vCallSet ("vSubkernelInit",$direct_globals['subkernel_default'],"subkernelInit");
+define ("CLASS_directXml",true);
 }
 
 //j// EOF

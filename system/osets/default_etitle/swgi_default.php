@@ -48,9 +48,6 @@ all development packets)
 * direct_datacenter_oset_object_parse ()
 *
 * @param  array $f_object DataCenter object
-* @uses   direct_debug()
-* @uses   direct_local_get()
-* @uses   USE_debug_reporting
 * @return string Valid XHTML code
 * @since  v0.1.07
 */
@@ -71,7 +68,7 @@ function direct_default_oset_done_job_entries_parse ($f_job_entries)
 				if ($f_jobs_array['name'] != $f_job_title)
 				{
 					$f_job_title = $f_jobs_array['name'];
-					$f_return .= "<p class='pageborder2{$direct_settings['theme_css_corners']} pageextracontent'><strong>$f_job_title</strong>";
+					$f_return .= "<p class='pageborder{$direct_settings['theme_css_corners']} pageextrabg pageextracontent'><strong>$f_job_title</strong>";
 				}
 
 				$f_entries = "";
@@ -99,7 +96,7 @@ function direct_default_oset_done_job_entries_parse ($f_job_entries)
 				{
 					if (isset ($f_entry_array['status']))
 					{
-						$f_return .= "<p class='pageborder2{$direct_settings['theme_css_corners']} pageextracontent'><strong><img src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_themes]/$direct_settings[theme]/status_icon_{$f_entry_array['status']}.png",true,false))."' alt='".(direct_local_get ("core_done_status_".$f_entry_array['status']))."' title='".(direct_local_get ("core_done_status_".$f_entry_array['status']))."' style='vertical-align:middle' /> ".(direct_local_get ("core_done_status_".$f_entry_array['status']));
+						$f_return .= "<p class='pageborder{$direct_settings['theme_css_corners']} pageextrabg pageextracontent'><strong><img src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_themes]/$direct_settings[theme]/status_icon_{$f_entry_array['status']}.png",true,false))."' alt='".(direct_local_get ("core_done_status_".$f_entry_array['status']))."' title='".(direct_local_get ("core_done_status_".$f_entry_array['status']))."' style='vertical-align:middle' /> ".(direct_local_get ("core_done_status_".$f_entry_array['status']));
 						$f_return .= (isset ($f_entry_array['identifier']) ? ":</strong> {$f_entry_array['identifier']}" : "</strong>");
 						if (isset ($f_entry_array['name'])) { $f_return .= " <strong>({$f_entry_array['name']})</strong>"; }
 						if (isset ($f_entry_array['details'])) { $f_return .= " <span style='font-size:10px'>({$f_entry_array['details']})</span>"; }
@@ -115,7 +112,7 @@ function direct_default_oset_done_job_entries_parse ($f_job_entries)
 
 //j// Script specific commands
 
-$direct_settings['theme_css_corners'] = ((isset ($direct_settings['theme_css_corners_class'])) ? " ".$direct_settings['theme_css_corners_class'] : " ui-corner-all");
+$direct_settings['theme_css_corners'] = (isset ($direct_settings['theme_css_corners_class']) ? " ".$direct_settings['theme_css_corners_class'] : " ui-corner-all");
 
 //j// EOF
 ?>

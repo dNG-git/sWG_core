@@ -32,12 +32,15 @@ NOTE_END //n*/
 * @copyright  (C) direct Netware Group - All rights reserved
 * @package    sWG_core
 * @subpackage basic_functions
-* @uses       direct_product_iversion
 * @since      v0.1.01
 * @license    http://www.direct-netware.de/redirect.php?licenses;w3c
 *             W3C (R) Software License
 */
 
+/*#use(direct_use) */
+use dNG\sWG\directFileFunctions;
+
+/* #\n*/
 /* -------------------------------------------------------------------------
 All comments will be removed in the "production" packages (they will be in
 all development packets)
@@ -65,13 +68,6 @@ if (!defined ("direct_product_iversion")) { exit (); }
 *         whitespace characters at the start or end of the file content
 *         remain.
 * @param  string $f_file_pathname File path
-* @uses   direct_debug()
-* @uses   direct_basic_functions::magic_quotes_filter()
-* @uses   direct_file_functions::close()
-* @uses   direct_file_functions::open()
-* @uses   direct_file_functions::read()
-* @uses   direct_file_functions::resource_check()
-* @uses   USE_debug_reporting
 * @return mixed False on error
 * @since  v0.1.01
 */
@@ -84,12 +80,12 @@ function direct_file_get ($f_type,$f_file_pathname)
 
 	if (file_exists ($f_file_pathname))
 	{
-		$f_file = new direct_file_functions ();
+		$f_file = new directFileFunctions ();
 
 		if ($f_type == "b") { $f_file->open ($f_file_pathname,true,"rb"); }
 		else { $f_file->open ($f_file_pathname,true,"r"); }
 
-		if ($f_file->resource_check ())
+		if ($f_file->resourceCheck ())
 		{
 			$f_file_content = $f_file->read (0);
 			$f_file->close ();
@@ -101,7 +97,7 @@ function direct_file_get ($f_type,$f_file_pathname)
 					$f_return = "";
 					$f_file_content = str_replace ("\r","",$f_file_content);
 
-					if (INFO_magic_quotes_runtime) { $direct_globals['basic_functions']->magic_quotes_filter ($f_file_content); }
+					if (INFO_magic_quotes_runtime) { $direct_globals['basic_functions']->magicQuotesFilter ($f_file_content); }
 
 					if (($f_type != "a0")&&($f_type != "s0"))
 					{
@@ -130,11 +126,6 @@ function direct_file_get ($f_type,$f_file_pathname)
 *         element) and "b" for binary. Use "a0" or "s0" to save the content as
 *         it is. "a1" and "s1" add "<?php exit (); ?>" strings but whitespace
 *         characters at the start or end of the file content remain.
-* @uses   direct_debug()
-* @uses   direct_file_functions::close()
-* @uses   direct_file_functions::open()
-* @uses   direct_file_functions::write()
-* @uses   USE_debug_reporting
 * @return boolean True on success
 * @since  v0.1.01
 */
@@ -145,7 +136,7 @@ function direct_file_write ($f_data,$f_file_pathname,$f_type = "")
 	$f_file_content = (is_array ($f_data) ? implode ("\n",$f_data) : $f_data);
 	if (($f_type == "a")||($f_type == "r")||($f_type == "s")) { $f_file_content = trim ($f_file_content); }
 
-	$f_file = new direct_file_functions ();
+	$f_file = new directFileFunctions ();
 
 	if ($f_type == "b") { $f_file->open ($f_file_pathname,false,"wb"); }
 	else { $f_file->open ($f_file_pathname,false,"w"); }
@@ -155,10 +146,6 @@ function direct_file_write ($f_data,$f_file_pathname,$f_type = "")
 
 	return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -direct_file_write ()- (#echo(__LINE__)#)",(:#*/$f_file->close ()/*#ifdef(DEBUG):),true):#*/;
 }
-
-//j// Script specific commands
-
-$direct_globals['basic_functions']->require_file ($direct_settings['path_system']."/classes/swg_file_functions.php",1);
 
 //j// EOF
 ?>

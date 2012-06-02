@@ -9,7 +9,7 @@
   <files><change value="0644" /></files>
  </chmod>
 
- <id value="CVS" />
+ <id value="BZR" />
  <lang value="en" />
 
  <memcache value="">

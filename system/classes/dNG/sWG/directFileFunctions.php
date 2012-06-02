@@ -36,6 +36,13 @@ NOTE_END //n*/
 * @license    http://www.direct-netware.de/redirect.php?licenses;w3c
 *             W3C (R) Software License
 */
+/*#ifdef(PHP5n) */
+
+namespace dNG\sWG;
+/* #*/
+/*#use(direct_use) */
+use dNG\directFile;
+/* #\n*/
 
 /* -------------------------------------------------------------------------
 All comments will be removed in the "production" packages (they will be in
@@ -44,14 +51,7 @@ all development packets)
 
 //j// Functions and classes
 
-/* -------------------------------------------------------------------------
-Testing for required classes
-------------------------------------------------------------------------- */
-
-$g_continue_check = ((defined ("CLASS_direct_file_functions")) ? false : true);
-if (($g_continue_check)&&(!defined ("CLASS_direct_file"))) { $g_continue_check = ($direct_globals['basic_functions']->include_file ($direct_settings['path_system']."/classes/ext_core/file.php",1) ? defined ("CLASS_direct_file") : false); }
-
-if ($g_continue_check)
+if (!defined ("CLASS_directFileFunctions"))
 {
 /**
 * This wrapper class extends "ext_core/file.php" and sets our default
@@ -61,28 +61,25 @@ if ($g_continue_check)
 * @copyright  (C) direct Netware Group - All rights reserved
 * @package    sWG_core
 * @subpackage basic_functions
-* @uses       CLASS_direct_file
 * @since      v0.1.03
 * @license    http://www.direct-netware.de/redirect.php?licenses;w3c
 *             W3C (R) Software License
 */
-class direct_file_functions extends direct_file
+class directFileFunctions extends directFile
 {
 /* -------------------------------------------------------------------------
 Extend the class using old and new behavior
 ------------------------------------------------------------------------- */
 
 /**
-	* Constructor (PHP5) __construct (direct_file_functions)
+	* Constructor (PHP5) __construct (directFileFunctions)
 	*
-	* @uses  direct_debug()
-	* @uses  USE_debug_reporting
 	* @since v0.1.03
 */
 	/*#ifndef(PHP4) */public /* #*/function __construct ()
 	{
 		global $direct_cachedata,$direct_settings;
-		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -file_functions_class->__construct (direct_file_functions)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -fileFunctions->__construct (directFileFunctions)- (#echo(__LINE__)#)"); }
 
 /* -------------------------------------------------------------------------
 My parent should be on my side to get the work done
@@ -92,11 +89,11 @@ My parent should be on my side to get the work done
 	}
 /*#ifdef(PHP4):
 /**
-	* Constructor (PHP4) direct_file_functions (direct_file_functions)
+	* Constructor (PHP4) directFileFunctions (directFileFunctions)
 	*
 	* @since v0.1.03
 *\/
-	function direct_file_functions () { $this->__construct (); }
+	function directFileFunctions () { $this->__construct (); }
 :#\n*/
 }
 
@@ -104,7 +101,7 @@ My parent should be on my side to get the work done
 Mark this class as the most up-to-date one
 ------------------------------------------------------------------------- */
 
-define ("CLASS_direct_file_functions",true);
+define ("CLASS_directFileFunctions",true);
 }
 
 //j// EOF

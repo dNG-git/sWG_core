@@ -34,11 +34,14 @@ NOTE_END //n*/
 * @copyright  (C) direct Netware Group - All rights reserved
 * @package    sWG_core
 * @subpackage kernel
-* @uses       direct_product_iversion
 * @since      v0.1.01
 * @license    http://www.direct-netware.de/redirect.php?licenses;w3c
 *             W3C (R) Software License
 */
+
+/*#use(direct_use) */
+use dNG\sWG\directVirtualClass;
+/* #\n*/
 
 /* -------------------------------------------------------------------------
 All comments will be removed in the "production" packages (they will be in
@@ -63,12 +66,11 @@ if (!defined ("direct_product_iversion")) { exit (); }
 * @copyright  (C) direct Netware Group - All rights reserved
 * @package    sWG_core
 * @subpackage kernel
-* @uses       CLASS_direct_virtual_class
 * @since      v0.1.01
 * @license    http://www.direct-netware.de/redirect.php?licenses;w3c
 *             W3C (R) Software License
 */
-class direct_kernel_system extends direct_virtual_class
+class directKernel extends directVirtualClass
 {
 /**
 	* @var array $prekernel_error Prekernel error array
@@ -84,14 +86,13 @@ Extend the class using old and new behavior
 ------------------------------------------------------------------------- */
 
 /**
-	* Constructor (PHP5) __construct (direct_kernel_system)
+	* Constructor (PHP5) __construct (directKernel)
 	*
-	* @uses  USE_debug_reporting
 	* @since v0.1.01
 */
 	/*#ifndef(PHP4) */public /* #*/function __construct ()
 	{
-		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -kernel_class->__construct (direct_kernel_system)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -kernel->__construct (directKernel)- (#echo(__LINE__)#)"); }
 
 /* -------------------------------------------------------------------------
 My parent should be on my side to get the work done
@@ -103,41 +104,40 @@ My parent should be on my side to get the work done
 Informing the system about available functions 
 ------------------------------------------------------------------------- */
 
-		$this->functions['basekernel_init'] = true;
-		$this->functions['kernel_modules_load'] = true;
-		$this->functions['service_https'] = true;
-		$this->functions['service_init'] = true;
-		$this->functions['service_init_default'] = true;
-		$this->functions['service_init_rboolean'] = true;
-		$this->functions['service_load'] = true;
-		$this->functions['subkernel_load'] = true;
-		$this->functions['v_group_init'] = array ();
-		$this->functions['v_group_right_check'] = array ();
-		$this->functions['v_group_right_write'] = array ();
-		$this->functions['v_group_rights_get'] = array ();
-		$this->functions['v_group_user_add_group'] = array ();
-		$this->functions['v_group_user_del_group'] = array ();
-		$this->functions['v_group_user_get_groups'] = array ();
-		$this->functions['v_group_user_get_rights'] = array ();
-		$this->functions['v_group_user_check_group'] = array ();
-		$this->functions['v_group_user_check_right'] = array ();
-		$this->functions['v_subkernel_init'] = array ();
-		$this->functions['v_user_check'] = array ();
-		$this->functions['v_user_check_password'] = array ();
-		$this->functions['v_user_get'] = array ();
-		$this->functions['v_user_init'] = array ();
-		$this->functions['v_user_insert'] = array ();
-		$this->functions['v_user_parse'] = array ();
-		$this->functions['v_user_update'] = array ();
-		$this->functions['v_user_write_kernel'] = array ();
-		$this->functions['v_usertype_get_int'] = array ();
-		$this->functions['v_uuid_check_usage'] = array ();
-		$this->functions['v_uuid_cookie_load'] = array ();
-		$this->functions['v_uuid_cookie_save'] = array ();
-		$this->functions['v_uuid_get'] = array ();
-		$this->functions['v_uuid_init'] = array ();
-		$this->functions['v_uuid_is_cookied'] = array ();
-		$this->functions['v_uuid_write'] = array ();
+		$this->functions['basekernelInit'] = true;
+		$this->functions['kernelModulesLoad'] = true;
+		$this->functions['serviceHttps'] = true;
+		$this->functions['serviceInit'] = true;
+		$this->functions['serviceInitDefault'] = true;
+		$this->functions['serviceInitRBoolean'] = true;
+		$this->functions['serviceLoad'] = true;
+		$this->functions['subkernelLoad'] = true;
+		$this->functions['vGroupInit'] = array ();
+		$this->functions['vGroupRightCheck'] = array ();
+		$this->functions['vGroupRightWrite'] = array ();
+		$this->functions['vGroupRightsGet'] = array ();
+		$this->functions['vGroupUserCheckGroup'] = array ();
+		$this->functions['vGroupUserCheckRight'] = array ();
+		$this->functions['vGroupUserGetGroups'] = array ();
+		$this->functions['vGroupUserGetRights'] = array ();
+		$this->functions['vSubkernelInit'] = array ();
+		$this->functions['vUserCheck'] = array ();
+		$this->functions['vUserCheckPassword'] = array ();
+		$this->functions['vUserGet'] = array ();
+		$this->functions['vUserInit'] = array ();
+		$this->functions['vUserInsert'] = array ();
+		$this->functions['vUserParse'] = array ();
+		$this->functions['vUserSetPassword'] = array ();
+		$this->functions['vUserUpdate'] = array ();
+		$this->functions['vUserWriteKernel'] = array ();
+		$this->functions['vUsertypeGetInt'] = array ();
+		$this->functions['vUuidCheckUsage'] = array ();
+		$this->functions['vUuidCookieLoad'] = array ();
+		$this->functions['vUuidCookieSave'] = array ();
+		$this->functions['vUuidGet'] = array ();
+		$this->functions['vUuidInit'] = array ();
+		$this->functions['vUuidIsCookied'] = array ();
+		$this->functions['vUuidWrite'] = array ();
 
 /* -------------------------------------------------------------------------
 Set up kernel variables
@@ -148,73 +148,61 @@ Set up kernel variables
 	}
 /*#ifdef(PHP4):
 /**
-	* Constructor (PHP4) direct_kernel_system (direct_kernel_system)
+	* Constructor (PHP4) directKernel (directKernel)
 	*
 	* @since v0.1.01
 *\/
-	function direct_kernel_system () { $this->__construct (); }
+	function directKernel () { $this->__construct (); }
 :#*/
 /**
 	* Receiving basic data about the user and starting up the system.
 	*
-	* @uses   direct_basic_functions::require_file()
-	* @uses   direct_basic_functions::settings_get()
-	* @uses   direct_basic_functions_inline::emergency_mode()
-	* @uses   direct_class_init()
-	* @uses   direct_debug()
-	* @uses   direct_local_integration()
-	* @uses   USE_debug_reporting
 	* @return boolean True if the basic functions are loaded successfully
 	* @since  v0.1.01
 */
-	/*#ifndef(PHP4) */public /* #*/function basekernel_init ()
+	/*#ifndef(PHP4) */public /* #*/function basekernelInit ()
 	{
 		global $direct_cachedata,$direct_globals,$direct_settings;
-		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -kernel_class->basekernel_init ()- (#echo(__LINE__)#)"); }
-
-		$f_return = false;
+		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -kernel->basekernelInit ()- (#echo(__LINE__)#)"); }
 
 /* -------------------------------------------------------------------------
 Now get up our basic functions to play with them
 ------------------------------------------------------------------------- */
 
-		@include_once ($direct_settings['path_system']."/classes/swg_basic_functions.php");
-
-		if (defined ("CLASS_direct_basic_functions"))
-		{
-/* -------------------------------------------------------------------------
-Success! Let's continue to load all basic classes.
-------------------------------------------------------------------------- */
-
-			if (!direct_class_init ("basic_functions")) { $direct_globals['basic_functions']->emergency_mode ("Dear Sir or Madam<br /><br />This is the &quot;secured WebGine&quot; program at &quot;$direct_settings[swg_server]&quot;.<br /><br />An error occured while activating required program modules. This is a permanent error.<br /><br />Request terminated<br /><br />sWG/#echo(__FILEPATH__)# _main_ (#echo(__LINE__)#)"); }
+		@include_once ($direct_settings['path_system']."/classes/dNG/sWG/directBasicFunctions.php");
+		$f_return = direct_class_init ("basic_functions");
 
 /* -------------------------------------------------------------------------
 Activate our XML support and receive the core settings - website name,
 standard URL, ...
 ------------------------------------------------------------------------- */
 
-			$direct_globals['basic_functions']->require_file ($direct_settings['path_system']."/classes/swg_data_handler.php",1,false);
-			$direct_globals['basic_functions']->require_file ($direct_settings['path_system']."/classes/swg_xml_bridge.php",1,false);
-			if ((!direct_class_init ("xml_bridge"))||(!direct_class_function_check ($direct_globals['xml_bridge'],"xml2array"))) { $direct_globals['basic_functions']->emergency_mode ("Dear Sir or Madam<br /><br />This is the &quot;secured WebGine&quot; program at &quot;$direct_settings[swg_server]&quot;.<br /><br />An error occured while prepairing the system to read required configuration files. This is a permanent error.<br /><br />Request terminated<br /><br />sWG/#echo(__FILEPATH__)# _main_ (#echo(__LINE__)#)"); }
+		if ($f_return) { $f_return = $direct_globals['basic_functions']->requireClass ('dNG\sWG\directXmlBridge',1); }
+		if ((!direct_class_init ("xml_bridge"))||(!direct_class_function_check ($direct_globals['xml_bridge'],"xml2array"))) { $f_return = false; }
 
-			$direct_globals['basic_functions']->require_file ($direct_settings['path_system']."/functions/swg_file_functions.php",1);
-			$direct_globals['basic_functions']->settings_get ($direct_settings['path_data']."/settings/swg_core.php",true);
-			$direct_settings['user']['timezone'] = (int)(date ("Z") / 3600);
+		if ($f_return)
+		{
+			$direct_globals['basic_functions']->requireFile ($direct_settings['path_system']."/functions/swg_file_functions.php",1);
+			$f_return = $direct_globals['basic_functions']->settingsGet ($direct_settings['path_data']."/settings/swg_core.php",true);
+		}
 
 /* -------------------------------------------------------------------------
 evars (Extended variables), files and backward compatibility will be
 available right now
 ------------------------------------------------------------------------- */
 
-			$direct_globals['basic_functions']->require_file ($direct_settings['path_system']."/functions/swg_evars.php",1);
-			$direct_globals['basic_functions']->require_file ($direct_settings['path_system']."/functions/swg_linker.php",1);
-			$direct_globals['basic_functions']->require_file ($direct_settings['path_system']."/functions/swg_string_translator.php",1);
+		if ($f_return) { $f_return = $direct_globals['basic_functions']->requireFile ($direct_settings['path_system']."/functions/swg_evars.php",1); }
+		if ($f_return) { $f_return = $direct_globals['basic_functions']->requireFile ($direct_settings['path_system']."/functions/swg_linker.php",1); }
+		if ($f_return) { $f_return = $direct_globals['basic_functions']->requireFile ($direct_settings['path_system']."/functions/swg_string_translator.php",1); }
 
-			$this->functions['service_https'] = true;
-			$f_return = true;
+		if ($f_return)
+		{
+			$direct_settings['user']['timezone'] = (int)(date ("Z") / 3600);
+			$this->functions['serviceHttps'] = true;
 		}
+		elseif (direct_class_init ("output")) { $direct_globals['output']->outputSendError ("fatal","Dear Sir or Madam<br /><br />This is the &quot;secured WebGine&quot; program at &quot;$direct_settings[swg_server]&quot;.<br /><br />An error occured while activating required program modules. This is a permanent error.<br /><br />Request terminated<br /><br />sWG/#echo(__FILEPATH__)# _main_ (#echo(__LINE__)#)"); }
 
-		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -kernel_class->basekernel_init ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
+		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -kernel->basekernelInit ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
 /**
@@ -223,21 +211,22 @@ available right now
 	* located in "data/settings". This function must be called before initiating
 	* the kernel.
 	*
-	* @uses   direct_basic_functions::include_file()
-	* @uses   direct_basic_functions::inputfilter_filepath()
-	* @uses   direct_debug()
-	* @uses   direct_file_get()
-	* @uses   direct_xml_bridge::xml2array()
-	* @uses   USE_debug_reporting
 	* @return boolean False on error
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function kernel_modules_load ()
+	/*#ifndef(PHP4) */public /* #*/function kernelModulesLoad ()
 	{
 		global $direct_globals,$direct_local,$direct_settings;
-		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -kernel_class->kernel_modules_load ()- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -kernel->kernelModulesLoad ()- (#echo(__LINE__)#)"); }
 
-		if ($direct_globals['basic_functions']->include_file ($direct_settings['path_system']."/classes/swg_ihandler_{$direct_settings['ihandler']}.php",1))
+		$f_ihandler = ucfirst ($direct_settings['ihandler']);
+
+		if (preg_match_all ("#_(\w)#",$f_ihandler,$f_result_array,PREG_PATTERN_ORDER))
+		{
+			foreach ($f_result_array[1] as $f_rewrite_char) { $f_ihandler = str_replace ("_".$f_rewrite_char,(strtoupper ($f_rewrite_char)),$f_ihandler); }
+		}
+
+		if ($direct_globals['basic_functions']->includeClass ('dNG\sWG\directIHandler'.$f_ihandler))
 		{
 			$f_return = direct_class_init ("input");
 
@@ -271,17 +260,27 @@ well as everything else that is required to be able to use the
 "error_page ()" function.
 ------------------------------------------------------------------------- */
 
-			$direct_globals['basic_functions']->require_file ($direct_settings['path_system']."/functions/swg_local_support.php",1);
+			$direct_globals['basic_functions']->requireFile ($direct_settings['path_system']."/functions/swg_local_support.php",1);
 			direct_local_integration ("core");
 			if (isset ($direct_local['lang_charset'])) { mb_internal_encoding ($direct_local['lang_charset']); }
 		}
 		else { $f_return = false; }
 
-		if (($f_return)&&(direct_class_init ("input"))) { $f_return = $direct_globals['basic_functions']->include_file ($direct_settings['path_system']."/classes/swg_ohandler_{$direct_settings['ohandler']}.php",1); }
+		if (($f_return)&&(direct_class_init ("input")))
+		{
+			$f_ohandler = ucfirst ($direct_settings['ohandler']);
+
+			if (preg_match_all ("#_(\w)#",$f_ohandler,$f_result_array,PREG_PATTERN_ORDER))
+			{
+				foreach ($f_result_array[1] as $f_rewrite_char) { $f_ohandler = str_replace ("_".$f_rewrite_char,(strtoupper ($f_rewrite_char)),$f_ohandler); }
+			}
+
+			if (!$direct_globals['basic_functions']->includeClass ('dNG\sWG\directOHandler'.$f_ohandler)) { $f_return = false; }
+		}
 
 		if (file_exists ($direct_settings['path_data']."/settings/swg_kernel_modules.php"))
 		{
-			$f_data = $direct_globals['basic_functions']->memcache_get_file ($direct_settings['path_data']."/settings/swg_kernel_modules.php");
+			$f_data = $direct_globals['basic_functions']->memcacheGetFile ($direct_settings['path_data']."/settings/swg_kernel_modules.php");
 
 			if ($f_data)
 			{
@@ -291,20 +290,31 @@ well as everything else that is required to be able to use the
 				{
 					foreach ($f_data['swg_kernel_modules_file_v1'] as $f_module)
 					{
-						if (isset ($f_module['attributes']['file']))
+						if (isset ($f_module['attributes']['class']))
 						{
-							$f_module = $direct_globals['basic_functions']->inputfilter_filepath ($f_module['attributes']['file']);
-							$direct_globals['basic_functions']->include_file ($direct_settings['path_system']."/classes/".$f_module,1);
+							$f_class = $direct_globals['basic_functions']->inputfilterBasic ($f_module['attributes']['class']);
+							$direct_globals['basic_functions']->includeClass ($f_class,1);
 						}
 					}
 				}
 			}
 		}
 
-		if (!direct_class_init ("output")) { $f_return = false; }
-		$this->functions['service_init'] = $f_return;
+		direct_class_init ("kernel_uuids");
+		direct_class_init ("kernel_user");
 
-		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -kernel_class->kernel_modules_load ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
+/*i// LICENSE_WARNING
+----------------------------------------------------------------------------
+The sWG Group Class has been published under the General Public License.
+----------------------------------------------------------------------------
+LICENSE_WARNING_END //i*/
+
+		direct_class_init ("kernel_group");
+
+		if (!direct_class_init ("output")) { $f_return = false; }
+		$this->functions['serviceInit'] = $f_return;
+
+		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -kernel->kernelModulesLoad ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
 /**
@@ -313,21 +323,13 @@ well as everything else that is required to be able to use the
 	*
 	* @param  boolean $f_https_required True if a https connection is required
 	* @param  string $f_url The URL back to the current request
-	* @uses   direct_basic_functions::require_file()
-	* @uses   direct_basic_functions_inline::emergency_mode()
-	* @uses   direct_class_function_check()
-	* @uses   direct_debug()
-	* @uses   direct_error_functions::error_page()
-	* @uses   direct_linker()
-	* @uses   direct_output_control::redirect()
-	* @uses   USE_debug_reporting
 	* @return boolean False on error
 	* @since  v0.1.03
 */
-	/*#ifndef(PHP4) */public /* #*/function service_https ($f_https_required,$f_url)
+	/*#ifndef(PHP4) */public /* #*/function serviceHttps ($f_https_required,$f_url)
 	{
 		global $direct_globals,$direct_local,$direct_settings;
-		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -kernel_class->service_https (+f_https_required,$f_url)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -kernel->serviceHttps (+f_https_required,$f_url)- (#echo(__LINE__)#)"); }
 
 		$f_return = false;
 
@@ -336,12 +338,12 @@ well as everything else that is required to be able to use the
 		{
 			if ($direct_settings['dsd']['https_redirect'])
 			{
-				if (isset ($direct_local['lang_charset'])) { $direct_globals['output']->output_send_error ("fatal","core_https_redirect_failed","FATAL ERROR:<br />Request terminated","sWG/#echo(__FILEPATH__)# -kernel_class->service_https ()- (#echo(__LINE__)#)"); }
-				else { $direct_globals['output']->output_send_error ("fatal","The system is unable to perform the required redirection to a secure https connection.","sWG/#echo(__FILEPATH__)# -kernel_class->service_https ()- (#echo(__LINE__)#)"); }
+				if (isset ($direct_local['lang_charset'])) { $direct_globals['output']->outputSendError ("fatal","core_https_redirect_failed","FATAL ERROR:<br />Request terminated","sWG/#echo(__FILEPATH__)# -kernel->serviceHttps ()- (#echo(__LINE__)#)"); }
+				else { $direct_globals['output']->outputSendError ("fatal","The system is unable to perform the required redirection to a secure https connection.","sWG/#echo(__FILEPATH__)# -kernel->serviceHttps ()- (#echo(__LINE__)#)"); }
 			}
 			else
 			{
-				$direct_globals['basic_functions']->require_file ($direct_settings['path_system']."/functions/swg_linker.php");
+				$direct_globals['basic_functions']->requireFile ($direct_settings['path_system']."/functions/swg_linker.php");
 
 				if (/*#ifndef(PHP4) */stripos/* #*//*#ifdef(PHP4):stristr:#*/($f_url,";dsd=") === false)
 				{
@@ -367,7 +369,7 @@ well as everything else that is required to be able to use the
 			exit ();
 		}
 
-		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -kernel_class->service_https ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
+		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -kernel->serviceHttps ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
 /**
@@ -377,27 +379,24 @@ well as everything else that is required to be able to use the
 	* @param  string $f_threshold_id This parameter is used to determine if
 	*         a request to write data is below the threshold (timeout). Multiple
 	*         thresholds may exist.
-	* @uses   direct_kernel_system::v_subkernel_init()
-	* @uses   direct_debug()
-	* @uses   USE_debug_reporting
 	* @return array Empty array on success
 	* @since  v0.1.01
 */
-	/*#ifndef(PHP4) */public /* #*/function service_init ($f_threshold_id = "")
+	/*#ifndef(PHP4) */public /* #*/function serviceInit ($f_threshold_id = "")
 	{
 		global $direct_cachedata,$direct_settings;
-		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -kernel_class->service_init ($f_threshold_id)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -kernel->serviceInit ($f_threshold_id)- (#echo(__LINE__)#)"); }
 
 		$f_return = array ();
-		$this->v_subkernel_init ($f_threshold_id);
+		$this->vSubkernelInit ($f_threshold_id);
 
 		if (empty ($this->prekernel_error))
 		{
-			if (($direct_cachedata['core_time'] + $direct_settings['timeout'] + $direct_settings['timeout_core']) < (time ())) { $f_return = array ("core_unknown_error","FATAL ERROR: The system is experiencing a high load and is therefore unable to service your request at this time.<br /><br />We apologize for this inconvenience.","sWG/#echo(__FILEPATH__)# -kernel_class->service_init ()- (#echo(__LINE__)#)"); }
+			if (($direct_cachedata['core_time'] + $direct_settings['timeout'] + $direct_settings['timeout_core']) < (time ())) { $f_return = array ("core_unknown_error","FATAL ERROR: The system is experiencing a high load and is therefore unable to service your request at this time.<br /><br />We apologize for this inconvenience.","sWG/#echo(__FILEPATH__)# -kernel->serviceInit ()- (#echo(__LINE__)#)"); }
 		}
 		else { $f_return = $this->prekernel_error; }
 
-		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -kernel_class->service_init ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
+		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -kernel->serviceInit ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
 /**
@@ -407,20 +406,16 @@ well as everything else that is required to be able to use the
 	* @param  string $f_threshold_id This parameter is used to determine if
 	*         a request to write data is below the threshold (timeout). Multiple
 	*         thresholds may exist.
-	* @uses   direct_debug()
-	* @uses   direct_error_functions::error_page()
-	* @uses   direct_kernel_system::service_init()
-	* @uses   USE_debug_reporting
 	* @return boolean False on error
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function service_init_default ($f_threshold_id = "")
+	/*#ifndef(PHP4) */public /* #*/function serviceInitDefault ($f_threshold_id = "")
 	{
 		global $direct_globals,$direct_local;
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->service_init_default ($f_threshold_id)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel->serviceInitDefault ($f_threshold_id)- (#echo(__LINE__)#)"); }
 
 		$f_return = false;
-		$f_error_data = $this->service_init ($f_threshold_id);
+		$f_error_data = $this->serviceInit ($f_threshold_id);
 
 		if (empty ($f_error_data)) { $f_return = true; }
 		elseif (direct_class_init ("output"))
@@ -429,13 +424,13 @@ well as everything else that is required to be able to use the
 			{
 				if (count ($f_error_data[2]) < 3) { $f_error_data[2] = ""; }
 
-				if (/*#ifndef(PHP4) */stripos/* #*//*#ifdef(PHP4):stristr:#*/($f_error_data[0],"access_denied") === false) { $direct_globals['output']->output_send_error ("fatal",$f_error_data[0],$f_error_data[1],$f_error_data[2]); }
-				else { $direct_globals['output']->output_send_error ("login",$f_error_data[0],$f_error_data[1],$f_error_data[2]); }
+				if (/*#ifndef(PHP4) */stripos/* #*//*#ifdef(PHP4):stristr:#*/($f_error_data[0],"access_denied") === false) { $direct_globals['output']->outputSendError ("fatal",$f_error_data[0],$f_error_data[1],$f_error_data[2]); }
+				else { $direct_globals['output']->outputSendError ("login",$f_error_data[0],$f_error_data[1],$f_error_data[2]); }
 			}
-			else { $direct_globals['output']->output_send_error ("fatal","An unknown error occurred while initiating the requested resource.","","sWG/#echo(__FILEPATH__)# -kernel_class->service_init_default ()- (#echo(__LINE__)#)"); }
+			else { $direct_globals['output']->outputSendError ("fatal","An unknown error occurred while initiating the requested resource.","","sWG/#echo(__FILEPATH__)# -kernel->serviceInitDefault ()- (#echo(__LINE__)#)"); }
 		}
 
-		return /*#ifdef(DEBUG):direct_debug (9,"sWG/#echo(__FILEPATH__)# -kernel_class->service_init_default ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
+		return /*#ifdef(DEBUG):direct_debug (9,"sWG/#echo(__FILEPATH__)# -kernel->serviceInitDefault ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
 /**
@@ -444,37 +439,26 @@ well as everything else that is required to be able to use the
 	* @param  string $f_threshold_id This parameter is used to determine if
 	*         a request to write data is below the threshold (timeout). Multiple
 	*         thresholds may exist.
-	* @uses   direct_kernel_system::service_init()
-	* @uses   direct_debug()
-	* @uses   USE_debug_reporting
 	* @return boolean False on error
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function service_init_rboolean ($f_threshold_id = "")
+	/*#ifndef(PHP4) */public /* #*/function serviceInitRBoolean ($f_threshold_id = "")
 	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->service_init_rboolean ($f_threshold_id)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel->serviceInitRBoolean ($f_threshold_id)- (#echo(__LINE__)#)"); }
 
-		$f_error_data = $this->service_init ($f_threshold_id);
-		return /*#ifdef(DEBUG):direct_debug (9,"sWG/#echo(__FILEPATH__)# -kernel_class->service_init_rboolean ()- (#echo(__LINE__)#)",:#*/(empty ($f_error_data) ? true : false)/*#ifdef(DEBUG):,true):#*/;
+		$f_error_data = $this->serviceInit ($f_threshold_id);
+		return /*#ifdef(DEBUG):direct_debug (9,"sWG/#echo(__FILEPATH__)# -kernel->serviceInitRBoolean ()- (#echo(__LINE__)#)",:#*/(empty ($f_error_data) ? true : false)/*#ifdef(DEBUG):,true):#*/;
 	}
 
 /**
 	* Loads the required files to start a service or redirect the user.
 	*
-	* @uses  direct_basic_functions::include_file()
-	* @uses  direct_basic_functions::varfilter()
-	* @uses  direct_class_function_check()
-	* @uses  direct_class_init()
-	* @uses  direct_debug()
-	* @uses  direct_linker()
-	* @uses  direct_output_control::redirect()
-	* @uses  USE_debug_reporting
 	* @since v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function service_load ()
+	/*#ifndef(PHP4) */public /* #*/function serviceLoad ()
 	{
 		global $direct_cachedata,$direct_globals,$direct_settings;
-		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -kernel_class->service_load ()- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -kernel->serviceLoad ()- (#echo(__LINE__)#)"); }
 
 		$f_redirected = false;
 		$f_timeout_time = ($direct_cachedata['core_time'] + $direct_settings['timeout'] + $direct_settings['timeout_core']);
@@ -501,11 +485,11 @@ well as everything else that is required to be able to use the
 			}
 		}
 
-		if ($f_timeout_time < (time ())) { $direct_globals['output']->output_send_error ("fatal","core_unknown_error","FATAL ERROR: The system is experiencing a high load and is therefore unable to service your request at this time.<br /><br />We apologize for this inconvenience.","sWG/#echo(__FILEPATH__)# -kernel_class->service_load ()- (#echo(__LINE__)#)"); }
+		if ($f_timeout_time < (time ())) { $direct_globals['output']->outputSendError ("fatal","core_unknown_error","FATAL ERROR: The system is experiencing a high load and is therefore unable to service your request at this time.<br /><br />We apologize for this inconvenience.","sWG/#echo(__FILEPATH__)# -kernel->serviceLoad ()- (#echo(__LINE__)#)"); }
 		elseif ($f_redirected)
 		{
-			$f_redirected = direct_class_function_check ($direct_globals['basic_functions'],"include_file");
-			if ($f_redirected) { $f_redirected = $direct_globals['basic_functions']->include_file ($direct_settings['path_system']."/functions/swg_linker.php"); }
+			$f_redirected = direct_class_function_check ($direct_globals['basic_functions'],"includeFile");
+			if ($f_redirected) { $f_redirected = $direct_globals['basic_functions']->includeFile ($direct_settings['path_system']."/functions/swg_linker.php"); }
 
 			if ($f_redirected)
 			{
@@ -517,7 +501,7 @@ well as everything else that is required to be able to use the
 				$f_redirect_url = direct_linker ("url1","m=$direct_settings[m];s=$direct_settings[s];a=".$direct_settings['a'].$f_redirect_url,false);
 				$direct_globals['output']->redirect ($f_redirect_url);
 			}
-			else { $direct_globals['output']->output_send_error ("fatal","core_required_object_not_found","The system could not load a required component.<br /><br />Error accessing basic functions to initiate redirection","sWG/#echo(__FILEPATH__)# -kernel_class->service_load ()- (#echo(__LINE__)#)"); }
+			else { $direct_globals['output']->outputSendError ("fatal","core_required_object_not_found","The system could not load a required component.<br /><br />Error accessing basic functions to initiate redirection","sWG/#echo(__FILEPATH__)# -kernel->serviceLoad ()- (#echo(__LINE__)#)"); }
 		}
 		else
 		{
@@ -527,8 +511,8 @@ well as everything else that is required to be able to use the
 			$f_module_data[$f_module] = ("swg_".$f_module_data[$f_module].".php");
 			$f_module = implode ("/",$f_module_data);
 
-			if (file_exists ($direct_settings['path_system']."/modules/$direct_settings[m]/".$f_module)) { $direct_globals['basic_functions']->include_file ($direct_settings['path_system']."/modules/$direct_settings[m]/".$f_module,4); }
-			else { $direct_globals['output']->output_send_error ("fatal","core_required_object_not_found","FATAL ERROR: &quot;system/modules/$direct_settings[m]/$f_module&quot; was not found","sWG/#echo(__FILEPATH__)# -kernel_class->service_load ()- (#echo(__LINE__)#)"); }
+			if (file_exists ($direct_settings['path_system']."/modules/$direct_settings[m]/".$f_module)) { $direct_globals['basic_functions']->includeFile ($direct_settings['path_system']."/modules/$direct_settings[m]/".$f_module,4); }
+			else { $direct_globals['output']->outputSendError ("fatal","core_required_object_not_found","FATAL ERROR: &quot;system/modules/$direct_settings[m]/$f_module&quot; was not found","sWG/#echo(__FILEPATH__)# -kernel->serviceLoad ()- (#echo(__LINE__)#)"); }
 		}
 	}
 
@@ -536,15 +520,12 @@ well as everything else that is required to be able to use the
 	* Loads the required file(s) to integrate a module subkernel into the sWG
 	* kernel system.
 	*
-	* @uses  direct_basic_functions::include_file()
-	* @uses  direct_debug()
-	* @uses  USE_debug_reporting
 	* @since v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function subkernel_load ()
+	/*#ifndef(PHP4) */public /* #*/function subkernelLoad ()
 	{
 		global $direct_globals,$direct_settings;
-		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -kernel_class->subkernel_load ()- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -kernel->subkernelLoad ()- (#echo(__LINE__)#)"); }
 
 		$this->subkernel_initialized = false;
 
@@ -555,484 +536,425 @@ well as everything else that is required to be able to use the
 			$direct_settings['s'] = "sysm";
 			$direct_settings['a'] = "merror";
 
-			if (!$direct_globals['basic_functions']->include_file ($direct_settings['path_system']."/modules/default/swg_subkernel.php",4)) { $this->prekernel_error = array ("core_required_object_not_found","FATAL ERROR: &quot;system/modules/default/swg_subkernel.php&quot; was not found","sWG/#echo(__FILEPATH__)# -kernel_class->subkernel_load ()- (#echo(__LINE__)#)"); }
+			if (!$direct_globals['basic_functions']->includeFile ($direct_settings['path_system']."/modules/default/swg_subkernel.php",4)) { $this->prekernel_error = array ("core_required_object_not_found","FATAL ERROR: &quot;system/modules/default/swg_subkernel.php&quot; was not found","sWG/#echo(__FILEPATH__)# -kernel->subkernelLoad ()- (#echo(__LINE__)#)"); }
 		}
 	}
 
 /**
-	* "Virtual Binding" for "group_init ()"
+	* "Virtual Binding" for "groupInit ()"
 	*
-	* @uses   direct_debug()
-	* @uses   direct_virtual_class::v_call_get()
-	* @uses   USE_debug_reporting
 	* @return boolean False on error
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function v_group_init ()
+	/*#ifndef(PHP4) */public /* #*/function vGroupInit ()
 	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_group_init ()- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel->vGroupInit ()- (#echo(__LINE__)#)"); }
 
-		$f_call = $this->v_call_get ("v_group_init");
+		$f_call = $this->vCallGet ("vGroupInit");
 		return ($f_call ? $f_call[0]->{$f_call[1]} () : false);
 	}
 
 /**
-	* "Virtual Binding" for "group_right_check ()"
+	* "Virtual Binding" for "groupRightCheck ()"
 	*
 	* @param  string $f_gid Group ID
 	* @param  mixed $f_rights One (string) or more (array) right name(s)
 	* @param  boolean $f_explicit True if all defined rights must be true
-	* @uses   direct_debug()
-	* @uses   direct_virtual_class::v_call_get()
-	* @uses   USE_debug_reporting
 	* @return boolean True if the check was successful
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function v_group_right_check ($f_gid,$f_rights,$f_explicit = false)
+	/*#ifndef(PHP4) */public /* #*/function vGroupRightCheck ($f_gid,$f_rights,$f_explicit = false)
 	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_group_right_check ($f_gid,+f_rights,+f_explicit)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel->vGroupRightCheck ($f_gid,+f_rights,+f_explicit)- (#echo(__LINE__)#)"); }
 
-		$f_call = $this->v_call_get ("v_group_right_check");
+		$f_call = $this->vCallGet ("vGroupRightCheck");
 		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_gid,$f_rights,$f_explicit) : false);
 	}
 
 /**
-	* "Virtual Binding" for "group_right_write ()"
+	* "Virtual Binding" for "groupRightWrite ()"
 	*
 	* @param  string $f_objid Object ID for a right
 	* @param  string $f_rid Right IDs
 	* @param  string $f_right Right name
 	* @param  boolean $f_setup True to grant the right
-	* @uses   direct_debug()
-	* @uses   direct_virtual_class::v_call_get()
-	* @uses   USE_debug_reporting
 	* @return boolean False on error
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function v_group_right_write ($f_objid,$f_rid,$f_right,$f_setup)
+	/*#ifndef(PHP4) */public /* #*/function vGroupRightWrite ($f_objid,$f_rid,$f_right,$f_setup)
 	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_group_right_write ($f_objid,$f_rid,$f_right,+f_setup)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel->vGroupRightWrite ($f_objid,$f_rid,$f_right,+f_setup)- (#echo(__LINE__)#)"); }
 
-		$f_call = $this->v_call_get ("v_group_right_write");
+		$f_call = $this->vCallGet ("vGroupRightWrite");
 		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_objid,$f_rid,$f_right,$f_setup) : false);
 	}
 
 /**
-	* "Virtual Binding" for "group_rights_get ()"
+	* "Virtual Binding" for "groupRightsGet ()"
 	*
 	* @param  string $f_gid Group ID
-	* @uses   direct_debug()
-	* @uses   direct_virtual_class::v_call_get()
-	* @uses   USE_debug_reporting
 	* @return array Rights for the given group
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function v_group_rights_get ($f_gid)
+	/*#ifndef(PHP4) */public /* #*/function vGroupRightsGet ($f_gid)
 	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_group_rights_get ($f_gid)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel->vGroupRightsGet ($f_gid)- (#echo(__LINE__)#)"); }
 
-		$f_call = $this->v_call_get ("v_group_rights_get");
+		$f_call = $this->vCallGet ("vGroupRightsGet");
 		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_gid) : array ());
 	}
 
 /**
-	* "Virtual Binding" for "group_user_check_group ()"
+	* "Virtual Binding" for "groupUserCheckGroup ()"
 	*
 	* @param  mixed $f_gid One (string) or more (array) group ID(s)
 	* @param  boolean $f_all True if the user has to be in all given groups
-	* @uses   direct_debug()
-	* @uses   direct_virtual_class::v_call_get()
-	* @uses   USE_debug_reporting
 	* @return boolean True if the user is in the defined group(s)
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function v_group_user_check_group ($f_gid,$f_all = false)
+	/*#ifndef(PHP4) */public /* #*/function vGroupUserCheckGroup ($f_gid,$f_all = false)
 	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_group_user_check_group (+f_gid,+f_all)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel->vGroupUserCheckGroup (+f_gid,+f_all)- (#echo(__LINE__)#)"); }
 
-		$f_call = $this->v_call_get ("v_group_user_check_group");
+		$f_call = $this->vCallGet ("vGroupUserCheckGroup");
 		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_gid,$f_all) : false);
 	}
 
 /**
-	* "Virtual Binding" for "group_user_check_right ()"
+	* "Virtual Binding" for "groupUserCheckRight ()"
 	*
 	* @param  mixed $f_rights One (string) or more (array) right IDs
 	* @param  boolean $f_explicit True if all defined rights must be true
-	* @uses   direct_debug()
-	* @uses   direct_virtual_class::v_call_get()
-	* @uses   USE_debug_reporting
 	* @return boolean True if the check was successful
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function v_group_user_check_right ($f_rights,$f_explicit = false)
+	/*#ifndef(PHP4) */public /* #*/function vGroupUserCheckRight ($f_rights,$f_explicit = false)
 	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_group_user_check_right (+f_rights,+f_explicit)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel->vGroupUserCheckRight (+f_rights,+f_explicit)- (#echo(__LINE__)#)"); }
 
-		$f_call = $this->v_call_get ("v_group_user_check_right");
+		$f_call = $this->vCallGet ("vGroupUserCheckRight");
 		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_rights,$f_explicit) : false);
 	}
 
 /**
-	* "Virtual Binding" for "group_user_get_groups ()"
+	* "Virtual Binding" for "groupUserGetGroups ()"
 	*
-	* @uses   direct_debug()
-	* @uses   direct_virtual_class::v_call_get()
-	* @uses   USE_debug_reporting
 	* @return array Group IDs for $direct_settings['user']['id']
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function v_group_user_get_groups ()
+	/*#ifndef(PHP4) */public /* #*/function vGroupUserGetGroups ()
 	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_group_user_get_groups ()- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel->vGroupUserGetGroups ()- (#echo(__LINE__)#)"); }
 
-		$f_call = $this->v_call_get ("v_group_user_get_groups");
+		$f_call = $this->vCallGet ("vGroupUserGetGroups");
 		return ($f_call ? $f_call[0]->{$f_call[1]} () : array ());
 	}
 
 /**
-	* "Virtual Binding" for "group_user_get_rights ()"
+	* "Virtual Binding" for "groupUserGetRights ()"
 	*
-	* @uses   direct_debug()
-	* @uses   direct_virtual_class::v_call_get()
-	* @uses   USE_debug_reporting
 	* @return array Rights for $direct_settings['user']['id']
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function v_group_user_get_rights ()
+	/*#ifndef(PHP4) */public /* #*/function vGroupUserGetRights ()
 	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_group_user_get_rights ()- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel->vGroupUserGetRights ()- (#echo(__LINE__)#)"); }
 
-		$f_call = $this->v_call_get ("v_group_user_get_rights");
+		$f_call = $this->vCallGet ("vGroupUserGetRights");
 		return ($f_call ? $f_call[0]->{$f_call[1]} () : array ());
 	}
 
 /**
-	* "Virtual Binding" for "subkernel_init ()"
+	* "Virtual Binding" for "subkernelInit ()"
 	*
 	* @param string $f_threshold_id This parameter is used to determine if
 	*        a request to write data is below the threshold (timeout). Multiple
 	*        thresholds may exist.
-	* @uses  direct_debug()
-	* @uses  direct_virtual_class::v_call_get()
-	* @uses  USE_debug_reporting
 	* @since v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function v_subkernel_init ($f_threshold_id = "")
+	/*#ifndef(PHP4) */public /* #*/function vSubkernelInit ($f_threshold_id = "")
 	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_subkernel_init ($f_threshold_id)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel->vSubkernelInit ($f_threshold_id)- (#echo(__LINE__)#)"); }
 
 		if (!$this->subkernel_initialized)
 		{
-			$f_call = $this->v_call_get ("v_subkernel_init");
+			$f_call = $this->vCallGet ("vSubkernelInit");
 			$this->subkernel_initialized = true;
 
 			if ($f_call) { $this->prekernel_error = $f_call[0]->{$f_call[1]} ($f_threshold_id); }
-			else { $this->prekernel_error = array ("core_unknown_error","FATAL ERROR: The kernel is not linked to a subkernel.","sWG/#echo(__FILEPATH__)# -kernel_class->service_load ()- (#echo(__LINE__)#)"); }
+			else { $this->prekernel_error = array ("core_unknown_error","FATAL ERROR: The kernel is not linked to a subkernel.","sWG/#echo(__FILEPATH__)# -kernel->serviceLoad ()- (#echo(__LINE__)#)"); }
 		}
 	}
 
 /**
-	* "Virtual Binding" for "user_check ()"
+	* "Virtual Binding" for "userCheck ()"
 	*
 	* @param  string $f_userid User ID
 	* @param  string $f_username Username
 	* @param  boolean $f_all Include banned and locked account if true
-	* @uses   direct_debug()
-	* @uses   direct_virtual_class::v_call_get()
-	* @uses   USE_debug_reporting
 	* @return boolean True if the user exists and no error occurred
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function v_user_check ($f_userid,$f_username = "",$f_all = false)
+	/*#ifndef(PHP4) */public /* #*/function vUserCheck ($f_userid,$f_username = "",$f_all = false)
 	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_user_check ($f_userid,$f_username,+f_all)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel->vUserCheck ($f_userid,$f_username,+f_all)- (#echo(__LINE__)#)"); }
 
-		$f_call = $this->v_call_get ("v_user_check");
+		$f_call = $this->vCallGet ("vUserCheck");
 		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_userid,$f_username,$f_all) : false);
 	}
 
 /**
-	* "Virtual Binding" for "user_check_password ()"
+	* "Virtual Binding" for "userCheckPassword ()"
 	*
 	* @param  string $f_userid User ID
 	* @param  string $f_password Supplied password
-	* @uses   direct_debug()
-	* @uses   direct_virtual_class::v_call_get()
-	* @uses   USE_debug_reporting
 	* @return boolean True if the supplied password is correct
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function v_user_check_password ($f_userid,$f_password)
+	/*#ifndef(PHP4) */public /* #*/function vUserCheckPassword ($f_userid,$f_password)
 	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_user_check_password ($f_userid,+f_password)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel->vUserCheckPassword ($f_userid,+f_password)- (#echo(__LINE__)#)"); }
 
-		$f_call = $this->v_call_get ("v_user_check_password");
+		$f_call = $this->vCallGet ("vUserCheckPassword");
 		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_userid,$f_password) : false);
 	}
 
 /**
-	* "Virtual Binding" for "user_get ()"
+	* "Virtual Binding" for "userGet ()"
 	*
 	* @param  string $f_userid User ID
 	* @param  string $f_username Username
 	* @param  boolean $f_all Include banned and locked account if true
 	* @param  boolean $f_overwrite Overwrite already read data
-	* @uses   direct_debug()
-	* @uses   direct_virtual_class::v_call_get()
-	* @uses   USE_debug_reporting
 	* @return mixed User data array on success; False on error
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function v_user_get ($f_userid,$f_username = "",$f_all = false,$f_overwrite = false)
+	/*#ifndef(PHP4) */public /* #*/function vUserGet ($f_userid,$f_username = "",$f_all = false,$f_overwrite = false)
 	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_user_get ($f_userid,$f_username,+f_all,+f_overwrite)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel->vUserGet ($f_userid,$f_username,+f_all,+f_overwrite)- (#echo(__LINE__)#)"); }
 
-		$f_call = $this->v_call_get ("v_user_get");
+		$f_call = $this->vCallGet ("vUserGet");
 		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_userid,$f_username,$f_all,$f_overwrite) : false);
 	}
 
 /**
-	* "Virtual Binding" for "user_init ()"
+	* "Virtual Binding" for "userInit ()"
 	*
 	* @param  string $f_threshold_id This parameter is used to determine if
 	*         a request to write data is below the threshold (timeout). Multiple
 	*         thresholds may exist.
-	* @uses   direct_debug()
-	* @uses   direct_virtual_class::v_call_get()
-	* @uses   USE_debug_reporting
 	* @return boolean True on success
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function v_user_init ($f_threshold_id = "")
+	/*#ifndef(PHP4) */public /* #*/function vUserInit ($f_threshold_id = "")
 	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_user_init ()- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel->vUserInit ()- (#echo(__LINE__)#)"); }
 
-		$f_call = $this->v_call_get ("v_user_init");
+		$f_call = $this->vCallGet ("vUserInit");
 		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_threshold_id) : false);
 	}
 
 /**
-	* "Virtual Binding" for "user_parse ()"
+	* "Virtual Binding" for "userInsert ()"
+	*
+	* @param  string $f_userid User ID
+	* @param  mixed $f_data Array containing user data or empty string
+	* @param  boolean $f_use_current_data True to set user settings to current
+	*         ones (time, theme, ...)
+	* @return boolean True on success
+	* @since  v0.1.05
+*/
+	/*#ifndef(PHP4) */public /* #*/function vUserInsert ($f_userid = "",$f_data = "",$f_use_current_data = true)
+	{
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel->vUserInsert ($f_userid,+f_data,+f_use_current_data)- (#echo(__LINE__)#)"); }
+
+		$f_call = $this->vCallGet ("vUserInsert");
+		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_userid,$f_data,$f_use_current_data) : false);
+	}
+
+/**
+	* "Virtual Binding" for "userParse ()"
 	*
 	* @param  string $f_userid User ID
 	* @param  mixed $f_data Array containing user data or empty string
 	* @param  string $f_prefix Key prefix
-	* @uses   direct_debug()
-	* @uses   direct_virtual_class::v_call_get()
-	* @uses   USE_debug_reporting
 	* @return mixed Parsed (X)HTML data array; False on error
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function v_user_parse ($f_userid = "",$f_data = "",$f_prefix = "")
+	/*#ifndef(PHP4) */public /* #*/function vUserParse ($f_userid = "",$f_data = "",$f_prefix = "")
 	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_user_parse ($f_userid,+f_data,$f_prefix)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel->vUserParse ($f_userid,+f_data,$f_prefix)- (#echo(__LINE__)#)"); }
 
-		$f_call = $this->v_call_get ("v_user_parse");
+		$f_call = $this->vCallGet ("vUserParse");
 		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_userid,$f_data,$f_prefix) : false);
 	}
 
 /**
-	* "Virtual Binding" for "user_insert ()"
+	* "Virtual Binding" for "userSetPassword ()"
+	*
+	* @param  string $f_userid User ID
+	* @param  string $f_password Supplied password
+	* @return boolean True if the supplied password has been set
+	* @since  v0.1.10
+*/
+	/*#ifndef(PHP4) */public /* #*/function vUserSetPassword ($f_userid,$f_password)
+	{
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel->vUserSetPassword ($f_userid,+f_password)- (#echo(__LINE__)#)"); }
+
+		$f_call = $this->vCallGet ("vUserSetPassword");
+		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_userid,$f_password) : false);
+	}
+
+/**
+	* "Virtual Binding" for "userUpdate ()"
 	*
 	* @param  string $f_userid User ID
 	* @param  mixed $f_data Array containing user data or empty string
 	* @param  boolean $f_use_current_data True to set user settings to current
 	*         ones (time, theme, ...)
-	* @uses   direct_debug()
-	* @uses   direct_virtual_class::v_call_get()
-	* @uses   USE_debug_reporting
 	* @return boolean True on success
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function v_user_insert ($f_userid = "",$f_data = "",$f_use_current_data = true)
+	/*#ifndef(PHP4) */public /* #*/function vUserUpdate ($f_userid = "",$f_data = "",$f_use_current_data = true)
 	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_user_insert ($f_userid,+f_data,+f_use_current_data)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel->vUserUpdate ($f_userid,+f_data,+f_use_current_data)- (#echo(__LINE__)#)"); }
 
-		$f_call = $this->v_call_get ("v_user_insert");
+		$f_call = $this->vCallGet ("vUserUpdate");
 		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_userid,$f_data,$f_use_current_data) : false);
 	}
 
 /**
-	* "Virtual Binding" for "user_update ()"
+	* "Virtual Binding" for "userWriteKernel ()"
 	*
 	* @param  string $f_userid User ID
-	* @param  mixed $f_data Array containing user data or empty string
-	* @param  boolean $f_use_current_data True to set user settings to current
-	*         ones (time, theme, ...)
-	* @uses   direct_debug()
-	* @uses   direct_virtual_class::v_call_get()
-	* @uses   USE_debug_reporting
 	* @return boolean True on success
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function v_user_update ($f_userid = "",$f_data = "",$f_use_current_data = true)
+	/*#ifndef(PHP4) */public /* #*/function vUserWriteKernel ($f_userid)
 	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_user_update ($f_userid,+f_data,+f_use_current_data)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel->vUserWriteKernel ($f_userid)- (#echo(__LINE__)#)"); }
 
-		$f_call = $this->v_call_get ("v_user_update");
-		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_userid,$f_data,$f_use_current_data) : false);
-	}
-
-/**
-	* "Virtual Binding" for "user_write_kernel ()"
-	*
-	* @param  string $f_userid User ID
-	* @uses   direct_debug()
-	* @uses   direct_virtual_class::v_call_get()
-	* @uses   USE_debug_reporting
-	* @return boolean True on success
-	* @since  v0.1.05
-*/
-	/*#ifndef(PHP4) */public /* #*/function v_user_write_kernel ($f_userid)
-	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_user_write_kernel ($f_userid)- (#echo(__LINE__)#)"); }
-
-		$f_call = $this->v_call_get ("v_user_write_kernel");
+		$f_call = $this->vCallGet ("vUserWriteKernel");
 		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_userid) : false);
 	}
 
 /**
-	* "Virtual Binding" for "usertype_get_int ()"
+	* "Virtual Binding" for "usertypeGetInt ()"
 	*
 	* @param  string $f_data String value for a group type
-	* @uses   direct_debug()
-	* @uses   direct_virtual_class::v_call_get()
-	* @uses   USE_debug_reporting
 	* @return integer Integer value for a group type
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function v_usertype_get_int ($f_data)
+	/*#ifndef(PHP4) */public /* #*/function vUsertypeGetInt ($f_data)
 	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_usertype_get_int ($f_data)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel->vUsertypeGetInt ($f_data)- (#echo(__LINE__)#)"); }
 
-		$f_call = $this->v_call_get ("v_usertype_get_int");
+		$f_call = $this->vCallGet ("vUsertypeGetInt");
 		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_data) : 0);
 	}
 
 /**
-	* "Virtual Binding" for "uuid_check_usage ()"
+	* "Virtual Binding" for "uuidCheckUsage ()"
 	*
-	* @uses   direct_debug()
-	* @uses   direct_virtual_class::v_call_get()
-	* @uses   USE_debug_reporting
 	* @return boolean True if uuID is valid and used
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function v_uuid_check_usage ()
+	/*#ifndef(PHP4) */public /* #*/function vUuidCheckUsage ()
 	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_uuid_check_usage ()- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel->vUuidCheckUsage ()- (#echo(__LINE__)#)"); }
 
-		$f_call = $this->v_call_get ("v_uuid_check_usage");
+		$f_call = $this->vCallGet ("vUuidCheckUsage");
 		return ($f_call ? $f_call[0]->{$f_call[1]} () : false);
 	}
 
 /**
-	* "Virtual Binding" for "uuid_cookie_load ()"
+	* "Virtual Binding" for "uuidCookieLoad ()"
 	*
-	* @uses   direct_debug()
-	* @uses   direct_virtual_class::v_call_get()
-	* @uses   USE_debug_reporting
 	* @return boolean True on success
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function v_uuid_cookie_load ()
+	/*#ifndef(PHP4) */public /* #*/function vUuidCookieLoad ()
 	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_uuid_cookie_load ()- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel->vUuidCookieLoad ()- (#echo(__LINE__)#)"); }
 
-		$f_call = $this->v_call_get ("v_uuid_cookie_load");
+		$f_call = $this->vCallGet ("vUuidCookieLoad");
 		return ($f_call ? $f_call[0]->{$f_call[1]} () : false);
 	}
 
 /**
-	* "Virtual Binding" for "uuid_cookie_save ()"
+	* "Virtual Binding" for "uuidCookieSave ()"
 	*
-	* @uses   direct_debug()
-	* @uses   direct_virtual_class::v_call_get()
-	* @uses   USE_debug_reporting
 	* @return boolean True on success
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function v_uuid_cookie_save ()
+	/*#ifndef(PHP4) */public /* #*/function vUuidCookieSave ()
 	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_uuid_cookie_save ()- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel->vUuidCookieSave ()- (#echo(__LINE__)#)"); }
 
-		$f_call = $this->v_call_get ("v_uuid_cookie_save");
+		$f_call = $this->vCallGet ("vUuidCookieSave");
 		return ($f_call ? $f_call[0]->{$f_call[1]} () : false);
 	}
 
 /**
-	* "Virtual Binding" for "uuid_get ()"
+	* "Virtual Binding" for "uuidGet ()"
 	*
 	* @param  string $f_type Return type (a = array; s = string)
 	* @param  mixed $f_cookie_mode Boolean for (de)activation - empty string to
 	*         use system setting
-	* @uses   direct_debug()
-	* @uses   direct_virtual_class::v_call_get()
-	* @uses   USE_debug_reporting
 	* @return mixed Array or string on success; False on error
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function v_uuid_get ($f_type,$f_cookie_mode = false)
+	/*#ifndef(PHP4) */public /* #*/function vUuidGet ($f_type,$f_cookie_mode = false)
 	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_uuid_get ($f_type,+f_cookie_mode)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel->vUuidGet ($f_type,+f_cookie_mode)- (#echo(__LINE__)#)"); }
 
-		$f_call = $this->v_call_get ("v_uuid_get");
+		$f_call = $this->vCallGet ("vUuidGet");
 		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_type,$f_cookie_mode) : false);
 	}
 
 /**
-	* "Virtual Binding" for "uuid_init ()"
+	* "Virtual Binding" for "uuidInit ()"
 	*
 	* @param  string $f_uuid uuID of the current session
-	* @uses   direct_debug()
-	* @uses   direct_virtual_class::v_call_get()
-	* @uses   USE_debug_reporting
 	* @return boolean True on success
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function v_uuid_init ($f_uuid = NULL)
+	/*#ifndef(PHP4) */public /* #*/function vUuidInit ($f_uuid = NULL)
 	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_uuid_init (+f_uuid)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel->vUuidInit (+f_uuid)- (#echo(__LINE__)#)"); }
 
-		$f_call = $this->v_call_get ("v_uuid_init");
+		$f_call = $this->vCallGet ("vUuidInit");
 		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_uuid) : false);
 	}
 
 /**
-	* "Virtual Binding" for "uuid_is_cookied ()"
+	* "Virtual Binding" for "uuidIsCookied ()"
 	*
-	* @uses   direct_debug()
-	* @uses   direct_virtual_class::v_call_get()
-	* @uses   USE_debug_reporting
 	* @return boolean True on success
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function v_uuid_is_cookied ()
+	/*#ifndef(PHP4) */public /* #*/function vUuidIsCookied ()
 	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_uuid_is_cookied ()- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel->vUuidIsCookied ()- (#echo(__LINE__)#)"); }
 
-		$f_call = $this->v_call_get ("v_uuid_is_cookied");
+		$f_call = $this->vCallGet ("vUuidIsCookied");
 		return ($f_call ? $f_call[0]->{$f_call[1]} () : false);
 	}
 
 /**
-	* "Virtual Binding" for "uuid_write ()"
+	* "Virtual Binding" for "uuidWrite ()"
 	*
 	* @param  mixed $f_data uuID data array or string
 	* @param  mixed $f_cookie_mode Boolean for (de)activation - empty string to
 	*         use system setting
-	* @uses   direct_debug()
-	* @uses   direct_virtual_class::v_call_get()
-	* @uses   USE_debug_reporting
 	* @return boolean True on success
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function v_uuid_write ($f_data,$f_cookie_mode = "")
+	/*#ifndef(PHP4) */public /* #*/function vUuidWrite ($f_data,$f_cookie_mode = "")
 	{
-		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel_class->v_group_init (+f_data,+f_cookie_mode)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (8,"sWG/#echo(__FILEPATH__)# -kernel->vUuidWrite (+f_data,+f_cookie_mode)- (#echo(__LINE__)#)"); }
 
-		$f_call = $this->v_call_get ("v_uuid_write");
+		$f_call = $this->vCallGet ("vUuidWrite");
 		return ($f_call ? $f_call[0]->{$f_call[1]} ($f_data,$f_cookie_mode) : false);
 	}
 }
@@ -1041,8 +963,8 @@ well as everything else that is required to be able to use the
 Mark this class as the most up-to-date one
 ------------------------------------------------------------------------- */
 
-$direct_globals['@names']['kernel'] = "direct_kernel_system";
-define ("CLASS_direct_kernel_system",true);
+$direct_globals['@names']['kernel'] = "directKernel";
+define ("CLASS_directKernel",true);
 
 //j// Script specific commands
 
@@ -1052,22 +974,13 @@ $direct_settings['swg_force_local_handling'] = "";
 
 if (file_exists ($direct_settings['path_data']."/settings/swg_lock.chk"))
 {
-	direct_class_init ("kernel");
-
-	if ($direct_globals['kernel'])
+	if ((direct_class_init ("kernel"))&&($direct_globals['kernel'])&&($direct_globals['kernel']->basekernelInit ())&&($direct_globals['kernel']->kernelModulesLoad ()))
 	{
-	if (($direct_globals['kernel']->basekernel_init ())&&($direct_globals['kernel']->kernel_modules_load ()))
-	{
-		$direct_globals['kernel']->subkernel_load ();
-		$direct_globals['kernel']->service_load ();
-	}
+		$direct_globals['kernel']->subkernelLoad ();
+		$direct_globals['kernel']->serviceLoad ();
 	}
 }
-else
-{
-	direct_class_init ("output");
-	$direct_globals['output']->output_send_error ("critical","Dear Sir or Madam<br /><br />This is the &quot;secured WebGine&quot; program at &quot;$direct_settings[swg_server]&quot;.<br /><br />I'm afraid I wasn't able to deliver the requested resource because an &quot;Emergency lock&quot; has been activated.<br />Please feel free to contact the administration or simply try to reach your resource again later.<br /><br />Request terminated","sWG/#echo(__FILEPATH__)# _main_ (#echo(__LINE__)#)");
-}
+elseif (direct_class_init ("output")) { $direct_globals['output']->outputSendError ("critical","Dear Sir or Madam<br /><br />This is the &quot;secured WebGine&quot; program at &quot;$direct_settings[swg_server]&quot;.<br /><br />I'm afraid I wasn't able to deliver the requested resource because an &quot;Emergency lock&quot; has been activated.<br />Please feel free to contact the administration or simply try to reach your resource again later.<br /><br />Request terminated","sWG/#echo(__FILEPATH__)# _main_ (#echo(__LINE__)#)"); }
 
 //j// EOF
 ?>

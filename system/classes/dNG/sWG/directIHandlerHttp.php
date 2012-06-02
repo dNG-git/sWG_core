@@ -36,6 +36,13 @@ NOTE_END //n*/
 * @license    http://www.direct-netware.de/redirect.php?licenses;w3c
 *             W3C (R) Software License
 */
+/*#ifdef(PHP5n) */
+
+namespace dNG\sWG;
+/* #*/
+/*#use(direct_use) */
+use dNG\sWG\directIHandlerBasics;
+/* #\n*/
 
 /* -------------------------------------------------------------------------
 All comments will be removed in the "production" packages (they will be in
@@ -44,49 +51,41 @@ all development packets)
 
 //j// Functions and classes
 
-/* -------------------------------------------------------------------------
-Testing for required classes
-------------------------------------------------------------------------- */
-
-$g_continue_check = ((defined ("CLASS_direct_ihttp")) ? false : true);
-if (($g_continue_check)&&(!defined ("CLASS_direct_input"))) { $g_continue_check = ($direct_globals['basic_functions']->include_file ($direct_settings['path_system']."/classes/swg_ihandler.php",1) ? defined ("CLASS_direct_input") : false); }
-
-if ($g_continue_check)
+if (!defined ("CLASS_directIHandlerHttp"))
 {
 /**
-* "direct_ihttp" fetches and provides input related data for a HTTP
+* "directIHandlerHttp" fetches and provides input related data for a HTTP
 * conenction.
 *
 * @author     direct Netware Group
 * @copyright  (C) direct Netware Group - All rights reserved
 * @package    sWG_core
 * @subpackage input
-* @uses       CLASS_direct_input
 * @since      v0.1.08
 * @license    http://www.direct-netware.de/redirect.php?licenses;w3c
 *             W3C (R) Software License
 */
-class direct_ihttp extends direct_input
+class directIHandlerHttp extends directIHandlerBasics
 {
 /* -------------------------------------------------------------------------
 Extend the class using old and new behavior
 ------------------------------------------------------------------------- */
 
 /**
-	* Constructor (PHP5) __construct (direct_ihttp)
+	* Constructor (PHP5) __construct (directIHandlerHttp)
 	*
 	* @param string $f_iline Input query string with ";" delimiter.
-	* @uses  direct_debug()
-	* @uses  USE_debug_reporting
 	* @since v0.1.08
 */
 	/*#ifndef(PHP4) */public /* #*/function __construct ($f_iline = NULL)
 	{
 		global $direct_settings;
-		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -input_class->__construct (direct_ihttp)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -iHandler->__construct (directIHandlerHttp)- (#echo(__LINE__)#)"); }
 
 		if (count ($_POST))
 		{
+			if (((!isset ($_SERVER['QUERY_STRING']))||(!$_SERVER['QUERY_STRING'])||(!preg_match ("#(^|;)\w+($|;)#",$_SERVER['QUERY_STRING'])))&&(isset ($_POST['ohandler']))) { $direct_settings['ohandler'] = preg_replace ("#\W#","",$_POST['ohandler']); }
+
 			if (isset ($_POST['a'])) { $direct_settings['a'] = preg_replace ("#[;\/\\\?:@\=\&\. \+]+#","",(urldecode ($_POST['a']))); }
 			if (isset ($_POST['dsd'])) { $direct_settings['dsd'] = $_POST['dsd']; }
 			if (isset ($_POST['lang'])) { $direct_settings['lang'] = preg_replace ("#\W+#","",$_POST['lang']); }
@@ -103,8 +102,8 @@ Extend the class using old and new behavior
 		}
 		elseif (isset ($_SERVER['QUERY_STRING']))
 		{
-			if (isset ($f_iline)) { $f_variables = direct_basic_functions::iline_parse ($f_iline); }
-			else { $f_variables = direct_basic_functions::iline_parse ($_SERVER['QUERY_STRING']); }
+			if (isset ($f_iline)) { $f_variables = directBasicFunctions::ilineParse ($f_iline); }
+			else { $f_variables = directBasicFunctions::ilineParse ($_SERVER['QUERY_STRING']); }
 
 			if ((isset ($f_iline))&&(isset ($f_variables['dsd']))) { $direct_settings['dsd'] = $f_variables['dsd']; }
 			if (isset ($f_variables['lang'])) { $direct_settings['lang'] = preg_replace ("#\W+#","",$f_variables['lang']); }
@@ -224,20 +223,24 @@ The standard result: One IP is enough
 	}
 /*#ifdef(PHP4):
 /**
-	* Constructor (PHP4) direct_ihttp (direct_ihttp)
+	* Constructor (PHP4) directIHandlerHttp
 	*
 	* @since v0.1.08
 *\/
-	function direct_ihttp () { $this->__construct (); }
-:#*/
+	function directIHandlerHttp () { $this->__construct (); }
+:#\n*/
 }
 
 /* -------------------------------------------------------------------------
 Mark this class as the most up-to-date one
 ------------------------------------------------------------------------- */
 
-$direct_globals['@names']['input'] = "direct_ihttp";
-define ("CLASS_direct_ihttp",true);
+define ("CLASS_directIHandlerHttp",true);
+
+//j// Script specific commands
+
+global $direct_globals;
+$direct_globals['@names']['input'] = 'dNG\sWG\directIHandlerHttp';
 }
 
 //j// EOF

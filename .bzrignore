@@ -5,4 +5,3 @@ data/settings/swg_build_targets.php
 makefile.php
 nbproject
 sWG_core.*
-system/classes/ext_core/*

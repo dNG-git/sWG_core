@@ -20,7 +20,9 @@ sWG/#echo(__FILEPATH__)#
 NOTE_END //n*/
 
 <?php
+$direct_settings['theme_css_corners'] = (isset ($direct_settings['theme_css_corners_class']) ? " ".$direct_settings['theme_css_corners_class'] : " ui-corner-all");
 $g_block = (isset ($direct_settings['dsd']['dblock']) ? $direct_settings['dsd']['dblock'] : "");
+
 if ($g_block == "") {
 ?>
 function djs_browsersupport_set (f_params)
@@ -136,19 +138,19 @@ function djs_dialog (f_id,f_params)
 		{
 			f_self = jQuery(self);
 
-			if ("width" in f_params) { f_params.width = (f_self.width () * f_params.width); }
-			else { f_params['width'] = (f_self.width () * 0.95); }
+			if ("width" in f_params) { f_params.width = Math.floor (f_self.width () * f_params.width); }
+			else { f_params['width'] = Math.floor (f_self.width () * 0.95); }
 
-			if ("height" in f_params) { f_params.height = (f_self.height () * f_params.height); }
-			else { f_params['height'] = (f_self.height () * 0.95); }
+			if ("height" in f_params) { f_params.height = Math.floor (f_self.height () * f_params.height); }
+			else { f_params['height'] = Math.floor (f_self.height () * 0.95); }
 
-			if ("title" in f_params) { djs_swgDOM_insert_append ({ data:"<iframe src=\"" + (f_params.url.replace (/\&/g,"&amp;")) + "\" class='ui-widget ui-state-highlight' style='width:100%;height:100%'></iframe>",id:f_id,onInsert:{ func:"djs_dialog_view",params:{ draggable:false,id:f_id,height:f_params.height,modal:true,resizable:false,title:f_params.title,width:f_params.width } } }); }
-			else { djs_swgDOM_insert_append ({ data:"<iframe src=\"" + (f_params.url.replace (/\&/g,"&amp;")) + "\" class='ui-widget ui-state-highlight' style='width:100%;height:100%'></iframe>",id:f_id,onInsert:{ func:"djs_dialog_view",params:{ draggable:false,id:f_id,height:f_params.height,modal:true,resizable:false,title:"<?php echo direct_local_get ("core_detailed_information","text"); ?>",width:f_params.width } } }); }
+			if ("title" in f_params) { djs_swgDOM_insert_append ({ data:"<iframe src=\"" + (f_params.url.replace (/\&/g,"&amp;")) + "\" class='pageembeddedborder<?php echo $direct_settings['theme_css_corners']; ?> pageembeddedbg pageextracontent' style='width:100%;height:100%'></iframe>",id:f_id,onInsert:{ func:"djs_dialog_view",params:{ draggable:false,id:f_id,height:f_params.height,modal:true,resizable:false,title:f_params.title,width:f_params.width } } }); }
+			else { djs_swgDOM_insert_append ({ data:"<iframe src=\"" + (f_params.url.replace (/\&/g,"&amp;")) + "\" class='pageembeddedborder<?php echo $direct_settings['theme_css_corners']; ?> pageembeddedbg pageextracontent' style='width:100%;height:100%'></iframe>",id:f_id,onInsert:{ func:"djs_dialog_view",params:{ draggable:false,id:f_id,height:f_params.height,modal:true,resizable:false,title:"<?php echo direct_local_get ("core_detailed_information","text"); ?>",width:f_params.width } } }); }
 		}
 		else
 		{
-			if (f_params === null) { f_params = { width:(jQuery(self).width () * djs_var.core_dialog_width) }; }
-			else if (!("width" in f_params)) { f_params['width'] = (jQuery(self).width () * djs_var.core_dialog_width); }
+			if (f_params === null) { f_params = { width:Math.floor (jQuery(self).width () * djs_var.core_dialog_width) }; }
+			else if (!("width" in f_params)) { f_params['width'] = Math.floor (jQuery(self).width () * djs_var.core_dialog_width); }
 
 			f_params.id = f_id;
 			djs_dialog_view (f_params);
@@ -259,11 +261,16 @@ function djs_run (f_params,f_perm_params,f_is_perm_params)
 	{
 		if (f_perm_params !== undefined)
 		{
-			if (!f_is_perm_params)
+			if (!(f_is_perm_params))
 			{
-				if ("perm_params" in f_perm_params) { f_perm_params = f_perm_params.perm_params; }
+				if ("perm_params" in f_perm_params)
+				{
+					f_params.params['perm_params'] = f_perm_params.perm_params;
+					f_perm_params = f_perm_params.perm_params;
+				}
 				else { f_perm_params = [ ]; }
 			}
+			else { f_params.params['perm_params'] = f_perm_params; }
 
 			for (var f_param in f_perm_params)
 			{
@@ -275,7 +282,25 @@ function djs_run (f_params,f_perm_params,f_is_perm_params)
 		catch (f_unhandled_exception) { }
 	}
 }
+<?php
+} if ($g_block == "djs_tid_keepalive") {
+?>
+djs_var['core_tid_keepalives'] = { };
 
+function djs_tid_keepalive (f_tid,f_recall)
+{
+	if (f_recall === undefined) { f_recall = false; }
+
+	if (f_recall) { djs_swgAJAX ({ cache:true,url0:'s=task;a=keepalive;dsd=tid+' + f_tid }).done (function () { self.setTimeout ("djs_tid_keepalive ('" + f_tid + "',true)",300000); }); }
+	else if (!(f_tid in djs_var.core_tid_keepalives))
+	{
+		djs_var.core_tid_keepalives[f_tid] = true;
+		self.setTimeout ("djs_tid_keepalive ('" + f_tid + "',true)",300000);
+	}
+}
+<?php
+} if ($g_block == "") {
+?>
 jQuery (function ()
 {
 	djs_browsersupport_set (null);

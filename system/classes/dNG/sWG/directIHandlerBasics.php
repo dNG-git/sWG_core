@@ -37,6 +37,10 @@ NOTE_END //n*/
 * @license    http://www.direct-netware.de/redirect.php?licenses;w3c
 *             W3C (R) Software License
 */
+/*#ifdef(PHP5n) */
+
+namespace dNG\sWG;
+/* #\n*/
 
 /* -------------------------------------------------------------------------
 All comments will be removed in the "production" packages (they will be in
@@ -45,25 +49,20 @@ all development packets)
 
 //j// Functions and classes
 
-/* -------------------------------------------------------------------------
-Testing for required classes
-------------------------------------------------------------------------- */
-
-if (!defined ("CLASS_direct_input"))
+if (!defined ("CLASS_directIHandlerBasics"))
 {
 /**
-* The "direct_ihandler" is mainly an interface specification.
+* The "directIHandlerBasics" is mainly an interface specification.
 *
 * @author     direct Netware Group
 * @copyright  (C) direct Netware Group - All rights reserved
 * @package    sWG_core
 * @subpackage input
-* @uses       CLASS_direct_virtual_class
 * @since      v0.1.08
 * @license    http://www.direct-netware.de/redirect.php?licenses;w3c
 *             W3C (R) Software License
 */
-class direct_input extends direct_virtual_class
+class directIHandlerBasics extends directVirtualClass
 {
 /**
 	* @var string $method HTTP (like) method
@@ -91,16 +90,14 @@ Extend the class using old and new behavior
 ------------------------------------------------------------------------- */
 
 /**
-	* Constructor (PHP5) __construct (direct_input)
+	* Constructor (PHP5) __construct (directIHandlerBasics)
 	*
-	* @uses  direct_debug()
-	* @uses  USE_debug_reporting
 	* @since v0.1.08
 */
 	/*#ifndef(PHP4) */public /* #*/function __construct ()
 	{
 		global $direct_globals,$direct_settings;
-		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -input_class->__construct (direct_input)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -iHandler->__construct (directIHandlerBasics)- (#echo(__LINE__)#)"); }
 
 /* -------------------------------------------------------------------------
 My parent should be on my side to get the work done
@@ -112,18 +109,18 @@ My parent should be on my side to get the work done
 Informing the system about available functions
 ------------------------------------------------------------------------- */
 
-		$this->functions['auth_get'] = true;
-		$this->functions['pass_get'] = true;
-		$this->functions['uuid_get'] = true;
-		$this->functions['uuid_set'] = true;
-		$this->functions['user_get'] = true;
-		$this->functions['user_set'] = true;
+		$this->functions['authGet'] = true;
+		$this->functions['passGet'] = true;
+		$this->functions['uuidGet'] = true;
+		$this->functions['uuidSet'] = true;
+		$this->functions['userGet'] = true;
+		$this->functions['userSet'] = true;
 
 /* -------------------------------------------------------------------------
 Set protocol specific data
 ------------------------------------------------------------------------- */
 
-		$direct_settings['dsd'] = $direct_globals['basic_functions']->dsd_parse ($direct_settings['dsd']);
+		$direct_settings['dsd'] = $direct_globals['basic_functions']->dsdParse ($direct_settings['dsd']);
 		$direct_settings['swg_clientsupport'] = array ();
 
 		$this->auth = NULL;
@@ -133,11 +130,11 @@ Set protocol specific data
 	}
 /*#ifdef(PHP4):
 /**
-	* Constructor (PHP4) direct_input (direct_input)
+	* Constructor (PHP4) directIHandlerBasics
 	*
 	* @since v0.1.08
 *\/
-	function direct_input () { $this->__construct (); }
+	function directIHandlerBasics () { $this->__construct (); }
 :#*/
 /**
 	* Return the authentification protocol identified through protocol specific
@@ -146,7 +143,7 @@ Set protocol specific data
 	* @return mixed String if identified; NULL if not
 	* @since  v0.1.08
 */
-	/*#ifndef(PHP4) */public /* #*/function auth_get () { return $this->auth; }
+	/*#ifndef(PHP4) */public /* #*/function authGet () { return $this->auth; }
 
 /**
 	* Return a password identified through protocol specific ways.
@@ -154,7 +151,7 @@ Set protocol specific data
 	* @return mixed String if identified; NULL if not
 	* @since  v0.1.08
 */
-	/*#ifndef(PHP4) */public /* #*/function pass_get () { return $this->pass; }
+	/*#ifndef(PHP4) */public /* #*/function passGet () { return $this->pass; }
 
 /**
 	* Return a UUID identified through protocol specific ways.
@@ -162,7 +159,7 @@ Set protocol specific data
 	* @return mixed String if identified; NULL if not
 	* @since  v0.1.08
 */
-	/*#ifndef(PHP4) */public /* #*/function uuid_get () { return $this->uuid; }
+	/*#ifndef(PHP4) */public /* #*/function uuidGet () { return $this->uuid; }
 
 /**
 	* Set the defined UUID.
@@ -170,7 +167,7 @@ Set protocol specific data
 	* @param string $f_uuid UUID
 	* @since v0.1.08
 */
-	/*#ifndef(PHP4) */public /* #*/function uuid_set ($f_uuid)
+	/*#ifndef(PHP4) */public /* #*/function uuidSet ($f_uuid)
 	{
 		global $direct_settings;
 		$direct_settings['uuid'] = $f_uuid;
@@ -183,7 +180,7 @@ Set protocol specific data
 	* @return string User name used by the system or sent by the browser
 	* @since  v0.1.08
 */
-	/*#ifndef(PHP4) */public /* #*/function user_get () { return $this->user; }
+	/*#ifndef(PHP4) */public /* #*/function userGet () { return $this->user; }
 
 /**
 	* Set the defined user name.
@@ -191,7 +188,7 @@ Set protocol specific data
 	* @param string $f_user User name
 	* @since v0.1.08
 */
-	/*#ifndef(PHP4) */public /* #*/function user_set ($f_user)
+	/*#ifndef(PHP4) */public /* #*/function userSet ($f_user)
 	{
 		global $direct_settings;
 
@@ -209,7 +206,7 @@ Set protocol specific data
 Mark this class as the most up-to-date one
 ------------------------------------------------------------------------- */
 
-define ("CLASS_direct_input",true);
+define ("CLASS_directIHandlerBasics",true);
 }
 
 //j// EOF

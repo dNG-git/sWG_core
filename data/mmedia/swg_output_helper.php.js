@@ -23,6 +23,8 @@ djs_var['core_output_helper_cache'] = { };
 
 function djs_core_helper_init (f_params)
 {
+	jQuery("#" + f_params.id + " > img").attr ("title","<?php echo direct_local_get ("core_detailed_information_hide"); ?>");
+
 	if (f_params.hide) { djs_core_helper_hide (f_params.id); }
 	else { jQuery("#" + f_params.id).one ("click",function () { djs_core_helper_hide (f_params.id); }); }
 }
@@ -40,7 +42,5 @@ function djs_core_helper_show (f_id)
 }
 
 function djs_core_helper_shown (f_params) { jQuery("#" + f_params.id).one ("click",function () { djs_core_helper_hide (f_params.id); }); }
-
-jQuery('.pagehelpericon > img').attr ("title","<?php echo direct_local_get ("core_detailed_information_hide"); ?>");
 
 //j// EOF

@@ -33,7 +33,6 @@ NOTE_END //n*/
 * @copyright  (C) direct Netware Group - All rights reserved
 * @package    sWG_core
 * @subpackage basic_functions
-* @uses       direct_product_iversion
 * @since      v0.1.03
 * @license    http://www.direct-netware.de/redirect.php?licenses;w3c
 *             W3C (R) Software License
@@ -62,10 +61,6 @@ if (!defined ("direct_product_iversion")) { exit (); }
 * @param  boolean $f_recursive True to create all missing directories
 *         recursively
 * @param  integer $f_timeout Timeout to use
-* @uses   direct_debug()
-* @uses   direct_dir_exists()
-* @uses   direct_dir_is_writable()
-* @uses   USE_debug_reporting
 * @return boolean True on success
 * @since  v0.1.03
 */
@@ -126,8 +121,6 @@ $direct_cachedata['core_dir_functions_data'][$f_dir_id] = array (
 * Check if a directory exist and is readable for the current PHP process.
 *
 * @param  string $f_dir_path Path to the directory.
-* @uses   direct_debug()
-* @uses   USE_debug_reporting
 * @return boolean True on success
 * @since  v0.1.03
 */
@@ -147,16 +140,11 @@ function direct_dir_exists ($f_dir_path)
 	{
 		$direct_cachedata['core_dir_functions_data'][$f_dir_id] = array ();
 
-		if (file_exists ($f_dir_path))
+		if ((file_exists ($f_dir_path))&&(is_dir ($f_dir_path)))
 		{
-			if (is_dir ($f_dir_path))
-			{
-				$f_return = true;
-				$f_readable_check = is_readable ($f_dir_path);
-			}
-			else { $f_return = false; }
+			$f_return = true;
+			$f_readable_check = is_readable ($f_dir_path);
 		}
-		else { $f_return = false; }
 
 		if (($f_return)&&($f_readable_check))
 		{
@@ -184,9 +172,6 @@ function direct_dir_exists ($f_dir_path)
 * Check if a directory is readable for the current PHP process.
 *
 * @param  string $f_dir_path Path to the directory.
-* @uses   direct_debug()
-* @uses   direct_dir_exists()
-* @uses   USE_debug_reporting
 * @return boolean True on success
 * @since  v0.1.03
 */
@@ -206,9 +191,6 @@ function direct_dir_is_readable ($f_dir_path)
 * Check if a directory is writable for the current PHP process.
 *
 * @param  string $f_dir_path Path to the directory.
-* @uses   direct_debug()
-* @uses   direct_dir_exists()
-* @uses   USE_debug_reporting
 * @return boolean True on success
 * @since  v0.1.03
 */
@@ -233,10 +215,6 @@ function direct_dir_is_writable ($f_dir_path)
 * @param  string $f_dir_path Path to the new directory.
 * @param  boolean $f_recursive True to remove everything recursively
 * @param  integer $f_timeout Timeout to use
-* @uses   direct_debug()
-* @uses   direct_dir_exists()
-* @uses   direct_dir_is_writable()
-* @uses   USE_debug_reporting
 * @return boolean True on success
 * @since  v0.1.08
 */

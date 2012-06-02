@@ -20,8 +20,9 @@ sWG/#echo(__FILEPATH__)#
 ----------------------------------------------------------------------------
 NOTE_END //n*/
 /**
-* OOP (Object Oriented Programming) requires an abstract data
-* handling. The sWG is OO (where it makes sense).
+* XML (Extensible Markup Language) is the easiest way to use a descriptive
+* language for controlling applications locally and world wide. This file
+* contains the "wrapper" for "ext_core/xml_reader.php".
 *
 * @internal   We are using phpDocumentor to automate the documentation process
 *             for creating the Developer's Manual. All sections including
@@ -32,11 +33,18 @@ NOTE_END //n*/
 * @author     direct Netware Group
 * @copyright  (C) direct Netware Group - All rights reserved
 * @package    sWG_core
-* @subpackage basic_functions
+* @subpackage xml
 * @since      v0.1.03
 * @license    http://www.direct-netware.de/redirect.php?licenses;w3c
 *             W3C (R) Software License
 */
+/*#ifdef(PHP5n) */
+
+namespace dNG\sWG;
+/* #*/
+/*#use(direct_use) */
+use dNG\directXmlReader;
+/* #\n*/
 
 /* -------------------------------------------------------------------------
 All comments will be removed in the "production" packages (they will be in
@@ -45,108 +53,62 @@ all development packets)
 
 //j// Functions and classes
 
-/* -------------------------------------------------------------------------
-Testing for required classes
-------------------------------------------------------------------------- */
-
-if (!defined ("CLASS_direct_data_handler"))
+if (!defined ("CLASS_directXmlBridge"))
 {
 /**
-* This is an abstract data holder doing nothing.
+* This class provides a bridge between the sWG and XML to read XML on the fly.
 *
 * @author     direct Netware Group
 * @copyright  (C) direct Netware Group - All rights reserved
 * @package    sWG_core
-* @subpackage basic_functions
-* @uses       CLASS_direct_virtual_class
+* @subpackage xml
 * @since      v0.1.03
 * @license    http://www.direct-netware.de/redirect.php?licenses;w3c
 *             W3C (R) Software License
 */
-class direct_data_handler extends direct_virtual_class
+class directXmlBridge extends directXmlReader
 {
-/**
-	* @var mixed $data Container for class-wide usable data
-*/
-	/*#ifndef(PHP4) */protected/* #*//*#ifdef(PHP4):var:#*/ $data;
-
 /* -------------------------------------------------------------------------
 Extend the class using old and new behavior
 ------------------------------------------------------------------------- */
 
 /**
-	* Constructor (PHP5) __construct (direct_data_handler)
+	* Constructor (PHP5) __construct (directXmlBridge)
 	*
-	* @uses  direct_debug()
-	* @uses  USE_debug_reporting
+	* @param boolean $f_parse_only Parse data only
 	* @since v0.1.03
 */
-	/*#ifndef(PHP4) */public /* #*/function __construct ()
+	/*#ifndef(PHP4) */public /* #*/function __construct ($f_parse_only = true)
 	{
-		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -data_handler->__construct (direct_data_handler)- (#echo(__LINE__)#)"); }
+		global $direct_cachedata,$direct_local,$direct_settings;
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -xml->__construct (directXmlBridge)- (#echo(__LINE__)#)"); }
 
 /* -------------------------------------------------------------------------
 My parent should be on my side to get the work done
 ------------------------------------------------------------------------- */
 
-		parent::__construct ();
-
-/* -------------------------------------------------------------------------
-Informing the system about available functions 
-------------------------------------------------------------------------- */
-
-		$this->functions['get'] = true;
-		$this->functions['set'] = true;
+		if (isset ($direct_local['lang_charset'])) { parent::__construct ($direct_local['lang_charset'],$f_parse_only,$direct_cachedata['core_time'],($direct_settings['timeout'] + $direct_settings['timeout_core']),$direct_settings['path_system']."/classes/dNG",USE_debug_reporting); }
+		else { parent::__construct ("UTF-8",$f_parse_only,$direct_cachedata['core_time'],($direct_settings['timeout'] + $direct_settings['timeout_core']),$direct_settings['path_system']."/classes/dNG",USE_debug_reporting); }
 	}
 /*#ifdef(PHP4):
 /**
-	* Constructor (PHP4) direct_data_handler (direct_data_handler)
+	* Constructor (PHP4) directXmlBridge
 	*
+	* @param boolean $f_parse_only Parse data only
 	* @since v0.1.03
 *\/
-	function direct_data_handler () { $this->__construct (); }
+	function directXmlBridge ($f_parse_only = true) { $this->__construct ($f_parse_only); }
 :#\n*/
-/**
-	* Destructor (PHP5) __destruct (direct_data_handler)
-	*
-	* @since v0.1.07
-*/
-	/*#ifndef(PHP4) */public /* #*/function __destruct () { $this->data = NULL; }
-
-/**
-	* This operation just gives back the content of $this->data.
-	*
-	* @uses   direct_debug()
-	* @uses   USE_debug_reporting
-	* @return mixed Returns the saved data
-	* @since  v0.1.03
-*/
-	/*#ifndef(PHP4) */public /* #*/function get ()
-	{
-		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -data_handler->get ()- (#echo(__LINE__)#)"); }
-		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -data_handler->get ()- (#echo(__LINE__)#)",:#*/(isset ($this->data) ? $this->data : false)/*#ifdef(DEBUG):,true):#*/;
-	}
-
-/**
-	* This operation fills $this->data with $f_data.
-	*
-	* @param mixed $f_data Data to be saved
-	* @uses  direct_debug()
-	* @uses  USE_debug_reporting
-	* @since v0.1.03
-*/
-	/*#ifndef(PHP4) */public /* #*/function set ($f_data)
-	{
-		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -data_handler->set (+f_data)- (#echo(__LINE__)#)"); }
-		$this->data = $f_data;
-	}
 }
 
 /* -------------------------------------------------------------------------
 Mark this class as the most up-to-date one
 ------------------------------------------------------------------------- */
 
-define ("CLASS_direct_data_handler",true);
+global $direct_globals;
+$direct_globals['@names']['xml_bridge'] = 'dNG\sWG\directXmlBridge';
+
+define ("CLASS_directXmlBridge",true);
 }
 
 //j// EOF

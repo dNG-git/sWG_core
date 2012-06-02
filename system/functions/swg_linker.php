@@ -32,7 +32,6 @@ NOTE_END //n*/
 * @copyright  (C) direct Netware Group - All rights reserved
 * @package    sWG_core
 * @subpackage basic_functions
-* @uses       direct_product_iversion
 * @since      v0.1.02
 * @license    http://www.direct-netware.de/redirect.php?licenses;w3c
 *             W3C (R) Software License
@@ -67,12 +66,6 @@ if (!defined ("direct_product_iversion")) { exit (); }
 * @param  boolean $f_html_encode True to append "amp;" to each "&" character
 *         (Needed for (X)HTML)
 * @param  boolean $f_withuuid True to add the current uuID string to the query
-* @uses   direct_debug()
-* @uses   direct_html_encode_special()
-* @uses   direct_kernel_system::v_uuid_check_usage()
-* @uses   direct_linker_dynamic()
-* @uses   direct_linker_shadow()
-* @uses   USE_debug_reporting
 * @return string Ready to use URL
 * @since  v0.1.02
 */
@@ -92,7 +85,7 @@ value='de' />"
 ------------------------------------------------------------------------- */
 
 		$f_html_filter = array ("&#60;","&#62;","&lt;","&gt;");
-		$f_return = "";
+		$f_return = "<input type='hidden' name='ohandler' value=\"{$direct_settings['ohandler']}\" />";
 
 		if (strpos ($f_data,"#") !== false)
 		{
@@ -106,7 +99,7 @@ value='de' />"
 			if ($f_variable)
 			{
 				$f_variable_array = explode ("=",$f_variable,2);
-				if ($f_variable_array[0]) { $f_return .= "<input type='hidden' name='{$f_variable_array[0]}' value=\"".(direct_html_encode_special ($f_variable_array[1]))."\" />"; }
+				if (!empty ($f_variable_array)) { $f_return .= "<input type='hidden' name='{$f_variable_array[0]}' value=\"".(isset ($f_variable_array[1]) ? direct_html_encode_special ($f_variable_array[1]) : "")."\" />"; }
 			}
 		}
 
@@ -119,8 +112,8 @@ Automatically add language, theme and uuid fields to the form
 
 		if ((isset ($direct_globals['input']))&&($f_withuuid))
 		{
-			$f_uuid = $direct_globals['input']->uuid_get ();
-			if (($f_uuid)&&(!$direct_globals['kernel']->v_uuid_is_cookied ())&&($direct_globals['kernel']->v_uuid_check_usage ())) { $f_return .= "<input type='hidden' name='uuid' value='$f_uuid' />"; }
+			$f_uuid = $direct_globals['input']->uuidGet ();
+			if (($f_uuid)&&(!$direct_globals['kernel']->vUuidIsCookied ())&&($direct_globals['kernel']->vUuidCheckUsage ())) { $f_return .= "<input type='hidden' name='uuid' value='$f_uuid' />"; }
 		}
 	}
 	elseif ($f_type == "optical")
@@ -280,9 +273,6 @@ not. If shadowed, they may be look like http://localhost/swg_base64data.htm
 * @param  boolean $f_html_encode True to append "amp;" to each "&" character
 *         (Needed for (X)HTML)
 * @param  boolean $f_withuuid True to add the current uuID string to the query
-* @uses   direct_debug()
-* @uses   direct_kernel_system::v_uuid_check_usage()
-* @uses   USE_debug_reporting
 * @return string Ready to use URL
 * @since  v0.1.02
 */
@@ -293,13 +283,10 @@ function direct_linker_dynamic ($f_type,$f_data,$f_html_encode = true,$f_withuui
 
 	$f_anchor = "";
 
-	if (strpos ($f_data,"#") !== false)
+	if ((strpos ($f_data,"#") !== false)&&(preg_match ("#^(.+?)\#(.*?)$#",$f_data,$f_result_array)))
 	{
-		if (preg_match ("#^(.+?)\#(.*?)$#",$f_data,$f_result_array))
-		{
-			$f_data = $f_result_array[1];
-			$f_anchor = $f_result_array[2];
-		}
+		$f_data = $f_result_array[1];
+		$f_anchor = $f_result_array[2];
 	}
 
 	if (/*#ifndef(PHP4) */stripos/* #*//*#ifdef(PHP4):stristr:#*/($f_data,"lang=") === false)
@@ -316,9 +303,9 @@ function direct_linker_dynamic ($f_type,$f_data,$f_html_encode = true,$f_withuui
 
 	if ((isset ($direct_globals['input']))&&($f_withuuid))
 	{
-		$f_uuid = $direct_globals['input']->uuid_get ();
+		$f_uuid = $direct_globals['input']->uuidGet ();
 
-		if (($f_uuid)&&(!$direct_globals['kernel']->v_uuid_is_cookied ())&&($direct_globals['kernel']->v_uuid_check_usage ()))
+		if (($f_uuid)&&(!$direct_globals['kernel']->vUuidIsCookied ())&&($direct_globals['kernel']->vUuidCheckUsage ()))
 		{
 			if ($f_data) { $f_data .= ";"; }
 			$f_data .= "uuid=".$f_uuid;
@@ -352,9 +339,6 @@ of & seperators
 *         "direct_linker ()"
 * @param  string $f_data Query string
 * @param  boolean $f_withuuid True to add the current uuID string to the query
-* @uses   direct_debug()
-* @uses   direct_kernel_system::v_uuid_check_usage()
-* @uses   USE_debug_reporting
 * @return string Ready to use URL
 * @since  v0.1.02
 */
@@ -366,13 +350,10 @@ function direct_linker_shadow ($f_type,$f_data,$f_withuuid = true,$f_lang = true
 	$f_anchor = "";
 	$f_return = "";
 
-	if (strpos ($f_data,"#") !== false)
+	if ((strpos ($f_data,"#") !== false)&&(preg_match ("#^(.+?)\#(.*?)$#",$f_data,$f_result_array)))
 	{
-		if (preg_match ("#^(.+?)\#(.*?)$#",$f_data,$f_result_array))
-		{
-			$f_data = $f_result_array[1];
-			$f_anchor = $f_result_array[2];
-		}
+		$f_data = $f_result_array[1];
+		$f_anchor = $f_result_array[2];
 	}
 
 	if (($f_lang)&&(/*#ifndef(PHP4) */stripos/* #*//*#ifdef(PHP4):stristr:#*/($f_data,"lang=") === false))
@@ -389,9 +370,9 @@ function direct_linker_shadow ($f_type,$f_data,$f_withuuid = true,$f_lang = true
 
 	if ((isset ($direct_globals['input']))&&($f_withuuid))
 	{
-		$f_uuid = $direct_globals['input']->uuid_get ();
+		$f_uuid = $direct_globals['input']->uuidGet ();
 
-		if (($f_uuid)&&(!$direct_globals['kernel']->v_uuid_is_cookied ())&&($direct_globals['kernel']->v_uuid_check_usage ()))
+		if (($f_uuid)&&(!$direct_globals['kernel']->vUuidIsCookied ())&&($direct_globals['kernel']->vUuidCheckUsage ()))
 		{
 			if ($f_data) { $f_data .= ";"; }
 			$f_data .= "uuid=".$f_uuid;
@@ -405,7 +386,7 @@ function direct_linker_shadow ($f_type,$f_data,$f_withuuid = true,$f_lang = true
 		foreach ($f_variables_array as $f_variable)
 		{
 			$f_variable_array = explode ("=",$f_variable,2);
-			if (!empty ($f_variable_array)) { $f_return .= "/{$f_variable_array[0]}-".$f_variable_array[1]; }
+			if (!empty ($f_variable_array)) { $f_return .= "/".$f_variable_array[0].(isset ($f_variable_array[1]) ? "-".$f_variable_array[1] : ""); }
 		}
 	}
 

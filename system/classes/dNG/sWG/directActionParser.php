@@ -20,8 +20,8 @@ sWG/#echo(__FILEPATH__)#
 ----------------------------------------------------------------------------
 NOTE_END //n*/
 /**
-* There are several tools to create new output easily. Here you will find most
-* of them (including methods from direct_output_inline).
+* OOP (Object Oriented Programming) requires an abstract data
+* handling. The sWG is OO (where it makes sense).
 *
 * @internal   We are using phpDocumentor to automate the documentation process
 *             for creating the Developer's Manual. All sections including
@@ -32,11 +32,15 @@ NOTE_END //n*/
 * @author     direct Netware Group
 * @copyright  (C) direct Netware Group - All rights reserved
 * @package    sWG_core
-* @subpackage input
-* @since      v0.1.08
+* @subpackage basic_functions
+* @since      v0.1.03
 * @license    http://www.direct-netware.de/redirect.php?licenses;w3c
 *             W3C (R) Software License
 */
+/*#ifdef(PHP5n) */
+
+namespace dNG\sWG;
+/* #\n*/
 
 /* -------------------------------------------------------------------------
 All comments will be removed in the "production" packages (they will be in
@@ -49,70 +53,36 @@ all development packets)
 Testing for required classes
 ------------------------------------------------------------------------- */
 
-$g_continue_check = ((defined ("CLASS_direct_icmd")) ? false : true);
-if (($g_continue_check)&&(!defined ("CLASS_direct_input"))) { $g_continue_check = ($direct_globals['basic_functions']->include_file ($direct_settings['path_system']."/classes/swg_ihandler.php",1) ? defined ("CLASS_direct_input") : false); }
+$g_continue_check = ((defined ("CLASS_directActionParser")) ? false : true);
+if (!defined ("CLASS_directVirtualClass")) { $g_continue_check = false; }
 
 if ($g_continue_check)
 {
 /**
-* "direct_icmd" fetches and provides input related data.
+* The following class is our namespace for basic (inline) functions.
 *
 * @author     direct Netware Group
 * @copyright  (C) direct Netware Group - All rights reserved
 * @package    sWG_core
-* @subpackage input
-* @uses       CLASS_direct_input
-* @since      v0.1.08
+* @subpackage basic_functions
+* @since      v0.1.01
 * @license    http://www.direct-netware.de/redirect.php?licenses;w3c
 *             W3C (R) Software License
 */
-class direct_icmd extends direct_input
+class directActionParser extends directVirtualClass
 {
 /* -------------------------------------------------------------------------
 Extend the class using old and new behavior
 ------------------------------------------------------------------------- */
 
 /**
-	* Constructor (PHP5) __construct (direct_icmd)
+	* Constructor (PHP5) __construct (directActionParser)
 	*
-	* @uses  direct_debug()
-	* @uses  USE_debug_reporting
-	* @since v0.1.08
+	* @since v0.1.01
 */
 	/*#ifndef(PHP4) */public /* #*/function __construct ()
 	{
-		global $direct_settings;
-		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -input_class->__construct (direct_icmd)- (#echo(__LINE__)#)"); }
-
-/* -------------------------------------------------------------------------
-Parse input line again but this time consider all $_SERVER['argv'] entries.
-------------------------------------------------------------------------- */
-
-		if ((isset ($_SERVER['argc']))&&($_SERVER['argc'] > 1))
-		{
-			$f_argv = $_SERVER['argv'];
-			$f_iline = "";
-
-			$direct_settings['iscript_req'] = $f_argv[0];
-			unset ($f_argv[0]);
-
-			foreach ($f_argv as $f_argv_entry)
-			{
-				if (($f_argv_entry)&&($f_argv_entry != "-"))
-				{
-					if ($f_iline) { $f_iline .= ";"; }
-					$f_iline .= $f_argv_entry;
-				}
-			}
-
-			$f_variables = direct_basic_functions::iline_parse ($f_iline);
-			$direct_settings['dsd'] = (isset ($f_variables['dsd']) ? $f_variables['dsd'] : "");
-		}
-		else
-		{
-			$direct_settings['dsd'] = "";
-			$f_variables = array ();
-		}
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -basicFunctions->__construct (directActionParser)- (#echo(__LINE__)#)"); }
 
 /* -------------------------------------------------------------------------
 My parent should be on my side to get the work done
@@ -121,33 +91,58 @@ My parent should be on my side to get the work done
 		parent::__construct ();
 
 /* -------------------------------------------------------------------------
-Set protocol specific data
+Informing the system about available functions
 ------------------------------------------------------------------------- */
 
-		$direct_settings['user_ip'] = "unknown";
-		$direct_settings['user_ip_name'] = "unknown";
-
-		$this->method = "GET";
-		$this->pass = (isset ($f_variables['pass']) ? $f_variables['pass'] : NULL);
-		$this->uuid = (isset ($f_variables['uuid']) ? $f_variables['uuid'] : NULL);
-		$this->user = (isset ($f_variables['user']) ? $f_variables['user'] : NULL);
+		$this->functions['ilineParse'] = true;
 	}
 /*#ifdef(PHP4):
 /**
-	* Constructor (PHP4) direct_icmd (direct_icmd)
+	* Constructor (PHP4) directActionParser
 	*
-	* @since v0.1.08
+	* @since v0.1.01
 *\/
-	function direct_icmd () { $this->__construct (); }
+	function directActionParser () { $this->__construct (); }
 :#*/
+/**
+	* We are trying to catch all errors - even semi-fatal ones. For that reason
+	* we provide the emergency mode function that does not require an active theme
+	* or localiation strings to work.
+	*
+	* @param string $f_iline Input query string with ";" delimiter.
+	* @since v0.1.01
+*/
+	/*#ifndef(PHP4) */public static /* #*/function ilineParse ($f_iline = NULL)
+	{
+		global $direct_cachedata,$direct_globals,$direct_settings;
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -basicFunctions->ilineParse (+f_line)- (#echo(__LINE__)#)"); }
+
+		if (!isset ($f_iline)) { $f_iline = (isset ($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : ""); }
+		$f_iline_array = explode (";",$f_iline);
+		$f_return = array ();
+
+		foreach ($f_iline_array as $f_iline)
+		{
+			$f_value_array = explode ("=",$f_iline,2);
+
+			if (count ($f_value_array) > 1) { $f_return[$f_value_array[0]] = $f_value_array[1]; }
+			elseif (!isset ($f_return['ohandler'])) { $f_return['ohandler'] = preg_replace ("#\W#","",$f_iline); }
+		}
+
+		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -basicFunctions->ilineParse ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
+	}
 }
 
 /* -------------------------------------------------------------------------
 Mark this class as the most up-to-date one
 ------------------------------------------------------------------------- */
 
-$direct_globals['@names']['input'] = "direct_icmd";
-define ("CLASS_direct_icmd",true);
+define ("CLASS_directActionParser",true);
+
+//j// Script specific commands
+
+global $direct_globals;
+$direct_globals['@names']['basic_functions'] = 'dNG\sWG\directActionParser';
 }
 
 //j// EOF

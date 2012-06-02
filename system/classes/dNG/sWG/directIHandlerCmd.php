@@ -20,9 +20,8 @@ sWG/#echo(__FILEPATH__)#
 ----------------------------------------------------------------------------
 NOTE_END //n*/
 /**
-* XML (Extensible Markup Language) is the easiest way to use a descriptive
-* language for controlling applications locally and world wide. This file
-* contains the "wrapper" for "ext_core/xml_reader.php".
+* There are several tools to create new output easily. Here you will find most
+* of them (including methods from direct_output_inline).
 *
 * @internal   We are using phpDocumentor to automate the documentation process
 *             for creating the Developer's Manual. All sections including
@@ -33,11 +32,18 @@ NOTE_END //n*/
 * @author     direct Netware Group
 * @copyright  (C) direct Netware Group - All rights reserved
 * @package    sWG_core
-* @subpackage xml
-* @since      v0.1.03
+* @subpackage input
+* @since      v0.1.08
 * @license    http://www.direct-netware.de/redirect.php?licenses;w3c
 *             W3C (R) Software License
 */
+/*#ifdef(PHP5n) */
+
+namespace dNG\sWG;
+/* #*/
+/*#use(direct_use) */
+use dNG\sWG\directIHandlerBasics;
+/* #\n*/
 
 /* -------------------------------------------------------------------------
 All comments will be removed in the "production" packages (they will be in
@@ -46,61 +52,90 @@ all development packets)
 
 //j// Functions and classes
 
-/* -------------------------------------------------------------------------
-Testing for required classes
-------------------------------------------------------------------------- */
-
-$g_continue_check = ((defined ("CLASS_direct_xml_bridge")) ? false : true);
-if (($g_continue_check)&&(!defined ("CLASS_direct_xml_reader"))) { $g_continue_check = ($direct_globals['basic_functions']->include_file ($direct_settings['path_system']."/classes/ext_core/xml_reader.php",1) ? defined ("CLASS_direct_xml_reader") : false); }
-
-if ($g_continue_check)
+if (!defined ("CLASS_directIHandlerCmd"))
 {
 /**
-* This class provides a bridge between the sWG and XML to read XML on the fly.
+* "directIHandlerCmd" fetches and provides input related data.
 *
 * @author     direct Netware Group
 * @copyright  (C) direct Netware Group - All rights reserved
 * @package    sWG_core
-* @subpackage xml
-* @uses       CLASS_direct_xml_reader
-* @since      v0.1.03
+* @subpackage input
+* @since      v0.1.08
 * @license    http://www.direct-netware.de/redirect.php?licenses;w3c
 *             W3C (R) Software License
 */
-class direct_xml_bridge extends direct_xml_reader
+class directIHandlerCmd extends directIHandlerBasics
 {
 /* -------------------------------------------------------------------------
 Extend the class using old and new behavior
 ------------------------------------------------------------------------- */
 
 /**
-	* Constructor (PHP5) __construct (direct_xml_bridge)
+	* Constructor (PHP5) __construct (directIHandlerCmd)
 	*
-	* @param boolean $f_parse_only Parse data only
-	* @uses  direct_debug()
-	* @uses  USE_debug_reporting
-	* @since v0.1.03
+	* @since v0.1.08
 */
-	/*#ifndef(PHP4) */public /* #*/function __construct ($f_parse_only = true)
+	/*#ifndef(PHP4) */public /* #*/function __construct ()
 	{
-		global $direct_cachedata,$direct_local,$direct_settings;
-		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -xml_handler->__construct (direct_xml_bridge)- (#echo(__LINE__)#)"); }
+		global $direct_settings;
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -iHandler->__construct (directIHandlerCmd)- (#echo(__LINE__)#)"); }
+
+/* -------------------------------------------------------------------------
+Parse input line again but this time consider all $_SERVER['argv'] entries.
+------------------------------------------------------------------------- */
+
+		if ((isset ($_SERVER['argc']))&&($_SERVER['argc'] > 1))
+		{
+			$f_argv = $_SERVER['argv'];
+			$f_iline = "";
+
+			$direct_settings['iscript_req'] = $f_argv[0];
+			unset ($f_argv[0]);
+
+			foreach ($f_argv as $f_argv_entry)
+			{
+				if (($f_argv_entry)&&($f_argv_entry != "-"))
+				{
+					if ($f_iline) { $f_iline .= ";"; }
+					$f_iline .= $f_argv_entry;
+				}
+			}
+
+			$f_variables = directBasicfunctions::ilineParse ($f_iline);
+			$direct_settings['dsd'] = (isset ($f_variables['dsd']) ? $f_variables['dsd'] : "");
+		}
+		else
+		{
+			$direct_settings['dsd'] = "";
+			$f_variables = array ();
+		}
 
 /* -------------------------------------------------------------------------
 My parent should be on my side to get the work done
 ------------------------------------------------------------------------- */
 
-		if (isset ($direct_local['lang_charset'])) { parent::__construct ($direct_local['lang_charset'],$f_parse_only,$direct_cachedata['core_time'],($direct_settings['timeout'] + $direct_settings['timeout_core']),$direct_settings['path_system']."/classes/ext_core",USE_debug_reporting); }
-		else { parent::__construct ("UTF-8",$f_parse_only,$direct_cachedata['core_time'],($direct_settings['timeout'] + $direct_settings['timeout_core']),$direct_settings['path_system']."/classes/ext_core",USE_debug_reporting); }
+		parent::__construct ();
+
+/* -------------------------------------------------------------------------
+Set protocol specific data
+------------------------------------------------------------------------- */
+
+		$direct_settings['user_ip'] = "unknown";
+		$direct_settings['user_ip_name'] = "unknown";
+
+		$this->method = "GET";
+		$this->pass = (isset ($f_variables['pass']) ? $f_variables['pass'] : NULL);
+		$this->uuid = (isset ($f_variables['uuid']) ? $f_variables['uuid'] : NULL);
+		$this->user = (isset ($f_variables['user']) ? $f_variables['user'] : NULL);
 	}
 /*#ifdef(PHP4):
 /**
-	* Constructor (PHP4) direct_xml_bridge (direct_xml_bridge)
+	* Constructor (PHP4) directIHandlerCmd
 	*
-	* @param boolean $f_parse_only Parse data only
-	* @since v0.1.03
+	* @since v0.1.08
 *\/
-	function direct_xml_bridge ($f_parse_only = true) { $this->__construct ($f_parse_only); }
+	function directIHandlerCmd () { $this->__construct (); }
 :#\n*/
 }
 
@@ -108,9 +143,12 @@ My parent should be on my side to get the work done
 Mark this class as the most up-to-date one
 ------------------------------------------------------------------------- */
 
-define ("CLASS_direct_xml_bridge",true);
+define ("CLASS_directIHandlerCmd",true);
 
-$direct_globals['@names']['xml_bridge'] = "direct_xml_bridge";
+//j// Script specific commands
+
+global $direct_globals;
+$direct_globals['@names']['input'] = 'dNG\sWG\directIHandlerCmd';
 }
 
 //j// EOF

@@ -36,6 +36,14 @@ NOTE_END //n*/
 * @license    http://www.direct-netware.de/redirect.php?licenses;w3c
 *             W3C (R) Software License
 */
+/*#ifdef(PHP5n) */
+
+namespace dNG\sWG\developer;
+/* #*/
+/*#use(direct_use) */
+use dNG\directPhpBuilder,
+    dNG\sWG\directXml;
+/* #\n*/
 
 /* -------------------------------------------------------------------------
 All comments will be removed in the "production" packages (they will be in
@@ -44,17 +52,7 @@ all development packets)
 
 //j// Functions and classes
 
-/* -------------------------------------------------------------------------
-Testing for required classes
-------------------------------------------------------------------------- */
-
-$g_continue_check = ((defined ("CLASS_direct_developer_builder")) ? false : true);
-if (($g_continue_check)&&(!defined ("CLASS_direct_file"))) { $g_continue_check = $direct_globals['basic_functions']->include_file ($direct_settings['path_system']."/classes/ext_core/file.php",1); }
-if (($g_continue_check)&&(!defined ("CLASS_direct_php_builder"))) { $g_continue_check = ($direct_globals['basic_functions']->include_file ($direct_settings['path_system']."/classes/ext_core/php_builder.php",1) ? defined ("CLASS_direct_php_builder") : false); }
-if (($g_continue_check)&&(!defined ("CLASS_direct_xml"))) { $g_continue_check = $direct_globals['basic_functions']->include_file ($direct_settings['path_system']."/classes/swg_xml.php",1); }
-if (($g_continue_check)&&(!function_exists ("direct_dir_exists"))) { $g_continue_check = $direct_globals['basic_functions']->include_file ($direct_settings['path_system']."/functions/swg_dir_functions.php",1); }
-
-if ($g_continue_check)
+if (!defined ("CLASS_directBuilder"))
 {
 /**
 * This wrapper class extends "ext_core/file.php" and sets our default
@@ -64,12 +62,11 @@ if ($g_continue_check)
 * @copyright  (C) direct Netware Group - All rights reserved
 * @package    sWG_core
 * @subpackage developer
-* @uses       CLASS_direct_php_builder
 * @since      v0.1.08
 * @license    http://www.direct-netware.de/redirect.php?licenses;w3c
 *             W3C (R) Software License
 */
-class direct_developer_builder extends direct_php_builder
+class directBuilder extends directPhpBuilder
 {
 /**
 	* @var string $output_array Pathes and settings to generate the output files
@@ -110,19 +107,16 @@ Extend the class using old and new behavior
 ------------------------------------------------------------------------- */
 
 /**
-	* Constructor (PHP5) __construct (direct_developer_builder)
+	* Constructor (PHP5) __construct (directBuilder)
 	*
-	* @uses  direct_basic_functions::include_file()
-	* @uses  direct_debug()
-	* @uses  USE_debug_reporting
 	* @since v0.1.08
 */
 	/*#ifndef(PHP4) */public /* #*/function __construct ()
 	{
 		global $direct_cachedata,$direct_globals,$direct_settings;
-		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -developer_builder_class->__construct (direct_developer_builder)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -developerBuilder->__construct (directBuilder)- (#echo(__LINE__)#)"); }
 
-		$direct_globals['basic_functions']->include_file ("makefile.php");
+		$direct_globals['basic_functions']->includeFile ("makefile.php");
 
 /* -------------------------------------------------------------------------
 My parent should be on my side to get the work done
@@ -145,10 +139,10 @@ Set up additional variables
 	}
 /*#ifdef(PHP4):
 /**
-	* Constructor (PHP4) direct_developer_builder (direct_developer_builder)
+	* Constructor (PHP4) directBuilder (directBuilder)
 	*
 	* @since v0.1.08
-	function direct_developer_builder () { $this->__construct (); }
+	function directBuilder () { $this->__construct (); }
 :#*/
 /**
 	* Write the given file to the defined location. Create subdirectories if
@@ -157,34 +151,30 @@ Set up additional variables
 	* @param  string $f_file_content Parsed content
 	* @param  string $f_file_path Path to the output file
 	* @param  string $f_file_mode Filemode to use
-	* @uses   direct_php_builder::file_write()
 	* @return boolean True on success
 	* @since  v0.1.08
 */
-	/*#ifndef(PHP4) */protected /* #*/function file_write ($f_file_content,$f_file_path,$f_file_mode = "w+b")
+	/*#ifndef(PHP4) */protected /* #*/function fileWrite ($f_file_content,$f_file_path,$f_file_mode = "w+b")
 	{
-		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -developer_builder_class->file_write (+f_file_content,$f_file_path,$f_file_mode)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -developerBuilder->fileWrite (+f_file_content,$f_file_path,$f_file_mode)- (#echo(__LINE__)#)"); }
 
-		if ($this->get_variable ("DEBUG") == NULL) { $f_file_content = preg_replace (array ("#\/\* ---(.*?)--- \*\/\n\n#s","#\n\/\*\*\n(.*?)\n\*\/\n#s"),(array ("","\n")),$f_file_content); }
+		if ($this->getVariable ("DEBUG") == NULL) { $f_file_content = preg_replace (array ("#\/\* ---(.*?)--- \*\/\n\n#s","#\n\/\*\*\n(.*?)\n\*\/\n#s"),(array ("","\n")),$f_file_content); }
 		if (preg_match ("#.js$#",$f_file_path)) { $f_file_content = trim (preg_replace (array ("#\r*#","#\s*\n\s*#","#^\/\/j\/\/(.*?)$#ms","#^\/\*n\/\/(.*?)\/\/n\*\/$#ms","#([\"'])\s*\+\s*\n\s*([\"'])#","#\n{2,}#"),(array ("","\n","","","","\n")),$f_file_content)); }
 
-		if ((isset ($this->output_array[$this->output_position]))&&(parent::file_write ($f_file_content,($this->output_array[$this->output_position]['path'].$f_file_path),$f_file_mode))) { return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -developer_builder_class->file_write ()- (#echo(__LINE__)#)",(:#*/md5 ($f_file_content)/*#ifdef(DEBUG):),true):#*/; }
-		else { return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -developer_builder_class->file_write ()- (#echo(__LINE__)#)",:#*/false/*#ifdef(DEBUG):,true):#*/; }
+		if ((isset ($this->output_array[$this->output_position]))&&(parent::fileWrite ($f_file_content,($this->output_array[$this->output_position]['path'].$f_file_path),$f_file_mode))) { return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -developerBuilder->fileWrite ()- (#echo(__LINE__)#)",(:#*/md5 ($f_file_content)/*#ifdef(DEBUG):),true):#*/; }
+		else { return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -developerBuilder->fileWrite ()- (#echo(__LINE__)#)",:#*/false/*#ifdef(DEBUG):,true):#*/; }
 	}
 
 /**
 	* Gets the package XML object for the current output position.
 	*
 	* @param  string $f_name Variable name
-	* @uses   direct_xml::node_add()
-	* @uses   direct_xml::node_cache_pointer()
-	* @uses   direct_xml::node_change_attributes()
-	* @return direct_xml Variable content; NULL if undefined
+	* @return directXml Variable content; NULL if undefined
 	* @since  v0.1.01
 */
-	/*#ifndef(PHP4) */protected /* #*/function &get_package_xml ()
+	/*#ifndef(PHP4) */protected /* #*/function &getPackageXml ()
 	{
-		if (USE_debug_reporting) { direct_debug (7,"sWG/#echo(__FILEPATH__)# -developer_builder_class->get_package_xml ()- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (7,"sWG/#echo(__FILEPATH__)# -developerBuilder->getPackageXml ()- (#echo(__LINE__)#)"); }
 		$f_return = NULL;
 
 		if (isset ($this->output_array[$this->output_position]))
@@ -201,7 +191,7 @@ $f_package_array = array (
 "swgiversion" => $this->output_iversion
 );
 
-				$this->output_array[$this->output_position]['xml'] = new direct_xml ();
+				$this->output_array[$this->output_position]['xml'] = new directXml ();
 				$f_return =& $this->output_array[$this->output_position]['xml'];
 
 				$f_file_data = (file_exists ($this->output_array[$this->output_position]['path']."data/settings/swg_packages_installed.php") ? direct_file_get ("s0",$this->output_array[$this->output_position]['path']."data/settings/swg_packages_installed.php") : NULL);
@@ -210,17 +200,17 @@ $f_package_array = array (
 				{
 					if (isset ($f_file_data)) { $f_return->xml2array ($f_file_data,true,false); }
 
-					if ($f_return->node_cache_pointer ("swg_packages_file_v1 packages ".$this->output_package)) { $f_return->node_change_attributes ("swg_packages_file_v1 packages ".$this->output_package,$f_package_array); }
+					if ($f_return->nodeCachePointer ("swg_packages_file_v1 packages ".$this->output_package)) { $f_return->nodeChangeAttributes ("swg_packages_file_v1 packages ".$this->output_package,$f_package_array); }
 					else
 					{
 						if (!isset ($f_file_data))
 						{
-							$f_return->node_add ("swg_packages_file_v1","",(array ("xmlns" => "urn:de-direct-netware-xmlns:swg.packages.v1")));
-							$f_return->node_add ("swg_packages_file_v1 phpexit","<?php exit (); ?>");
+							$f_return->nodeAdd ("swg_packages_file_v1","",(array ("xmlns" => "urn:de-direct-netware-xmlns:swg.packages.v1")));
+							$f_return->nodeAdd ("swg_packages_file_v1 phpexit","<?php exit (); ?>");
 						}
 
-						$f_return->node_add ("swg_packages_file_v1 packages ".$this->output_package,"",$f_package_array);
-						$f_return->node_cache_pointer ("swg_packages_file_v1 packages ".$this->output_package);
+						$f_return->nodeAdd ("swg_packages_file_v1 packages ".$this->output_package,"",$f_package_array);
+						$f_return->nodeCachePointer ("swg_packages_file_v1 packages ".$this->output_package);
 					}
 				}
 			}
@@ -236,10 +226,10 @@ $f_package_array = array (
 	* @return mixed Variable content; NULL if undefined
 	* @since  v0.1.01
 */
-	/*#ifndef(PHP4) */protected /* #*/function get_variable ($f_name)
+	/*#ifndef(PHP4) */protected /* #*/function getVariable ($f_name)
 	{
 		global $direct_cachedata;
-		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -developer_builder_class->get_variable ($f_name)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -developerBuilder->getVariable ($f_name)- (#echo(__LINE__)#)"); }
 
 		$f_return = NULL;
 
@@ -252,35 +242,29 @@ $f_package_array = array (
 			elseif ($f_name == $this->output_version_tag) { $f_return = $this->output_version; }
 			elseif (preg_match ("#^PHP(.+?)$#",$f_name,$f_result_array))
 			{
-				if ($f_result_array[1] == $this->output_array[$this->output_position]['phpversion']) { $f_return = true; }
+				if (($f_result_array[1] == $this->output_array[$this->output_position]['phpversion'])||(($this->output_array[$this->output_position]['phpversion'] == "5.3")&&(($f_result_array[1] == "5")||($f_result_array[1] == "5n")))) { $f_return = true; }
 			}
 			elseif (defined ($f_name)) { $f_return = constant ($f_name); }
 		}
 
-		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -developer_builder_class->get_variable ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
+		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -developerBuilder->getVariable ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
 /**
 	* Parse and rewrite all directories and files given as include definitions.
 	*
-	* @uses   direct_developer_builder::file_parse()
-	* @uses   direct_developer_builder::get_package_xml()
-	* @uses   direct_php_builder::workdir_scan()
-	* @uses   direct_xml::node_add()
-	* @uses   direct_xml::node_change_value()
-	* @uses   direct_xml::node_get()
 	* @return boolean True on success
 	* @since  v0.1.08
 */
-	/*#ifndef(PHP4) */public /* #*/function make_all ()
+	/*#ifndef(PHP4) */public /* #*/function makeAll ()
 	{
-		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -developer_builder_class->make_all ()- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -developerBuilder->makeAll ()- (#echo(__LINE__)#)"); }
 		$f_return = false;
 
-		if ((!empty ($this->dir_array))&&(!empty ($this->filetype_array))) { $this->workdir_scan (); }
+		if ((!empty ($this->dir_array))&&(!empty ($this->filetype_array))) { $this->workdirScan (); }
 		$f_continue_check = false;
 
-		if (empty ($this->file_array)) { trigger_error ("sWG/#echo(__FILEPATH__)# -developer_builder_class->make_all ()- (#echo(__LINE__)#) reports: No valid files found for parsing",E_USER_ERROR); }
+		if (empty ($this->file_array)) { trigger_error ("sWG/#echo(__FILEPATH__)# -developerBuilder->makeAll ()- (#echo(__LINE__)#) reports: No valid files found for parsing",E_USER_ERROR); }
 		else
 		{
 			$f_strip_prefix = preg_quote ($this->output_strip_prefix);
@@ -293,7 +277,7 @@ $f_package_array = array (
 
 				while (isset ($this->output_array[$this->output_position]))
 				{
-					$f_xml_object =& $this->get_package_xml ();
+					$f_xml_object =& $this->getPackageXml ();
 
 					if ($f_xml_object)
 					{
@@ -302,22 +286,22 @@ $f_package_array = array (
 
 						if (file_exists ($f_target_file))
 						{
-							$f_target_node_array = $f_xml_object->node_get ("swg_packages_file_v1 packages ".$this->output_package." ".$f_file_md5);
+							$f_target_node_array = $f_xml_object->nodeGet ("swg_packages_file_v1 packages ".$this->output_package." ".$f_file_md5);
 							$f_target_file_md5 = md5_file ($f_target_file);
 
 							if ((isset ($f_target_node_array['value']))&&($f_target_file_md5)&&($f_target_node_array['value'] != $f_target_file_md5)) { $f_continue_check = false; }
 						}
-						else { $f_target_node_array = $f_xml_object->node_get ("swg_packages_file_v1 packages ".$this->output_package." ".$f_file_md5); }
+						else { $f_target_node_array = $f_xml_object->nodeGet ("swg_packages_file_v1 packages ".$this->output_package." ".$f_file_md5); }
 
-						$f_parsed_file_md5 = ($f_continue_check ? $this->file_parse ($f_file) : false);
+						$f_parsed_file_md5 = ($f_continue_check ? $this->fileParse ($f_file) : false);
 
 						if (is_string ($f_parsed_file_md5))
 						{
 							if (isset ($f_target_node_array/*#ifndef(PHP4) */,/* #*//*#ifdef(PHP4):) && isset (:#*/$f_target_node_array['value']))
 							{
-								if ($f_parsed_file_md5 != $f_target_node_array['value']) { $f_xml_object->node_change_value ("swg_packages_file_v1 packages ".$this->output_package." ".$f_file_md5,$f_parsed_file_md5); }
+								if ($f_parsed_file_md5 != $f_target_node_array['value']) { $f_xml_object->nodeChangeValue ("swg_packages_file_v1 packages ".$this->output_package." ".$f_file_md5,$f_parsed_file_md5); }
 							}
-							else { $f_xml_object->node_add ("swg_packages_file_v1 packages ".$this->output_package." ".$f_file_md5,$f_parsed_file_md5,(array ("path" => $f_file_stripped))); }
+							else { $f_xml_object->nodeAdd ("swg_packages_file_v1 packages ".$this->output_package." ".$f_file_md5,$f_parsed_file_md5,(array ("path" => $f_file_stripped))); }
 						}
 						elseif ($f_continue_check) { echo "\n!>> Failed to write the output file ... ".$this->output_array[$this->output_position]['path']; }
 						else { echo "\n!>> File has been modified ... ".$this->output_array[$this->output_position]['path']; }
@@ -334,14 +318,14 @@ $f_package_array = array (
 
 				if ((isset ($f_output_array['xml']))&&($f_output_array['xml']))
 				{
-					$f_file_data = "<?xml version='1.0' encoding='UTF-8' ?>\n".($f_output_array['xml']->cache_export (true,false));
+					$f_file_data = "<?xml version='1.0' encoding='UTF-8' ?>\n".($f_output_array['xml']->cacheExport (true,false));
 					echo (direct_file_write ($f_file_data,$f_output_array['path']."data/settings/swg_packages_installed.php","s0") ? "done" : "failed");
 				}
 				else { echo "failed"; }
 			}
 		}
 
-		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -developer_builder_class->make_all ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
+		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -developerBuilder->makeAll ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
 /**
@@ -351,9 +335,9 @@ $f_package_array = array (
 	*         pathes
 	* @since  v0.1.08
 */
-	/*#ifndef(PHP4) */public /* #*/function set_include ($f_include)
+	/*#ifndef(PHP4) */public /* #*/function setInclude ($f_include)
 	{
-		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -developer_builder_class->set_include ($f_include)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -developerBuilder->setInclude ($f_include)- (#echo(__LINE__)#)"); }
 
 		if (is_string ($f_include))
 		{
@@ -366,7 +350,7 @@ $f_package_array = array (
 			}
 		}
 
-		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -developer_builder_class->set_include ()- (#echo(__LINE__)#)",:#*/(((count ($this->dir_array))||(count ($this->file_array))) ? true : false)/*#ifdef(DEBUG):,true):#*/;
+		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -developerBuilder->setInclude ()- (#echo(__LINE__)#)",:#*/(((count ($this->dir_array))||(count ($this->file_array))) ? true : false)/*#ifdef(DEBUG):,true):#*/;
 	}
 
 /**
@@ -380,9 +364,9 @@ $f_package_array = array (
 	*         $f_version)
 	* @since  v0.1.08
 */
-	/*#ifndef(PHP4) */public /* #*/function set_target_metadata ($f_package,$f_name,$f_level,$f_version,$f_iversion = NULL)
+	/*#ifndef(PHP4) */public /* #*/function setTargetMetadata ($f_package,$f_name,$f_level,$f_version,$f_iversion = NULL)
 	{
-		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -developer_builder_class->set_target_metadata ($f_package,$f_name,$f_level,$f_version,+f_iversion)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -developerBuilder->setTargetMetadata ($f_package,$f_name,$f_level,$f_version,+f_iversion)- (#echo(__LINE__)#)"); }
 
 		$f_version_tag = (preg_match ("#^swg_(.+?)$#i",$f_name) ? "sWG".(substr ($f_name,4))."Version" : $f_name."Version");
 
@@ -405,13 +389,11 @@ $f_package_array = array (
 	* later use.
 	*
 	* @param array $f_targets_array Target XML array tree
-	* @uses  direct_debug()
-	* @uses  USE_debug_reporting
 	* @since v0.1.08
 */
-	/*#ifndef(PHP4) */public /* #*/function target_check ($f_targets_array)
+	/*#ifndef(PHP4) */public /* #*/function targetCheck ($f_targets_array)
 	{
-		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -developer_builder_class->target_check (+f_data)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -developerBuilder->targetCheck (+f_data)- (#echo(__LINE__)#)"); }
 		$f_return = false;
 
 		if ((is_array ($f_targets_array))&&(!empty ($f_targets_array)))
@@ -448,7 +430,7 @@ $f_package_array = array (
 			$this->output_array = array_values ($this->output_array);
 		}
 
-		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -developer_builder_class->target_check ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
+		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -developerBuilder->targetCheck ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 }
 
@@ -456,7 +438,7 @@ $f_package_array = array (
 Mark this class as the most up-to-date one
 ------------------------------------------------------------------------- */
 
-define ("CLASS_direct_developer_builder",true);
+define ("CLASS_directBuilder",true);
 }
 
 //j// EOF

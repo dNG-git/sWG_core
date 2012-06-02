@@ -33,7 +33,6 @@ NOTE_END //n*/
 * @copyright  (C) direct Netware Group - All rights reserved
 * @package    sWG_core
 * @subpackage basic_functions
-* @uses       direct_product_iversion
 * @since      v0.1.03
 * @license    http://www.direct-netware.de/redirect.php?licenses;w3c
 *             W3C (R) Software License
@@ -59,7 +58,6 @@ if (!defined ("direct_product_iversion")) { exit (); }
 *
 * @param  string $f_string_id String identifier
 * @param  string $f_handling Presentation to use ("html" / "text")
-* @uses   USE_debug_reporting
 * @return string Translated output string or " $f_string_id "
 * @since  v0.1.05
 */
@@ -96,8 +94,6 @@ function direct_local_get ($f_string_id,$f_handling = "html")
 * @param  string $f_extract_language Language tag to be extracted - returns
 *         only one array element with the translated or "@global" text as
 *         "$return[$f_extract_language]".
-* @uses   direct_debug()
-* @uses   USE_debug_reporting
 * @return mixed Array with all extracted languages (plus "@global" for
 *         English) or string (if $f_extract_string is true)
 * @since  v0.1.07
@@ -160,10 +156,6 @@ function direct_local_get_xml_translation (&$f_xml_node_array,$f_tag,$f_extract_
 * @param  string $f_module Translation module
 * @param  string $f_dlang Default language which should always be available
 * @param  boolean $f_force True to overwrite already loaded modules
-* @uses   direct_basic_functions::memcache_get_file()
-* @uses   direct_debug()
-* @uses   direct_xml_bridge::xml2array
-* @uses   USE_debug_reporting
 * @return boolean True on successful inclusion
 * @since  v0.1.03
 */
@@ -182,9 +174,9 @@ function direct_local_integration ($f_module,$f_dlang = "en",$f_force = false,$f
 	{
 		$direct_cachedata['core_local_integration_modules'][$f_module] = true;
 
-		if (file_exists ($direct_settings['path_lang']."/swg_$f_module.$f_lang.xml")) { $f_xml_array = $direct_globals['basic_functions']->memcache_get_file_merged_xml ($direct_settings['path_lang']."/swg_$f_module.$f_lang.xml"); }
-		elseif (file_exists ($direct_settings['path_lang']."/swg_$f_module.{$direct_settings['swg_lang']}.xml")) { $f_xml_array = $direct_globals['basic_functions']->memcache_get_file_merged_xml ($direct_settings['path_lang']."/swg_$f_module.{$direct_settings['swg_lang']}.xml"); }
-		else { $f_xml_array = $direct_globals['basic_functions']->memcache_get_file_merged_xml ($direct_settings['path_lang']."/swg_$f_module.$f_dlang.xml"); }
+		if (file_exists ($direct_settings['path_lang']."/swg_$f_module.$f_lang.xml")) { $f_xml_array = $direct_globals['basic_functions']->memcacheGetFileMergedXml ($direct_settings['path_lang']."/swg_$f_module.$f_lang.xml"); }
+		elseif (file_exists ($direct_settings['path_lang']."/swg_$f_module.{$direct_settings['swg_lang']}.xml")) { $f_xml_array = $direct_globals['basic_functions']->memcacheGetFileMergedXml ($direct_settings['path_lang']."/swg_$f_module.{$direct_settings['swg_lang']}.xml"); }
+		else { $f_xml_array = $direct_globals['basic_functions']->memcacheGetFileMergedXml ($direct_settings['path_lang']."/swg_$f_module.$f_dlang.xml"); }
 
 		if (!empty ($f_xml_array))
 		{

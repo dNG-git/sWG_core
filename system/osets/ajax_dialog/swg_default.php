@@ -45,10 +45,8 @@ all development packets)
 //j// Functions and classes
 
 /**
-* direct_output_oset_default_embedded_ajax_done ()
+* direct_output_oset_default_done ()
 *
-* @uses   direct_debug()
-* @uses   USE_debug_reporting
 * @return string Valid XHTML code
 * @since  v0.1.09
 */
@@ -82,8 +80,6 @@ self.setTimeout (\"self.location.href = \\\"{$direct_cachedata['output_pagetarge
 /**
 * direct_output_oset_default_done_extended ()
 *
-* @uses   direct_debug()
-* @uses   USE_debug_reporting
 * @return string Valid XHTML code
 * @since  v0.1.09
 */
@@ -110,8 +106,6 @@ function direct_output_oset_default_done_extended ()
 /**
 * direct_output_oset_default_error_login ()
 *
-* @uses   direct_debug()
-* @uses   USE_debug_reporting
 * @return string Valid XHTML code
 * @since  v0.1.09
 */
@@ -145,8 +139,6 @@ $f_return = ("<div><p>{$direct_cachedata['output_error']}</p>
 /**
 * direct_output_oset_default_error_standard ()
 *
-* @uses   direct_debug()
-* @uses   USE_debug_reporting
 * @return string Valid XHTML code
 * @since  v0.1.09
 */
@@ -186,8 +178,6 @@ if (isset ($direct_globals['@names']['output_formbuilder']))
 /**
 	* direct_output_oset_default_form_preview ()
 	*
-	* @uses   direct_debug()
-	* @uses   USE_debug_reporting
 	* @return string Valid XHTML code
 	* @since  v0.1.09
 */
@@ -196,7 +186,7 @@ if (isset ($direct_globals['@names']['output_formbuilder']))
 		global $direct_cachedata,$direct_globals,$direct_settings;
 		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_output_oset_default_form_preview ()- (#echo(__LINE__)#)"); }
 
-		$direct_globals['basic_functions']->require_file ($direct_settings['path_system']."/osets/$direct_settings[theme_oset]/$direct_cachedata[output_preview_function_file].php");
+		$direct_globals['basic_functions']->requireFile ($direct_settings['path_system']."/osets/$direct_settings[theme_oset]/$direct_cachedata[output_preview_function_file].php");
 
 		$f_oset = "direct_".$direct_cachedata['output_preview_function'];
 		$f_return = ((function_exists ($f_oset)) ? "<div>".($f_oset ())."</div>" : "");
@@ -205,10 +195,8 @@ if (isset ($direct_globals['@names']['output_formbuilder']))
 	}
 
 /**
-	* direct_output_oset_default_embedded_form ()
+	* direct_output_oset_default_form_results ()
 	*
-	* @uses   direct_debug()
-	* @uses   USE_debug_reporting
 	* @return string Valid XHTML code
 	* @since  v0.1.09
 */
@@ -224,13 +212,13 @@ if (isset ($direct_globals['@names']['output_formbuilder']))
 
 		if (($direct_cachedata['output_credits_information'])||($direct_cachedata['output_credits_payment_data']))
 		{
-			$f_return .= "<p class='pagehighlightborder2{$direct_settings['theme_css_corners']} pagecontent' style='text-align:left'>";
+			$f_return .= "<p class='pagehighlightborder{$direct_settings['theme_css_corners']} pagebg pagecontent' style='text-align:left'>";
 			if ($direct_cachedata['output_credits_information']) { $f_return .= $direct_cachedata['output_credits_information']; }
 			if ($direct_cachedata['output_credits_payment_data']) { $f_return .= ($direct_cachedata['output_credits_information'] ? "<br />\n<span style='font-size:10px'>{$direct_cachedata['output_credits_payment_data']}</span>" : $direct_cachedata['output_credits_payment_data']); }
 			$f_return .= "</p>";
 		}
 
-		$f_return .= ($direct_globals['output_formbuilder']->form_get_results ($direct_cachedata['output_formelements']))."</div>";
+		$f_return .= ($direct_globals['output_formbuilder']->formGetResults ($direct_cachedata['output_formelements']))."</div>";
 		return $f_return;
 	}
 }
@@ -238,8 +226,6 @@ if (isset ($direct_globals['@names']['output_formbuilder']))
 /**
 * direct_output_oset_default_options ()
 *
-* @uses   direct_debug()
-* @uses   USE_debug_reporting
 * @return string Valid XHTML code
 * @since  v0.1.09
 */
@@ -252,14 +238,14 @@ function direct_output_oset_default_options ()
 	if (!isset ($direct_globals['output_formbuilder'])) { direct_class_init ("output_formbuilder"); }
 
 	$f_return = "<div>";
-	if ($direct_globals['output']->options_check ("optionsmenu")) { $f_return .= "<ul class='pageborder2{$direct_settings['theme_css_corners']} pageextracontent' style='text-align:center;list-style-type:none'>".($direct_globals['output']->options_generator ("v","optionsmenu"))."</ul>"; }
+	if ($direct_globals['output']->optionsCheck ("optionsmenu")) { $f_return .= "<ul class='pageborder{$direct_settings['theme_css_corners']} pageextrabg pageextracontent' style='text-align:center;list-style-type:none'>".($direct_globals['output']->optionsGenerator ("v","optionsmenu"))."</ul>"; }
 
 	if (isset ($direct_cachedata['output_formelements']))
 	{
 		$f_form_id = uniqid ("swg");
 	
-$f_return .= ($direct_settings['iscript_form']." name='$f_form_id' id='$f_form_id'>".(direct_linker ("form",$direct_cachedata['output_formtarget'])).($direct_globals['output_formbuilder']->form_get ($direct_cachedata['output_formelements']))."
-<p class='pagecontent' style='text-align:center'><input type='submit' id='{$f_form_id}b' value=\"".(direct_local_get ("core_continue","text"))."\" class='pagecontentinputbutton' /><script type='text/javascript'><![CDATA[
+$f_return .= ($direct_settings['iscript_form']." name='$f_form_id' id='$f_form_id'>".(direct_linker ("form",$direct_cachedata['output_formtarget'])).($direct_globals['output_formbuilder']->formGet ($direct_cachedata['output_formelements']))."
+<p style='text-align:center'><input type='submit' id='{$f_form_id}b' value=\"".(direct_local_get ("core_continue","text"))."\" class='pagecontentinputbutton' /><script type='text/javascript'><![CDATA[
 jQuery (function ()
 {
 	djs_load_functions ({ file:'swg_formbuilder.php.js' });
@@ -275,7 +261,7 @@ jQuery (function ()
 
 //j// Script specific commands
 
-$direct_settings['theme_css_corners'] = ((isset ($direct_settings['theme_css_corners_class'])) ? " ".$direct_settings['theme_css_corners_class'] : " ui-corner-all");
+$direct_settings['theme_css_corners'] = (isset ($direct_settings['theme_css_corners_class']) ? " ".$direct_settings['theme_css_corners_class'] : " ui-corner-all");
 if (!isset ($direct_settings['theme_td_padding'])) { $direct_settings['theme_td_padding'] = "5px"; }
 
 //j// EOF

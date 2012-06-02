@@ -33,7 +33,6 @@ NOTE_END //n*/
 * @copyright  (C) direct Netware Group - All rights reserved
 * @package    sWG_core
 * @subpackage basic_functions
-* @uses       direct_product_iversion
 * @since      v0.1.01
 * @license    http://www.direct-netware.de/redirect.php?licenses;w3c
 *             W3C (R) Software License
@@ -303,7 +302,9 @@ if (!@function_exists ("md5_file"))
 		return $f_return;
 	}
 }
-:#*/
+:#\n*/
+/*#ifndef(PHP5n):
+
 if (!@function_exists ("property_exists"))
 {
 /**
@@ -319,19 +320,18 @@ if (!@function_exists ("property_exists"))
 	* @return mixed Returns TRUE if the property exists, FALSE if it doesn't
 	*         exist or NULL in case of an error.
 	* @since  v0.1.08
-*/
+*\/
 	function property_exists ($f_class,$f_property)
 	{
-		if ((is_string ($f_class))&&(class_exists ($f_class,/*#ifndef(PHP4) */false/* #*/))) { $f_return = array_key_exists ($f_property,(get_class_vars  ($f_class))); }
+		if ((is_string ($f_class))&&(class_exists ($f_class,/*#ifndef(PHP4) *\/false/* #*\/))) { $f_return = array_key_exists ($f_property,(get_class_vars  ($f_class))); }
 		elseif (is_object ($f_class)) { $f_return = (((isset ($f_class->$f_property))||(is_null ($f_class->$f_property))) ? true : false); }
 		else { $f_return = NULL; }
 
 		return $f_return;
 	}
 }
+:#\n*/
 /*#ifdef(PHP4):
-
-property_exists  ( mixed $class  , string $property  )
 
 if (!@function_exists ("scandir"))
 {

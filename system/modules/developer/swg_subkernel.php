@@ -32,11 +32,14 @@ NOTE_END //n*/
 * @copyright  (C) direct Netware Group - All rights reserved
 * @package    sWG_core
 * @subpackage developer
-* @uses       direct_product_iversion
 * @since      v0.1.03
 * @license    http://www.direct-netware.de/redirect.php?licenses;w3c
 *             W3C (R) Software License
 */
+
+/*#use(direct_use) */
+use dNG\sWG\directVirtualClass;
+/* #\n*/
 
 //j// Basic configuration
 
@@ -44,11 +47,7 @@ if (!defined ("direct_product_iversion")) { exit (); }
 
 //j// Functions and classes
 
-/* -------------------------------------------------------------------------
-Testing for required classes
-------------------------------------------------------------------------- */
-
-if (!defined ("CLASS_direct_subkernel_developer"))
+if (!defined ("CLASS_directSubkernelDeveloper"))
 {
 /**
 * Subkernel for: developer
@@ -57,27 +56,24 @@ if (!defined ("CLASS_direct_subkernel_developer"))
 * @copyright  (C) direct Netware Group - All rights reserved
 * @package    sWG_core
 * @subpackage developer
-* @uses       CLASS_direct_virtual_class
 * @since      v0.1.05
 * @license    http://www.direct-netware.de/redirect.php?licenses;w3c
 *             W3C (R) Software License
 */
-class direct_subkernel_developer extends direct_virtual_class
+class directSubkernelDeveloper extends directVirtualClass
 {
 /* -------------------------------------------------------------------------
 Extend the class using old and new behavior
 ------------------------------------------------------------------------- */
 
 /**
-	* Constructor (PHP5) __construct (direct_subkernel_developer)
+	* Constructor (PHP5) __construct (directSubkernelDeveloper)
 	*
-	* @uses  direct_debug()
-	* @uses  USE_debug_reporting
 	* @since v0.1.05
 */
 	/*#ifndef(PHP4) */public /* #*/function __construct ()
 	{
-		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -kernel_class->__construct (direct_subkernel_developer)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -kernel->__construct (directSubkernelDeveloper)- (#echo(__LINE__)#)"); }
 
 /* -------------------------------------------------------------------------
 My parent should be on my side to get the work done
@@ -89,33 +85,31 @@ My parent should be on my side to get the work done
 Informing the system about the available function
 ------------------------------------------------------------------------- */
 
-		$this->functions['subkernel_init'] = true;
+		$this->functions['subkernelInit'] = true;
 	}
 /*#ifdef(PHP4):
 /**
-	* Constructor (PHP4) direct_subkernel_developer (direct_subkernel_developer)
+	* Constructor (PHP4) directSubkernelDeveloper
 	*
 	* @since v0.1.05
 *\/
-	function direct_subkernel_developer () { $this->__construct (); }
+	function directSubkernelDeveloper () { $this->__construct (); }
 :#*/
 /**
 	* Running subkernel specific checkups.
 	*
 	* @param  string $f_threshold_id This parameter is used to determine if
 	*         a request to write data is below the threshold (timeout).
-	* @uses   direct_debug()
-	* @uses   USE_debug_reporting
 	* @return array Returned array contains error details if applicable
 	* @since  v0.1.05
 */
-	/*#ifndef(PHP4) */public /* #*/function subkernel_init ($f_threshold_id = "")
+	/*#ifndef(PHP4) */public /* #*/function subkernelInit ($f_threshold_id = "")
 	{
 		global $direct_settings;
-		if (USE_debug_reporting) { direct_debug (2,"sWG/#echo(__FILEPATH__)# -kernel_class->subkernel_init ($f_threshold_id)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (2,"sWG/#echo(__FILEPATH__)# -kernel->subkernelInit ($f_threshold_id)- (#echo(__LINE__)#)"); }
 
-		$direct_settings['swg_force_notheme'] = true;
-		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -kernel_class->subkernel_init ()- (#echo(__LINE__)#)",(:#*/array ()/*#ifdef(DEBUG):),true):#*/;
+		$direct_settings['swg_theme_deactivated'] = true;
+		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -kernel->subkernel_init ()- (#echo(__LINE__)#)",(:#*/array ()/*#ifdef(DEBUG):),true):#*/;
 	}
 }
 
@@ -123,13 +117,14 @@ Informing the system about the available function
 Mark this class as the most up-to-date one
 ------------------------------------------------------------------------- */
 
-$direct_globals['@names']['subkernel_developer'] = "direct_subkernel_developer";
-define ("CLASS_direct_subkernel_developer",true);
+define ("CLASS_directSubkernelDeveloper",true);
 
 //j// Script specific commands
 
+$direct_globals['@names']['subkernel_developer'] = 'directSubkernelDeveloper';
+
 direct_class_init ("subkernel_developer");
-$direct_globals['kernel']->v_call_set ("v_subkernel_init",$direct_globals['subkernel_developer'],"subkernel_init");
+$direct_globals['kernel']->vCallSet ("vSubkernelInit",$direct_globals['subkernel_developer'],"subkernelInit");
 }
 
 //j// EOF
