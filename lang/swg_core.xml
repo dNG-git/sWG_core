@@ -1,8 +1,9 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<swg_lang_file_v1 xmlns="urn:de.direct-netware.xmlns:swg.lang.v1">
+<swg_lang_file_v1 xmlns="urn:de-direct-netware-xmlns:swg.lang.v1">
 
  <core>
   <access><rights><insufficient><input input="string" /></insufficient></rights></access>
+  <atom><feed><show><input input="string" /></show></feed></atom>
 
   <automated><redirection>
    <input input="string" />
@@ -47,7 +48,7 @@
 
     <entry>
      <input input="string" />
-	 <prerequisites><failed><input input="string" /></failed></prerequisites>
+     <prerequisites><failed><input input="string" /></failed></prerequisites>
     </entry>
    </new>
 
@@ -111,10 +112,7 @@
     <digitstart__2><input input="string" /></digitstart__2>
    </password>
 
-   <username>
-    <digitstart__1><input input="string" /></digitstart__1>
-    <digitstart__2><input input="string" /></digitstart__2>
-   </username>
+   <username><input input="string" /></username>
   </helper>
 
   <lastvisit><reset><input input="string" /></reset></lastvisit>
@@ -166,6 +164,17 @@
    <ip><changed><input input="string" /></changed></ip>
    <proxy><input input="string" /></proxy>
   </information></security>
+
+  <selection>
+   <list>
+    <empty><input input="string" /></empty>
+    <input input="string" />
+   </list>
+
+   <personal><input input="string" /></personal>
+  </selection>
+
+  <selector><activate><input input="string" /></activate></selector>
 
   <service><list>
    <input input="string" />
