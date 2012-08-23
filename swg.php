@@ -91,7 +91,8 @@ if (!defined ("INFO_magic_quotes_input")) { define ("INFO_magic_quotes_input",(g
 if (!defined ("INFO_magic_quotes_runtime")) { define ("INFO_magic_quotes_runtime",(get_magic_quotes_runtime ())); }
 if (!defined ("INFO_magic_quotes_sybase")) { define ("INFO_magic_quotes_sybase",(get_cfg_var ("magic_quotes_sybase"))); }
 
-import_request_variables ("CP","i_");
+extract ($_COOKIE,(EXTR_PREFIX_ALL | EXTR_REFS),"i");
+extract ($_POST,(EXTR_PREFIX_ALL | EXTR_REFS),"i");
 
 //j// Data initialisation
 

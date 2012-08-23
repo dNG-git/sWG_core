@@ -227,7 +227,7 @@ Set up some variables
 					if ($f_menu_item)
 					{
 $f_return .= ((($f_menu_item_array['type'] == "javascript")&&(!isset ($direct_settings['swg_clientsupport']['JSDOMManipulation']))) ? ("<span id='swg_core_menu_{$f_menu}_{$f_menu_level}_{$f_menu_item_id}_point' style='display:none'><!-- iPoint // --></span><script type='text/javascript'><![CDATA[
-jQuery (function () { djs_swgDOM_replace ({ animate: false,data: \"<span>".(str_replace ('"','\"',$f_menu_item))."</span>\",id: 'swg_core_menu_{$f_menu}_{$f_menu_level}_{$f_menu_item_id}_point' }); });
+jQuery (function () { djs_DOM_replace ({ animate: false,data: \"<span>".(str_replace ('"','\"',$f_menu_item))."</span>\",id: 'swg_core_menu_{$f_menu}_{$f_menu_level}_{$f_menu_item_id}_point' }); });
 ]]></script>") : $f_menu_item);
 					}
 				}

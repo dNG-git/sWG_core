@@ -161,7 +161,7 @@ Set "last modified" time to "0".
 */
 	/*#ifndef(PHP4) */public /* #*/function header ($f_cacheing = false,$f_withenc = true,$f_p3purl = "",$f_p3pcp = "")
 	{
-		global $direct_cachedata;
+		global $direct_cachedata,$direct_settings;
 		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -oHandler->header ($f_cacheing,$f_withenc,+f_p3purl,+f_p3pcp)- (#echo(__LINE__)#)"); }
 
 		if ($f_cacheing)
@@ -185,7 +185,7 @@ Set "last modified" time to "0".
 		if ($this->last_modified) { $f_last_modified = gmdate ("D, d M Y H:i:s",$this->last_modified); }
 		$f_headers['Last-Modified'] = $f_last_modified." GMT";
 
-		if ((!empty ($direct_cachedata['core_cookies']))&&(USE_cookies))
+		if ((!$direct_settings['swg_cookies_deactivated'])&&(!empty ($direct_cachedata['core_cookies'])))
 		{
 			$f_headers['Set-Cookie'] = $direct_cachedata['core_cookies'];
 			$direct_cachedata['core_cookies'] = array ();
@@ -646,7 +646,7 @@ td, th { padding:0px }
 .pagecontenttextarea { border:1px solid #C0C0C0;background-color:#F5F5F5 }
 .pagecontenttextarea { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;color:#222222 }
 
-.pagecontenttitle { border:1px solid #193879;background-color:#375A9D;padding:5px }
+.pagecontenttitle { border:1px solid #193879;background-color:#375A9D;padding:5px;clear:both }
 .pagecontenttitle { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold;color:#DDDDDD }
 .pagecontenttitle a, .pagecontenttitle a:link, .pagecontenttitle a:active, .pagecontenttitle a:visited, .pagecontenttitle a:hover, .pagecontenttitle a:focus { color:#FFFFFF }
 
@@ -671,7 +671,7 @@ td, th { padding:0px }
 
 .pagehr { height:1px;overflow:hidden;border-top:1px solid #193879 }
 
-.pageservicemenu { border:1px solid #D9D9DA;padding:5px }
+.pageservicemenu { border:1px solid #D9D9DA;padding:5px;clear:both }
 .pageservicemenu { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:10px;color:#222222 }
 .pageservicemenu a, .pageservicemenu a:link, .pageservicemenu a:visited { color:#000000;text-decoration:underline }
 .pageservicemenu a:active, .pageservicemenu a:hover, .pageservicemenu a:focus { color:#444444;text-decoration:none }
@@ -733,9 +733,10 @@ define ("CLASS_directOHandler",true);
 
 //j// Script specific commands
 
-global $direct_globals;
+global $direct_globals,$direct_settings;
 $direct_globals['@names']['output'] = 'dNG\sWG\directOHandler';
 $direct_globals['@names']['output_theme'] = 'dNG\sWG\directOHandler';
+$direct_settings['swg_cookies_deactivated'] = ((!USE_cookies) ? true : false);
 }
 
 //j// EOF

@@ -252,19 +252,24 @@ Set up some variables
 	*
 	* @since  v0.1.02
 */
-	/*#ifndef(PHP4) */public /* #*/function jsHeader ()
+	/*#ifndef(PHP4) */public /* #*/function jsHeader ($f_swg_js = true)
 	{
 		global $direct_globals,$direct_settings;
-		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -oHandler->jsHeader ()- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -oHandler->jsHeader (+f_swg_js)- (#echo(__LINE__)#)"); }
 
 		$f_uuid_check = ((($direct_globals['kernel']->vUuidCheckUsage ())&&(!$direct_globals['kernel']->vUuidIsCookied ())) ? true : false);
-		$this->headerElements ("<script src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_mmedia]/swg_AJAX.php.js++dbid+".$direct_settings['product_buildid'],true,$f_uuid_check))."' type='text/javascript'></script><!-- // Asynchronous JavaScript and XML // -->","script_ajax");
-		$this->headerElements ("<script src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_mmedia]/swg_DOM.php.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'></script><!-- // jQuery based DOM // -->","script_dom");
-		$this->headerElements ("<script src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_mmedia]/swg_basic_functions.php.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'></script><!-- // Basic javascript helper functions // -->","script_basic_functions",true);
+		$this->headerElements ("<script src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_mmedia]/ext_djs/djs_DOM.min.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'></script><!-- // DOM helper // -->","script_dom");
+
+		if ($f_swg_js)
+		{
+			$this->headerElements ("<script src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_mmedia]/swg_AJAX.php.js++dbid+".$direct_settings['product_buildid'],true,$f_uuid_check))."' type='text/javascript'></script><!-- // Asynchronous JavaScript and XML // -->","script_ajax");
+			$this->headerElements ("<script src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_mmedia]/swg_basic_functions.php.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'></script><!-- // Basic javascript helper functions // -->","script_basic_functions",true);
+		}
+		else { $this->headerElements ("<script src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_mmedia]/ext_djs/djs_runner.min.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'></script><!-- // Javascript Runner // -->","script_runner"); }
 
 $this->headerElements ("<script src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_mmedia]/ext_jquery/jquery-1.7.2.min.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'></script><!-- // jQuery library // -->
 <script type='text/javascript'><![CDATA[
-if (typeof (djs_var) == 'undefined') { var djs_var = [ ]; }
+if (typeof (djs_var) == 'undefined') { var djs_var = { base_path:'$direct_settings[path_mmedia]' }; }
 ]]></script>","script_jquery",true);
 	}
 
@@ -283,20 +288,15 @@ if (typeof (djs_var) == 'undefined') { var djs_var = [ ]; }
 		global $direct_settings;
 		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -oHandler->jsHelper (+f_text,$f_url,$f_close_onload)- (#echo(__LINE__)#)"); }
 
-$this->headerElements ("<script type='text/javascript'><![CDATA[
-jQuery (function () { djs_load_functions ({ file:'swg_output_helper.php.js' }); });
-]]></script>","script_output_helper");
-
 		$f_js_helper_id = ("swghelp".$this->js_helper_element);
 		$this->js_helper_element++;
-		if (strlen ($f_url)) { $f_text = "<a href=\"$f_url\" target='_blank'>$f_text</a>"; }
 
-		$f_embedded_code = "<div id='$f_js_helper_id' class='pagehelperbg' style='position:relative;width:75%;margin:auto;text-align:justify'><div class='pagehelpericon'><img src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_mmedia]/swg_output_helper.png",true,false))."' width='32' height='32' alt=\"".(direct_local_get ("core_detailed_information"))."\" title=\"".(direct_local_get ("core_detailed_information"))."\" /></div><span class='pagehelpercontent'>$f_text</span></div>";
+		$f_embedded_code = "<aside id='$f_js_helper_id' class='pagehelper'><img src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_mmedia]/swg_output_helper.png",true,false))."' width='32' height='32' alt=\"".(direct_local_get ("core_detailed_information"))."\" title=\"".(direct_local_get ("core_detailed_information"))."\" class='pagehelpericon' />".(strlen ($f_url) ? "<a href=\"$f_url\" target='_blank'>$f_text</a>" : $f_text)."</aside>";
 
 		if ((isset ($direct_settings['swg_clientsupport']['JSDOMManipulation']))&&($f_close_onload))
 		{
-$f_return = ("<div id='$f_js_helper_id'><a href=\"javascript:djs_core_helper_show('$f_js_helper_id')\">".(direct_local_get ("core_detailed_information_show"))."</a></div><script type='text/javascript'><![CDATA[
-jQuery (function () { djs_var.core_output_helper_cache['$f_js_helper_id'] = jQuery (\"".(str_replace ('"','\"',$f_embedded_code))."\"); });
+$f_return = ("<a id='$f_js_helper_id' href=\"javascript:djs_core_helper_show('$f_js_helper_id')\" class='pagehelperactivator'>".(direct_local_get ("core_detailed_information_show"))."</a><script type='text/javascript'><![CDATA[
+jQuery (function () { djs_load_functions({ file:'swg_output_helper.php.js' }).done (function () { djs_core_helper_init ({ data:\"".(str_replace ('"','\"',$f_embedded_code))."\",id:'$f_js_helper_id',hide:$f_close_onload }); }); });
 ]]></script>");
 		}
 		else
@@ -304,7 +304,7 @@ jQuery (function () { djs_var.core_output_helper_cache['$f_js_helper_id'] = jQue
 			$f_close_onload = ($f_close_onload ? "true" : "false");
 
 $f_return = ($f_embedded_code."<script type='text/javascript'><![CDATA[
-jQuery (function () { djs_core_helper_init ({ id:'$f_js_helper_id',hide:$f_close_onload }); });
+jQuery (function () { djs_load_functions({ file:'swg_output_helper.php.js' }).done (function () { djs_core_helper_init ({ id:'$f_js_helper_id',hide:$f_close_onload }); }); });
 ]]></script>");
 		}
 

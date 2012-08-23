@@ -52,19 +52,14 @@ function direct_autoload ($f_class,$f_extension = "php")
 
 	$f_return = NULL;
 
-	if ((isset ($direct_settings['swg_classes_predefined']))&&(in_array ($f_class,$direct_settings['swg_classes_predefined'])))
-	{
-		$f_file_pathname = $direct_settings['path_system']."/classes/".$direct_settings['swg_classes_predefined'][$f_class];
-		if (file_exists ($f_file_pathname)) { $f_return = $f_class; }
-	}
 /*#ifndef(PHP5n):
-	elseif (in_array ($f_class,$direct_cachedata['@names']))
+	if (in_array ($f_class,$direct_cachedata['@names']))
 	{
 		$f_file_pathname = $direct_cachedata['@names'][$f_class];
 		if (file_exists ($f_file_pathname)) { $f_return = $f_class; }
 	}
-:#\n*/
 	else
+:#\n*/
 	{
 		$f_class_array = direct_class_pathname ($f_class);
 
@@ -314,13 +309,10 @@ function direct_use ($f_class,$f_extension = "php")
 	global $direct_cachedata,$direct_settings;
 	if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_use ($f_class)- (#echo(__LINE__)#)"); }
 
-/*#ifndef(PHP4) *\/
-	if ((!isset ($direct_settings['swg_classes_predefined']))||(!in_array ($f_class,$direct_settings['swg_classes_predefined'])))
-	{
-		$f_class_array = direct_class_pathname ($f_class);
-		if (is_array ($f_class_array)) { $direct_cachedata['@names'][$f_class_array[1]] = $f_class_array[0]; }
-	}
-/* #*\//*#ifdef(PHP4):
+	$f_class_array = direct_class_pathname ($f_class);
+	if (is_array ($f_class_array)) { $direct_cachedata['@names'][$f_class_array[1]] = $f_class_array[0]; }
+/*\#ifdef(PHP4):
+
 	direct_autoload ($f_class,$f_extension);
 :#\n*\/
 }
@@ -337,14 +329,13 @@ function direct_html_encode_special ($f_data)
 	global $direct_local,$direct_settings;
 
 	if ((!isset ($direct_settings['swg_force_local_handling']))||($direct_settings['swg_force_local_handling'] != "text"))
-/*#ifndef(PHP4) */
 	{
+		$f_data = preg_replace ("#[\\x10-\\x1f]#","",$f_data);/*#ifndef(PHP4) */
+
 		if ((USE_charset_html_filtering)&&(isset ($direct_local['lang_charset']))) { return htmlspecialchars ($f_data,ENT_COMPAT,$direct_local['lang_charset']); }
 		elseif (USE_html_charset) { return htmlspecialchars ($f_data,ENT_COMPAT,USE_html_charset); }
 		else/* #*/ { return htmlspecialchars ($f_data); }
-/*#ifndef(PHP4) */
 	}
-/* #\n*/
 }
 
 /**

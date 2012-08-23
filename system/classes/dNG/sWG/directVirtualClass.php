@@ -174,7 +174,7 @@ $direct_cachedata['output_warning'][] = array ("title" => direct_html_encode_spe
 			}
 		}
 
-		return /*#ifdef(DEBUG):direct_debug (9,"sWG/#echo(__FILEPATH__)# -virtualClass->debugWalker ()- (#echo(__LINE__)#)",:#*\/$f_return/*#ifdef(DEBUG):,true):#*\/;
+		return direct_debug (9,"sWG/#echo(__FILEPATH__)# -virtualClass->debugWalker ()- (#echo(__LINE__)#)",$f_return,true);
 	}
 :#*/
 /**

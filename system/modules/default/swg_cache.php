@@ -39,8 +39,8 @@ NOTE_END //n*/
 
 /*#use(direct_use) */
 use dNG\sWG\directFileFunctions;
-
 /* #\n*/
+
 /* -------------------------------------------------------------------------
 All comments will be removed in the "production" packages (they will be in
 all development packets)
@@ -59,14 +59,13 @@ if (!defined ("direct_product_iversion")) { exit (); }
 if (!isset ($direct_settings['swg_content_modification_check'])) { $direct_settings['swg_content_modification_check'] = true; }
 
 if (USE_debug_reporting) { direct_debug (1,"sWG/#echo(__FILEPATH__)# _main_ (#echo(__LINE__)#)"); }
+$direct_settings['swg_cookies_deactivated'] = true;
 
 if ($direct_globals['kernel']->serviceInitDefault ())
 {
 //j// BOA
+$direct_globals['output']->header (true);
 $g_dfile = (isset ($direct_settings['dsd']['dfile']) ? ($direct_globals['basic_functions']->inputfilterFilePath ($direct_settings['dsd']['dfile'])) : "");
-if (!$g_dfile) { $g_dfile = (isset ($direct_settings['dsd']['dyn_img']) ? ($direct_globals['basic_functions']->inputfilterFilePath ($direct_settings['dsd']['dyn_img'])) : ""); }
-
-$direct_globals['output']->header (true,false);
 
 if (file_exists ($g_dfile))
 {
@@ -109,29 +108,35 @@ if (($g_continue_check)&&($g_modification_check))
 		$direct_globals['output']->lastModified ($g_server_last_modified);
 	}
 
-	if (preg_match ("#^(.*?)\.php\.(css|js)$#i",$g_dfile,$g_result_array))
+	if (preg_match ("#^(.*?)\.php\.(css|js|svg)$#i",$g_dfile,$g_result_array))
 	{
-		if ($g_result_array[2] == "css") { $direct_globals['output']->outputHeader ("Content-Type","text/css"); }
-		else { $direct_globals['output']->outputHeader ("Content-Type","text/javascript"); }
-
-		ob_start ();
-
-		if ($direct_globals['basic_functions']->includeFile ($g_dfile,2))
+		switch ($g_result_array[2])
 		{
-/*#ifndef(PHP4) */
-			$direct_globals['output']->output_data = ob_get_flush ();
-/* #*//*#ifdef(PHP4):
-			$direct_globals['output']->output_data = ob_get_contents ();
-			ob_end_clean ();
-:#\n*/
+		case "css":
+		{
+			$direct_globals['output']->outputHeader ("Content-Type","text/css");
+			break 1;
 		}
+		case "js":
+		{
+			$direct_globals['output']->outputHeader ("Content-Type","text/javascript");
+			break 1;
+		}
+		case "svg":
+		{
+			$direct_globals['output']->outputHeader ("Content-Type","image/svg+xml");
+			break 1;
+		}
+		}
+
+		if ($direct_globals['basic_functions']->includeFile ($g_dfile,2)) { $direct_globals['output']->output_data = ob_get_flush (); }
 		else
 		{
-			ob_end_clean ();
+			ob_flush ();
 			$direct_globals['output']->outputHeader ("HTTP/1.1","HTTP/1.1 415 Unsupported Media Type",true);
 		}
 	}
-	elseif (preg_match ("#^(.*?)\.(css|gif|jar|jpg|jpeg|js|png|swf)$#i",$g_dfile,$g_extension_result_array))
+	elseif (preg_match ("#^(.*?)\.(css|gif|jar|jpg|jpeg|js|png|svg|swf)$#i",$g_dfile,$g_extension_result_array))
 	{
 		$g_range_start = 0;
 		$g_range_size = 0;
@@ -171,6 +176,7 @@ if (($g_continue_check)&&($g_modification_check))
 			}
 		}
 
+		$direct_globals['output']->output_data = "";
 		$g_binary_check = false;
 
 		switch ($g_extension_result_array[2])
@@ -207,6 +213,12 @@ if (($g_continue_check)&&($g_modification_check))
 			$g_file_type = "image/png";
 			break 1;
 		}
+		case "svg":
+		{
+			$g_file_mode = "r";
+			$g_file_type = "image/svg+xml";
+			break 1;
+		}
 		case "swf":
 		{
 			$g_binary_check = true;
@@ -227,8 +239,6 @@ if (($g_continue_check)&&($g_modification_check))
 
 		if ($g_file_object->resourceCheck ())
 		{
-			ob_start ();
-
 			if ($g_range_start) { $g_file_object->seek ($g_range_start); }
 			$g_timeout_time = ($direct_cachedata['core_time'] + $direct_settings['timeout'] + $direct_settings['timeout_core']);
 
@@ -238,12 +248,12 @@ if (($g_continue_check)&&($g_modification_check))
 				{
 					$g_block_size = (($g_range_size > 4096) ? 4096 : $g_range_size);
 
-					if ($g_binary_check) { echo $g_file_object->read ($g_block_size); }
+					if ($g_binary_check) { $direct_globals['output']->output_data .= $g_file_object->read ($g_block_size); }
 					else
 					{
 						$g_block_data = $g_file_object->read ($g_block_size);
 						if (INFO_magic_quotes_runtime) { $direct_globals['basic_functions']->magicQuotesFilter ($g_block_data); }
-						echo $g_block_data;
+						$direct_globals['output']->output_data .= $g_block_data;
 					}
 
 					$g_range_size -= $g_block_size;
@@ -256,31 +266,22 @@ if (($g_continue_check)&&($g_modification_check))
 			{
 				while ((!$g_file_object->eofCheck ())&&($g_timeout_time > (time ())))
 				{
-					if ($g_binary_check) { echo $g_file_object->read (4096); }
+					if ($g_binary_check) { $direct_globals['output']->output_data .= $g_file_object->read (4096); }
 					else
 					{
 						$g_block_data = $g_file_object->read (4096);
 						if (INFO_magic_quotes_runtime) { $direct_globals['basic_functions']->magicQuotesFilter ($g_block_data); }
-						echo $g_block_data;
+						$direct_globals['output']->output_data .= $g_block_data;
 					}
 				}
 
 				$g_continue_check = $g_file_object->eofCheck ();
 			}
 
-			if ($g_continue_check)
-			{
-				$direct_globals['output']->outputHeader ("Content-Type",$g_file_type);
-/*#ifndef(PHP4) */
-				$direct_globals['output']->output_data = ob_get_flush ();
-/* #*//*#ifdef(PHP4):
-				$direct_globals['output']->output_data = ob_get_contents ();
-				ob_end_clean ();
-:#\n*/
-			}
+			if ($g_continue_check) { $direct_globals['output']->outputHeader ("Content-Type",$g_file_type); }
 			else
 			{
-				ob_end_clean ();
+				$direct_globals['output']->output_data = "";
 				$direct_globals['output']->outputHeader ("HTTP/1.1","HTTP/1.1 504 Gateway Timeout",true);
 			}
 

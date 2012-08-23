@@ -16,14 +16,17 @@ http://www.direct-netware.de/redirect.php?licenses;w3c
 	<dirname property="swgCore.basedir" file="${ant.file}" />
 	<property file="${swgCore.basedir}/_extras/build.properties" />
 
-	<target name="compile.phpBuilder" description="Compile module swg_core">
-		<exec executable="php">
-			<arg file="${swgCore.basedir}/swg_cmd.php" />
-			<arg value="m=developer;s=build_stage1" />
+	<target name="compile.phpBuilder" description="Compile module ${ant.project.name}">
+		<exec executable="python">
+			<arg file="${phpBuilder.filePathName}" />
+			<arg value="--filetype=${phpBuilder.fileTypes}" />
+			<arg value="--include=${swgCore.basedir}/data,${swgCore.basedir}/lang,${swgCore.basedir}/system,${swgCore.basedir}/swg.php,${swgCore.basedir}/swg_cmd.php" />
+			<arg value="--strip_prefix=${swgCore.basedir}/" />
+			<arg value="--exclude_dirs=_extras" />
 		</exec>
 	</target>
 
-	<target name="convert.xmlToPo" description="Convert translations from XML to POTs for swg_core">
+	<target name="convert.xmlToPo" description="Convert translations from XML to POTs for ${ant.project.name}">
 		<delete includeEmptyDirs="true"><fileset dir="${swgCore.basedir}/po" includes="**/*.pot" /></delete>
 
 		<exec executable="python">

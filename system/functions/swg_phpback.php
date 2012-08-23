@@ -302,6 +302,24 @@ if (!@function_exists ("md5_file"))
 		return $f_return;
 	}
 }
+
+if (!@function_exists ("mysql_real_escape_string"))
+{
+/**
+	* "mysql_real_escape_string ()" has been added (the first time) to PHP 4.3.0
+	*
+	* php.net: Escapes special characters in a string for use in a SQL statement
+	*
+	* string mysql_real_escape_string ( string $f_data [, resource $f_rp] )
+	*
+	* @param  string $f_data The string that is to be escaped.
+	* @param  mixed $f_rp The MySQL connection. This phpback function ignores
+	*         this parameter.
+	* @return mixed Returns the escaped string, or FALSE on error.
+	* @since  v0.1.03
+*\/
+	function mysql_real_escape_string ($f_data,$f_rp = "unused") { return mysql_escape_string ($f_data); }
+}
 :#\n*/
 /*#ifndef(PHP5n):
 
@@ -372,24 +390,6 @@ if (!@function_exists ("scandir"))
 	}
 }
 
-if (!@function_exists ("mysql_real_escape_string"))
-{
-/**
-	* "mysql_real_escape_string ()" has been added (the first time) to PHP 4.3.0
-	*
-	* php.net: Escapes special characters in a string for use in a SQL statement
-	*
-	* string mysql_real_escape_string ( string $f_data [, resource $f_rp] )
-	*
-	* @param  string $f_data The string that is to be escaped.
-	* @param  mixed $f_rp The MySQL connection. This phpback function ignores
-	*         this parameter.
-	* @return mixed Returns the escaped string, or FALSE on error.
-	* @since  v0.1.03
-*\/
-	function mysql_real_escape_string ($f_data,$f_rp = "unused") { return mysql_escape_string ($f_data); }
-}
-
 if (!@function_exists ("stream_set_blocking"))
 {
 /**
@@ -432,6 +432,28 @@ if (!@function_exists ("stream_set_timeout"))
 	* @since  v0.1.01
 *\/
 	function stream_set_timeout ($f_rp,$f_sec,$f_msec = 0) { return (function_exists ("socket_set_timeout") ? socket_set_timeout ($f_rp,$f_sec,$f_msec) : false); }
+}
+:#\n*/
+/*#ifndef(PHP5n):
+
+if (!@function_exists ("sys_get_temp_dir"))
+{
+/**
+	* "sys_get_temp_dir ()" has been added (the first time) to PHP 5.2.1.
+	*
+	* php.net: Returns the path of the directory PHP stores temporary files in by
+	* default. 
+	*
+	* string sys_get_temp_dir ( void )
+	*
+	* @return boolean Returns the path of the temporary directory.
+	* @since  v0.1.10
+*\/
+	function sys_get_temp_dir ()
+	{
+		$f_return = get_cfg_var ("upload_tmp_dir");
+		return (is_bool ($f_return) ? ini_get ("upload_tmp_dir") : $f_return);
+	}
 }
 :#*/
 //j// EOF

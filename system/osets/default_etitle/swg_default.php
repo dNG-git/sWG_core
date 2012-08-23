@@ -64,7 +64,7 @@ djs_var['core_aphandler_url'] = \"{$direct_cachedata['output_ajaxtarget']}\";
 
 function djs_aphandler_call (f_params)
 {
-	djs_html5_progress (jQuery(\"#swg_core_aphandler_point\"));
+	djs_html5_progress ({ id:\"#swg_core_aphandler_point\" });
 	if ('url' in f_params) { djs_var.core_aphandler_url = f_params.url; }
 	if (djs_var.core_aphandler_url) { djs_swgAJAX_replace ({ id:'swg_core_aphandler_point',onReplace:{ func:'djs_aphandler_call',params: { } },url:djs_var.core_aphandler_url }); }
 }
@@ -73,16 +73,14 @@ function djs_aphandler_call (f_params)
 	else { $f_return = ""; }
 
 $f_return .= ("<div id='swg_core_aphandler_point' class='pageborder{$direct_settings['theme_css_corners']} pageextrabg pageextracontent' style='width:40%;margin:0px 30%;text-align:center'><p><strong>{$direct_cachedata['output_title']}</strong></p>
-<div><span style='width:90%'><progress".(isset ($direct_cachedata['output_percentage']) ? " value=\"{$direct_cachedata['output_percentage']}\"" : "")." max='100' style='width:100%'><strong>".(direct_local_get ("aphandler_progress")).":</strong> ".(isset ($direct_cachedata['output_percentage']) ? $direct_cachedata['output_percentage']."%" : direct_local_get ("core_unknown"))."</progress></span>");
+<div><span style='width:90%'><progress".(isset ($direct_cachedata['output_percentage']) ? " value=\"{$direct_cachedata['output_percentage']}\"" : "")." max='100' style='width:100%;height:100%'><strong>".(direct_local_get ("aphandler_progress")).":</strong> ".(isset ($direct_cachedata['output_percentage']) ? $direct_cachedata['output_percentage']."%" : direct_local_get ("core_unknown"))."</progress></span>");
 
 	if (isset ($direct_cachedata['output_ajaxtarget']))
 	{
 $f_return .= ("<script type='text/javascript'><![CDATA[
 jQuery (function ()
 {
-	djs_load_functions ({ file:'swg_basic_functions.php.js',block:'djs_html5_progress' });
-	djs_load_functions ({ file:'swg_AJAX.php.js',block:'djs_swgAJAX_replace' });
-	djs_aphandler_call ({});
+	djs_load_functions([ { file:'ext_djs/djs_html5_progress.min.js' },{ file:'swg_AJAX.php.js',block:'djs_swgAJAX_replace' } ]).done (function () { djs_aphandler_call ({ }); });
 });
 ]]></script>");
 	}
@@ -125,7 +123,7 @@ $f_embedded_code = ("<p style='font-size:10px;text-align:center'>(".(direct_loca
 
 $f_return .= ((isset ($direct_settings['swg_clientsupport']['JSDOMManipulation']) ? "\n".$f_embedded_code : ("\n<p id='swgjsjump_point' style='text-align:center'><strong><span style='font-size:10px'>".(direct_local_get ("core_automated_redirection_unsupported"))."</span><br />
 <a href=\"{$direct_cachedata['output_pagetarget']}\" target='_self'>".(direct_local_get ("core_continue"))."</a></strong></p><script type='text/javascript'><![CDATA[
-jQuery (function () { djs_swgDOM_replace ({ data:\"".(str_replace ('"','\"',$f_embedded_code))."\",id:'swgjsjump_point' }); });
+jQuery (function () { djs_DOM_replace ({ data:\"".(str_replace ('"','\"',$f_embedded_code))."\",id:'swgjsjump_point' }); });
 ]]></script>"))."<script type='text/javascript'><![CDATA[
 self.setTimeout (\"self.location.replace (\\\"{$direct_cachedata['output_pagetarget']}\\\")\",{$direct_cachedata['output_jsjump']});
 ]]></script>");
@@ -404,38 +402,6 @@ LICENSE_WARNING_END //i*/
 
 		return $f_return;
 	}
-
-/**
-	* direct_output_oset_default_options ()
-	*
-	* @return string Valid XHTML code
-	* @since  v0.1.08
-*/
-	function direct_output_oset_default_options ()
-	{
-		global $direct_cachedata,$direct_globals,$direct_settings;
-		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_output_oset_default_options ()- (#echo(__LINE__)#)"); }
-
-		if (!isset ($direct_globals['output_formbuilder'])) { direct_class_init ("output_formbuilder"); }
-
-		if (isset ($direct_cachedata['output_formelements']))
-		{
-			$direct_settings['theme_output_page_title'] = direct_local_get ("core_options");
-			$f_form_id = uniqid ("swg");
-		
-$f_return = ($direct_settings['iscript_form']." name='$f_form_id' id='$f_form_id'>".(direct_linker ("form",$direct_cachedata['output_formtarget'])).($direct_globals['output_formbuilder']->formGet ($direct_cachedata['output_formelements']))."
-<p style='text-align:center'><input type='submit' id='{$f_form_id}b' value=\"".(direct_local_get ("core_continue","text"))."\" class='pagecontentinputbutton' /><script type='text/javascript'><![CDATA[
-jQuery (function ()
-{
-	djs_load_functions ({ file:'swg_formbuilder.php.js' });
-	djs_formbuilder_init ({ id:'{$f_form_id}b',type:'button' });\n");
-
-			if (isset ($direct_cachedata['output_formsupport_ajax_dialog'])) { $f_return .= "\tdjs_formbuilder_init ({ id:'$f_form_id',id_button:'{$f_form_id}b',type:'form' });\n"; }
-			$f_return .= "});\n]]></script></p></form>";
-		}
-
-		return $f_return;
-	}
 }
 
 /**
@@ -456,7 +422,7 @@ return ("<p><strong>".(direct_local_get ("core_redirect_url")).":</strong> <a hr
 <a href=\"{$direct_cachedata['output_pagetarget']}\" target='_self'>".(direct_local_get ("core_continue"))."</a></strong></p><script type='text/javascript'><![CDATA[
 jQuery (function ()
 {
-djs_swgDOM_replace ({ data:\"<p style='font-size:10px;text-align:center'>(".(direct_local_get ("core_automated_redirection","text")).")<br />\\n\" +
+djs_DOM_replace ({ data:\"<p style='font-size:10px;text-align:center'>(".(direct_local_get ("core_automated_redirection","text")).")<br />\\n\" +
 \"<a href=\\\"{$direct_cachedata['output_pagetarget']}\\\" target='_self'>".(direct_local_get ("core_continue","text"))."</a></p>\",id:'swgjsjump_point' });
 });
 self.setTimeout (\"self.location.replace ('{$direct_cachedata['output_pagetarget']}')\",2000);
@@ -495,12 +461,11 @@ jQuery (function ()
 $f_filter_block = ("<span id='swg_filter_{$direct_cachedata['output_filter_tid']}_point' style='display:none'><!-- iPoint // --></span><script type='text/javascript'><![CDATA[
 jQuery (function ()
 {
-	djs_swgDOM_replace ({ animate: false,data: (".(direct_output_oset_default_filter_content (true,"swg_filter_{$direct_cachedata['output_filter_tid']}_point",(direct_local_get ("core_filter_search","text")),$direct_cachedata['output_filter_text']))."),id: 'swg_filter_{$direct_cachedata['output_filter_tid']}_point',onReplace: { func: 'djs_default_filter_init',params: { id: 'swg_filter_{$direct_cachedata['output_filter_tid']}_point',margin: true,url: '$f_filter_url' } } });");
+	djs_DOM_replace ({ animate: false,data: (".(direct_output_oset_default_filter_content (true,"swg_filter_{$direct_cachedata['output_filter_tid']}_point",(direct_local_get ("core_filter_search","text")),$direct_cachedata['output_filter_text']))."),id: 'swg_filter_{$direct_cachedata['output_filter_tid']}_point',onReplace: { func: 'djs_default_filter_init',params: { id: 'swg_filter_{$direct_cachedata['output_filter_tid']}_point',margin: true,url: '$f_filter_url' } } });");
 		}
 
 $f_filter_block .= ("
-	djs_load_functions ({ file:'swg_basic_functions.php.js',block:'djs_tid_keepalive' });
-	djs_tid_keepalive ('{$direct_cachedata['output_filter_tid']}');
+	djs_load_functions({ file:'swg_basic_functions.php.js',block:'djs_tid_keepalive' }).done (function () { djs_tid_keepalive ('{$direct_cachedata['output_filter_tid']}'); });
 });]]></script>");
 	}
 
@@ -522,7 +487,7 @@ jQuery (function ()
 
 f_content += (".(direct_output_oset_default_filter_content (true,"swg_filter_{$direct_cachedata['output_filter_tid']}_point",(direct_local_get ("core_filter_search","text")),$direct_cachedata['output_filter_text'])).");
 
-	".(($direct_cachedata['output_pages'] > 1) ? "djs_swgDOM_insert_after" : "djs_swgDOM_insert_before")." ({ animate: false,data: f_content + \"</td>\\n</tr>\",id: 'swg_default_service_list_filter_table tr:first-child',onInsert: { func: 'djs_default_filter_init',params: { id: 'swg_filter_{$direct_cachedata['output_filter_tid']}_point',margin: true,tid: '{$direct_cachedata['output_filter_tid']}',url: '$f_filter_url' } } });
+	".(($direct_cachedata['output_pages'] > 1) ? "djs_DOM_insert_after" : "djs_DOM_insert_before")." ({ animate: false,data: f_content + \"</td>\\n</tr>\",id: 'swg_default_service_list_filter_table tr:first-child',onInsert: { func: 'djs_default_filter_init',params: { id: 'swg_filter_{$direct_cachedata['output_filter_tid']}_point',margin: true,tid: '{$direct_cachedata['output_filter_tid']}',url: '$f_filter_url' } } });
 });
 ]]></script>");
 			}
@@ -566,7 +531,7 @@ $f_return .= ("<tr>
 				$f_right_switch = false;
 			}
 
-			if ($f_service_array[0]) { $f_service_array[0] = "<img src='{$f_service_array[0]}' alt='{$f_service_array[1]}' title='{$f_service_array[1]}' style='float:left;padding:0px 5px' />"; }
+			if ($f_service_array[0]) { $f_service_array[0] = "<img src='{$f_service_array[0]}' alt='{$f_service_array[1]}' title='{$f_service_array[1]}' style='float:left;margin-right:{$direct_settings['theme_form_td_padding']}' />"; }
 
 $f_return .= ($f_service_array[0]."<a href='{$f_service_array[2]}' target='_self'>{$f_service_array[1]}</a><br />
 <span style='font-size:10px'>{$f_service_array[3]}</span>");
@@ -616,6 +581,7 @@ function direct_output_oset_default_selection_list ()
 //j// Script specific commands
 
 $direct_settings['theme_css_corners'] = (isset ($direct_settings['theme_css_corners_class']) ? " ".$direct_settings['theme_css_corners_class'] : " ui-corner-all");
+if (!isset ($direct_settings['theme_form_td_padding'])) { $direct_settings['theme_form_td_padding'] = "3px"; }
 if (!isset ($direct_settings['theme_td_padding'])) { $direct_settings['theme_td_padding'] = "5px"; }
 
 //j// EOF

@@ -84,7 +84,7 @@ Extend the class using old and new behavior
 
 		if (count ($_POST))
 		{
-			if (((!isset ($_SERVER['QUERY_STRING']))||(!$_SERVER['QUERY_STRING'])||(!preg_match ("#(^|;)\w+($|;)#",$_SERVER['QUERY_STRING'])))&&(isset ($_POST['ohandler']))) { $direct_settings['ohandler'] = preg_replace ("#\W#","",$_POST['ohandler']); }
+			if (((!isset ($_SERVER['QUERY_STRING']))||(!$_SERVER['QUERY_STRING']))&&(isset ($_POST['ohandler']))) { $direct_settings['ohandler'] = preg_replace ("#\W#","",$_POST['ohandler']); }
 
 			if (isset ($_POST['a'])) { $direct_settings['a'] = preg_replace ("#[;\/\\\?:@\=\&\. \+]+#","",(urldecode ($_POST['a']))); }
 			if (isset ($_POST['dsd'])) { $direct_settings['dsd'] = $_POST['dsd']; }

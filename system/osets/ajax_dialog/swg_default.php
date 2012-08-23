@@ -248,9 +248,11 @@ $f_return .= ($direct_settings['iscript_form']." name='$f_form_id' id='$f_form_i
 <p style='text-align:center'><input type='submit' id='{$f_form_id}b' value=\"".(direct_local_get ("core_continue","text"))."\" class='pagecontentinputbutton' /><script type='text/javascript'><![CDATA[
 jQuery (function ()
 {
-	djs_load_functions ({ file:'swg_formbuilder.php.js' });
-	djs_formbuilder_init ({ id:'{$f_form_id}b',type:'button' });
-	djs_formbuilder_init ({ id:'$f_form_id',id_button:'{$f_form_id}b',type:'form' });
+	djs_load_functions({ file:'swg_formbuilder.php.js' }).done (function ()
+	{
+		djs_formbuilder_init ({ id:'{$f_form_id}b',type:'button' });
+		djs_formbuilder_init ({ id:'$f_form_id',id_button:'{$f_form_id}b',type:'form' });
+	});
 });
 ]]></script></p></form>");
 	}

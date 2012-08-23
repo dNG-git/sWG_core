@@ -205,6 +205,40 @@ function direct_output_oset_default_embedded_ajax_error_standard ()
 	return $f_return;
 }
 
+if (isset ($direct_globals['@names']['output_formbuilder']))
+{
+/**
+	* direct_output_oset_default_embedded_ajax_options ()
+	*
+	* @return string Valid XHTML code
+	* @since  v0.1.08
+*/
+	function direct_output_oset_default_embedded_ajax_options ()
+	{
+		global $direct_cachedata,$direct_globals,$direct_settings;
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_output_oset_default_embedded_ajax_options ()- (#echo(__LINE__)#)"); }
+
+		if (!isset ($direct_globals['output_formbuilder'])) { direct_class_init ("output_formbuilder"); }
+
+		if (isset ($direct_cachedata['output_formelements']))
+		{
+			if (isset ($direct_cachedata['output_ajax_javascript_requirements'])) { $direct_cachedata['output_ajax_javascript_requirements'][] = "file:'swg_formbuilder.php.js'"; }
+			else { $direct_cachedata['output_ajax_javascript_requirements'] = array ("file:'swg_formbuilder.php.js'"); }
+
+			$f_form_id = uniqid ("swg");
+
+$f_return = ($direct_settings['iscript_form']." name='$f_form_id' id='$f_form_id'>".(direct_linker ("form",$direct_cachedata['output_formtarget'])).($direct_globals['output_formbuilder']->formGet ($direct_cachedata['output_formelements']))."
+<p style='text-align:center'><input type='submit' id='{$f_form_id}b' value=\"".(direct_local_get ("core_continue","text"))."\" class='pagecontentinputbutton' /><script type='text/javascript'><![CDATA[
+djs_formbuilder_init ({ id:'{$f_form_id}b',type:'button' });\n");
+
+			if (isset ($direct_cachedata['output_formsupport_ajax_dialog'])) { $f_return .= "djs_formbuilder_init ({ id:'$f_form_id',id_button:'{$f_form_id}b',type:'form' });\n"; }
+			$f_return .= "]]></script></p></form>";
+		}
+
+		return $f_return;
+	}
+}
+
 /**
 * direct_output_oset_default_embedded_ajax_selection_list ()
 *
@@ -261,7 +295,7 @@ $f_embedded_code = ("<p style='font-size:10px;text-align:center'>(".(direct_loca
 
 $f_return .= ((isset ($direct_settings['swg_clientsupport']['JSDOMManipulation']) ? $f_embedded_code : ("<p id='swgjsjump_point' style='text-align:center'><strong><span style='font-size:10px'>".(direct_local_get ("core_automated_redirection_unsupported"))."</span><br />
 <a href=\"{$direct_cachedata['output_pagetarget']}\" target='_self'>".(direct_local_get ("core_continue"))."</a></strong></p><script type='text/javascript'><![CDATA[
-jQuery (function () { djs_swgDOM_replace ({ data:\"".(str_replace ('"','\"',$f_embedded_code))."\",id:'swgjsjump_point' }); });
+jQuery (function () { djs_DOM_replace ({ data:\"".(str_replace ('"','\"',$f_embedded_code))."\",id:'swgjsjump_point' }); });
 ]]></script>"))."<script type='text/javascript'><![CDATA[
 self.setTimeout (\"self.location.replace (\\\"{$direct_cachedata['output_pagetarget']}\\\")\",{$direct_cachedata['output_jsjump']});
 ]]></script>");
@@ -503,38 +537,6 @@ LICENSE_WARNING_END //i*/
 
 		return $f_return;
 	}
-
-/**
-	* direct_output_oset_default_embedded_options ()
-	*
-	* @return string Valid XHTML code
-	* @since  v0.1.08
-*/
-	function direct_output_oset_default_embedded_options ()
-	{
-		global $direct_cachedata,$direct_globals,$direct_settings;
-		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -direct_output_oset_default_embedded_options ()- (#echo(__LINE__)#)"); }
-
-		if (!isset ($direct_globals['output_formbuilder'])) { direct_class_init ("output_formbuilder"); }
-
-		if (isset ($direct_cachedata['output_formelements']))
-		{
-			$f_form_id = uniqid ("swg");
-		
-$f_return = ("<h1>".(direct_local_get ("core_options"))."</h1>
-{$direct_settings['iscript_form']} name='$f_form_id' id='$f_form_id'>".(direct_linker ("form",$direct_cachedata['output_formtarget'])).($direct_globals['output_formbuilder']->formGet ($direct_cachedata['output_formelements']))."
-<p style='text-align:center'><input type='submit' id='{$f_form_id}b' value=\"".(direct_local_get ("core_continue","text"))."\" class='pagecontentinputbutton' /><script type='text/javascript'><![CDATA[
-jQuery (function ()
-{
-	djs_load_functions ({ file:'swg_formbuilder.php.js' });
-	djs_formbuilder_init ({ id:'{$f_form_id}b',type:'button' });\n");
-
-			if (isset ($direct_cachedata['output_formsupport_ajax_dialog'])) { $f_return .= "\tdjs_formbuilder_init ({ id:'$f_form_id',id_button:'{$f_form_id}b',type:'form' });\n"; }
-			$f_return .= "});\n]]></script></p></form>";
-		}
-
-		return $f_return;
-	}
 }
 
 /**
@@ -554,7 +556,7 @@ return ("<h1 class='pagecontenttitle{$direct_settings['theme_css_corners']}'>".(
 <a href=\"{$direct_cachedata['output_pagetarget']}\" target='_self'>".(direct_local_get ("core_continue"))."</a></strong></p><script type='text/javascript'><![CDATA[
 jQuery (function ()
 {
-djs_swgDOM_replace ({ data:\"<p style='font-size:10px;text-align:center'>(".(direct_local_get ("core_automated_redirection","text")).")<br />\\n\" +
+djs_DOM_replace ({ data:\"<p style='font-size:10px;text-align:center'>(".(direct_local_get ("core_automated_redirection","text")).")<br />\\n\" +
 \"<a href=\\\"{$direct_cachedata['output_pagetarget']}\\\" target='_self'>".(direct_local_get ("core_continue","text"))."</a></p>\",id:'swgjsjump_point' });
 });
 self.setTimeout (\"self.location.replace ('{$direct_cachedata['output_pagetarget']}')\",2000);

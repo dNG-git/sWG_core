@@ -307,16 +307,20 @@ Set up the caching variables
 */
 	/*#ifndef(PHP4) */public /* #*/function includeClass ($f_class,$f_cachelevel = 4)
 	{
+		global $direct_settings;
 		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -basicFunctions->includeClass ($f_class,$f_cachelevel)- (#echo(__LINE__)#)"); }
 
-		$f_class_array = direct_class_pathname ($f_class);
+		$f_class_key = strtolower (str_replace ("\\","_",$f_class));
+		$f_file_pathname = "";
 
-		if (is_array ($f_class_array))
+		if (isset ($direct_settings["swg_classes_predefined_".$f_class_key])) { $f_file_pathname = $direct_settings['path_system']."/classes/".$direct_settings["swg_classes_predefined_".$f_class_key]; }
+		else
 		{
-			$f_file_pathname = $f_class_array[0];
-			$f_return = $this->includeFile ($f_file_pathname,$f_cachelevel);
+			$f_class_array = direct_class_pathname ($f_class);
+			if (is_array ($f_class_array)) { $f_file_pathname = $f_class_array[0]; }
 		}
-		else { $f_return = false; }
+
+		$f_return = ($f_file_pathname ? $this->includeFile ($f_file_pathname,$f_cachelevel) : false);
 
 		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -basicFunctions->includeClass ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}

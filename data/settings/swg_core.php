@@ -4,11 +4,6 @@
 
 <swg>
  <auto><maintenance value="0" /></auto>
- <chmod>
-  <dirs><change value="0755" /></dirs>
-  <files><change value="0644" /></files>
- </chmod>
-
  <id value="BZR" />
  <lang value="en" />
 
@@ -33,8 +28,6 @@
   <html><![CDATA[<em>direct</em> Netware Group - Initial Installation]]></html>
   <txt value="direct Netware Group - Initial Installation" />
  </title>
-
- <umask><change value="0000" /></umask>
 </swg>
 
 <p3p><url /><cp /></p3p>
