@@ -24,14 +24,15 @@ process. There are three Bazaar modules available:
 
 - sWG_core:
 The "sWG_core" package is intended for developers only. It provides required
-core components of the sWG under the W3C (R) Software License. They are
-needed to develop your own software based on the robust sWG architecture.
+core components of the sWG under the Mozilla Public License, v. 2.0. They
+are needed to develop your own software based on the robust sWG
+architecture.
 
 - sWG_basic:
 "sWG_basic" provides all important and basic components like user and
 session management as well as the cron and validation modules. This package
 is (in connection with "sWG_core") intended for developers and is licensed
-under the W3C (R) Software License.
+under the Mozilla Public License, v. 2.0.
 
 - sWG_complete:
 This module contains different modules, function files and classes needed
