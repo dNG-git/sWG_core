@@ -86,6 +86,7 @@
 <odp value='application/vnd.oasis.opendocument.presentation' />
 <ods value='application/vnd.oasis.opendocument.spreadsheet' />
 <odt value='application/vnd.oasis.opendocument.text' />
+<opus value='audio/opus' />
 <otc value='application/vnd.oasis.opendocument.chart-template' />
 <otf value='application/vnd.oasis.opendocument.formula-template' />
 <otg value='application/vnd.oasis.opendocument.graphics-template' />
