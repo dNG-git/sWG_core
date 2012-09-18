@@ -337,46 +337,31 @@ Viz7+prS6w2XK/0tEaiFC8NRL0vll52xDvcCgVTtuS9L/b2CgAkhqF9TS1VFOT6fihCCgP/dldKybeKJ
 Show me the credits - please do not remove
 ------------------------------------------------------------------------- */
 
-$direct_globals['output']->output_content = ("<p class='pagecontent' style='text-align:center'><strong>$direct_settings[product_lcode_html]</strong> $direct_settings[product_version] - <strong>Program information</strong></p>
-<p class='pagecontent' style='text-align:center'><strong>About the developers</strong></p>
-<p class='pagecontent' style='text-align:center;font-size:10px'><strong>Developer:</strong> <a href='http://www.direct-netware.de/redirect.php?web;en' target='_blank'><em>direct</em> Netware Group</a><br />
-<strong>Copyright holder:</strong> <a href='http://www.direct-netware.de' target='_blank'><em>direct</em> Netware Group</a> - All rights reserved</p>
-<p class='pagecontent' style='text-align:center'><strong>About the $direct_settings[product_lcode_html]</strong></p>
-<p class='pagecontent' style='text-align:center;font-size:10px'><strong>Program version:</strong> $direct_settings[product_version]<br />
+$direct_globals['output']->output_content = ("<p style='text-align:center'><strong>$direct_settings[product_lcode_html]</strong> $direct_settings[product_version] - <strong>Program information</strong></p>
+<p style='text-align:center'><strong>About the developers</strong></p>
+<p style='text-align:center;font-size:10px'><strong>Developer:</strong> <a href='http://www.direct-netware.de/redirect.php?web;en' target='_blank'><em>direct</em> Netware Group</a><br />
+<strong>Copyright holder:</strong> <a href='http://www.direct-netware.de' target='_blank'><em>direct</em> Netware Group</a> - All rights reserved</p>");
+
+			if (USE_debug_reporting)
+			{
+$direct_globals['output']->output_content .= ("\n<p style='text-align:center'><strong>About the $direct_settings[product_lcode_html]</strong></p>
+<p style='text-align:center;font-size:10px'><strong>Program version:</strong> $direct_settings[product_version]<br />
 <strong>Build-ID:</strong> $direct_settings[product_buildid]<br />
-<strong>Interlinking-ID:</strong> <a href='http://www.direct-netware.de/redirect.php?$direct_settings[product_icode]' target='_blank'>$direct_settings[product_icode]</a></p>");
-
-/* -------------------------------------------------------------------------
-Show me the basic settings
-------------------------------------------------------------------------- */
-
-			$direct_globals['output']->output_content .= "<p class='pagecontent' style='text-align:center;font-size:10px'>Error reporting is ";
-			$direct_globals['output']->output_content .= (OW_error_reporting ? "off" : "on");
+<strong>Interlinking-ID:</strong> <a href='http://www.direct-netware.de/redirect.php?$direct_settings[product_icode]' target='_blank'>$direct_settings[product_icode]</a></p>
+<p style='text-align:center;font-size:10px'>Error reporting is ".(OW_error_reporting ? "off" : "on"));
 /*#ifdef(PHP4):
-			$direct_globals['output']->output_content .= "<br />\nMagic_Quotes_Runtime overwriting is ";
-			$direct_globals['output']->output_content .= (OW_magic_quotes_runtime ? "on" : "off");
+				$direct_globals['output']->output_content .= "<br />\nMagic_Quotes_Runtime overwriting is ";
+				$direct_globals['output']->output_content .= (OW_magic_quotes_runtime ? "on" : "off");
 :#\n*/
-			$direct_globals['output']->output_content .= "<br />\nCompression for output (if available) is ";
-			$direct_globals['output']->output_content .= (((USE_outputenc)&&(extension_loaded ("zlib"))) ? "on" : "off");
-
-			$direct_globals['output']->output_content .= "<br />\nUsing SOCKET functions is ";
-			$direct_globals['output']->output_content .= (USE_socket ? "on" : "off");
-
-$direct_globals['output']->output_content .= ("<br />
+$direct_globals['output']->output_content .= ("<br />\nCompression for output (if available) is ".(((USE_outputenc)&&(extension_loaded ("zlib"))) ? "on" : "off")."<br />
+Using SOCKET functions is ".(USE_socket ? "on" : "off")."<br />
 Timeout value is $direct_settings[timeout] (core: +$direct_settings[timeout_core])<br />
-Light version activation value is $direct_settings[timeout_lightmode]</p>");
-
-/* -------------------------------------------------------------------------
-Show me the system configuration (in debug mode) - thank you
-------------------------------------------------------------------------- */
-
-		if (USE_debug_reporting)
-		{
-$direct_globals['output']->output_content .= ("<p class='pagecontent' style='text-align:center'><strong>About the server</strong></p>
-<p class='pagecontent' style='text-align:center;font-size:10px'><strong>Installed PHP version:</strong> ").PHP_VERSION.(" [Zend Engine ").(zend_version ()).("]<br />
+Light version activation value is $direct_settings[timeout_lightmode]</p>
+<p style='text-align:center'><strong>About the server</strong></p>
+<p style='text-align:center;font-size:10px'><strong>Installed PHP version:</strong> ").PHP_VERSION.(" [Zend Engine ").(zend_version ()).("]<br />
 <strong>Running operation system:</strong> ").PHP_OS.(" [").(php_uname ()).("]<br />
 <strong>Activated PHP extensions:</strong> $g_loaded_extensions</p>");
-		}
+			}
 
 			direct_class_init ("output_theme");
 

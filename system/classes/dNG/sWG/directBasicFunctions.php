@@ -650,7 +650,7 @@ Set up the caching variables
 
 		$f_return = NULL;
 
-		if ((strlen ($direct_settings['swg_memcache']))&&($direct_settings['swg_memcache_source_code']))
+		if (($direct_settings['swg_memcache'])&&($direct_settings['swg_memcache_level']))
 		{
 			$f_pathinfo = pathinfo ($f_file_pathname);
 			$f_pathinfo['basename'] = md5 ($f_pathinfo['dirname']).".".$f_pathinfo['basename'];
@@ -662,7 +662,7 @@ Set up the caching variables
 				$f_return = $direct_settings['swg_memcache']."/".$direct_settings['swg_memcache_id'].".".$f_pathinfo['basename'];
 			}
 
-			if (($f_memcache_check)&&($f_cachelevel <= $direct_settings['swg_memcache_source_code']))
+			if (($f_memcache_check)&&($f_cachelevel <= $direct_settings['swg_memcache_level']))
 			{
 				if (file_exists ($f_file_pathname))
 				{
@@ -696,7 +696,7 @@ Set up the caching variables
 		$f_continue_check = true;
 		$f_return = array ();
 
-		if ((strlen ($direct_settings['swg_memcache']))&&($direct_settings['swg_memcache_merged_xml_files']))
+		if (($direct_settings['swg_memcache'])&&($direct_settings['swg_memcache_merged_xml_files']))
 		{
 			$f_pathinfo = pathinfo ($f_file_pathname);
 			$f_pathinfo['basename'] = md5 ($f_pathinfo['dirname']).".".$f_pathinfo['basename'];
@@ -720,7 +720,7 @@ Set up the caching variables
 				{
 					$f_return = $direct_globals['xml_bridge']->xml2array ($f_file_data,false);
 
-					if ((strlen ($direct_settings['swg_memcache']))&&($direct_settings['swg_memcache_merged_xml_files'])&&($f_return))
+					if (($direct_settings['swg_memcache'])&&($direct_settings['swg_memcache_merged_xml_files'])&&($f_return))
 					{
 						$f_file_data = serialize ($f_return);
 						if (direct_file_write ($f_file_data,$direct_settings['swg_memcache']."/".$direct_settings['swg_memcache_id'].".".$f_pathinfo['basename'],"s")) { chmod ($direct_settings['swg_memcache']."/".$direct_settings['swg_memcache_id'].".".$f_pathinfo['basename'],0600); }
@@ -745,19 +745,22 @@ Set up the caching variables
 	* @return boolean True on success
 	* @since  v0.1.02
 */
-	/*#ifndef(PHP4) */public /* #*/function memcacheWriteFile ($f_data,$f_file_pathname,$f_type = "s0")
+	/*#ifndef(PHP4) */public /* #*/function memcacheWriteFile ($f_data,$f_file_pathname,$f_type = "s0",$f_cache_only = false)
 	{
 		global $direct_settings;
-		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -basicFunctions->memcacheWriteFile (+f_data,$f_file_pathname,$f_type)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (5,"sWG/#echo(__FILEPATH__)# -basicFunctions->memcacheWriteFile (+f_data,$f_file_pathname,$f_type,+f_cache_only)- (#echo(__LINE__)#)"); }
 
-		if ((strlen ($direct_settings['swg_memcache']))&&(($direct_settings['swg_memcache_files'])||($direct_settings['swg_memcache_merged_xml_files'])))
+		$f_return = ($f_cache_only ? true : direct_file_write ($f_data,$f_file_pathname,$f_type));
+
+		if (($direct_settings['swg_memcache'])&&($f_return))
 		{
 			$f_pathinfo = pathinfo ($f_file_pathname);
 			$f_pathinfo['basename'] = md5 ($f_pathinfo['dirname']).".".$f_pathinfo['basename'];
-			if (file_exists ($direct_settings['swg_memcache']."/".$direct_settings['swg_memcache_id'].".".$f_pathinfo['basename'])) { unlink ($direct_settings['swg_memcache']."/".$direct_settings['swg_memcache_id'].".".$f_pathinfo['basename']); }
+
+			$f_return = direct_file_write ($f_data,$direct_settings['swg_memcache']."/".$direct_settings['swg_memcache_id'].".".$f_pathinfo['basename'],$f_type);
 		}
 
-		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -basicFunctions->memcacheWriteFile ()- (#echo(__LINE__)#)",(:#*/direct_file_write ($f_data,$f_file_pathname,$f_type)/*#ifdef(DEBUG):),true):#*/;
+		return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -basicFunctions->memcacheWriteFile ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;
 	}
 
 /**
@@ -1187,7 +1190,7 @@ if ((defined ("USE_pre_settings_id"))&&(defined ("USE_pre_settings_memcache"))&&
 	$direct_settings['swg_memcache_id'] = USE_pre_settings_id;
 	$direct_settings['swg_memcache_files'] = false;
 	$direct_settings['swg_memcache_merged_xml_files'] = USE_pre_settings_memcache_merged_xml_files;
-	$direct_settings['swg_memcache_source_code'] = USE_pre_settings_memcache_source_code;
+	$direct_settings['swg_memcache_level'] = USE_pre_settings_memcache_source_code;
 }
 else
 {
@@ -1195,7 +1198,7 @@ else
 	if (!isset ($direct_settings['swg_memcache_id'])) { $direct_settings['swg_memcache_id'] = $direct_settings['swg_id']; }
 	if (!isset ($direct_settings['swg_memcache_files'])) { $direct_settings['swg_memcache_files'] = false; }
 	if (!isset ($direct_settings['swg_memcache_merged_xml_files'])) { $direct_settings['swg_memcache_merged_xml_files'] = true; }
-	if (!isset ($direct_settings['swg_memcache_source_code'])) { $direct_settings['swg_memcache_source_code'] = 0; }
+	if (!isset ($direct_settings['swg_memcache_level'])) { $direct_settings['swg_memcache_level'] = 0; }
 }
 
 set_error_handler (/*#ifdef(PHP5n) */'dNG\sWG\direct_core_php_error'/* #*//*#ifndef(PHP5n):"direct_core_php_error":#*//*#ifndef(PHP4) */,(E_USER_NOTICE | E_USER_WARNING | E_USER_ERROR)/* #*/);

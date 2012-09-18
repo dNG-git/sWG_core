@@ -182,20 +182,7 @@ PSR-0 rules
 	if (isset ($f_file_pathname))
 	{
 		$f_file_pathname = ($f_extension ? $direct_settings['path_system']."/classes/".$f_file_pathname.".".$f_extension : $direct_settings['path_system']."/classes/".$f_file_pathname);
-		$f_memcache_check = false;
-
-		if (isset ($direct_globals['basic_functions']))
-		{
-			$f_memcache_pathname = $direct_globals['basic_functions']->memcacheGetFilePathName ($f_file_pathname,1);
-
-			if (isset ($f_memcache_pathname))
-			{
-				$f_file_pathname = $f_memcache_pathname;
-				$f_memcache_check = true;
-			}
-		}
-
-		if (($f_memcache_check)||(file_exists ($f_file_pathname))) { $f_return = array ($f_file_pathname,$f_classname); }
+		if (file_exists ($f_file_pathname)) { $f_return = array ($f_file_pathname,$f_classname); }
 	}
 
 	return /*#ifdef(DEBUG):direct_debug (7,"sWG/#echo(__FILEPATH__)# -direct_class_pathname ()- (#echo(__LINE__)#)",:#*/$f_return/*#ifdef(DEBUG):,true):#*/;

@@ -267,7 +267,7 @@ Set up some variables
 		}
 		else { $this->headerElements ("<script src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_mmedia]/ext_djs/djs_runner.min.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'></script><!-- // Javascript Runner // -->","script_runner"); }
 
-$this->headerElements ("<script src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_mmedia]/ext_jquery/jquery-1.7.2.min.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'></script><!-- // jQuery library // -->
+$this->headerElements ("<script src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_mmedia]/ext_jquery/jquery-1.8.1.min.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'></script><!-- // jQuery library // -->
 <script type='text/javascript'><![CDATA[
 if (typeof (djs_var) == 'undefined') { var djs_var = { base_path:'$direct_settings[path_mmedia]' }; }
 ]]></script>","script_jquery",true);

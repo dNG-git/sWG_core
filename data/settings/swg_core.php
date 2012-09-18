@@ -9,8 +9,8 @@
 
  <memcache value="">
   <files value="0" />
+  <level value="0" />
   <merged><xml><files value="0" /></xml></merged>
-  <source><code value="0" /></source>
  </memcache>
 
  <service>
