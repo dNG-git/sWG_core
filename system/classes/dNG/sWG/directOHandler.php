@@ -701,7 +701,7 @@ internal sWG page theme
 <span style='font-size:24px'>$direct_settings[product_lcode_html]</span><br />
 $direct_settings[product_lcode_subtitle_html]</td>
 </tr><tr>
-<td class='designpage'>");
+<td class='designpage pagecontent'>");
 
 		if ((is_array ($direct_cachedata['output_warning']))&&(!empty ($direct_cachedata['output_warning'])))
 		{

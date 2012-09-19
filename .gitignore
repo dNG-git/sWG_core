@@ -1,7 +1,6 @@
 _extras
 .*
 *.mo
-data/mmedia/ext_djs/*.*
 make*.py*
 nbproject
 sWG_core.*
