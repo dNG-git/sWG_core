@@ -337,7 +337,7 @@ Viz7+prS6w2XK/0tEaiFC8NRL0vll52xDvcCgVTtuS9L/b2CgAkhqF9TS1VFOT6fihCCgP/dldKybeKJ
 Show me the credits - please do not remove
 ------------------------------------------------------------------------- */
 
-$direct_globals['output']->output_content = ("<p style='text-align:center'><strong>$direct_settings[product_lcode_html]</strong> $direct_settings[product_version] - <strong>Program information</strong></p>
+$direct_globals['output']->output_content = ("<p style='text-align:center'><strong>$direct_settings[product_lcode_html]</strong>".(USE_debug_reporting ? " ".$direct_settings['product_version'] : "")." - <strong>Program information</strong></p>
 <p style='text-align:center'><strong>About the developers</strong></p>
 <p style='text-align:center;font-size:10px'><strong>Developer:</strong> <a href='http://www.direct-netware.de/redirect.php?web;en' target='_blank'><em>direct</em> Netware Group</a><br />
 <strong>Copyright holder:</strong> <a href='http://www.direct-netware.de' target='_blank'><em>direct</em> Netware Group</a> - All rights reserved</p>");
