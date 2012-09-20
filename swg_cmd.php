@@ -118,7 +118,7 @@ $direct_local = array ();
 $direct_settings = array ("lang" => NULL,"theme" => NULL,"swg_chmod_dirs_change" => "0750","swg_chmod_files_change" => "0640","swg_umask_change" => "0000");
 
 $direct_cachedata['core_time'] = (isset ($_SERVER['REQUEST_TIME']) ? $_SERVER['REQUEST_TIME'] : time ());
-/*#ifndef(PHP4) */$direct_cachedata['core_debug_starttime'] = microtime (true);/* #*//*#ifdef(PHP4):$direct_cachedata['core_debug_starttime'] = time ();:#*/
+$direct_cachedata['core_debug_starttime'] = /*#ifndef(PHP4) */microtime (true)/* #*//*#ifdef(PHP4):time ():#*/;
 
 /* -------------------------------------------------------------------------
 Set up variables that can be changed with an integration script.
@@ -224,7 +224,7 @@ if ((function_exists ("direct_autoload"))&&(direct_autoload ('dNG\sWG\directVirt
 Identify the request
 ------------------------------------------------------------------------- */
 
-	$g_variables = /*#ifdef(PHP5n) */dNG\sWG\directActionParserCmd::ilineParse ();/* #*//*#ifndef(PHP5n):directActionParserCmd::ilineParse ();:#*/
+	$g_variables = /*#ifdef(PHP5n) */dNG\sWG\directActionParserCmd::ilineParse ()/* #*//*#ifndef(PHP5n):directActionParserCmd::ilineParse ():#*/;
 	$direct_settings['a'] = (isset ($g_variables['a']) ? preg_replace ("#[;\/\\\?:@\=\&\. \+]+#","",(urldecode ($g_variables['a']))) : "");
 	$direct_settings['m'] = (isset ($g_variables['m']) ? preg_replace ("#[;\/\\\?:@\=\&\. \+]+#","",$g_variables['m']) : "");
 
