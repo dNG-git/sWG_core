@@ -628,7 +628,7 @@ td, th { padding:0px }
 .designtitle { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;font-weight:normal;color:#000000 }
 
 .pagebg { background-color:#FFFFFF }
-.pageborder { border:1px solid #193879;padding:4px }
+.pageborder { border:1px solid #DDDDDD;padding:4px }
 
 .pagecontent { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;color:#222222 }
 .pagecontent a, .pagecontent a:link, .pagecontent a:active, .pagecontent a:visited, .pagecontent a:hover, .pagecontent a:focus { color:#000000 }
@@ -676,8 +676,9 @@ td, th { padding:0px }
 .pageservicemenu a, .pageservicemenu a:link, .pageservicemenu a:visited { color:#000000;text-decoration:underline }
 .pageservicemenu a:active, .pageservicemenu a:hover, .pageservicemenu a:focus { color:#444444;text-decoration:none }
 
-.pagetable { border-collapse:collapse }
-.pagetable td, .pagetable th { border:1px solid #193879 }
+.pagetable { border:1px solid #DDDDDD;border-collapse:collapse }
+.pagetable td { border:1px dotted #C0C0C0 }
+.pagetable td.pagetitlecell { border:1px solid #193879 }
 
 .pagetitlecell { padding:3px;background-color:#375A9D }
 .pagetitlecell { font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;font-weight:bold;color:#FFFFFF }
