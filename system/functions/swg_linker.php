@@ -76,7 +76,15 @@ function direct_linker ($f_type,$f_data,$f_html_encode = true,$f_withuuid = true
 
 	$f_html_filter = array ("<",">","&#60;","&#62;","&lt;","&gt;");
 
-	if ($f_type == "asis") { $f_return = $f_data; }
+	if ($f_type == "asis")
+	{
+		$f_return = $f_data;
+	}
+	elseif ($f_type == "asisuuid")
+	{
+		$f_uuid = (((isset ($direct_globals['input']))&&($f_withuuid)) ? $direct_globals['input']->uuidGet () : "");
+		$f_return = str_replace ("[uuid]",((($f_uuid)&&(!$direct_globals['kernel']->vUuidIsCookied ())&&($direct_globals['kernel']->vUuidCheckUsage ())) ? $f_uuid : ""),$f_data);
+	}
 	elseif ($f_type == "form")
 	{
 /* -------------------------------------------------------------------------

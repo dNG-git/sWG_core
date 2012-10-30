@@ -19,32 +19,37 @@ sWG/#echo(__FILEPATH__)#
 ----------------------------------------------------------------------------
 NOTE_END //n*/
 
-djs_var['core_output_helper_cache'] = { };
+djs_var['core_output_helper_ready'] = false;
 
 function djs_core_helper_init (f_params)
 {
-	jQuery("#" + f_params.id + " > img").attr ('title',"<?php echo direct_local_get ("core_detailed_information_hide"); ?>");
-
-	if (f_params.hide)
+	if ('id' in f_params)
 	{
-		if ('data' in f_params) { djs_var.core_output_helper_cache[f_params.id] = f_params.data; }
-		else { djs_core_helper_hide (f_params.id); }
+		if (djs_var.core_output_helper_ready)
+		{
+			var f_content,f_id = (('id_parent' in f_params) ? f_params.id : f_params.id + "_helper"),f_id_parent = (('id_parent' in f_params) ? f_params.id_parent : f_params.id),f_jquery_object;
+
+			f_jquery_object = jQuery("#" + f_id);
+			f_jquery_object.children('img').remove ();
+			f_content = f_jquery_object.html ();
+			f_jquery_object.remove ();
+
+			jQuery("#" + f_id_parent).tooltip ({ content:"<aside>" + f_content + "</aside>",items:"#" + f_id_parent,position:{ at:'center top-5',collision:'flipfit',my:'center bottom' } });
+		}
+		else
+		{
+djs_load_functions ([
+ { file:'ext_jquery/jquery.ui.core.min.js' },
+ { file:'ext_jquery/jquery.ui.widget.min.js' },
+ { file:'ext_jquery/jquery.ui.position.min.js' },
+ { file:'ext_jquery/jquery.ui.tooltip.min.js' }
+]).done (function ()
+{
+	djs_var.core_output_helper_ready = true;
+	djs_core_helper_init (f_params);
+});
+		}
 	}
-	else { jQuery("#" + f_params.id).one ('click',function () { djs_core_helper_hide (f_params.id); }); }
 }
-
-function djs_core_helper_hide (f_id)
-{
-	djs_var.core_output_helper_cache[f_id] = jQuery ("#" + f_id);
-	djs_DOM_replace ({ data:"<div id='" + f_id + "' style='display:none'><a href=\"javascript:djs_core_helper_show('" + f_id + "')\"><?php echo direct_local_get ("core_detailed_information_show"); ?></a></div>",id:f_id,speed:'slow' });
-}
-
-function djs_core_helper_show (f_id)
-{
-	djs_DOM_replace ({ data:djs_var.core_output_helper_cache[f_id],id:f_id,onReplace:{ func:'djs_core_helper_shown',params:{ id:f_id } },speed:'slow' });
-	delete (djs_var.core_output_helper_cache[f_id]);
-}
-
-function djs_core_helper_shown (f_params) { jQuery("#" + f_params.id).one ('click',function () { djs_core_helper_hide (f_params.id); }); }
 
 //j// EOF

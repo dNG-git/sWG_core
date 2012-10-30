@@ -1,6 +1,0 @@
-_extras
-.*
-*.mo
-make*.py*
-nbproject
-sWG_core.*

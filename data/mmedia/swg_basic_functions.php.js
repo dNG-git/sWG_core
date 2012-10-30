@@ -178,7 +178,7 @@ function djs_dialog_view (f_params)
 {
 	if ('id' in f_params)
 	{
-		if ((!('buttons' in f_params))&&((!('window_closeable' in f_params))||(f_params.window_closeable))) { f_params['buttons'] = { "<?php echo direct_local_get ("core_close","text"); ?>": function () { jQuery(this).dialog ('close'); } } }
+		if ((!('buttons' in f_params))&&((!('window_closeable' in f_params))||(f_params.window_closeable))) { f_params['buttons'] = { "<?php echo direct_local_get ("core_close","text"); ?>": function () { jQuery(this).dialog ('close'); } }; }
 		jQuery("#" + f_params.id).dialog(f_params).on ('dialogclose',function () { jQuery("#" + f_params.id).remove (); });
 	}
 }

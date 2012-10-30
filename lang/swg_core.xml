@@ -17,39 +17,17 @@
   <close><input input="string" /></close>
 
   <datasub>
-   <allowed><input input="string" /></allowed>
-
    <error>
     <digitstart__1><input input="string" /></digitstart__1>
     <digitstart__2><input input="string" /></digitstart__2>
     <digitstart__3><input input="string" /></digitstart__3>
    </error>
 
-   <hide><input input="string" /></hide>
-
-   <last><entry>
-    <digitstart__0>
-     <digitstart__1><input input="string" /></digitstart__1>
-     <digitstart__2><input input="string" /></digitstart__2>
-    </digitstart__0>
-
-    <digitstart__1>
-     <digitstart__1><input input="string" /></digitstart__1>
-     <digitstart__2><input input="string" /></digitstart__2>
-     <digitstart__3><input input="string" /></digitstart__3>
-    </digitstart__1>
-   </entry></last>
-
    <loading><input input="string" /></loading>
 
    <new>
     <input input="string" />
-    <allowed><input input="string" /></allowed>
-
-    <entry>
-     <input input="string" />
-     <prerequisites><failed><input input="string" /></failed></prerequisites>
-    </entry>
+    <entry><input input="string" /></entry>
    </new>
 
    <no><access>
@@ -73,8 +51,6 @@
 
     <links><input input="string" /></links>
    </title>
-
-   <type><input input="string" /></type>
   </datasub>
 
   <detailed><information>
@@ -84,7 +60,6 @@
   </information></detailed>
 
   <done>
-   <datasub><new><entry><input input="string" /></entry></new></datasub>
    <input input="string" />
 
    <status>
@@ -105,16 +80,6 @@
 
   <forgotten><password><input input="string" /></password></forgotten>
   <guest><input input="string" /></guest>
-
-  <helper>
-   <password>
-    <digitstart__1><input input="string" /></digitstart__1>
-    <digitstart__2><input input="string" /></digitstart__2>
-   </password>
-
-   <username><input input="string" /></username>
-  </helper>
-
   <lastvisit><reset><input input="string" /></reset></lastvisit>
   <level><up><input input="string" /></up></level>
 
@@ -155,7 +120,6 @@
   </redirect>
 
   <redirector><permalink><input input="string" /></permalink></redirector>
-  <registration><input input="string" /></registration>
   <save><input input="string" /></save>
   <search><input input="string" /></search>
 
@@ -295,7 +259,6 @@
   <access><denied><input input="string" /></denied></access>
   <credits><insufficient><input input="string" /></insufficient></credits>
   <database><error><input input="string" /></error></database>
-  <datasub><eid><invalid><input input="string" /></invalid></eid></datasub>
 
   <daemon>
    <eid><invalid><input input="string" /></invalid></eid>

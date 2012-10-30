@@ -267,7 +267,7 @@ function direct_output_oset_default_embedded_ajax_selection_list ()
 		}
 	}
 
-	$f_return .= " (<a href=\"javascript:djs_swgAJAX_replace_url0('swgAJAX_embed_{$direct_cachedata['output_tid']}_point','{$direct_cachedata['output_selector_url']}')\">".(direct_local_get ("core_selector_activate"))."</a>)</p></div>";
+	$f_return .= " (<a href=\"javascript:djs_swgAJAX_replace_url0('swgAJAX_embed_{$direct_cachedata['output_tid']}_point','".(direct_linker ("asisuuid",$direct_cachedata['output_selector_url'].";uuid=[uuid]"))."')\">".(direct_local_get ("core_selector_activate"))."</a>)</p></div>";
 
 	return $f_return;
 }

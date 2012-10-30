@@ -77,10 +77,6 @@ class directOHandlerBasics extends directOHandler
 */
 	/*#ifndef(PHP4) */protected/* #*//*#ifdef(PHP4):var:#*/ $header_elements;
 /**
-	* @var integer $js_helper_element Javascript element counter
-*/
-	/*#ifndef(PHP4) */protected/* #*//*#ifdef(PHP4):var:#*/ $js_helper_element;
-/**
 	* @var array $menus Menus for the current page
 */
 	/*#ifndef(PHP4) */protected/* #*//*#ifdef(PHP4):var:#*/ $menus;
@@ -158,7 +154,6 @@ Informing the system about available functions
 Set up some variables
 ------------------------------------------------------------------------- */
 
-		$this->js_helper_element = 0;
 		$this->menus = array ();
 		$this->menus_protected = array ();
 		$this->oset = "default";
@@ -267,7 +262,7 @@ Set up some variables
 		}
 		else { $this->headerElements ("<script src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_mmedia]/ext_djs/djs_runner.min.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'></script><!-- // Javascript Runner // -->","script_runner"); }
 
-$this->headerElements ("<script src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_mmedia]/ext_jquery/jquery-1.8.1.min.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'></script><!-- // jQuery library // -->
+$this->headerElements ("<script src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_mmedia]/ext_jquery/jquery-1.8.2.min.js++dbid+".$direct_settings['product_buildid'],true,false))."' type='text/javascript'></script><!-- // jQuery library // -->
 <script type='text/javascript'><![CDATA[
 if (typeof (djs_var) == 'undefined') { var djs_var = { base_path:'$direct_settings[path_mmedia]' }; }
 ]]></script>","script_jquery",true);
@@ -279,32 +274,21 @@ if (typeof (djs_var) == 'undefined') { var djs_var = { base_path:'$direct_settin
 	*
 	* @param  string $f_text Content string for the Helper Box
 	* @param  string $f_url A optional link for the content of the box
-	* @param  boolean $f_close_onload True to close the box after loading the page
+	* @param  string $f_id_parent ID for the tooltip parent
 	* @return string XHTML Code for required JavaScript functions
 	* @since  v0.1.02
 */
-	/*#ifndef(PHP4) */public /* #*/function jsHelper ($f_text,$f_url = "",$f_close_onload = true)
+	/*#ifndef(PHP4) */public /* #*/function jsHelper ($f_text,$f_url = "",$f_id_parent = NULL)
 	{
 		global $direct_settings;
-		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -oHandler->jsHelper (+f_text,$f_url,$f_close_onload)- (#echo(__LINE__)#)"); }
+		if (USE_debug_reporting) { direct_debug (3,"sWG/#echo(__FILEPATH__)# -oHandler->jsHelper (+f_text,$f_url,+f_id_parent)- (#echo(__LINE__)#)"); }
 
-		$f_js_helper_id = ("swghelp".$this->js_helper_element);
-		$this->js_helper_element++;
+		$f_return = "<aside".(isset ($f_id_parent) ? " id='{$f_id_parent}_helper'" : "")." class='pagehelper'".(isset ($direct_settings['swg_clientsupport']['JSDOMManipulation']) ? " style='display:none'" : "")."><img src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_mmedia]/swg_output_helper.png",true,false))."' width='32' height='32' alt=\"".(direct_local_get ("core_detailed_information"))."\" title=\"".(direct_local_get ("core_detailed_information"))."\" class='pagehelpericon' />".(strlen ($f_url) ? "<a href=\"$f_url\" target='_blank'>$f_text</a>" : $f_text)."</aside>";
 
-		$f_embedded_code = "<aside id='$f_js_helper_id' class='pagehelper'><img src='".(direct_linker_dynamic ("url0","s=cache;dsd=dfile+$direct_settings[path_mmedia]/swg_output_helper.png",true,false))."' width='32' height='32' alt=\"".(direct_local_get ("core_detailed_information"))."\" title=\"".(direct_local_get ("core_detailed_information"))."\" class='pagehelpericon' />".(strlen ($f_url) ? "<a href=\"$f_url\" target='_blank'>$f_text</a>" : $f_text)."</aside>";
-
-		if ((isset ($direct_settings['swg_clientsupport']['JSDOMManipulation']))&&($f_close_onload))
+		if (isset ($f_id_parent))
 		{
-$f_return = ("<a id='$f_js_helper_id' href=\"javascript:djs_core_helper_show('$f_js_helper_id')\" class='pagehelperactivator'>".(direct_local_get ("core_detailed_information_show"))."</a><script type='text/javascript'><![CDATA[
-jQuery (function () { djs_load_functions({ file:'swg_output_helper.php.js' }).done (function () { djs_core_helper_init ({ data:\"".(str_replace ('"','\"',$f_embedded_code))."\",id:'$f_js_helper_id',hide:$f_close_onload }); }); });
-]]></script>");
-		}
-		else
-		{
-			$f_close_onload = ($f_close_onload ? "true" : "false");
-
-$f_return = ($f_embedded_code."<script type='text/javascript'><![CDATA[
-jQuery (function () { djs_load_functions({ file:'swg_output_helper.php.js' }).done (function () { djs_core_helper_init ({ id:'$f_js_helper_id',hide:$f_close_onload }); }); });
+$f_return = ($f_return."<script type='text/javascript'><![CDATA[
+jQuery (function () { djs_load_functions({ file:'swg_output_helper.php.js' }).done (function () { djs_core_helper_init ({ id:'$f_id_parent' }); }); });
 ]]></script>");
 		}
 
